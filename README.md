@@ -21,7 +21,7 @@ Akamai is a global content delivery network (CDN) and cloud service provider tha
 ## APIs
 
 ### Akamai Access Revocation API
-Adaptive Media Delivery supports Token Authentication. You can apply it to generate unique tokens and include them in requests for your content. Akamai validates these tokens to grant access to your media. Access Revocation lets you recognize tokens that have been hijacked and flag them to block requests that include them. Use the Access Revocation API to generate a revocation list of these tokens. You can also set a time to live for this revocation period to automatically unrevoke these tokens, or you can manually remove them from a revocation list. The API also lets you review your revocation lists and Access Revocation settings.
+Adaptive Media Delivery supports Token Authentication. You can apply it to generate unique tokens and include them in requests for your content. Akamai validates these tokens to grant access to your media. Access Revocation lets you recognize tokens that have been hijacked and flag them to block requests that include them. Use the Access Revocation API to generate a revocation list of these tokens. You can also set a time to live for this revocation period to automatically unrevoke these tokens, or you can manually remove them from a revocation list. The API also lets you review your revocation lists and Access Revocation settings.
 
 **Human URL:** [https://techdocs.akamai.com/adaptive-media-delivery/reference/api](https://techdocs.akamai.com/adaptive-media-delivery/reference/api)
 
@@ -45,7 +45,7 @@ The Adaptive Acceleration service takes advantage of the Server Push feature tha
 #### Properties
 
 ### Akamai Access Revocation API
-Adaptive Media Delivery supports Token Authentication. You can apply it to generate unique tokens and include them in requests for your content. Akamai validates these tokens to grant access to your media. Access Revocation lets you recognize tokens that have been hijacked and flag them to block requests that include them. Use the Access Revocation API to generate a revocation list of these tokens. You can also set a time to live for this revocation period to automatically unrevoke these tokens, or you can manually remove them from a revocation list. The API also lets you review your revocation lists and Access Revocation settings.
+Adaptive Media Delivery supports Token Authentication. You can apply it to generate unique tokens and include them in requests for your content. Akamai validates these tokens to grant access to your media. Access Revocation lets you recognize tokens that have been hijacked and flag them to block requests that include them. Use the Access Revocation API to generate a revocation list of these tokens. You can also set a time to live for this revocation period to automatically unrevoke these tokens, or you can manually remove them from a revocation list. The API also lets you review your revocation lists and Access Revocation settings.
 
 **Human URL:** [https://techdocs.akamai.com/adaptive-media-delivery/reference/api](https://techdocs.akamai.com/adaptive-media-delivery/reference/api)
 
@@ -57,7 +57,7 @@ Adaptive Media Delivery supports Token Authentication. You can apply it to gener
 #### Properties
 
 ### Akamai MFA API
-Akamai MFA provides strong secondary authentication to cloud, on-premises, web-based, SaaS, and IaaS applicationsin addition to your primary verification mechanism, like the identity provider (IdP) system.With this additional layer of protection, Akamai MFA increases the security of employee accounts and improves your zero-trust security posture.
+Akamai MFA provides strong secondary authentication to cloud, on-premises, web-based, SaaS, and IaaS applicationsin addition to your primary verification mechanism, like the identity provider (IdP) system.With this additional layer of protection, Akamai MFA increases the security of employee accounts and improves your zero-trust security posture.
 
 **Human URL:** [https://techdocs.akamai.com/mfa/reference/api](https://techdocs.akamai.com/mfa/reference/api)
 
@@ -261,7 +261,7 @@ The Client Access Control (CAC) API helps you manage access between your web ass
 #### Properties
 
 ### Akamai Cloud Access Manager API
-The Cloud Access Manager (CAM) API connects the Akamai Intelligent Platform and your cloud provider. Use CAM to enable cloud origin authentication and securely store and manage your cloud provider origin credentials as access keys. You can easily select an access key in the Origin Characteristics behavior when creating a Property Manager property for your Akamai product, eliminating the need to manually provide the credentials. You can use the same access key between several properties, for Akamai products that offer support for the Origin Characteristics behavior.
+The Cloud Access Manager (CAM) API connects the Akamai Intelligent Platform and your cloud provider. Use CAM to enable cloud origin authentication and securely store and manage your cloud provider origin credentials as access keys. You can easily select an access key in the Origin Characteristics behavior when creating a Property Manager property for your Akamai product, eliminating the need to manually provide the credentials. You can use the same access key between several properties, for Akamai products that offer support for the Origin Characteristics behavior.
 
 **Human URL:** [https://techdocs.akamai.com/cloud-access-mgr/reference/api](https://techdocs.akamai.com/cloud-access-mgr/reference/api)
 
@@ -309,7 +309,7 @@ You can use the CloudTest API service to plan for peak traffic performance by pe
 #### Properties
 
 ### Akamai Contract API
-The Contract API provides information about Akamai contracts and the products included in those contracts. With this API, you can retrieve product information for a specified time frame by contract ID or reporting group.
+The Contract API provides information about Akamai contracts and the products included in those contracts. With this API, you can retrieve product information for a specified time frame by contract ID or reporting group.
 
 **Human URL:** [https://techdocs.akamai.com/contract-api/reference/api](https://techdocs.akamai.com/contract-api/reference/api)
 
@@ -345,7 +345,7 @@ Now you can use the new version of the DataStream 2 API to capture log data and 
 #### Properties
 
 ### Akamai Edge Diagnostics API
-Edge Diagnostics allows you to diagnose your server, DNS, and network problems from Akamai servers around the world.Once you extend your web content onto the Akamai edge network and apply various Akamai features to accelerate and manipulate content, you need to be able to troubleshoot any problems your users may encounter. With Edge Diagnostics API you can diagnose common problems you may experience when delivering content to your users, except for China CDN.
+Edge Diagnostics allows you to diagnose your server, DNS, and network problems from Akamai servers around the world.Once you extend your web content onto the Akamai edge network and apply various Akamai features to accelerate and manipulate content, you need to be able to troubleshoot any problems your users may encounter. With Edge Diagnostics API you can diagnose common problems you may experience when delivering content to your users, except for China CDN.
 
 **Human URL:** [https://techdocs.akamai.com/edge-diagnostics/reference/edge-diagnostics-api-1](https://techdocs.akamai.com/edge-diagnostics/reference/edge-diagnostics-api-1)
 
@@ -357,7 +357,7 @@ Edge Diagnostics allows you to diagnose your server, DNS, and network problems f
 #### Properties
 
 ### Akamai Edge DNS API v2
-Welcome to Akamai Edge DNS service. Edge DNS integrates easily with your existing DNS infrastructure to provide a secure, high performance, highly available and scalable solution for DNS hosting. As part of this service, Akamai runs name servers in multiple networks and in many geographic locations that are capable of resolving queries for your zones. Akamai IP Anycast technology is also capable of providing an unprecedented level of reliability and performance for name resolution.
+Welcome to Akamai Edge DNS service. Edge DNS integrates easily with your existing DNS infrastructure to provide a secure, high performance, highly available and scalable solution for DNS hosting. As part of this service, Akamai runs name servers in multiple networks and in many geographic locations that are capable of resolving queries for your zones. Akamai IP Anycast technology is also capable of providing an unprecedented level of reliability and performance for name resolution.
 
 **Human URL:** [https://techdocs.akamai.com/edge-dns/reference/edge-dns-api](https://techdocs.akamai.com/edge-dns/reference/edge-dns-api)
 
@@ -405,7 +405,7 @@ The Enhanced Content Control Utility (ECCU) is one of several supported Akamai p
 #### Properties
 
 ### Akamai Enterprise Application Access API
-Enterprise Application Access allows you to integrate data path protection, single sign-on, identity access, application security, and management visibility and control for enterprise applications. EAA delivers access to applications, not the entire network. With EAA, users dont access applications directlyinstead, apps are hidden from the Internet and public exposure by closing all inbound firewall ports while providing authenticated end-users with access to only their own special applications.
+Enterprise Application Access allows you to integrate data path protection, single sign-on, identity access, application security, and management visibility and control for enterprise applications. EAA delivers access to applications, not the entire network. With EAA, users dont access applications directlyinstead, apps are hidden from the Internet and public exposure by closing all inbound firewall ports while providing authenticated end-users with access to only their own special applications.
 
 **Human URL:** [https://techdocs.akamai.com/eaa-api/reference/api](https://techdocs.akamai.com/eaa-api/reference/api)
 
@@ -429,7 +429,7 @@ The Event Center API lets you access and manage event data available in Akamai C
 #### Properties
 
 ### Akamai Event Viewer API
-Event Viewer records events completed through Control Center that are available to site administrators, such as configuration changes, login attempts, and log deliveries.With the Event Viewer API, you can view a list of portal-visible events stored in the Event Logger system and related to a particular user account, optionally filtered by event type ID, date and time of an event, and event ID. You can also view all defined event types with related event definitions.
+Event Viewer records events completed through Control Center that are available to site administrators, such as configuration changes, login attempts, and log deliveries.With the Event Viewer API, you can view a list of portal-visible events stored in the Event Logger system and related to a particular user account, optionally filtered by event type ID, date and time of an event, and event ID. You can also view all defined event types with related event definitions.
 
 **Human URL:** [https://techdocs.akamai.com/event-viewer/reference/api](https://techdocs.akamai.com/event-viewer/reference/api)
 
@@ -453,7 +453,7 @@ The Fast Purge API provides a programmatic interface for you to purge edge conte
 #### Properties
 
 ### Akamai Firewall Rules Notification API
-Akamai periodically refreshes edge server IP addresses for routine maintenance. With Firewall Rules Notification, you can manage who receives email notifications about the planned changes. Akamai provides six to eight weeks of advance notice before activating the IP addresses.
+Akamai periodically refreshes edge server IP addresses for routine maintenance. With Firewall Rules Notification, you can manage who receives email notifications about the planned changes. Akamai provides six to eight weeks of advance notice before activating the IP addresses.
 
 **Human URL:** [https://techdocs.akamai.com/firewall-rules/reference/api](https://techdocs.akamai.com/firewall-rules/reference/api)
 
@@ -573,7 +573,7 @@ The Hosted Login, OAuth 2.0, and OpenID Connect APIs represent your primary tool
 #### Properties
 
 ### Akamai Identity Cloud SIEM Event Service API
-Security Event and Information Management (SIEM) is a recognized standard for collecting, aggregating, and analyzing events that take place on a website or within an app. Identity Clouds SIEM event delivery service can inform you, in near real-time, each time a specified event occurs. See Identity Cloud SIEM events for more information on the events available to the SIEM event service.
+Security Event and Information Management (SIEM) is a recognized standard for collecting, aggregating, and analyzing events that take place on a website or within an app. Identity Clouds SIEM event delivery service can inform you, in near real-time, each time a specified event occurs. See Identity Cloud SIEM events for more information on the events available to the SIEM event service.
 
 **Human URL:** [https://techdocs.akamai.com/identity-cloud-siem-delivery/reference/api](https://techdocs.akamai.com/identity-cloud-siem-delivery/reference/api)
 
@@ -621,7 +621,7 @@ Image and Video Manager transforms a websites images by creating derivative imag
 #### Properties
 
 ### Akamai Invoicing API v4
-The Invoicing API provides data about your Akamai invoices and credit memos.This API offers a programmatic alternative to the Your bills, Bills history, and Notifications features available in the Billing Akamai Control Center interface.
+The Invoicing API provides data about your Akamai invoices and credit memos.This API offers a programmatic alternative to the Your bills, Bills history, and Notifications features available in the Billing Akamai Control Center interface.
 
 **Human URL:** [https://techdocs.akamai.com/invoicing/reference/api](https://techdocs.akamai.com/invoicing/reference/api)
 
@@ -633,7 +633,7 @@ The Invoicing API provides data about your Akamai invoices and credit memos.Th
 #### Properties
 
 ### Akamai Ion
-Ion is a suite of intelligent performance optimizations and controls that help to deliver superior website and iOS or Android app experiences. It combines the scalability of Akamais global content delivery platform with fast, dynamic content acceleration. Ion also leverages Akamais cellular optimizations, which lower both latency and user engagement disruptions.
+Ion is a suite of intelligent performance optimizations and controls that help to deliver superior website and iOS or Android app experiences. It combines the scalability of Akamais global content delivery platform with fast, dynamic content acceleration. Ion also leverages Akamais cellular optimizations, which lower both latency and user engagement disruptions.
 
 **Human URL:** [https://techdocs.akamai.com/ion/docs/welcome-ion](https://techdocs.akamai.com/ion/docs/welcome-ion)
 
@@ -669,7 +669,7 @@ The Token Access Control API allows you to programmatically create, manage, and 
 #### Properties
 
 ### Akamai Linode API
-The Linode API lets you programmatically manage the full range of Akamai cloud computing products and services. Here are a few of the things you can do with this API:
+The Linode API lets you programmatically manage the full range of Akamai cloud computing products and services. Here are a few of the things you can do with this API:
 
 **Human URL:** [https://techdocs.akamai.com/linode-api/reference/api](https://techdocs.akamai.com/linode-api/reference/api)
 
@@ -741,7 +741,7 @@ You can use the mPulse API service to view real-time analytics and user measurem
 #### Properties
 
 ### Akamai Mutual TLS Edge Truststore API
-You can use Mutual TLS Edge Truststore API to create, manage, and activate certificate (CA) sets needed to set up mutual authentication (mTLS) sessions between a client and Akamai edge servers.Each CA set contains a collection of certificates that validate the client certificates presented by a user during mTLS  thats the TLS handshake at the edge server.
+You can use Mutual TLS Edge Truststore API to create, manage, and activate certificate (CA) sets needed to set up mutual authentication (mTLS) sessions between a client and Akamai edge servers.Each CA set contains a collection of certificates that validate the client certificates presented by a user during mTLS  thats the TLS handshake at the edge server.
 
 **Human URL:** [https://techdocs.akamai.com/mtls-edge-truststore/reference/api](https://techdocs.akamai.com/mtls-edge-truststore/reference/api)
 
@@ -753,7 +753,7 @@ You can use Mutual TLS Edge Truststore API to create, manage, and activate certi
 #### Properties
 
 ### Akamai Mutual TLS Origin Keystore API
-You can use the Mutual TLS Origin Keystore API to create, manage, and activate client certificates needed to set up mutual authentication (mTLS) sessions between the origin and Akamai edge servers.
+You can use the Mutual TLS Origin Keystore API to create, manage, and activate client certificates needed to set up mutual authentication (mTLS) sessions between the origin and Akamai edge servers.
 
 **Human URL:** [https://techdocs.akamai.com/mtls-origin-keystore/reference/api](https://techdocs.akamai.com/mtls-origin-keystore/reference/api)
 
@@ -837,7 +837,7 @@ The Property Manager API (PAPI) offers a programmatic interface to manage how Ak
 #### Properties
 
 ### Akamai Reporting API
-If youre using Akamai Intelligent Platform to deliver your content, you want to see how its performing. The Reporting API provides a wide range of reports, with new reports added periodically, and allows you to retrieve data in a range of intervals, from five minutes to monthly, depending on the time period and type of data you want to view. Some reports are available only to those who have purchased the related product. Support for specific intervals, filters, and metrics may vary by report type.
+If youre using Akamai Intelligent Platform to deliver your content, you want to see how its performing. The Reporting API provides a wide range of reports, with new reports added periodically, and allows you to retrieve data in a range of intervals, from five minutes to monthly, depending on the time period and type of data you want to view. Some reports are available only to those who have purchased the related product. Support for specific intervals, filters, and metrics may vary by report type.
 
 **Human URL:** [https://techdocs.akamai.com/reporting/reference/api](https://techdocs.akamai.com/reporting/reference/api)
 
@@ -873,7 +873,7 @@ Use the Script Management API to create and view policies. These policies can he
 #### Properties
 
 ### Akamai Secure Internet Access Enterprise Configuration API v3
-The Secure Internet Access Enterprise (SIA) Configuration API offers a programmatic interface to manage policy settings to protect against enterprise security and acceptable user policy related events. A distributed configuration encapsulates all the rules for how to process DNS requests for your enterprise.
+The Secure Internet Access Enterprise (SIA) Configuration API offers a programmatic interface to manage policy settings to protect against enterprise security and acceptable user policy related events. A distributed configuration encapsulates all the rules for how to process DNS requests for your enterprise.
 
 **Human URL:** [https://techdocs.akamai.com/etp-config/reference/api](https://techdocs.akamai.com/etp-config/reference/api)
 
@@ -885,7 +885,7 @@ The Secure Internet Access Enterprise (SIA) Configuration API offers a progr
 #### Properties
 
 ### Akamai Secure Internet Access Enterprise Reporting API v3
-The Secure Internet Access Enterprise (SIA) Reporting API lets you access and analyze reports for acceptable user policy (AUP) events, DNS activity, network traffic connections, security connector events, and threat events. This API allows flexible access to reporting features in Akamai Control Center, using your own tools.
+The Secure Internet Access Enterprise (SIA) Reporting API lets you access and analyze reports for acceptable user policy (AUP) events, DNS activity, network traffic connections, security connector events, and threat events. This API allows flexible access to reporting features in Akamai Control Center, using your own tools.
 
 **Human URL:** [https://techdocs.akamai.com/etp-reporting/reference/api](https://techdocs.akamai.com/etp-reporting/reference/api)
 
@@ -897,7 +897,7 @@ The Secure Internet Access Enterprise (SIA) Reporting API lets you access an
 #### Properties
 
 ### Akamai Service-Level Agreement API
-The service-level agreement (SLA) API provides programmatic access to SLA test configurations and the resulting reports.SLA tests measure certain availability and performance metrics. The results of these tests can help you check whether Akamai is achieving the performance gains and platform availability set forth in the SLA included with your purchase contract.
+The service-level agreement (SLA) API provides programmatic access to SLA test configurations and the resulting reports.SLA tests measure certain availability and performance metrics. The results of these tests can help you check whether Akamai is achieving the performance gains and platform availability set forth in the SLA included with your purchase contract.
 
 **Human URL:** [https://techdocs.akamai.com/sla/reference/api](https://techdocs.akamai.com/sla/reference/api)
 
@@ -909,7 +909,7 @@ The service-level agreement (SLA) API provides programmatic access to SLA test c
 #### Properties
 
 ### Akamai SIEM Integration API
-The Security Information and Event Management API allows you to capture security events generated on the Akamai platform in your SIEM application.
+The Security Information and Event Management API allows you to capture security events generated on the Akamai platform in your SIEM application.
 
 **Human URL:** [https://techdocs.akamai.com/siem-integration/reference/api](https://techdocs.akamai.com/siem-integration/reference/api)
 
@@ -921,7 +921,7 @@ The Security Information and Event Management API allows you to capture security
 #### Properties
 
 ### Akamai Single Sign-On Configuration API
-If youre an administrator who handles Akamai portal accounts and users, use this API to manage your IdP (identity provider) certificates. For details on how to manage all functions and information related to SSO, see Get started with SSO with SAML.
+If youre an administrator who handles Akamai portal accounts and users, use this API to manage your IdP (identity provider) certificates. For details on how to manage all functions and information related to SSO, see Get started with SSO with SAML.
 
 **Human URL:** [https://techdocs.akamai.com/sso-config/reference/api](https://techdocs.akamai.com/sso-config/reference/api)
 
@@ -945,7 +945,7 @@ The Site Shield API offers a programmatic interface that provides an additional 
 #### Properties
 
 ### Akamai Test Center API
-Test Center allows you to test how configuration changes affect your web content on Akamai edge network. Prior to activation, you can check to make sure theyre not behaving in an unexpected manner. This testing tool helps to prevent issues caused by misconfiguration and insufficient testing, increasing your confidence in the safety and correctness of your configuration changes.
+Test Center allows you to test how configuration changes affect your web content on Akamai edge network. Prior to activation, you can check to make sure theyre not behaving in an unexpected manner. This testing tool helps to prevent issues caused by misconfiguration and insufficient testing, increasing your confidence in the safety and correctness of your configuration changes.
 
 **Human URL:** [https://techdocs.akamai.com/test-ctr/reference/api](https://techdocs.akamai.com/test-ctr/reference/api)
 
