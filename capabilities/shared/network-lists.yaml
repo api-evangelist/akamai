@@ -1,0 +1,70 @@
+naftiko: "1.0.0-alpha1"
+info:
+  label: "Akamai Network Lists"
+  description: "Network Lists API for managing shared sets of IP addresses, CIDR blocks, and geographic areas."
+  tags:
+    - Akamai
+    - Network Security
+    - IP Management
+  created: "2026-04-19"
+  modified: "2026-04-19"
+binds:
+  - namespace: env
+    keys:
+      AKAMAI_CLIENT_TOKEN: AKAMAI_CLIENT_TOKEN
+      AKAMAI_CLIENT_SECRET: AKAMAI_CLIENT_SECRET
+      AKAMAI_ACCESS_TOKEN: AKAMAI_ACCESS_TOKEN
+capability:
+  consumes:
+    - type: http
+      namespace: akamai-network-lists
+      baseUri: https://{hostname}/network-list/v2
+      description: "Network Lists API"
+      authentication:
+        type: apikey
+        key: Authorization
+        value: "{{AKAMAI_EDGEGRID_AUTH}}"
+        placement: header
+      resources:
+        - name: network-lists
+          path: /network-lists
+          description: "Network list management"
+          operations:
+            - name: list-network-lists
+              method: GET
+              description: "List all network lists"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+  exposes:
+    - type: rest
+      port: 8102
+      namespace: akamai-network-lists-api
+      resources:
+        - path: /v1/network-lists
+          name: network-lists
+          description: "Network lists"
+          operations:
+            - method: GET
+              name: list-network-lists
+              description: "List network lists"
+              call: "akamai-network-lists.list-network-lists"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+    - type: mcp
+      port: 9102
+      namespace: akamai-network-lists-mcp
+      transport: http
+      tools:
+        - name: list-network-lists
+          description: "List all Akamai network lists (IP blocks, CIDR ranges, geographic areas)"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "akamai-network-lists.list-network-lists"
+          outputParameters:
+            - type: object
+              mapping: "$."

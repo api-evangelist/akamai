@@ -1,0 +1,93 @@
+naftiko: "1.0.0-alpha1"
+info:
+  label: "Akamai Edge Platform Management"
+  description: "Unified workflow for managing Akamai edge platform resources including EdgeWorkers serverless functions, network lists, and property configurations. For platform engineers and DevOps teams managing Akamai delivery configurations."
+  tags:
+    - Akamai
+    - CDN
+    - Edge Computing
+    - Platform Management
+    - Network Security
+  created: "2026-04-19"
+  modified: "2026-04-19"
+binds:
+  - namespace: env
+    keys:
+      AKAMAI_CLIENT_TOKEN: AKAMAI_CLIENT_TOKEN
+      AKAMAI_CLIENT_SECRET: AKAMAI_CLIENT_SECRET
+      AKAMAI_ACCESS_TOKEN: AKAMAI_ACCESS_TOKEN
+      AKAMAI_EDGEGRID_HOST: AKAMAI_EDGEGRID_HOST
+capability:
+  consumes:
+    - import: akamai-edgeworkers
+      location: ./shared/edgeworkers.yaml
+    - import: akamai-network-lists
+      location: ./shared/network-lists.yaml
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: edge-platform-management-api
+      description: "Unified REST API for Akamai edge platform management."
+      resources:
+        - path: /v1/edgeworkers
+          name: edgeworkers
+          description: "EdgeWorker serverless function management"
+          operations:
+            - method: GET
+              name: list-edgeworkers
+              description: "List EdgeWorker identifiers"
+              call: "akamai-edgeworkers.list-edgeworkers"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+            - method: POST
+              name: create-edgeworker
+              description: "Create EdgeWorker"
+              call: "akamai-edgeworkers.create-edgeworker"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+        - path: /v1/network-lists
+          name: network-lists
+          description: "Network list management"
+          operations:
+            - method: GET
+              name: list-network-lists
+              description: "List network lists"
+              call: "akamai-network-lists.list-network-lists"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+    - type: mcp
+      port: 9090
+      namespace: edge-platform-management-mcp
+      transport: http
+      description: "MCP server for AI-assisted Akamai edge platform management."
+      tools:
+        - name: list-edgeworkers
+          description: "List all Akamai EdgeWorker serverless functions"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "akamai-edgeworkers.list-edgeworkers"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-edgeworker
+          description: "Create a new Akamai EdgeWorker serverless function"
+          hints:
+            readOnly: false
+            destructive: false
+          call: "akamai-edgeworkers.create-edgeworker"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: list-network-lists
+          description: "List all Akamai network lists for IP and geographic access control"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "akamai-network-lists.list-network-lists"
+          outputParameters:
+            - type: object
+              mapping: "$."

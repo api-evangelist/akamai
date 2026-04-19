@@ -1,0 +1,111 @@
+vocabulary: "1.0.0"
+
+info:
+  provider: "Akamai"
+  description: "Unified vocabulary covering operational and capability dimensions of the Akamai platform APIs."
+  created: "2026-04-19"
+  modified: "2026-04-19"
+
+operational:
+  apis:
+    - namespace: akamai-edgeworkers
+      version: v1
+      baseUrl: https://{hostname}/edgeworkers/v1
+      status: active
+    - namespace: akamai-edgekv
+      version: v1
+      baseUrl: https://{hostname}/edgekv/v1
+      status: active
+    - namespace: akamai-network-lists
+      version: v2
+      baseUrl: https://{hostname}/network-list/v2
+      status: active
+    - namespace: akamai-papi
+      version: v1
+      baseUrl: https://{hostname}/papi/v1
+      status: active
+
+  resources:
+    - name: edgeworkers
+      api: akamai-edgeworkers
+      actions: [list, create, get, update, delete, activate]
+    - name: edgekv-namespaces
+      api: akamai-edgekv
+      actions: [list, create, get, update]
+    - name: edgekv-items
+      api: akamai-edgekv
+      actions: [get, put, delete, list]
+    - name: network-lists
+      api: akamai-network-lists
+      actions: [list, create, get, update, delete, activate]
+    - name: properties
+      api: akamai-papi
+      actions: [list, create, get, update, delete, activate]
+    - name: activations
+      api: akamai-papi
+      actions: [list, create, get]
+
+  actions:
+    - name: list
+      httpMethod: GET
+      pattern: read
+    - name: get
+      httpMethod: GET
+      pattern: read
+    - name: create
+      httpMethod: POST
+      pattern: write
+    - name: update
+      httpMethod: PUT
+      pattern: write
+    - name: delete
+      httpMethod: DELETE
+      pattern: destructive
+    - name: activate
+      httpMethod: POST
+      pattern: write
+
+  authentication:
+    schemes:
+      - type: EdgeGrid
+        description: Akamai proprietary EdgeGrid authentication using HMAC-based client credentials
+
+capability:
+  workflows:
+    - name: edge-platform-management
+      file: capabilities/edge-platform-management.yaml
+      description: Manage Akamai edge platform including EdgeWorkers and network lists
+      personas: [Platform Engineer, DevOps Engineer]
+      domains: [Edge Computing, Network Security, CDN]
+
+  personas:
+    - id: platform-engineer
+      name: Platform Engineer
+      description: Manages Akamai property configurations and edge deployments
+      workflows: [edge-platform-management]
+    - id: devops-engineer
+      name: DevOps Engineer
+      description: Automates Akamai configuration deployment via CI/CD pipelines
+      workflows: [edge-platform-management]
+
+  domains:
+    - name: Edge Computing
+      description: EdgeWorkers serverless execution and EdgeKV storage at the edge
+    - name: Network Security
+      description: Network lists and access control for IP and geographic filtering
+    - name: CDN
+      description: Content delivery property management and configuration
+
+crossReference:
+  - resource: edgeworkers
+    operations: [list, create, get, update, activate]
+    workflows: [edge-platform-management]
+    personas: [Platform Engineer, DevOps Engineer]
+  - resource: network-lists
+    operations: [list, create, get, update, activate]
+    workflows: [edge-platform-management]
+    personas: [Platform Engineer]
+  - resource: properties
+    operations: [list, create, get, update, activate]
+    workflows: [edge-platform-management]
+    personas: [Platform Engineer, DevOps Engineer]

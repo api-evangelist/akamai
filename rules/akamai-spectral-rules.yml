@@ -1,0 +1,190 @@
+# Akamai API Spectral Ruleset
+# Enforces conventions found across Akamai's API suite
+
+rules:
+
+  # INFO / METADATA
+  info-title-akamai-prefix:
+    message: "API title should start with 'Akamai:'"
+    severity: warn
+    given: "$.info.title"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Akamai:"
+
+  info-description-required:
+    message: "API info must have a description"
+    severity: error
+    given: "$.info"
+    then:
+      field: description
+      function: truthy
+
+  info-version-required:
+    message: "API info must have a version"
+    severity: error
+    given: "$.info"
+    then:
+      field: version
+      function: truthy
+
+  # OPENAPI VERSION
+  openapi-version-3:
+    message: "Must use OpenAPI 3.x"
+    severity: error
+    given: "$"
+    then:
+      field: openapi
+      function: pattern
+      functionOptions:
+        match: "^3\\."
+
+  # SERVERS
+  servers-defined:
+    message: "Servers must be defined"
+    severity: error
+    given: "$"
+    then:
+      field: servers
+      function: truthy
+
+  servers-https:
+    message: "Server URLs must use HTTPS"
+    severity: error
+    given: "$.servers[*].url"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^https://"
+
+  # PATHS
+  paths-kebab-case:
+    message: "Path segments should use kebab-case"
+    severity: warn
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(\\/([a-z0-9][a-z0-9\\-]*|\\{[a-zA-Z][a-zA-Z0-9_]*\\}))*$"
+
+  paths-no-trailing-slash:
+    message: "Paths must not have trailing slashes"
+    severity: error
+    given: "$.paths[*]~"
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: "\\/$"
+
+  # OPERATIONS
+  operation-summary-required:
+    message: "Every operation must have a summary"
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: summary
+      function: truthy
+
+  operation-summary-akamai-prefix:
+    message: "Operation summaries should start with 'Akamai'"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].summary"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^Akamai"
+
+  operation-description-required:
+    message: "Every operation must have a description"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: description
+      function: truthy
+
+  operation-id-required:
+    message: "Every operation must have an operationId"
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: operationId
+      function: truthy
+
+  operation-id-camel-case:
+    message: "operationId should use camelCase"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete].operationId"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]*$"
+
+  operation-tags-required:
+    message: "Every operation must have at least one tag"
+    severity: error
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: tags
+      function: truthy
+
+  operation-external-docs:
+    message: "Operations should have externalDocs linking to Akamai's documentation"
+    severity: info
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: externalDocs
+      function: truthy
+
+  # PARAMETERS
+  parameter-description-required:
+    message: "All parameters must have a description"
+    severity: warn
+    given: "$.paths[*][get,post,put,patch,delete][*].parameters[*]"
+    then:
+      field: description
+      function: truthy
+
+  # RESPONSES
+  response-description-required:
+    message: "All responses must have a description"
+    severity: error
+    given: "$.paths[*][*].responses[*]"
+    then:
+      field: description
+      function: truthy
+
+  # HTTP METHODS
+  get-no-request-body:
+    message: "GET operations must not have a request body"
+    severity: error
+    given: "$.paths[*].get"
+    then:
+      field: requestBody
+      function: falsy
+
+  delete-returns-no-content:
+    message: "DELETE operations should return 204 No Content"
+    severity: info
+    given: "$.paths[*].delete.responses"
+    then:
+      field: "204"
+      function: truthy
+
+  # SECURITY
+  security-schemes-defined:
+    message: "Security schemes should be defined"
+    severity: info
+    given: "$.components"
+    then:
+      field: securitySchemes
+      function: truthy
+
+  # TAGS
+  tags-global-defined:
+    message: "Global tags array should be defined"
+    severity: info
+    given: "$"
+    then:
+      field: tags
+      function: truthy

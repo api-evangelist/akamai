@@ -1,0 +1,88 @@
+naftiko: "1.0.0-alpha1"
+info:
+  label: "Akamai EdgeWorkers"
+  description: "EdgeWorkers API for managing serverless JavaScript functions at the Akamai edge."
+  tags:
+    - Akamai
+    - Edge Computing
+    - Serverless
+  created: "2026-04-19"
+  modified: "2026-04-19"
+binds:
+  - namespace: env
+    keys:
+      AKAMAI_EDGEGRID_HOST: AKAMAI_EDGEGRID_HOST
+      AKAMAI_CLIENT_TOKEN: AKAMAI_CLIENT_TOKEN
+      AKAMAI_CLIENT_SECRET: AKAMAI_CLIENT_SECRET
+      AKAMAI_ACCESS_TOKEN: AKAMAI_ACCESS_TOKEN
+capability:
+  consumes:
+    - type: http
+      namespace: akamai-edgeworkers
+      baseUri: https://{hostname}/edgeworkers/v1
+      description: "EdgeWorkers API"
+      authentication:
+        type: apikey
+        key: Authorization
+        value: "{{AKAMAI_EDGEGRID_AUTH}}"
+        placement: header
+      resources:
+        - name: edgeworkers
+          path: /ids
+          description: "EdgeWorker identifiers"
+          operations:
+            - name: list-edgeworkers
+              method: GET
+              description: "List all EdgeWorker identifiers"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+            - name: create-edgeworker
+              method: POST
+              description: "Create a new EdgeWorker identifier"
+              outputRawFormat: json
+              outputParameters:
+                - name: result
+                  type: object
+                  value: "$."
+  exposes:
+    - type: rest
+      port: 8101
+      namespace: akamai-edgeworkers-api
+      resources:
+        - path: /v1/edgeworkers
+          name: edgeworkers
+          description: "EdgeWorker management"
+          operations:
+            - method: GET
+              name: list-edgeworkers
+              description: "List EdgeWorkers"
+              call: "akamai-edgeworkers.list-edgeworkers"
+              outputParameters:
+                - type: object
+                  mapping: "$."
+    - type: mcp
+      port: 9101
+      namespace: akamai-edgeworkers-mcp
+      transport: http
+      tools:
+        - name: list-edgeworkers
+          description: "List all Akamai EdgeWorker identifiers"
+          hints:
+            readOnly: true
+            openWorld: true
+          call: "akamai-edgeworkers.list-edgeworkers"
+          outputParameters:
+            - type: object
+              mapping: "$."
+        - name: create-edgeworker
+          description: "Create a new Akamai EdgeWorker"
+          hints:
+            readOnly: false
+            destructive: false
+          call: "akamai-edgeworkers.create-edgeworker"
+          outputParameters:
+            - type: object
+              mapping: "$."
