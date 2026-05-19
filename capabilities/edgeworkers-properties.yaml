@@ -1,0 +1,82 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: EdgeWorkers API — Properties'
+  description: 'Akamai: EdgeWorkers API — Properties. 1 operations. Lead operation: Akamai List Properties. Self-contained
+    Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Properties
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: edgeworkers-properties
+    baseUri: https://{hostname}/edgeworkers/v1
+    description: 'Akamai: EdgeWorkers API — Properties business capability. Self-contained, no shared references.'
+    resources:
+    - name: ids-edgeWorkerId-properties
+      path: /ids/{edgeWorkerId}/properties
+      operations:
+      - name: getproperties
+        method: GET
+        description: Akamai List Properties
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: activeOnly
+          in: query
+          type: boolean
+          description: When enabled, limits results to active properties.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+  exposes:
+  - type: rest
+    namespace: edgeworkers-properties-rest
+    port: 8080
+    description: 'REST adapter for Akamai: EdgeWorkers API — Properties. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.'
+    resources:
+    - path: /v1/ids/{edgeworkerid}/properties
+      name: ids-edgeworkerid-properties
+      description: REST surface for ids-edgeWorkerId-properties.
+      operations:
+      - method: GET
+        name: getproperties
+        description: Akamai List Properties
+        call: edgeworkers-properties.getproperties
+        with:
+          activeOnly: rest.activeOnly
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: edgeworkers-properties-mcp
+    port: 9090
+    transport: http
+    description: 'MCP adapter for Akamai: EdgeWorkers API — Properties. One tool per consumed operation, routed inline through
+      this capability''s consumes block.'
+    tools:
+    - name: akamai-list-properties
+      description: Akamai List Properties
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: edgeworkers-properties.getproperties
+      with:
+        activeOnly: tools.activeOnly
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,366 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Property Manager API — Property version rules'
+  description: 'Akamai: Property Manager API — Property version rules. 4 operations. Lead operation: Akamai Get a Property''s
+    Rule Tree. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Property version rules
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: papi-property-version-rules
+    baseUri: https://{hostname}/papi/v1
+    description: 'Akamai: Property Manager API — Property version rules business capability. Self-contained, no shared references.'
+    resources:
+    - name: properties-propertyId-versions-propertyVersion-rules
+      path: /properties/{propertyId}/versions/{propertyVersion}/rules
+      operations:
+      - name: getpropertyversionrules
+        method: GET
+        description: Akamai Get a Property's Rule Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: contractId
+          in: query
+          type: string
+          description: Unique identifier for the contract. The parameter is optional if a property belongs to only one contract.
+            Otherwise you need to specify it along with the `group
+        - name: groupId
+          in: query
+          type: string
+          description: Unique identifier for the group. The parameter is optional if a property belongs to only one group.
+            Otherwise you need to specify it along with the `contractId`
+        - name: validateRules
+          in: query
+          type: boolean
+          description: Set to `true` by default. When `false`, skips validation tests that would identify potential problems
+            within the response object's `errors` and `warnings` array
+        - name: validateMode
+          in: query
+          type: string
+          description: __Enum__ With `validateRules` enabled, setting this to `fast` performs a quick validation check based
+            on the provided JSON. This is faster than the default `ful
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+      - name: putpropertyversionrules
+        method: PUT
+        description: Akamai Update a Property's Rule Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: This corresponds to the `ETag` response header. Passing this value back as `If-Match` in write requests
+            ensures you don't overwrite edits by any other API clien
+          required: true
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: contractId
+          in: query
+          type: string
+          description: Unique identifier for the contract. The parameter is optional if a property belongs to only one contract.
+            Otherwise you need to specify it along with the `group
+        - name: groupId
+          in: query
+          type: string
+          description: Unique identifier for the group. The parameter is optional if a property belongs to only one group.
+            Otherwise you need to specify it along with the `contractId`
+        - name: validateRules
+          in: query
+          type: boolean
+          description: Set to `true` by default. When `false`, skips validation tests that would identify potential problems
+            within the response object's `errors` and `warnings` array
+        - name: validateMode
+          in: query
+          type: string
+          description: __Enum__ With `validateRules` enabled, setting this to `fast` performs a quick validation check based
+            on the provided JSON. This is faster than the default `ful
+        - name: dryRun
+          in: query
+          type: boolean
+          description: With the `validateRules` query parameter also enabled, allows for a _dry run_ in order to gather any
+            possible errors without saving the rule tree. See [Validati
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: patchpropertyversionrules
+        method: PATCH
+        description: Akamai Patch a Property's Rule Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: If-Match
+          in: header
+          type: string
+          description: This corresponds to the `ETag` response header. Passing this value back as `If-Match` in write requests
+            ensures you don't overwrite edits by any other API clien
+          required: true
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: contractId
+          in: query
+          type: string
+          description: Unique identifier for the contract. The parameter is optional if a property belongs to only one contract.
+            Otherwise you need to specify it along with the `group
+        - name: groupId
+          in: query
+          type: string
+          description: Unique identifier for the group. The parameter is optional if a property belongs to only one group.
+            Otherwise you need to specify it along with the `contractId`
+        - name: validateRules
+          in: query
+          type: boolean
+          description: Set to `true` by default. When `false`, skips validation tests that would identify potential problems
+            within the response object's `errors` and `warnings` array
+        - name: validateMode
+          in: query
+          type: string
+          description: __Enum__ With `validateRules` enabled, setting this to `fast` performs a quick validation check based
+            on the provided JSON. This is faster than the default `ful
+        - name: dryRun
+          in: query
+          type: boolean
+          description: With the `validateRules` query parameter also enabled, allows for a _dry run_ in order to gather any
+            possible errors without saving the rule tree. See [Validati
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: headpropertyversionrules
+        method: HEAD
+        description: Akamai Get a Digest for a Property's Rule Tree
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: Accept
+          in: header
+          type: string
+          description: A custom JSON type that validates against a dated rule format. When examining metadata from a [property
+            version](https://techdocs.akamai.com/property-mgr/refere
+          required: true
+        - name: contractId
+          in: query
+          type: string
+          description: Unique identifier for the contract. The parameter is optional if a property belongs to only one contract.
+            Otherwise you need to specify it along with the `group
+        - name: groupId
+          in: query
+          type: string
+          description: Unique identifier for the group. The parameter is optional if a property belongs to only one group.
+            Otherwise you need to specify it along with the `contractId`
+        - name: validateRules
+          in: query
+          type: boolean
+          description: Set to `true` by default. When `false`, skips validation tests that would identify potential problems
+            within the response object's `errors` and `warnings` array
+        - name: validateMode
+          in: query
+          type: string
+          description: __Enum__ With `validateRules` enabled, setting this to `fast` performs a quick validation check based
+            on the provided JSON. This is faster than the default `ful
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+  exposes:
+  - type: rest
+    namespace: papi-property-version-rules-rest
+    port: 8080
+    description: 'REST adapter for Akamai: Property Manager API — Property version rules. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.'
+    resources:
+    - path: /v1/properties/{propertyid}/versions/{propertyversion}/rules
+      name: properties-propertyid-versions-propertyversion-rules
+      description: REST surface for properties-propertyId-versions-propertyVersion-rules.
+      operations:
+      - method: GET
+        name: getpropertyversionrules
+        description: Akamai Get a Property's Rule Tree
+        call: papi-property-version-rules.getpropertyversionrules
+        with:
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          contractId: rest.contractId
+          groupId: rest.groupId
+          validateRules: rest.validateRules
+          validateMode: rest.validateMode
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putpropertyversionrules
+        description: Akamai Update a Property's Rule Tree
+        call: papi-property-version-rules.putpropertyversionrules
+        with:
+          If-Match: rest.If-Match
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          contractId: rest.contractId
+          groupId: rest.groupId
+          validateRules: rest.validateRules
+          validateMode: rest.validateMode
+          dryRun: rest.dryRun
+          accountSwitchKey: rest.accountSwitchKey
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PATCH
+        name: patchpropertyversionrules
+        description: Akamai Patch a Property's Rule Tree
+        call: papi-property-version-rules.patchpropertyversionrules
+        with:
+          If-Match: rest.If-Match
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          contractId: rest.contractId
+          groupId: rest.groupId
+          validateRules: rest.validateRules
+          validateMode: rest.validateMode
+          dryRun: rest.dryRun
+          accountSwitchKey: rest.accountSwitchKey
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: HEAD
+        name: headpropertyversionrules
+        description: Akamai Get a Digest for a Property's Rule Tree
+        call: papi-property-version-rules.headpropertyversionrules
+        with:
+          Accept: rest.Accept
+          contractId: rest.contractId
+          groupId: rest.groupId
+          validateRules: rest.validateRules
+          validateMode: rest.validateMode
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: papi-property-version-rules-mcp
+    port: 9090
+    transport: http
+    description: 'MCP adapter for Akamai: Property Manager API — Property version rules. One tool per consumed operation,
+      routed inline through this capability''s consumes block.'
+    tools:
+    - name: akamai-get-property-s-rule-tree
+      description: Akamai Get a Property's Rule Tree
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: papi-property-version-rules.getpropertyversionrules
+      with:
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        contractId: tools.contractId
+        groupId: tools.groupId
+        validateRules: tools.validateRules
+        validateMode: tools.validateMode
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: akamai-update-property-s-rule-tree
+      description: Akamai Update a Property's Rule Tree
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: papi-property-version-rules.putpropertyversionrules
+      with:
+        If-Match: tools.If-Match
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        contractId: tools.contractId
+        groupId: tools.groupId
+        validateRules: tools.validateRules
+        validateMode: tools.validateMode
+        dryRun: tools.dryRun
+        accountSwitchKey: tools.accountSwitchKey
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: akamai-patch-property-s-rule-tree
+      description: Akamai Patch a Property's Rule Tree
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: papi-property-version-rules.patchpropertyversionrules
+      with:
+        If-Match: tools.If-Match
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        contractId: tools.contractId
+        groupId: tools.groupId
+        validateRules: tools.validateRules
+        validateMode: tools.validateMode
+        dryRun: tools.dryRun
+        accountSwitchKey: tools.accountSwitchKey
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: akamai-get-digest-property-s-rule
+      description: Akamai Get a Digest for a Property's Rule Tree
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: papi-property-version-rules.headpropertyversionrules
+      with:
+        Accept: tools.Accept
+        contractId: tools.contractId
+        groupId: tools.groupId
+        validateRules: tools.validateRules
+        validateMode: tools.validateMode
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.

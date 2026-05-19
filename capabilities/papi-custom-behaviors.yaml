@@ -1,0 +1,133 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Property Manager API — Custom behaviors'
+  description: 'Akamai: Property Manager API — Custom behaviors. 2 operations. Lead operation: Akamai List Custom Behaviors.
+    Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Custom behaviors
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: papi-custom-behaviors
+    baseUri: https://{hostname}/papi/v1
+    description: 'Akamai: Property Manager API — Custom behaviors business capability. Self-contained, no shared references.'
+    resources:
+    - name: custom-behaviors
+      path: /custom-behaviors
+      operations:
+      - name: getcustombehaviors
+        method: GET
+        description: Akamai List Custom Behaviors
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+    - name: custom-behaviors-behaviorId
+      path: /custom-behaviors/{behaviorId}
+      operations:
+      - name: getcustombehavior
+        method: GET
+        description: Akamai Get a Custom Behavior
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+  exposes:
+  - type: rest
+    namespace: papi-custom-behaviors-rest
+    port: 8080
+    description: 'REST adapter for Akamai: Property Manager API — Custom behaviors. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.'
+    resources:
+    - path: /v1/custom-behaviors
+      name: custom-behaviors
+      description: REST surface for custom-behaviors.
+      operations:
+      - method: GET
+        name: getcustombehaviors
+        description: Akamai List Custom Behaviors
+        call: papi-custom-behaviors.getcustombehaviors
+        with:
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/custom-behaviors/{behaviorid}
+      name: custom-behaviors-behaviorid
+      description: REST surface for custom-behaviors-behaviorId.
+      operations:
+      - method: GET
+        name: getcustombehavior
+        description: Akamai Get a Custom Behavior
+        call: papi-custom-behaviors.getcustombehavior
+        with:
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: papi-custom-behaviors-mcp
+    port: 9090
+    transport: http
+    description: 'MCP adapter for Akamai: Property Manager API — Custom behaviors. One tool per consumed operation, routed
+      inline through this capability''s consumes block.'
+    tools:
+    - name: akamai-list-custom-behaviors
+      description: Akamai List Custom Behaviors
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: papi-custom-behaviors.getcustombehaviors
+      with:
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: akamai-get-custom-behavior
+      description: Akamai Get a Custom Behavior
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: papi-custom-behaviors.getcustombehavior
+      with:
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.

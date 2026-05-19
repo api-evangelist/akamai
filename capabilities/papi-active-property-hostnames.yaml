@@ -1,0 +1,218 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Property Manager API — Active property hostnames'
+  description: 'Akamai: Property Manager API — Active property hostnames. 2 operations. Lead operation: Akamai List Hostnames
+    for a Property. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Active property hostnames
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: papi-active-property-hostnames
+    baseUri: https://{hostname}/papi/v1
+    description: 'Akamai: Property Manager API — Active property hostnames business capability. Self-contained, no shared
+      references.'
+    resources:
+    - name: properties-propertyId-hostnames
+      path: /properties/{propertyId}/hostnames
+      operations:
+      - name: getpropertyhostnames
+        method: GET
+        description: Akamai List Hostnames for a Property
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: offset
+          in: query
+          type: integer
+          description: For paginated responses, specifies the page of results you want to navigate to, starting from `0`.
+        - name: limit
+          in: query
+          type: integer
+          description: For paginated responses, specifies the number of `hostnames` objects to include on each page.
+        - name: sort
+          in: query
+          type: string
+          description: __Enum__ Sort the results based on the `cnameFrom` value, either `hostname:a` for ascending or `hostname:d`
+            for descending order. The default is `hostname:a`.
+        - name: hostname
+          in: query
+          type: string
+          description: Filter the results by `cnameFrom`. Supports wildcard matches with `*`.
+        - name: cnameTo
+          in: query
+          type: string
+          description: Filter the results by edge hostname. Supports wildcard matches with `*`.
+        - name: network
+          in: query
+          type: string
+          description: __Enum__ Network of activated hostnames, either `STAGING` or `PRODUCTION`.
+        - name: includeCertStatus
+          in: query
+          type: boolean
+          description: __Limited availability__ Whether the response should include the certificate status for the hostname
+            on staging and production networks.
+        - name: contractId
+          in: query
+          type: string
+          description: Unique identifier for the contract. The parameter is optional if a property belongs to only one contract.
+            Otherwise you need to specify it along with the `group
+        - name: groupId
+          in: query
+          type: string
+          description: Unique identifier for the group. The parameter is optional if a property belongs to only one group.
+            Otherwise you need to specify it along with the `contractId`
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+    - name: properties-propertyId-hostnames-diff
+      path: /properties/{propertyId}/hostnames/diff
+      operations:
+      - name: getpropertyhostnamesdiff
+        method: GET
+        description: Akamai Get Property Hostnames Diff
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: PAPI-Use-Prefixes
+          in: header
+          type: string
+          description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes)
+            in response data. Set to `false` when exchangin
+          required: true
+        - name: offset
+          in: query
+          type: integer
+          description: For paginated responses, specifies the page of results you want to navigate to, starting from `0`.
+        - name: limit
+          in: query
+          type: integer
+          description: For paginated responses, specifies the number of `hostnames` objects to include on each page.
+        - name: contractId
+          in: query
+          type: string
+          description: Unique identifier for the contract. The parameter is optional if a property belongs to only one contract.
+            Otherwise you need to specify it along with the `group
+        - name: groupId
+          in: query
+          type: string
+          description: Unique identifier for the group. The parameter is optional if a property belongs to only one group.
+            Otherwise you need to specify it along with the `contractId`
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+  exposes:
+  - type: rest
+    namespace: papi-active-property-hostnames-rest
+    port: 8080
+    description: 'REST adapter for Akamai: Property Manager API — Active property hostnames. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.'
+    resources:
+    - path: /v1/properties/{propertyid}/hostnames
+      name: properties-propertyid-hostnames
+      description: REST surface for properties-propertyId-hostnames.
+      operations:
+      - method: GET
+        name: getpropertyhostnames
+        description: Akamai List Hostnames for a Property
+        call: papi-active-property-hostnames.getpropertyhostnames
+        with:
+          offset: rest.offset
+          limit: rest.limit
+          sort: rest.sort
+          hostname: rest.hostname
+          cnameTo: rest.cnameTo
+          network: rest.network
+          includeCertStatus: rest.includeCertStatus
+          contractId: rest.contractId
+          groupId: rest.groupId
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/properties/{propertyid}/hostnames/diff
+      name: properties-propertyid-hostnames-diff
+      description: REST surface for properties-propertyId-hostnames-diff.
+      operations:
+      - method: GET
+        name: getpropertyhostnamesdiff
+        description: Akamai Get Property Hostnames Diff
+        call: papi-active-property-hostnames.getpropertyhostnamesdiff
+        with:
+          PAPI-Use-Prefixes: rest.PAPI-Use-Prefixes
+          offset: rest.offset
+          limit: rest.limit
+          contractId: rest.contractId
+          groupId: rest.groupId
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: papi-active-property-hostnames-mcp
+    port: 9090
+    transport: http
+    description: 'MCP adapter for Akamai: Property Manager API — Active property hostnames. One tool per consumed operation,
+      routed inline through this capability''s consumes block.'
+    tools:
+    - name: akamai-list-hostnames-property
+      description: Akamai List Hostnames for a Property
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: papi-active-property-hostnames.getpropertyhostnames
+      with:
+        offset: tools.offset
+        limit: tools.limit
+        sort: tools.sort
+        hostname: tools.hostname
+        cnameTo: tools.cnameTo
+        network: tools.network
+        includeCertStatus: tools.includeCertStatus
+        contractId: tools.contractId
+        groupId: tools.groupId
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: akamai-get-property-hostnames-diff
+      description: Akamai Get Property Hostnames Diff
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: papi-active-property-hostnames.getpropertyhostnamesdiff
+      with:
+        PAPI-Use-Prefixes: tools.PAPI-Use-Prefixes
+        offset: tools.offset
+        limit: tools.limit
+        contractId: tools.contractId
+        groupId: tools.groupId
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.

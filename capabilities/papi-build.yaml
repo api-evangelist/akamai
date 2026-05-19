@@ -1,0 +1,76 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Property Manager API — Build'
+  description: 'Akamai: Property Manager API — Build. 1 operations. Lead operation: Akamai Get Build Details. Self-contained
+    Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Build
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: papi-build
+    baseUri: https://{hostname}/papi/v1
+    description: 'Akamai: Property Manager API — Build business capability. Self-contained, no shared references.'
+    resources:
+    - name: build
+      path: /build
+      operations:
+      - name: getbuild
+        method: GET
+        description: Akamai Get Build Details
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-w
+  exposes:
+  - type: rest
+    namespace: papi-build-rest
+    port: 8080
+    description: 'REST adapter for Akamai: Property Manager API — Build. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.'
+    resources:
+    - path: /v1/build
+      name: build
+      description: REST surface for build.
+      operations:
+      - method: GET
+        name: getbuild
+        description: Akamai Get Build Details
+        call: papi-build.getbuild
+        with:
+          accountSwitchKey: rest.accountSwitchKey
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: papi-build-mcp
+    port: 9090
+    transport: http
+    description: 'MCP adapter for Akamai: Property Manager API — Build. One tool per consumed operation, routed inline through
+      this capability''s consumes block.'
+    tools:
+    - name: akamai-get-build-details
+      description: Akamai Get Build Details
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: papi-build.getbuild
+      with:
+        accountSwitchKey: tools.accountSwitchKey
+      outputParameters:
+      - type: object
+        mapping: $.
