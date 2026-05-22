@@ -1,0 +1,55 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Fast Purge API — CP code'
+  description: 'Akamai: Fast Purge API — CP code. 2 operations. Lead operation: Akamai Delete by CP code. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Fast Purge
+  - CP code
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: fast-purge-cp-code
+    baseUri: https://{hostname}/ccu/v3
+    description: 'Akamai: Fast Purge API — CP code business capability. Self-contained, no shared references.'
+    resources:
+    - name: delete-cpcode-network
+      path: /delete/cpcode/{network}
+      operations:
+      - name: postpost-delete-cpcode
+        method: POST
+        description: Delete by CP code
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: invalidate-cpcode-network
+      path: /invalidate/cpcode/{network}
+      operations:
+      - name: postpost-invalidate-cpcode
+        method: POST
+        description: Invalidate by CP code
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true

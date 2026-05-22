@@ -1,0 +1,433 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/akamai/main/json-schema/siem-streamed-response-200-schema.json",
+  "title": "streamed-response-200",
+  "description": "A series of events arranged as separate JSONs, one per line of output within the response body. The final line offers contextual metadata for further requests. See [Multi-JSON responses](https://techdocs.akamai.com/siem-integration/reference/multi-json-response-format-1).",
+  "oneOf": [
+    {
+      "additionalProperties": false,
+      "description": "This object encapsulates each security event. Each line of response body output represents one of these objects, except for the last, which is an [offset context](https://techdocs.akamai.com/siem-integration/reference/offsetcontext) object.",
+      "properties": {
+        "attackData": {
+          "additionalProperties": false,
+          "description": "Characterizes the nature of each attack and provides details on the set of configuration rules that intercepted it. Each rule-related member encodes a conceptual array of faceted data for more than one rule. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for details.",
+          "properties": {
+            "apiId": {
+              "description": "For attacks on API services, this is a unique identifier under which the API is protected. It corresponds to the `apiEndPointId` value in the [API Endpoint Definition API](https://techdocs.akamai.com/api-gateway/reference/api).",
+              "type": "string"
+            },
+            "apiKey": {
+              "description": "For attacks on API services, this is the security you specify. It corresponds to the `apiKeyName` value in the [API Endpoint Definition API](https://techdocs.akamai.com/api-gateway/reference/api).",
+              "type": "string"
+            },
+            "appliedAction": {
+              "description": "The final action applied to the request.",
+              "type": "string"
+            },
+            "clientIP": {
+              "description": "The IP address of the client making the request.",
+              "type": "string"
+            },
+            "clientReputation": {
+              "description": "For Client Reputation customers, this provides data on the client IP's reputation. For example, `ID=172.19.185.64;WEBATCK=9;DOSATCK=9`. See the [Client Reputation Integration Guide](https://control.akamai.com/dl/customers/KONA/ClientReputation/ClientRep_IntegrationGuide.pdf) for details.",
+              "type": "string"
+            },
+            "configId": {
+              "description": "Unique identifier for the security configuration that applied to this request.",
+              "type": "string"
+            },
+            "policyId": {
+              "description": "Unique identifier for the firewall policy applied to this request. Each security configuration may contain more than one policy.",
+              "type": "string"
+            },
+            "ruleActions": {
+              "description": "Identifies whether the request was aborted (`deny`) or allowed to pass with a warning logged (`alert`). See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "ruleData": {
+              "description": "User-supplied values that led each rule to trigger, typically suspect text that appears somewhere in the request, or a specified Client Reputation score. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "ruleMessages": {
+              "description": "The message reported by each triggered rule. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "ruleSelectors": {
+              "description": "Identifies the location in the request that triggered each rule, such as the name of an HTTP header. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "ruleTags": {
+              "description": "Represents a set of categories for the triggered rule. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "ruleVersions": {
+              "description": "The version of each triggered rule. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "rules": {
+              "description": "A series of identifiers for rules within the configuration that triggered for this request. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+              "type": "string"
+            },
+            "slowPostAction": {
+              "description": "For any detected slow POST attack, this indicates the resulting action, either `W` for a warning, or `A` for abort (deny). It appears only when slow POST protection triggers.",
+              "enum": [
+                "W",
+                "A"
+              ],
+              "type": "string"
+            },
+            "slowPostRate": {
+              "description": "For any detected slow POST attack, this indicates the recorded rate of the attack in bytes per second. It appears only when slow POST protection triggers.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "ruleMessages",
+            "ruleSelectors",
+            "rules",
+            "ruleActions",
+            "ruleVersions",
+            "ruleData",
+            "policyId",
+            "configId",
+            "clientIP",
+            "ruleTags",
+            "appliedAction"
+          ],
+          "type": "object"
+        },
+        "botData": {
+          "additionalProperties": false,
+          "description": "An optional object that contains Bot Score data. This object is only available to Bot Manager customers on endpoints with Bot Score enabled.",
+          "properties": {
+            "botScore": {
+              "description": "Bot score for protected requests, expressed as a string-formatted percentage value.",
+              "type": "string"
+            },
+            "responseSegment": {
+              "description": "Response Segment indicator: `0` - human, `1` - cautious response, `2` - strict response, `3` - aggressive response, `4` - safeguard.",
+              "enum": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "botScore",
+            "responseSegment"
+          ],
+          "type": "object"
+        },
+        "clientData": {
+          "additionalProperties": false,
+          "description": "An optional object that contains client information. This object is only available to Bot Manager customers and only on endpoints configured for bot endpoint protection.",
+          "properties": {
+            "appBundleId": {
+              "description": "The app bundle ID. This is present only if the telemetry type is native app SDK telemetry.",
+              "type": "string"
+            },
+            "appVersion": {
+              "description": "The app version. This is present only if the telemetry type is native app SDK telemetry.",
+              "type": "string"
+            },
+            "sdkVersion": {
+              "description": "Native App Traffic Protection SDK Version. This is present only if the telemetry type is native app SDK telemetry.",
+              "type": "string"
+            },
+            "telemetryType": {
+              "description": "The telemetry type for this client request: `0` for web client standard telemetry, `1` for web client inline telemetry, or `2` for native app SDK telemetry.",
+              "enum": [
+                "0",
+                "1",
+                "2"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "telemetryType"
+          ],
+          "type": "object"
+        },
+        "custom": {
+          "description": "A customizable value to distinguish subsets of content. Contact Akamai Professional Services for help configuring the `custom` field. Size limit is 2KB. See [Configuration rule data](https://techdocs.akamai.com/siem-integration/reference/configuration-rule) for information on decoding this value.",
+          "type": "string"
+        },
+        "format": {
+          "description": "The format of the data representing this security event, `json` in this context.",
+          "enum": [
+            "json"
+          ],
+          "type": "string"
+        },
+        "geo": {
+          "additionalProperties": false,
+          "description": "Encapsulates location data for the attack's source.",
+          "properties": {
+            "asn": {
+              "description": "The AS number or numbers that the IP belongs to.",
+              "type": "string"
+            },
+            "city": {
+              "description": "The city to which the IP address maps.",
+              "type": "string"
+            },
+            "continent": {
+              "description": "A two-letter code for the continent to which the IP address maps.",
+              "type": "string"
+            },
+            "country": {
+              "description": "A two-letter ISO 3166 code for the country to which the IP address maps.",
+              "type": "string"
+            },
+            "regionCode": {
+              "description": "A two-letter ISO 3166 code representing the state, province, or region to which the IP address maps.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "country",
+            "asn",
+            "regionCode",
+            "continent",
+            "city"
+          ],
+          "type": "object"
+        },
+        "httpMessage": {
+          "additionalProperties": false,
+          "description": "Provides context on each attack's HTTP request.",
+          "properties": {
+            "bytes": {
+              "description": "The number of bytes served in the response, represented as a string-formatted integer.",
+              "type": "string"
+            },
+            "host": {
+              "description": "The incoming client request's `Host` header.",
+              "type": "string"
+            },
+            "method": {
+              "description": "The request's HTTP method, either `GET`, `POST`, `PUT`, `DELETE`, `HEAD`, or `OPTIONS`.",
+              "enum": [
+                "GET",
+                "POST",
+                "DELETE",
+                "PUT",
+                "HEAD",
+                "OPTIONS"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "description": "The server path from the client's requested URL, excluding query strings.",
+              "type": "string"
+            },
+            "port": {
+              "description": "The port number for the incoming request, string-formatted either as `80` or `443`.",
+              "enum": [
+                "80",
+                "443"
+              ],
+              "type": "string"
+            },
+            "protocol": {
+              "description": "The request protocol.",
+              "type": "string"
+            },
+            "query": {
+              "description": "The client request's full query string.",
+              "type": "string"
+            },
+            "requestHeaders": {
+              "description": "The full set of URL-encoded request headers.",
+              "type": "string"
+            },
+            "requestId": {
+              "description": "A unique identifier for each request.",
+              "type": "string"
+            },
+            "responseHeaders": {
+              "description": "The full set of URL-encoded response headers.",
+              "type": "string"
+            },
+            "start": {
+              "description": "A string representation of the epoch time when the edge server initiated the connection for the request.",
+              "type": "string"
+            },
+            "status": {
+              "description": "The HTTP response status code sent to the client.",
+              "type": "string"
+            },
+            "tls": {
+              "description": "TLS version if applicable, which corresponds to the `AK_TLS_VERSION`.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "status",
+            "protocol",
+            "requestHeaders",
+            "bytes",
+            "method",
+            "start",
+            "host",
+            "requestId",
+            "query",
+            "path",
+            "responseHeaders",
+            "port"
+          ],
+          "type": "object"
+        },
+        "identity": {
+          "additionalProperties": false,
+          "description": "An optional object with data about client identifiers enabled in your security configuration.",
+          "properties": {
+            "ja4": {
+              "description": "A JA4 TLS client fingerprint value.",
+              "minLength": 1,
+              "type": "string"
+            },
+            "tlsFingerprintV2": {
+              "description": "A client TLS fingerprint V2 value.",
+              "type": "string"
+            },
+            "tlsFingerprintV3": {
+              "description": "A client TLS fingerprint V3 value.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "tlsFingerprintV2",
+            "tlsFingerprintV3"
+          ],
+          "type": "object"
+        },
+        "type": {
+          "description": "Characterizes the source of this report data. This value is always `akamai_siem`.",
+          "enum": [
+            "akamai_siem"
+          ],
+          "type": "string"
+        },
+        "userRiskData": {
+          "additionalProperties": false,
+          "description": "An optional object that contains user risk data. This object is only available to Identity Protector customers and only on endpoints configured for identity protection.",
+          "properties": {
+            "allow": {
+              "description": "A value of `0` means the user wasn't on the allowlist. A value of `1` means the user was on the allowlist.",
+              "enum": [
+                "0",
+                "1"
+              ],
+              "type": "string"
+            },
+            "emailDomain": {
+              "description": "The domain name extracted from the user's email address.",
+              "type": "string"
+            },
+            "general": {
+              "description": "Indicators, such as users per device and IPs per user, of general behavior observed for relevant attributes.",
+              "type": "string"
+            },
+            "originUserId": {
+              "description": "The unencrypted user ID, provided by the origin.",
+              "type": "string"
+            },
+            "risk": {
+              "description": "Indicators, such as `device`, `geo`, `asn`, `tod`, that increased the calculated risk score.",
+              "type": "string"
+            },
+            "score": {
+              "description": "Risk score, expressed as a string-formatted percentage. A `0` means no risk, and `100` is the highest possible risk.",
+              "type": "string"
+            },
+            "status": {
+              "description": "Status code describing any errors that occurred during risk scoring: `0` - no error, `1` - unknown error, `2` - user profile not found, `3` - user profile insufficient for accurate score, `4` - no telemetry received for Bot Manager cookie presented in this request, `5` - calculation timeout, `6` - username not found in client request, `7` - can't identify user on this non-login request.",
+              "enum": [
+                "0",
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7"
+              ],
+              "type": "string"
+            },
+            "trust": {
+              "description": "Indicators, such as `device`, `geo`, `asn`, `tod`, that were trusted.",
+              "type": "string"
+            },
+            "username": {
+              "description": "The unencrypted username, provided at login by the user.",
+              "type": "string"
+            },
+            "uuid": {
+              "description": "Unique identifier for the user whose user risk data is provided here.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "type": "object"
+        },
+        "version": {
+          "description": "The version number for this report's JSON data format.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "attackData",
+        "format",
+        "type",
+        "version",
+        "httpMessage",
+        "geo"
+      ],
+      "title": "Event lines",
+      "type": "object",
+      "x-akamai": {
+        "file-path": "schemas/siem-event-200.yaml"
+      }
+    },
+    {
+      "additionalProperties": false,
+      "description": "This object features contextual metadata about the set of security events included in each response and appears on the last line of the response body.",
+      "properties": {
+        "limit": {
+          "description": "Appears if the size limit was reached during data fetch.",
+          "maximum": 600000,
+          "type": "integer"
+        },
+        "offset": {
+          "description": "Identifies the last processed security event in a response. To fetch only those security events that occurred since the last pull, enter this value as an offset parameter.",
+          "type": "string"
+        },
+        "total": {
+          "description": "The number of security events included in the response.",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "total",
+        "limit",
+        "offset"
+      ],
+      "title": "Final metadata line",
+      "type": "object",
+      "x-akamai": {
+        "file-path": "schemas/siem-response-context.yaml"
+      }
+    }
+  ],
+  "x-akamai": {
+    "file-path": "schemas/streamed-response-200.yaml"
+  }
+}

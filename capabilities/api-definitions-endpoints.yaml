@@ -1,0 +1,238 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: API Endpoint Definition API — Endpoints'
+  description: 'Akamai: API Endpoint Definition API — Endpoints. 9 operations. Lead operation: Akamai Register an endpoint. Self-contained Naftiko capability covering one Akamai business
+    surface.'
+  tags:
+  - Akamai
+  - API Definitions
+  - Endpoints
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: api-definitions-endpoints
+    baseUri: https://{hostname}/api-definitions/v2
+    description: 'Akamai: API Endpoint Definition API — Endpoints business capability. Self-contained, no shared references.'
+    resources:
+    - name: endpoints
+      path: /endpoints
+      operations:
+      - name: postpost-endpoints
+        method: POST
+        description: Register an endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-endpoints
+        method: GET
+        description: List endpoints
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: piiOnly
+          in: query
+          type: boolean
+          description: Whether to return only endpoints with personally identifiable information (PII).
+        - name: page
+          in: query
+          type: integer
+          description: The page number index, starting at the default value of `1`.
+        - name: pageSize
+          in: query
+          type: integer
+          description: The number of endpoints on each page of results, `25` by default.
+        - name: category
+          in: query
+          type: string
+          description: Filters endpoints by the specified `apiCategoryName`, including the `__UNCATEGORIZED__` keyword.
+        - name: contains
+          in: query
+          type: string
+          description: The search query substring criteria matching the endpoint's name, description, `basePath`, `apiCategoryName`, and `resourcePath`.
+        - name: sortBy
+          in: query
+          type: string
+          description: __Enum__ The field to sort endpoints by, either the API `name` (corresponding to the `apiEndPointName` member) or `updateDate`.
+        - name: sortOrder
+          in: query
+          type: string
+          description: __Enum__ The sort order, either `desc` for descending or the default `asc` for ascending.
+        - name: versionPreference
+          in: query
+          type: string
+          description: __Enum__ The preference for selecting the endpoint version to return. By default the API returns the `LAST_UPDATED` version. If you set the preference to `ACTIVATED_FIRST`,
+            the API first attempts to
+        - name: show
+          in: query
+          type: string
+          description: __Enum__ The type of endpoints to return based on their visibility status. By default the API returns `ALL` endpoints. You can instead decide to return `ONLY_VISIBLE`
+            endpoints, or `ONLY_HIDDEN`
+        - name: contractId
+          in: query
+          type: string
+          description: Filters endpoints to a specific contract. You need to specify this along with a `groupId`.
+        - name: groupId
+          in: query
+          type: integer
+          description: Filters endpoints to a specific group. You need to specify this along with a `contractId`.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: endpoints-cloneEndpoint
+      path: /endpoints/cloneEndpoint
+      operations:
+      - name: postpost-endpoint-clone
+        method: POST
+        description: Clone an endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: endpoints-files
+      path: /endpoints/files
+      operations:
+      - name: postpost-endpoints-file
+        method: POST
+        description: Register an endpoint from an API definition file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: endpoints-user-entitlements
+      path: /endpoints/user-entitlements
+      operations:
+      - name: getget-user-entitlements
+        method: GET
+        description: List user entitlements
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: endpoints-verify-secure-connection
+      path: /endpoints/verify-secure-connection
+      operations:
+      - name: postpost-endpoints-verify-secure-connection
+        method: POST
+        description: Verify secure connection
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: endpoints-apiEndPointId
+      path: /endpoints/{apiEndPointId}
+      operations:
+      - name: deletedelete-endpoint
+        method: DELETE
+        description: Delete an endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: endpoints-apiEndPointId-hide
+      path: /endpoints/{apiEndPointId}/hide
+      operations:
+      - name: postpost-endpoint-hide
+        method: POST
+        description: Hide an endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: endpoints-apiEndPointId-show
+      path: /endpoints/{apiEndPointId}/show
+      operations:
+      - name: postpost-endpoint-show
+        method: POST
+        description: Show an endpoint
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

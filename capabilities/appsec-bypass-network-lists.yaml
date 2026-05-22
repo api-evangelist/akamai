@@ -1,0 +1,94 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Application Security API — Bypass network lists'
+  description: 'Akamai: Application Security API — Bypass network lists. 4 operations. Lead operation: Akamai Get bypass network lists settings. Self-contained Naftiko capability covering
+    one Akamai business surface.'
+  tags:
+  - Akamai
+  - Application Security
+  - Bypass network lists
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: appsec-bypass-network-lists
+    baseUri: https://{hostname}/appsec/v1
+    description: 'Akamai: Application Security API — Bypass network lists business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId-versions-versionNumber-bypass-network-lists
+      path: /configs/{configId}/versions/{versionNumber}/bypass-network-lists
+      operations:
+      - name: getget-bypass-network-lists
+        method: GET
+        description: Get bypass network lists settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-bypass-network-lists
+        method: PUT
+        description: Modify the bypass network lists settings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/bypass-network-lists
+      operations:
+      - name: getget-bypass-network-lists-per-policy
+        method: GET
+        description: Get the bypass network lists settings for a security policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-bypass-network-lists-per-policy
+        method: PUT
+        description: Modify the bypass network lists settings for a security policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true

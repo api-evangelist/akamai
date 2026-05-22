@@ -5,14 +5,14 @@ Akamai is a global content delivery network (CDN), cloud services, and cybersecu
 
 **Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
 
-## Tags:
+## Tags
 
- - CDN, Cloud, Edge Computing, Networks, Platform, Security
+- CDN, Cloud, Edge Computing, Networks, Platform, Security
 
 ## Timestamps
 
 - **Created:** 2025-01-08
-- **Modified:** 2026-04-19
+- **Modified:** 2026-05-22
 
 ## Common Properties
 
@@ -25,6 +25,7 @@ Akamai is a global content delivery network (CDN), cloud services, and cybersecu
 - [Blog](https://www.akamai.com/blog)
 - [Support](https://www.akamai.com/support)
 - [StatusPage](https://www.akamaistatus.com/)
+- [LinkedIn](https://www.linkedin.com/company/akamai-technologies)
 
 ## Features
 
@@ -34,10 +35,12 @@ Akamai is a global content delivery network (CDN), cloud services, and cybersecu
 | EdgeWorkers | Serverless JavaScript execution at the edge enabling custom logic for traffic management and content manipulation. |
 | EdgeKV | Distributed key-value store at the edge for low-latency data access in EdgeWorkers applications. |
 | Property Manager | Configuration management for edge delivery rules, caching, security, and performance optimizations. |
-| DDoS Protection | Prolexic DDoS mitigation service protecting networks and applications from volumetric attacks. |
-| Web Application Firewall | Application security protecting against OWASP Top 10, bots, and API attacks via App and API Protector. |
-| Identity Cloud | Customer identity and access management (CIAM) platform for registration, authentication, and social login. |
-| Cloud Computing | Linode cloud platform providing virtual machines, Kubernetes, databases, and storage services worldwide. |
+| App & API Protector | WAF + DDoS + Bot Manager protecting web apps and APIs (Behavioral DDoS, JA4 fingerprinting, CVE Protections). |
+| API Security | ML-based API Discovery and Posture (formerly Noname Security) including detection of GenAI, LLM, and MCP server APIs. |
+| API Endpoint Definition | Programmatically register and govern API endpoints with API privacy, JWT validation, CORS, caching, and GraphQL controls. |
+| Prolexic DDoS | Network-cloud DDoS mitigation including IP Protect with Network Cloud Firewall and Prolexic Analytics. |
+| Identity Cloud | Customer identity and access management (CIAM) for registration, hosted login, social login, and webhooks. |
+| Akamai Cloud Computing | Linode-derived cloud platform with Shared/Dedicated/Premium/GPU VMs, Block + Object Storage, NodeBalancers, LKE (Kubernetes), and Managed Databases. |
 
 ## Use Cases
 
@@ -63,35 +66,62 @@ Akamai is a global content delivery network (CDN), cloud services, and cybersecu
 
 Machine-readable API specifications organized by format.
 
-### OpenAPI
+### OpenAPI (12)
 
-- [Akamai EdgeWorkers API](openapi/akamai-edgeworkers-openapi.json)
-- [Akamai EdgeKV API](openapi/akamai-edgekv-openapi.json)
-- [Akamai Network Lists API](openapi/akamai-network-lists-openapi.json)
-- [Akamai Property Manager API](openapi/akamai-papi-openapi.json)
+- [Akamai API Endpoint Definition API](openapi/akamai-api-definitions-openapi.json) — 39 operations
+- [Akamai Application Security API](openapi/akamai-application-security-openapi.json) — 144 operations, 83 schemas (WAF + Behavioral DDoS + Discovered APIs)
+- [Akamai Certificate Provisioning System API](openapi/akamai-cps-openapi.json) — 12 operations
+- [Akamai CP Codes and Reporting Groups API](openapi/akamai-cp-codes-openapi.json) — 7 operations
+- [Akamai EdgeKV API](openapi/akamai-edgekv-openapi.json) — 12 operations
+- [Akamai EdgeWorkers API](openapi/akamai-edgeworkers-openapi.json) — 31 operations
+- [Akamai Fast Purge API](openapi/akamai-fast-purge-openapi.json) — 7 operations
+- [Akamai Network Lists API](openapi/akamai-network-lists-openapi.json) — 11 operations
+- [Akamai Property Manager API (PAPI)](openapi/akamai-papi-openapi.json) — 58 operations
+- [Akamai Sandbox API](openapi/akamai-sandbox-openapi.json) — 8 operations
+- [Akamai SIEM Integration API](openapi/akamai-siem-openapi.json) — 1 operation, 5 schemas
+- [Akamai Site Shield API](openapi/akamai-site-shield-openapi.json) — 3 operations, 4 schemas
 
 ## Capabilities
 
-Naftiko capabilities organized as shared per-API definitions composed into customer-facing workflows.
+Naftiko capabilities organized as one YAML per API tag/business surface. 151 capability files across 12 APIs, each covering one self-contained business surface.
 
-### Shared Per-API Definitions
+| API | Capability Files |
+|-----|------------------|
+| API Endpoint Definition | 14 (Endpoints, Versions, JWT, API Privacy, CORS, GraphQL, Cache, ...) |
+| Application Security | 69 (WAF Rules, Behavioral DDoS, Discovered APIs, Rate Policies, Reputation, Match Targets, ...) |
+| Certificate Provisioning | 3 (Enrollments, Changes, Deployments) |
+| CP Codes / Reporting Groups | 4 (CP Codes, Reporting Groups, Products, Watermark Limits) |
+| EdgeKV | 5 (Namespaces, Items, Access Tokens, Permission Groups, Status) |
+| EdgeWorkers | 13 (Activations, Versions, Reports, Validations, Resource Tiers, ...) |
+| Fast Purge | 4 (URL/ARL, CP Code, Cache Tag, Rate Limits) |
+| Network Lists | 4 (Network Lists, Elements, Activations, Subscriptions) |
+| Property Manager (PAPI) | 29 (Properties, Versions, Hostnames, Includes, Bulk Activations, Rules, ...) |
+| Sandbox | 4 (Sandboxes, EdgeWorkers, Properties, Rotate JWT) |
+| SIEM | 1 (Events) |
+| Site Shield | 1 (Maps) |
 
-- [EdgeWorkers](capabilities/shared/edgeworkers.yaml) — 2 operations for EdgeWorker serverless function management
-- [Network Lists](capabilities/shared/network-lists.yaml) — 1 operation for network list management
+## JSON Schemas
 
-### Workflow Capabilities
+- 25 schemas extracted from Application Security (Behavioral DDoS profiles, Match Targets, Custom Rules, Rate Policies, Reputation Profiles, ...)
+- 4 schemas from Fast Purge
+- 5 schemas from SIEM
+- 4 schemas from Site Shield
 
-| Workflow | APIs Combined | Tools | Persona |
-|----------|--------------|-------|---------|
-| [Edge Platform Management](capabilities/edge-platform-management.yaml) | EdgeWorkers, Network Lists | 3 | Platform Engineer, DevOps Engineer |
+See [`json-schema/`](json-schema/).
 
 ## Vocabulary
 
-- [Akamai Vocabulary](vocabulary/akamai-vocabulary.yaml) — Unified taxonomy mapping 6 resources, 6 actions, 1 workflow, and 2 personas across operational (OpenAPI) and capability (Naftiko) dimensions
+- [Akamai Vocabulary](vocabulary/akamai-vocabulary.yaml) — Unified taxonomy mapping resources, actions, workflows, and personas across operational (OpenAPI) and capability (Naftiko) dimensions
 
 ## Rules
 
-- [Akamai Spectral Rules](rules/akamai-spectral-rules.yml) — 21 rules across 9 categories enforcing Akamai API conventions
+- [Akamai Spectral Rules](rules/akamai-spectral-rules.yml) — Rules enforcing Akamai API conventions (Title Case summaries, EdgeGrid auth, accountSwitchKey, hostname-templated baseUri, error envelope, pagination)
+
+## Plans, Rate Limits, and FinOps
+
+- [Plans & Pricing](plans/akamai-plans-pricing.yml) — API Commons Plans 0.1 covering multi-service enterprise pricing, committed-use discounts, and per-service families
+- [Rate Limits](rate-limits/akamai-rate-limits.yml) — Documented per-API rate-limit policies (Fast Purge, EdgeWorkers, PAPI)
+- [FinOps](finops/akamai-finops.yml) — FOCUS-aligned billing dimensions for cost attribution across CDN, Cloud Compute, and Security services
 
 ## Maintainers
 

@@ -1,0 +1,112 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Application Security API — WAF rules: Tuning recommendations'
+  description: 'Akamai: Application Security API — WAF rules: Tuning recommendations. 4 operations. Lead operation: Akamai Respond to exception recommendations. Self-contained Naftiko
+    capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Application Security
+  - 'WAF rules: Tuning recommendations'
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: appsec-waf-rules-tuning-recommendations
+    baseUri: https://{hostname}/appsec/v1
+    description: 'Akamai: Application Security API — WAF rules: Tuning recommendations business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations
+      operations:
+      - name: postpost-recommendations
+        method: POST
+        description: Respond to exception recommendations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: type
+          in: query
+          type: string
+          description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active
+            and evaluation recommendations.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-recommendations
+        method: GET
+        description: Get tuning recommendations for a policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: type
+          in: query
+          type: string
+          description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active
+            and evaluation recommendations.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations/attack-groups/{attackGroupId}
+      operations:
+      - name: getget-attack-group
+        method: GET
+        description: List tuning recommendations for an attack group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: type
+          in: query
+          type: string
+          description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active
+            and evaluation recommendations.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations/rules/{ruleId}
+      operations:
+      - name: getget-recommendations-rule
+        method: GET
+        description: List tuning recommendations for a rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: type
+          in: query
+          type: string
+          description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active
+            and evaluation recommendations.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

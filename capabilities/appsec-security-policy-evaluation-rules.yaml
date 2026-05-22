@@ -1,0 +1,75 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Application Security API — Security policy: Evaluation rules'
+  description: 'Akamai: Application Security API — Security policy: Evaluation rules. 3 operations. Lead operation: Akamai List evaluation rules. Self-contained Naftiko capability covering
+    one Akamai business surface.'
+  tags:
+  - Akamai
+  - Application Security
+  - 'Security policy: Evaluation rules'
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: appsec-security-policy-evaluation-rules
+    baseUri: https://{hostname}/appsec/v1
+    description: 'Akamai: Application Security API — Security policy: Evaluation rules business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/eval-rules
+      operations:
+      - name: getget-policy-eval-rules
+        method: GET
+        description: List evaluation rules
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/eval-rules/{ruleId}
+      operations:
+      - name: getget-policy-eval-rule
+        method: GET
+        description: Get the action of an evaluation rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-policy-eval-rule
+        method: PUT
+        description: Modify the action of an evaluation rule
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true

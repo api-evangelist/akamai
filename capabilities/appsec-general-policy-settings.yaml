@@ -1,0 +1,117 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Application Security API — General policy settings'
+  description: 'Akamai: Application Security API — General policy settings. 5 operations. Lead operation: Akamai Clone or create a security policy. Self-contained Naftiko capability
+    covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Application Security
+  - General policy settings
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: appsec-general-policy-settings
+    baseUri: https://{hostname}/appsec/v1
+    description: 'Akamai: Application Security API — General policy settings business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId-versions-versionNumber-security-policies
+      path: /configs/{configId}/versions/{versionNumber}/security-policies
+      operations:
+      - name: postpost-policy
+        method: POST
+        description: Clone or create a security policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-policies
+        method: GET
+        description: List security policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: notMatched
+          in: query
+          type: boolean
+          description: If `true`, returns all security policies in the configuration version that don't have a match target. If `false`, returns all security policies in the configuration
+            version.
+        - name: detail
+          in: query
+          type: boolean
+          description: When `true`, the results contain detailed information on versions. With the default `false`, the results contain summary information on versions.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}
+      operations:
+      - name: getget-policy
+        method: GET
+        description: Get a security policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-policy
+        method: PUT
+        description: Modify a security policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedelete-policy
+        method: DELETE
+        description: Remove a security policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

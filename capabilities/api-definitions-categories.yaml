@@ -1,0 +1,112 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: API Endpoint Definition API — Categories'
+  description: 'Akamai: API Endpoint Definition API — Categories. 5 operations. Lead operation: Akamai Create a category. Self-contained Naftiko capability covering one Akamai business
+    surface.'
+  tags:
+  - Akamai
+  - API Definitions
+  - Categories
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: api-definitions-categories
+    baseUri: https://{hostname}/api-definitions/v2
+    description: 'Akamai: API Endpoint Definition API — Categories business capability. Self-contained, no shared references.'
+    resources:
+    - name: categories
+      path: /categories
+      operations:
+      - name: postpost-category
+        method: POST
+        description: Create a category
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-categories
+        method: GET
+        description: List categories
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: withUsageInfo
+          in: query
+          type: boolean
+          description: Whether the response should include the `usageCount` data indicating the number of endpoints under a category, `false` by default.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: categories-apiCategoryId
+      path: /categories/{apiCategoryId}
+      operations:
+      - name: getget-category
+        method: GET
+        description: Get a category
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-category
+        method: PUT
+        description: Edit a category
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedelete-category
+        method: DELETE
+        description: Delete a category
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

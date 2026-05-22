@@ -1,0 +1,90 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Application Security API — Configuration version export'
+  description: 'Akamai: Application Security API — Configuration version export. 4 operations. Lead operation: Akamai Asynchronously export a configuration version. Self-contained Naftiko
+    capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Application Security
+  - Configuration version export
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: appsec-configuration-version-export
+    baseUri: https://{hostname}/appsec/v1
+    description: 'Akamai: Application Security API — Configuration version export business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId-versions-versionNumber-export
+      path: /configs/{configId}/versions/{versionNumber}/export
+      operations:
+      - name: postpost-export-config-version-async-task
+        method: POST
+        description: Asynchronously export a configuration version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: configs-configId-versions-versionNumber-export-exportId-resu
+      path: /configs/{configId}/versions/{versionNumber}/export/{exportId}/result
+      operations:
+      - name: getget-export-config-version-async-result
+        method: GET
+        description: Get asynchronous export results
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: configs-configId-versions-versionNumber-export-exportId-stat
+      path: /configs/{configId}/versions/{versionNumber}/export/{exportId}/status
+      operations:
+      - name: getget-export-config-version-async-task-status
+        method: GET
+        description: Get asynchronous export status
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: export-configs-configId-versions-versionNumber
+      path: /export/configs/{configId}/versions/{versionNumber}
+      operations:
+      - name: getget-export-config-version
+        method: GET
+        description: Export a configuration version
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

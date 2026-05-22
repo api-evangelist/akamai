@@ -1,0 +1,124 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: CP Codes and Reporting Groups API — Reporting groups'
+  description: 'Akamai: CP Codes and Reporting Groups API — Reporting groups. 5 operations. Lead operation: Akamai Create a reporting group. Self-contained Naftiko capability covering
+    one Akamai business surface.'
+  tags:
+  - Akamai
+  - CP Codes
+  - Reporting groups
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cp-codes-reporting-groups
+    baseUri: https://{hostname}/cprg/v1
+    description: 'Akamai: CP Codes and Reporting Groups API — Reporting groups business capability. Self-contained, no shared references.'
+    resources:
+    - name: reporting-groups
+      path: /reporting-groups
+      operations:
+      - name: postpost-reporting-groups
+        method: POST
+        description: Create a reporting group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-reporting-groups
+        method: GET
+        description: List reporting groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: contractId
+          in: query
+          type: string
+          description: Identifies the contract to filter data by. Include this optional parameter to narrow down the results to a specific contract only.
+        - name: groupId
+          in: query
+          type: string
+          description: Identifies the access group to filter data by. Include this optional parameter to narrow down the results to a specific access group only.
+        - name: reportingGroupName
+          in: query
+          type: string
+          description: The name of the reporting group to filter data by. Include this optional parameter to narrow down the results to a specific reporting group name only.
+        - name: cpcodeId
+          in: query
+          type: string
+          description: Identifies the CP code to filter data by. Include this optional parameter to narrow down the results to a specific CP code only.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: reporting-groups-reportingGroupId
+      path: /reporting-groups/{reportingGroupId}
+      operations:
+      - name: getget-reporting-group
+        method: GET
+        description: Get a reporting group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-reporting-group
+        method: PUT
+        description: Update a reporting group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedelete-reporting-group
+        method: DELETE
+        description: Delete a reporting group
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

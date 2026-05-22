@@ -1,0 +1,72 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Site Shield API — Maps'
+  description: 'Akamai: Site Shield API — Maps. 3 operations. Lead operation: Akamai List maps. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Site Shield
+  - Maps
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: site-shield-maps
+    baseUri: https://{hostname}/siteshield/v1
+    description: 'Akamai: Site Shield API — Maps business capability. Self-contained, no shared references.'
+    resources:
+    - name: maps
+      path: /maps
+      operations:
+      - name: getget-maps
+        method: GET
+        description: List maps
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: maps-id
+      path: /maps/{id}
+      operations:
+      - name: getget-map
+        method: GET
+        description: Get a map
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: maps-id-acknowledge
+      path: /maps/{id}/acknowledge
+      operations:
+      - name: postpost-map-acknowledge
+        method: POST
+        description: Acknowledge the map
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

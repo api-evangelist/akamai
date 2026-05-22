@@ -1,0 +1,199 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Certificate Provisioning System API — Enrollments'
+  description: 'Akamai: Certificate Provisioning System API — Enrollments. 7 operations. Lead operation: Akamai Create an enrollment. Self-contained Naftiko capability covering one Akamai
+    business surface.'
+  tags:
+  - Akamai
+  - CPS
+  - Enrollments
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: cps-enrollments
+    baseUri: https://{hostname}/cps/v2
+    description: 'Akamai: Certificate Provisioning System API — Enrollments business capability. Self-contained, no shared references.'
+    resources:
+    - name: enrollments
+      path: /enrollments
+      operations:
+      - name: postpost-enrollment
+        method: POST
+        description: Create an enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: contractId
+          in: query
+          type: string
+          description: Specify the contract on which to operate or view.
+        - name: deploy-not-after
+          in: query
+          type: string
+          description: Don't deploy after this date (UTC).
+        - name: deploy-not-before
+          in: query
+          type: string
+          description: Don't deploy before this date (UTC).
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-enrollments
+        method: GET
+        description: List enrollments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: contractId
+          in: query
+          type: string
+          description: Specify the contract on which to operate or view.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: enrollments-enrollmentId
+      path: /enrollments/{enrollmentId}
+      operations:
+      - name: getget-enrollment
+        method: GET
+        description: Get an enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-enrollment
+        method: PUT
+        description: Update an enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: allow-cancel-pending-changes
+          in: query
+          type: boolean
+          description: All pending changes to be cancelled when updating an enrollment.
+        - name: allow-staging-bypass
+          in: query
+          type: boolean
+          description: Bypass staging and push meta-data updates directly to production network. Current change will also be updated with the same changes.
+        - name: deploy-not-after
+          in: query
+          type: string
+          description: Don't deploy after this date (UTC).
+        - name: deploy-not-before
+          in: query
+          type: string
+          description: Don't deploy before this date (UTC).
+        - name: force-renewal
+          in: query
+          type: boolean
+          description: Force certificate renewal for Enrollment.
+        - name: renewal-date-check-override
+          in: query
+          type: boolean
+          description: CPS will automatically start a Change to renew certificates in time before they expire. This automatic Change is started when Certificate's expiration is within
+            a renewal window, and system will
+        - name: allow-missing-certificate-addition
+          in: query
+          type: boolean
+          description: Applicable for Third Party Dual Stack Enrollments, allows to update missing certificate. Option supported from v10.
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedelete-enrollment
+        method: DELETE
+        description: Remove an enrollment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: allow-cancel-pending-changes
+          in: query
+          type: boolean
+          description: All pending changes to be cancelled when updating an enrollment.
+        - name: deploy-not-after
+          in: query
+          type: string
+          description: Don't deploy after this date (UTC).
+        - name: deploy-not-before
+          in: query
+          type: string
+          description: Don't deploy before this date (UTC).
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: enrollments-enrollmentId-dv-history
+      path: /enrollments/{enrollmentId}/dv-history
+      operations:
+      - name: getget-dv-history
+        method: GET
+        description: Get DV history
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: enrollments-enrollmentId-history-certificates
+      path: /enrollments/{enrollmentId}/history/certificates
+      operations:
+      - name: getget-history-certificates
+        method: GET
+        description: Get certificate history
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and

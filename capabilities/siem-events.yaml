@@ -1,0 +1,52 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: SIEM Integration API — Events'
+  description: 'Akamai: SIEM Integration API — Events. 1 operations. Lead operation: Akamai Fetch security events. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - SIEM
+  - Events
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: siem-events
+    baseUri: https://{hostname}/siem/v1
+    description: 'Akamai: SIEM Integration API — Events business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId
+      path: /configs/{configId}
+      operations:
+      - name: getget-config
+        method: GET
+        description: Fetch security events
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: offset
+          in: query
+          type: string
+          description: This token denotes the last message. If specified, this operation fetches only security events that have occurred since the last `offset` value. Use this parameter
+            for offset mode, not for time-based
+        - name: limit
+          in: query
+          type: integer
+          description: Defines the approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000`, and the maximum
+            limit available is `600000`. Listing
+        - name: from
+          in: query
+          type: integer
+          description: The start of a specified time range, expressed in Unix epoch seconds. You need this to get time-based results for a set period, not for offset mode.
+        - name: to
+          in: query
+          type: integer
+          description: The end of a specified time range, expressed in Unix epoch seconds. You can't use this parameter in offset mode, and it's optional in time-based mode. The value
+            can't be any greater than the default

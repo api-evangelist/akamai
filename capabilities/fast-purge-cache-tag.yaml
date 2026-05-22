@@ -1,0 +1,55 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Fast Purge API — Cache tag'
+  description: 'Akamai: Fast Purge API — Cache tag. 2 operations. Lead operation: Akamai Delete by cache tag. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Fast Purge
+  - Cache tag
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: fast-purge-cache-tag
+    baseUri: https://{hostname}/ccu/v3
+    description: 'Akamai: Fast Purge API — Cache tag business capability. Self-contained, no shared references.'
+    resources:
+    - name: delete-tag-network
+      path: /delete/tag/{network}
+      operations:
+      - name: postpost-delete-tag
+        method: POST
+        description: Delete by cache tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: invalidate-tag-network
+      path: /invalidate/tag/{network}
+      operations:
+      - name: postpost-invalidate-tag
+        method: POST
+        description: Invalidate by cache tag
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true

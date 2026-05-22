@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/akamai/main/json-schema/appsec-behavioral-ddos-bypass-request-header-condition-schema.json",
+  "title": "RequestHeaderCondition",
+  "additionalProperties": false,
+  "description": "Collects data needed for condition matches on request headers.",
+  "properties": {
+    "className": {
+      "description": "Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.",
+      "enum": [
+        "RequestHeaderCondition"
+      ],
+      "type": "string"
+    },
+    "name": {
+      "description": "Use `name` to check whether the specified header exists.",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "nameWildcard": {
+      "description": "Whether to interpret `?` and `*` as wildcards in the specified `name`.",
+      "type": "boolean"
+    },
+    "positiveMatch": {
+      "description": "__Read-only__ Whether the condition triggers on a match or lack of match.",
+      "readOnly": true,
+      "type": "boolean"
+    },
+    "value": {
+      "description": "Unique header values. Use both `value` and `name` to check whether the requesting client\u2019s header matches the specified headers.",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 0,
+      "nullable": true,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "valueCase": {
+      "description": "Whether to consider case when matching header values, `true` for case-sensitive matches.",
+      "type": "boolean"
+    },
+    "valueWildcard": {
+      "description": "Whether to interpret `?` and `*` as wildcards in the specified `value`.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "className",
+    "name"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/behavioral-ddos-bypass-request-header-condition.yaml"
+  }
+}

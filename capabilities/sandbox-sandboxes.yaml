@@ -1,0 +1,144 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Sandbox API — Sandboxes'
+  description: 'Akamai: Sandbox API — Sandboxes. 6 operations. Lead operation: Akamai Create a sandbox. Self-contained Naftiko capability covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Sandbox
+  - Sandboxes
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sandbox-sandboxes
+    baseUri: https://{hostname}/sandbox-api/v1
+    description: 'Akamai: Sandbox API — Sandboxes business capability. Self-contained, no shared references.'
+    resources:
+    - name: sandboxes
+      path: /sandboxes
+      operations:
+      - name: postpost-sandbox
+        method: POST
+        description: Create a sandbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: getget-sandboxes
+        method: GET
+        description: List sandboxes
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: access
+          in: query
+          type: string
+          description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform
+            the request for all sandboxes within
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: sandboxes-sandboxId
+      path: /sandboxes/{sandboxId}
+      operations:
+      - name: getget-sandbox
+        method: GET
+        description: Get a sandbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: access
+          in: query
+          type: string
+          description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform
+            the request for all sandboxes within
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-sandbox
+        method: PUT
+        description: Modify a sandbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+      - name: deletedelete-sandbox
+        method: DELETE
+        description: Delete a sandbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: access
+          in: query
+          type: string
+          description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform
+            the request for all sandboxes within
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+    - name: sandboxes-sandboxId-clone
+      path: /sandboxes/{sandboxId}/clone
+      operations:
+      - name: postpost-sandbox-clone
+        method: POST
+        description: Clone a sandbox
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true

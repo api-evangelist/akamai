@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: 'Akamai: Application Security API — API request constraints'
+  description: 'Akamai: Application Security API — API request constraints. 3 operations. Lead operation: Akamai List API request constraints and actions. Self-contained Naftiko capability
+    covering one Akamai business surface.'
+  tags:
+  - Akamai
+  - Application Security
+  - API request constraints
+  created: '2026-05-22'
+  modified: '2026-05-22'
+binds:
+- namespace: env
+  keys:
+    AKAMAI_API_KEY: AKAMAI_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: appsec-api-request-constraints
+    baseUri: https://{hostname}/appsec/v1
+    description: 'Akamai: Application Security API — API request constraints business capability. Self-contained, no shared references.'
+    resources:
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/api-request-constraints
+      operations:
+      - name: getget-api-request-constraints
+        method: GET
+        description: List API request constraints and actions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+      - name: putput-api-request-constraints
+        method: PUT
+        description: Modify the request constraint action for all APIs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    - name: configs-configId-versions-versionNumber-security-policies-po
+      path: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/api-request-constraints/{apiId}
+      operations:
+      - name: putput-api-request-constraints-api
+        method: PUT
+        description: Modify an API request constraint's action
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: accountSwitchKey
+          in: query
+          type: string
+          description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client).
+            The Identity and
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
