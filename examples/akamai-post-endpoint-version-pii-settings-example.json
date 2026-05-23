@@ -1,0 +1,100 @@
+{
+  "operationId": "post-endpoint-version-pii-settings",
+  "method": "POST",
+  "path": "/endpoints/{apiEndPointId}/versions/{versionNumber}/piis/settings",
+  "summary": "Modify PII settings for an endpoint version",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "exclusions": [],
+        "constraints": {
+          "requestEnabled": true,
+          "responseEnabled": true,
+          "scope": "API",
+          "resources": [],
+          "types": {
+            "allTypes": true,
+            "specific": []
+          }
+        }
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "allDisabled",
+      "example": {
+        "exclusions": [],
+        "constraints": {
+          "requestEnabled": false,
+          "responseEnabled": false,
+          "scope": "NONE",
+          "resources": [],
+          "types": {
+            "allTypes": true,
+            "specific": []
+          }
+        }
+      }
+    },
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "allEnabled",
+      "example": {
+        "constraints": {
+          "requestEnabled": true,
+          "responseEnabled": true,
+          "scope": "API",
+          "resources": [],
+          "types": {
+            "allTypes": true,
+            "specific": []
+          }
+        },
+        "exclusions": [
+          {
+            "exclusionId": 1,
+            "parameterId": 11
+          },
+          {
+            "exclusionId": 2,
+            "parameterId": 21
+          }
+        ]
+      }
+    },
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "name": "partiallyEnabled",
+      "example": {
+        "exclusions": [],
+        "constraints": {
+          "requestEnabled": true,
+          "responseEnabled": false,
+          "scope": "RESOURCES_AND_METHODS",
+          "types": {
+            "allTypes": false,
+            "specific": [
+              "PERSONAL_EMAIL"
+            ]
+          },
+          "resources": [
+            {
+              "allMethods": false,
+              "resourceId": 1,
+              "methods": [
+                "post",
+                "patch"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

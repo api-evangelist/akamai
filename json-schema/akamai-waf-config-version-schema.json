@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/waf-config-version",
+  "title": "waf-config-version",
+  "additionalProperties": false,
+  "description": "Contains configuration version details.",
+  "properties": {
+    "basedOn": {
+      "description": "__Read-only__ The version from which you cloned this version.",
+      "readOnly": true,
+      "type": "integer"
+    },
+    "configId": {
+      "description": "__Read-only__ Uniquely identifies the security configuration.",
+      "readOnly": true,
+      "type": "integer"
+    },
+    "configName": {
+      "description": "The security configuration name.",
+      "type": "string"
+    },
+    "createDate": {
+      "description": "__Read-only__ The date when you created the configuration version.",
+      "readOnly": true,
+      "type": "string"
+    },
+    "createdBy": {
+      "description": "__Read-only__ The user who created the configuration version.",
+      "readOnly": true,
+      "type": "string"
+    },
+    "production": {
+      "additionalProperties": false,
+      "description": "__Read-only__ The activation status of the configuration version in the production network.",
+      "properties": {
+        "action": {
+          "description": "The action taken on the configuration version. Either `ACTIVATE` or `DEACTIVATE`.",
+          "enum": [
+            "ACTIVATE",
+            "DEACTIVATE"
+          ],
+          "type": "string"
+        },
+        "status": {
+          "description": "The activation status, either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.",
+          "enum": [
+            "Pending",
+            "Active",
+            "Inactive",
+            "Deactivated",
+            "Failed"
+          ],
+          "type": "string"
+        },
+        "time": {
+          "description": "The activation time.",
+          "type": "string"
+        }
+      },
+      "readOnly": true,
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "staging": {
+      "additionalProperties": false,
+      "description": "__Read-only__ The activation status of the configuration version in the staging network.",
+      "properties": {
+        "action": {
+          "description": "The action taken on the configuration version. Either `ACTIVATE` or `DEACTIVATE`.",
+          "enum": [
+            "ACTIVATE",
+            "DEACTIVATE"
+          ],
+          "type": "string"
+        },
+        "status": {
+          "description": "The activation status, either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.",
+          "enum": [
+            "Pending",
+            "Active",
+            "Inactive",
+            "Deactivated",
+            "Failed"
+          ],
+          "type": "string"
+        },
+        "time": {
+          "description": "The ISO 8601 time stamp indicating the activation time.",
+          "type": "string"
+        }
+      },
+      "readOnly": true,
+      "required": [
+        "status"
+      ],
+      "type": "object"
+    },
+    "version": {
+      "description": "__Read-only__ The security configuration version.",
+      "readOnly": true,
+      "type": "integer"
+    },
+    "versionNotes": {
+      "description": "The notes you entered for the configuration version.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "configId",
+    "configName",
+    "version",
+    "staging",
+    "production"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/waf-config-version.yaml"
+  }
+}

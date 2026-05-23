@@ -1,0 +1,82 @@
+{
+  "operationId": "get-reputation-profiles",
+  "method": "GET",
+  "path": "/configs/{configId}/versions/{versionNumber}/reputation-profiles",
+  "summary": "List reputation profiles",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "reputationProfiles": [
+          {
+            "context": "SCANTL",
+            "contextReadable": "Scanning Tools",
+            "enabled": false,
+            "id": 146254,
+            "name": "Scanning Tools (High Threat)",
+            "sharedIpHandling": "NON_SHARED",
+            "threshold": 9
+          },
+          {
+            "context": "WEBATCK",
+            "contextReadable": "Web Attackers",
+            "enabled": false,
+            "id": 146258,
+            "name": "Web Attackers (Low Threat)",
+            "sharedIpHandling": "SHARED_ONLY",
+            "threshold": 5
+          },
+          {
+            "condition": {
+              "atomicConditions": [
+                {
+                  "className": "RequestCookieCondition",
+                  "name": "cookie",
+                  "nameWildcard": true,
+                  "positiveMatch": true,
+                  "value": [
+                    "cookie"
+                  ],
+                  "valueWildcard": true
+                }
+              ],
+              "positiveMatch": true
+            },
+            "context": "WEBATCK",
+            "contextReadable": "Web Attackers",
+            "description": "this is a customized reputation profile",
+            "enabled": true,
+            "id": 146259,
+            "name": "Custom Reputation Profile",
+            "sharedIpHandling": "SHARED_ONLY",
+            "threshold": 3
+          }
+        ]
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    }
+  ]
+}

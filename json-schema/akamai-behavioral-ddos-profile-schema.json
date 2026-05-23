@@ -1,0 +1,312 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/behavioral-ddos-profile",
+  "title": "behavioral-ddos-profile",
+  "additionalProperties": false,
+  "description": "Contains details about a Behavioral DDoS profile.",
+  "properties": {
+    "bypassCondition": {
+      "additionalProperties": false,
+      "description": "Exempts specific clients from being processed by the Behavioral DDoS profile.",
+      "properties": {
+        "atomicConditions": {
+          "description": "Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.",
+          "items": {
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Collects data needed for condition matches on request headers.",
+                "properties": {
+                  "className": {
+                    "description": "Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.",
+                    "enum": [
+                      "RequestHeaderCondition"
+                    ],
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "Use `name` to check whether the specified header exists.",
+                    "items": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "minItems": 1,
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  "nameWildcard": {
+                    "description": "Whether to interpret `?` and `*` as wildcards in the specified `name`.",
+                    "type": "boolean"
+                  },
+                  "positiveMatch": {
+                    "description": "__Read-only__ Whether the condition triggers on a match or lack of match.",
+                    "readOnly": true,
+                    "type": "boolean"
+                  },
+                  "value": {
+                    "description": "Unique header values. Use both `value` and `name` to check whether the requesting client\u2019s header matches the specified headers.",
+                    "items": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "minItems": 0,
+                    "nullable": true,
+                    "type": "array",
+                    "uniqueItems": true
+                  },
+                  "valueCase": {
+                    "description": "Whether to consider case when matching header values, `true` for case-sensitive matches.",
+                    "type": "boolean"
+                  },
+                  "valueWildcard": {
+                    "description": "Whether to interpret `?` and `*` as wildcards in the specified `value`.",
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "className",
+                  "name"
+                ],
+                "title": "RequestHeaderCondition",
+                "type": "object",
+                "x-akamai": {
+                  "file-path": "schemas/behavioral-ddos-bypass-request-header-condition.yaml"
+                }
+              },
+              {
+                "additionalProperties": false,
+                "description": "Collects data needed for condition matches on client lists and network lists.",
+                "properties": {
+                  "checkIps": {
+                    "description": "__Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. Behavioral DDoS bypass supports `connecting` only.",
+                    "enum": [
+                      "connecting"
+                    ],
+                    "readOnly": true,
+                    "type": "string"
+                  },
+                  "className": {
+                    "description": "Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS fingerprint, against the specified client or network list. The only currently supported syntax is `NetworkListCondition`.",
+                    "enum": [
+                      "NetworkListCondition"
+                    ],
+                    "type": "string"
+                  },
+                  "positiveMatch": {
+                    "description": "__Read-only__ Whether the condition triggers on a match or lack of match.",
+                    "readOnly": true,
+                    "type": "boolean"
+                  },
+                  "value": {
+                    "description": "Identifies the client list or network list.",
+                    "items": {
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "minItems": 0,
+                    "nullable": true,
+                    "type": "array",
+                    "uniqueItems": true
+                  }
+                },
+                "required": [
+                  "className",
+                  "value"
+                ],
+                "title": "NetworkListCondition",
+                "type": "object",
+                "x-akamai": {
+                  "file-path": "schemas/behavioral-ddos-bypass-client-list-condition.yaml"
+                }
+              }
+            ]
+          },
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "configId": {
+      "description": "Uniquely identifies the security configuration.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "configVersion": {
+      "description": "The security configuration version.",
+      "type": "integer"
+    },
+    "createDate": {
+      "description": "__Read-only__ The ISO 8601 timestamp when you created the Behavioral DDoS profile.",
+      "format": "date-time",
+      "readOnly": true,
+      "type": "string"
+    },
+    "createdBy": {
+      "description": "__Read-only__ The username of the person who created the Behavioral DDoS profile.",
+      "readOnly": true,
+      "type": "string"
+    },
+    "description": {
+      "description": "A description of the profile.",
+      "type": "string"
+    },
+    "exceptions": {
+      "description": "The hostname and path pairs excluded from Behavioral DDoS mitigation actions.",
+      "items": {
+        "additionalProperties": false,
+        "description": "The hostname and path pair combinations excluded from Behavioral DDoS mitigation actions.",
+        "properties": {
+          "hosts": {
+            "description": "Hostnames in host and path pairs to exclude.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "paths": {
+            "description": "Paths in host and path pairs to exclude.",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "hosts",
+          "paths"
+        ],
+        "type": "object",
+        "x-akamai": {
+          "file-path": "schemas/behavioral-ddos-host-path-exception.yaml"
+        }
+      },
+      "minItems": 0,
+      "type": "array"
+    },
+    "hostnames": {
+      "description": "The hostnames that you want to be protected by the Behavioral DDoS profile.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "name": {
+      "description": "The profile's unique name.",
+      "type": "string"
+    },
+    "profileId": {
+      "description": "__Read-only__ Uniquely identifies the Behavioral DDoS profile.",
+      "format": "int64",
+      "readOnly": true,
+      "type": "integer"
+    },
+    "sensitivity": {
+      "description": "Sensitivity level, specify `CONSERVATIVE` to provide tolerance for more substantial traffic deviations, `MODERATE` to provide tolerance for traffic fluctuations, or `STRICT` for high-security environments, where minor deviations in traffic might signal a potential DDoS attack.",
+      "enum": [
+        "CONSERVATIVE",
+        "MODERATE",
+        "STRICT"
+      ],
+      "type": "string"
+    },
+    "sensitivityOverrides": {
+      "description": "Sensitivity overrides for one or more hostname and path pairs.",
+      "items": {
+        "additionalProperties": false,
+        "description": "Hostnames and path, overriding the global sensitivity setting.",
+        "properties": {
+          "host": {
+            "description": "Hostname in host and path pair to override.  Wildcards are allowed (`*` and `?`).",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path in host and path pair to override.  Wildcards are allowed (`*` and `?`).",
+            "type": "string"
+          },
+          "sensitivity": {
+            "description": "Sensitivity level, specify `CONSERVATIVE` to provide tolerance for more substantial traffic deviations, `MODERATE` to provide tolerance for traffic fluctuations, or `STRICT` or high-security environments, where minor deviations in traffic might signal a potential DDoS attack.",
+            "enum": [
+              "CONSERVATIVE",
+              "MODERATE",
+              "STRICT"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "host",
+          "path",
+          "sensitivity"
+        ],
+        "type": "object",
+        "x-akamai": {
+          "file-path": "schemas/behavioral-ddos-sensitivity-override.yaml"
+        }
+      },
+      "minItems": 0,
+      "type": "array"
+    },
+    "suspend": {
+      "additionalProperties": false,
+      "description": "Temporarily disable mitigation for a specific hostname, with the flexibility to choose the duration of its suspension.",
+      "properties": {
+        "fromDate": {
+          "description": "The start ISO 8601 timestamp of suspension.",
+          "format": "date-time",
+          "type": "string"
+        },
+        "hostnames": {
+          "description": "Hostnames to suspend for a specified duration.",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "toDate": {
+          "description": "The end ISO 8601 timestamp of suspension.",
+          "format": "date-time",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hostnames",
+        "fromDate",
+        "toDate"
+      ],
+      "type": "object",
+      "x-akamai": {
+        "file-path": "schemas/behavioral-ddos-suspend.yaml"
+      }
+    },
+    "updateDate": {
+      "description": "__Read-only__ The ISO 8601 timestamp when you last updated the Behavioral DDoS profile.",
+      "format": "date-time",
+      "readOnly": true,
+      "type": "string"
+    },
+    "updatedBy": {
+      "description": "__Read-only__ Username who last updated the Behavioral DDoS profile.",
+      "readOnly": true,
+      "type": "string"
+    },
+    "used": {
+      "description": "__Read-only__ Whether you're currently using the Behavioral DDoS profile.",
+      "readOnly": true,
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "name",
+    "sensitivity",
+    "hostnames"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/behavioral-ddos-profile.yaml"
+  }
+}

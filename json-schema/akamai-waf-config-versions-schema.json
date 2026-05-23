@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/waf-config-versions",
+  "title": "waf-config-versions",
+  "additionalProperties": false,
+  "description": "Contains details about a security configuration's versions.",
+  "properties": {
+    "configId": {
+      "description": "Uniquely identifies the security configuration.",
+      "type": "integer"
+    },
+    "configName": {
+      "description": "The name you assigned to the security configuration.",
+      "type": "string"
+    },
+    "lastCreatedVersion": {
+      "description": "The version number of the security configuration that you created most recently.",
+      "type": "integer"
+    },
+    "page": {
+      "description": "The current page number.",
+      "type": "integer"
+    },
+    "pageSize": {
+      "description": "Represents the number of items per page.",
+      "type": "integer"
+    },
+    "productionActiveVersion": {
+      "description": "The version number of the security configuration that is currently active on the production network.",
+      "type": "integer"
+    },
+    "productionExpediteRequestId": {
+      "description": "Uniquely identifies the expedite activation request of the configuration version on the production network.",
+      "type": "integer"
+    },
+    "stagingActiveVersion": {
+      "description": "The version number of the security configuration that is currently active on the staging network.",
+      "type": "integer"
+    },
+    "stagingExpediteRequestId": {
+      "description": "Uniquely identifies the expedite activation request of the configuration version on the staging network.",
+      "type": "integer"
+    },
+    "totalSize": {
+      "description": "The total number of configuration versions.",
+      "type": "integer"
+    },
+    "versionList": {
+      "description": "The security configuration's versions.",
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "basedOn": {
+            "description": "The version from which you cloned this version.",
+            "type": "integer"
+          },
+          "createDate": {
+            "description": "The date when you created the configuration version.",
+            "type": "string"
+          },
+          "createdBy": {
+            "description": "The user who created the configuration version.",
+            "type": "string"
+          },
+          "production": {
+            "additionalProperties": false,
+            "description": "Contains details about the version's activation in the production network.",
+            "properties": {
+              "action": {
+                "description": "The action taken on the configuration version, either `ACTIVATE` or `DEACTIVATE`.",
+                "enum": [
+                  "ACTIVATE",
+                  "DEACTIVATE"
+                ],
+                "type": "string"
+              },
+              "status": {
+                "description": "The activation status of the configuration version. Either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.",
+                "enum": [
+                  "Pending",
+                  "Active",
+                  "Inactive",
+                  "Deactivated",
+                  "Failed"
+                ],
+                "type": "string"
+              },
+              "time": {
+                "description": "The activation time.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "type": "object"
+          },
+          "staging": {
+            "additionalProperties": false,
+            "description": "Contains details about the version's activation in the staging network.",
+            "properties": {
+              "action": {
+                "description": "The action taken on the configuration version, either `ACTIVATE` or `DEACTIVATE`.",
+                "enum": [
+                  "ACTIVATE",
+                  "DEACTIVATE"
+                ],
+                "type": "string"
+              },
+              "status": {
+                "description": "The activation status of the configuration version. Either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.",
+                "enum": [
+                  "Pending",
+                  "Active",
+                  "Inactive",
+                  "Deactivated",
+                  "Failed"
+                ],
+                "type": "string"
+              },
+              "time": {
+                "description": "The activation time.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "status"
+            ],
+            "type": "object"
+          },
+          "version": {
+            "description": "The security configuration's version.",
+            "type": "integer"
+          },
+          "versionNotes": {
+            "description": "The notes you entered for the configuration version.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "production",
+          "staging",
+          "version"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "configId",
+    "configName",
+    "lastCreatedVersion",
+    "page",
+    "pageSize",
+    "totalSize"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/waf-config-versions.yaml"
+  }
+}

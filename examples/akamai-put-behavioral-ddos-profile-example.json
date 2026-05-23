@@ -1,0 +1,230 @@
+{
+  "operationId": "put-behavioral-ddos-profile",
+  "method": "PUT",
+  "path": "/configs/{configId}/versions/{versionNumber}/behavioral-ddos/{profileId}",
+  "summary": "Modify a Behavioral DDoS profile",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "bypassCondition": {
+          "atomicConditions": [
+            {
+              "checkIps": "connecting",
+              "className": "NetworkListCondition",
+              "positiveMatch": true,
+              "value": [
+                "100065_IPLIST"
+              ]
+            },
+            {
+              "className": "RequestHeaderCondition",
+              "name": [
+                "Content-Type"
+              ],
+              "nameWildcard": true,
+              "positiveMatch": true,
+              "value": [
+                "application/json"
+              ],
+              "valueCase": false,
+              "valueWildcard": true
+            }
+          ]
+        },
+        "configId": 1,
+        "configVersion": 1,
+        "description": "This is a description of the profile",
+        "exceptions": [
+          {
+            "hosts": [
+              "secure.host1.com",
+              "help.host3.com"
+            ],
+            "paths": [
+              "/path1",
+              "/path2",
+              "/path3"
+            ]
+          }
+        ],
+        "hostnames": [
+          "secure.host1.com",
+          "www.host2.com",
+          "help.host3.com",
+          "info.host4.com"
+        ],
+        "name": "My first BDE profile",
+        "sensitivity": "STRICT",
+        "sensitivityOverrides": [
+          {
+            "host": "info.host4.com",
+            "path": "/path3",
+            "sensitivity": "MODERATE"
+          }
+        ],
+        "suspend": {
+          "fromDate": "2025-02-20T14:00:00Z",
+          "hostnames": [
+            "secure.host1.com"
+          ],
+          "toDate": "2025-03-20T14:00:00Z"
+        }
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "bypassCondition": {
+          "atomicConditions": [
+            {
+              "checkIps": "connecting",
+              "className": "NetworkListCondition",
+              "positiveMatch": true,
+              "value": [
+                "100065_IPLIST"
+              ]
+            },
+            {
+              "className": "RequestHeaderCondition",
+              "name": [
+                "Content-Type"
+              ],
+              "nameWildcard": true,
+              "positiveMatch": true,
+              "value": [
+                "application/json"
+              ],
+              "valueCase": false,
+              "valueWildcard": true
+            }
+          ]
+        },
+        "configId": 1,
+        "configVersion": 1,
+        "createDate": "2025-02-05T14:00:00Z",
+        "createdBy": "jkowalski",
+        "description": "This is a description of the profile",
+        "exceptions": [
+          {
+            "hosts": [
+              "secure.host1.com",
+              "help.host3.com"
+            ],
+            "paths": [
+              "/path1",
+              "/path2",
+              "/path3"
+            ]
+          }
+        ],
+        "hostnames": [
+          "secure.host1.com",
+          "www.host2.com",
+          "help.host3.com",
+          "info.host4.com"
+        ],
+        "name": "My first BDE profile",
+        "profileId": 100,
+        "sensitivity": "STRICT",
+        "sensitivityOverrides": [
+          {
+            "host": "info.host4.com",
+            "path": "/path3",
+            "sensitivity": "MODERATE"
+          }
+        ],
+        "suspend": {
+          "fromDate": "2025-02-20T14:00:00Z",
+          "hostnames": [
+            "secure.host1.com"
+          ],
+          "toDate": "2025-03-20T14:00:00Z"
+        },
+        "updateDate": "2025-02-05T14:00:00Z",
+        "updatedBy": "adevi",
+        "used": true
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The request could not be understood by the server due to malformed syntax.",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST"
+      }
+    },
+    {
+      "status": "401",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The signature does not match",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 401,
+        "title": "Not authorized",
+        "type": "https://problems.luna-dev.akamaiapis.net/-/pep-authn/deny"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    },
+    {
+      "status": "405",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Unsupported method",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 405,
+        "title": "Method Not Allowed",
+        "type": "https://problems.luna-dev.akamaiapis.net/-/pep-authn/policy-error"
+      }
+    },
+    {
+      "status": "406",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "HTTP 406 Not Acceptable",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 406,
+        "title": "Invalid Input Error",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/INVALID-INPUT-ERROR"
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Internal Server Error",
+        "instance": "12ab3c45-789d-01ef-2gh3-ijk4l56m78no",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "internal_server_error"
+      }
+    }
+  ]
+}

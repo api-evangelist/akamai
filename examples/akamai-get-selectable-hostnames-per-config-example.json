@@ -1,0 +1,107 @@
+{
+  "operationId": "get-selectable-hostnames-per-config",
+  "method": "GET",
+  "path": "/contracts/{contractId}/groups/{groupId}/selectable-hostnames",
+  "summary": "List available hostnames for a new configuration",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "availableSet": [
+          {
+            "activeInProduction": true,
+            "activeInStaging": true,
+            "arlInclusion": true,
+            "configIdInProduction": 77653,
+            "configNameInProduction": "WAF Security File",
+            "hostname": "example.com"
+          },
+          {
+            "activeInProduction": false,
+            "activeInStaging": true,
+            "arlInclusion": true,
+            "configIdInProduction": 51074,
+            "configNameInProduction": "A PUBLIC CONFIG",
+            "hostname": "www.example.com"
+          },
+          {
+            "activeInProduction": true,
+            "activeInStaging": true,
+            "arlInclusion": true,
+            "configIdInProduction": 65473,
+            "configNameInProduction": "Other Security Configuration",
+            "hostname": "www.example-123.com"
+          }
+        ],
+        "configId": 123,
+        "configVersion": 2,
+        "errorSet": [
+          {
+            "hostname": "*.example.net",
+            "reason": "property is not active in either production or staging",
+            "reasonCode": 400
+          },
+          {
+            "hostname": "test-example.net",
+            "reason": "You don't have access to this property",
+            "reasonCode": 403
+          }
+        ],
+        "protectARLInclusionHost": true,
+        "selectedSet": [
+          {
+            "activeInProduction": true,
+            "activeInStaging": true,
+            "arlInclusion": false,
+            "configIdInProduction": 11887,
+            "configNameInProduction": "Rbac Test Config",
+            "hostname": "m.example.com"
+          },
+          {
+            "activeInProduction": true,
+            "activeInStaging": true,
+            "arlInclusion": false,
+            "configIdInProduction": null,
+            "configNameInProduction": null,
+            "hostname": "m.example-123.com"
+          }
+        ]
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The request could not be understood by the server due to malformed syntax.",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    }
+  ]
+}

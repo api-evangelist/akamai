@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/config-custom-rules-usage-response",
+  "title": "config-custom-rules-usage-response",
+  "additionalProperties": false,
+  "description": "Custom rule usage data.",
+  "properties": {
+    "rules": {
+      "description": "The requested custom rule IDs and names of the security policies that use them.",
+      "items": {
+        "additionalProperties": false,
+        "description": "Usage of the requested custom rule in security policies.",
+        "properties": {
+          "policies": {
+            "description": "A list of security policies which use the custom rule.",
+            "items": {
+              "additionalProperties": false,
+              "description": "A security policy using the custom rule.",
+              "properties": {
+                "policyId": {
+                  "description": "A security policy ID.",
+                  "nullable": false,
+                  "type": "string"
+                },
+                "policyName": {
+                  "description": "A security policy name.",
+                  "nullable": false,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "policyId",
+                "policyName"
+              ],
+              "type": "object"
+            },
+            "minItems": 0,
+            "nullable": false,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "ruleId": {
+            "description": "A custom rule ID.",
+            "nullable": false,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "ruleId",
+          "policies"
+        ],
+        "type": "object"
+      },
+      "minItems": 0,
+      "nullable": false,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "rules"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/config-custom-rules-usage-response.yaml"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/custom-rules",
+  "title": "custom-rules",
+  "additionalProperties": false,
+  "description": "Describes the custom rule's basic information.",
+  "properties": {
+    "customRules": {
+      "description": "Describes basic information about a custom rule, such as activation status or time the rule is active.",
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "effectiveTimePeriod": {
+            "additionalProperties": false,
+            "description": "The time period during which the custom rule is active.",
+            "properties": {
+              "endDate": {
+                "description": "An ISO 8601 timestamp that sets when the rule expires or deactivates.",
+                "type": "string"
+              },
+              "startDate": {
+                "description": "An ISO 8601 timestamp that sets when the rule activates.",
+                "format": "date-time",
+                "type": "string"
+              },
+              "status": {
+                "description": "The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.",
+                "enum": [
+                  "active",
+                  "inactive",
+                  "expiring",
+                  "expired"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "endDate",
+              "startDate"
+            ],
+            "type": "object"
+          },
+          "id": {
+            "description": "Uniquely identifies the custom rule.",
+            "type": "integer"
+          },
+          "link": {
+            "description": "The link to the full custom rule definition. This field is only available when you run the [List custom rules](https://techdocs.akamai.com/application-security/reference/get-configs-custom-rules) operation.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name you assign to the custom rule.",
+            "type": "string"
+          },
+          "samplingRate": {
+            "description": "The portion of traffic to sample, expressed as a percent.",
+            "maximum": 100,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "status": {
+            "description": "The custom rule deployment status. Either `activated` if a rule is enabled in at least one security policy within a security configuration currently active in production, `published` if a rule is associated with at least one security policy in an inactive security configuration, or `unused` if a rule exists as a shared resource, but isn't associated with any security policy. This field is only available when you run the [List custom rules](https://techdocs.akamai.com/application-security/reference/get-configs-custom-rules) operation.",
+            "enum": [
+              "activated",
+              "published",
+              "unused"
+            ],
+            "type": "string"
+          },
+          "version": {
+            "description": "The custom rule version.",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "link",
+          "name",
+          "status",
+          "version"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "customRules"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/custom-rules.yaml"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "operationId": "post-onboarding-activation",
+  "method": "POST",
+  "path": "/onboardings/{onboardingId}/activations",
+  "summary": "Activate an onboarding",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "network": "STAGING",
+        "notificationEmails": [
+          "test_user@akamai.com",
+          "test_user2@akamai.com"
+        ]
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "202",
+      "contentType": "application/json",
+      "example": {
+        "activationId": 51,
+        "activationStatus": "PENDING",
+        "activationStatusLink": "/appsec/v1/onboardings/101/activations/51",
+        "createdBy": "adevi",
+        "createdDate": "2014-03-02T02:22:12Z",
+        "network": "STAGING",
+        "onboardingLink": "/appsec/v1/onboardings/101",
+        "percentComplete": 0,
+        "retryAfter": 1200
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    },
+    {
+      "status": "409",
+      "contentType": "application/problem+json",
+      "name": "activation-network-error",
+      "example": {
+        "$ref": "../examples/409-onboarding-activation-network-error.json"
+      }
+    },
+    {
+      "status": "422",
+      "contentType": "application/problem+json",
+      "name": "activation-errors",
+      "example": {
+        "$ref": "../examples/422-onboarding-activation-network-error.json"
+      }
+    }
+  ]
+}

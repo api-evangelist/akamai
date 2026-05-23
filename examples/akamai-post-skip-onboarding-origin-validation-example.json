@@ -1,0 +1,69 @@
+{
+  "operationId": "post-skip-onboarding-origin-validation",
+  "method": "POST",
+  "path": "/onboardings/{onboardingId}/origin-validation/skip",
+  "summary": "Skip origin hostnames DNS record validation",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "description": "Origin Validation is complete.Please proceed with next steps.",
+        "onboardingLink": "/appsec/v1/onboardings/2626",
+        "originValidationStatus": "VALIDATION_SUCCESS",
+        "records": [
+          {
+            "hostname": "test.hostname1.com",
+            "recordName": "origin-03bdb4-test.hostname1.com",
+            "recordStatus": "SKIPPED",
+            "recordTtl": 900,
+            "recordType": "A",
+            "recordValue": "192.0.2.222"
+          },
+          {
+            "hostname": "test.hostname2.com",
+            "recordName": "origin-03bdb4-test.hostname2.com",
+            "recordStatus": "SKIPPED",
+            "recordTtl": 900,
+            "recordType": "A",
+            "recordValue": "192.0.2.102"
+          }
+        ]
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Could not retrieve validation records",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 500,
+        "title": "Something went wrong",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR"
+      }
+    }
+  ]
+}

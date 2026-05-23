@@ -1,0 +1,186 @@
+{
+  "operationId": "get-schemas-request-filename",
+  "method": "GET",
+  "path": "/schemas/request/{filename}",
+  "summary": "Akamai Get a Schema for a Request",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "$schema": "http://json-schema.org/draft-04-schema#",
+        "description": "Specifies a set of available hostnames to which a property version may be applied. To POST a new edge hostname, specify a single object with `productId`, `domainPrefix`, and `domainSuffix` members, and optional `ipVersionBehavior` and `secure` members. Relevant response objects appear within the outer [Envelope](#envelope) object's `edgehostnames.items` array.",
+        "id": "resource:/descriptors/papi/v0/schemas/CreateNewEdgeHostnameRequestV0.json#",
+        "javaType": "com.akamai.luna.papi.model.EdgeHostnameCreateRequest",
+        "type": "object",
+        "required": [
+          "domainPrefix",
+          "domainSuffix",
+          "ipVersionBehavior",
+          "productId"
+        ],
+        "properties": {
+          "certEnrollmentId": {
+            "description": "When creating an Enhanced TLS edge hostname, this sets the certificate enrollment ID. Specify this on POST, with `secureNetwork` set to `ENHANCED_TLS`. To obtain a value programmatically, run the Certificate Provisioning System API's [List enrollments](https://developer.akamai.com/api/core_features/certificate_provisioning_system/v2.html#getenrollments) operation. Choose the appropriate enrollment, strip the leading path expression from its `location` member, and use that value as the `certEnrollmentId`.",
+            "type": "integer"
+          },
+          "domainPrefix": {
+            "type": "string"
+          },
+          "domainSuffix": {
+            "type": "string"
+          },
+          "ipVersionBehavior": {
+            "type": "string",
+            "enum": [
+              "IPV4",
+              "IPV6_COMPLIANCE"
+            ]
+          },
+          "productId": {
+            "type": "string"
+          },
+          "secure": {
+            "type": "boolean"
+          },
+          "secureNetwork": {
+            "description": "On POST, specifies the type of security for the new edge hostname. With `STANDARD_TLS` specified, specify a `domainSuffix` of `edgesuite.net`. With `SHARED_CERT` specified, specify a `domainSuffix` of `akamaized.net`. With `ENHANCED_TLS` specified, you need to specify a `certEnrollmentId` value along with a `domainSuffix` of `edgekey.net`.",
+            "type": "string",
+            "enum": [
+              "ENHANCED_TLS",
+              "STANDARD_TLS",
+              "SHARED_CERT"
+            ]
+          },
+          "slotNumber": {
+            "description": "On POST, sets the slot number for secure ESSL properties.",
+            "type": "integer"
+          },
+          "useCases": {
+            "maxItems": 2,
+            "type": "array",
+            "items": {
+              "description": "Optionally when configuring a new edge hostname, this assigns a preset _use case_ that characterizes the type of traffic served, to help optimize deployment over the Akamai edge network.  To gather values to add to this object, run the [List use cases](#getusecases) operation.",
+              "type": "object",
+              "required": [
+                "useCase",
+                "option",
+                "type"
+              ],
+              "properties": {
+                "option": {
+                  "description": "Specifies one of the available `options` available in the [UseCase](#84c668bb) response object.",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "Identifies the type of network over which traffic deploys. The only value currently available is `GLOBAL`. Use this to specify the same member name available in the [UseCase](#84c668bb) response object.",
+                  "type": "string",
+                  "enum": [
+                    "GLOBAL"
+                  ]
+                },
+                "useCase": {
+                  "description": "Uniquely identifies each mapping use case scenario. Use this to specify the same member name available in the [UseCase](#84c668bb) response object.",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system cannot understand your request.  Please check the syntax and correct any problems.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "https://problems.luna.akamaiapis.net/papi/v0/http/bad-request"
+      }
+    },
+    {
+      "status": "401",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The request requires authentication.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 401,
+        "title": "Unauthorized",
+        "type": "https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The authorization token you provided does not allow access to this resource.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/forbidden"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system was unable to locate the requested resource.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/not-found"
+      }
+    },
+    {
+      "status": "405",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system does not support the method you provided for this resource.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 405,
+        "title": "Method not allowed",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed"
+      }
+    },
+    {
+      "status": "406",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system does not support the content-type restrictions provided by your 'Accept' header.",
+        "instance": "papi/v1/build#abc12345abcc02a7",
+        "status": 406,
+        "title": "Not Acceptable",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable"
+      }
+    },
+    {
+      "status": "429",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.",
+        "instance": "/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "instanceKey": "1-12345",
+        "limit": 500,
+        "limitKey": "INCLUDES_PER_CONTRACT",
+        "remaining": 0,
+        "status": 429,
+        "title": "Too many includes",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded"
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Our system is experiencing errors. We''ll get this fixed as soon as possible.",
+        "instance": "/papi/v1/properties/12345/activations#abc12345abcc02a7",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error"
+      }
+    }
+  ]
+}

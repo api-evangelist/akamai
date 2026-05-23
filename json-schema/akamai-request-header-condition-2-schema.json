@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/request-header-condition-2",
+  "title": "RequestHeaderCondition",
+  "additionalProperties": false,
+  "description": "Collects data needed for condition matches on request headers.",
+  "properties": {
+    "className": {
+      "description": "The type of condition. The `RequestHeaderCondition` type checks for a header from the requesting client and determines if it matches a provided header. This subtype supports the `?` wildcard to match any single character and the `*` wildcard to match any sequence of 0 or more characters. You can also match on case sensitivity.",
+      "enum": [
+        "RequestHeaderCondition"
+      ],
+      "type": "string"
+    },
+    "name": {
+      "description": "A header name. Use `name` to check whether the specified header exists.",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "nameWildcard": {
+      "description": "Whether to interpret `?` and `*` as wildcards.",
+      "type": "boolean"
+    },
+    "positiveMatch": {
+      "description": "Whether the condition triggers on a match or lack of match.",
+      "type": "boolean"
+    },
+    "value": {
+      "description": "A list of unique header values. Use both `value` and `name` to check whether the requesting client\u2019s header matches a provided header.",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "nullable": true,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "valueCase": {
+      "description": "Whether to consider the case sensitivity of the provided header values.",
+      "type": "boolean"
+    },
+    "valueWildcard": {
+      "description": "Whether to interpret `?` and `*` as wildcards.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "className",
+    "name"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/request-header-condition-2.yaml"
+  }
+}

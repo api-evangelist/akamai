@@ -1,0 +1,675 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/match-targets",
+  "title": "match-targets",
+  "additionalProperties": false,
+  "description": "Describes match target settings.",
+  "properties": {
+    "matchTargets": {
+      "additionalProperties": false,
+      "description": "Match target settings.",
+      "properties": {
+        "apiTargets": {
+          "description": "The `api` match targets.",
+          "items": {
+            "additionalProperties": false,
+            "description": "Contains information about a match target.",
+            "properties": {
+              "apis": {
+                "description": "Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.",
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "Uniquely identifies the API endpoint.",
+                      "type": "integer"
+                    },
+                    "name": {
+                      "description": "The API endpoint name.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "bypassNetworkLists": {
+                "description": "The list of network list identifiers and names.",
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "Uniquely identifies the network list.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the network list.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "configId": {
+                "description": "Uniquely identifies the security configuration.",
+                "type": "integer"
+              },
+              "configVersion": {
+                "description": "The version of security configuration.",
+                "type": "integer"
+              },
+              "defaultFile": {
+                "default": "NO_MATCH",
+                "description": "Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.",
+                "enum": [
+                  "NO_MATCH",
+                  "BASE_MATCH",
+                  "RECURSIVE_MATCH"
+                ],
+                "type": "string"
+              },
+              "effectiveSecurityControls": {
+                "additionalProperties": false,
+                "description": "__Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.",
+                "properties": {
+                  "applyApiConstraints": {
+                    "description": "Whether you enabled API constraints.",
+                    "type": "boolean"
+                  },
+                  "applyApplicationLayerControls": {
+                    "description": "Whether you enabled application layer controls.",
+                    "type": "boolean"
+                  },
+                  "applyBotmanControls": {
+                    "description": "Whether you enabled Bot Manager controls.",
+                    "type": "boolean"
+                  },
+                  "applyNetworkLayerControls": {
+                    "description": "Whether you enabled network layer controls.",
+                    "type": "boolean"
+                  },
+                  "applyRateControls": {
+                    "description": "Whether you enabled rate controls.",
+                    "type": "boolean"
+                  },
+                  "applyReputationControls": {
+                    "description": "Whether you enabled reputation controls.",
+                    "type": "boolean"
+                  },
+                  "applySlowPostControls": {
+                    "description": "Whether you enabled slow post controls.",
+                    "type": "boolean"
+                  }
+                },
+                "readOnly": true,
+                "required": [
+                  "applyApplicationLayerControls",
+                  "applyNetworkLayerControls",
+                  "applyRateControls",
+                  "applyReputationControls",
+                  "applyBotmanControls",
+                  "applyApiConstraints",
+                  "applySlowPostControls"
+                ],
+                "type": "object",
+                "x-akamai": {
+                  "file-path": "schemas/security-controls.yaml"
+                }
+              },
+              "fileExtensions": {
+                "description": "Contains a list of file extensions.",
+                "items": {
+                  "description": "The file extensions used in the path match.",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filePaths": {
+                "description": "Contains a list of file paths.",
+                "items": {
+                  "description": "The path used in the path match.",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "hostnames": {
+                "description": "Contains a list of hostnames to protect.",
+                "items": {
+                  "description": "The hostnames to match the request on.",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "isNegativeFileExtensionMatch": {
+                "description": "Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.",
+                "type": "boolean"
+              },
+              "isNegativePathMatch": {
+                "description": "Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.",
+                "type": "boolean"
+              },
+              "securityPolicy": {
+                "additionalProperties": false,
+                "description": "The security policy associated with the match target.",
+                "properties": {
+                  "policyId": {
+                    "description": "Uniquely identifies the security policy.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "policyId"
+                ],
+                "type": "object"
+              },
+              "sequence": {
+                "description": "The position in the sequence of match targets.",
+                "type": "integer"
+              },
+              "targetId": {
+                "description": "Uniquely identifies the match target.",
+                "type": "integer"
+              },
+              "type": {
+                "description": "Describes the type of match target, either `website` or `api`.",
+                "enum": [
+                  "website",
+                  "api"
+                ],
+                "type": "string"
+              },
+              "validations": {
+                "additionalProperties": false,
+                "description": "__Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.",
+                "properties": {
+                  "errors": {
+                    "description": "The list of errors.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Contains feedback on validation.",
+                      "properties": {
+                        "detail": {
+                          "description": "The explanation of the error message.",
+                          "type": "string"
+                        },
+                        "fieldName": {
+                          "description": "The name of the field causing the validation problem.",
+                          "type": "string"
+                        },
+                        "jsonReference": {
+                          "description": "The JSON reference to the field in the resource.",
+                          "type": "string"
+                        },
+                        "title": {
+                          "description": "The title for the error.",
+                          "example": "Not Found",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "The URL for the error type.",
+                          "example": "/appsec/problem-types/INCOMPATIBLE-FIELD",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "type"
+                      ],
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/validation.yaml"
+                      }
+                    },
+                    "type": "array"
+                  },
+                  "notices": {
+                    "description": "The list of notices.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Contains feedback on validation.",
+                      "properties": {
+                        "detail": {
+                          "description": "The explanation of the error message.",
+                          "type": "string"
+                        },
+                        "fieldName": {
+                          "description": "The name of the field causing the validation problem.",
+                          "type": "string"
+                        },
+                        "jsonReference": {
+                          "description": "The JSON reference to the field in the resource.",
+                          "type": "string"
+                        },
+                        "title": {
+                          "description": "The title for the error.",
+                          "example": "Not Found",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "The URL for the error type.",
+                          "example": "/appsec/problem-types/INCOMPATIBLE-FIELD",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "type"
+                      ],
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/validation.yaml"
+                      }
+                    },
+                    "type": "array"
+                  },
+                  "warnings": {
+                    "description": "The list of warnings.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Contains feedback on validation.",
+                      "properties": {
+                        "detail": {
+                          "description": "The explanation of the error message.",
+                          "type": "string"
+                        },
+                        "fieldName": {
+                          "description": "The name of the field causing the validation problem.",
+                          "type": "string"
+                        },
+                        "jsonReference": {
+                          "description": "The JSON reference to the field in the resource.",
+                          "type": "string"
+                        },
+                        "title": {
+                          "description": "The title for the error.",
+                          "example": "Not Found",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "The URL for the error type.",
+                          "example": "/appsec/problem-types/INCOMPATIBLE-FIELD",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "type"
+                      ],
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/validation.yaml"
+                      }
+                    },
+                    "type": "array"
+                  }
+                },
+                "readOnly": true,
+                "required": [
+                  "notices",
+                  "errors",
+                  "warnings"
+                ],
+                "type": "object",
+                "x-akamai": {
+                  "file-path": "schemas/validations.yaml"
+                }
+              }
+            },
+            "required": [
+              "type",
+              "securityPolicy"
+            ],
+            "type": "object",
+            "x-akamai": {
+              "file-path": "schemas/match-target.yaml"
+            }
+          },
+          "type": "array"
+        },
+        "websiteTargets": {
+          "description": "The `website` match targets.",
+          "items": {
+            "additionalProperties": false,
+            "description": "Contains information about a match target.",
+            "properties": {
+              "apis": {
+                "description": "Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.",
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "Uniquely identifies the API endpoint.",
+                      "type": "integer"
+                    },
+                    "name": {
+                      "description": "The API endpoint name.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "bypassNetworkLists": {
+                "description": "The list of network list identifiers and names.",
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "description": "Uniquely identifies the network list.",
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "The name of the network list.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "configId": {
+                "description": "Uniquely identifies the security configuration.",
+                "type": "integer"
+              },
+              "configVersion": {
+                "description": "The version of security configuration.",
+                "type": "integer"
+              },
+              "defaultFile": {
+                "default": "NO_MATCH",
+                "description": "Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.",
+                "enum": [
+                  "NO_MATCH",
+                  "BASE_MATCH",
+                  "RECURSIVE_MATCH"
+                ],
+                "type": "string"
+              },
+              "effectiveSecurityControls": {
+                "additionalProperties": false,
+                "description": "__Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.",
+                "properties": {
+                  "applyApiConstraints": {
+                    "description": "Whether you enabled API constraints.",
+                    "type": "boolean"
+                  },
+                  "applyApplicationLayerControls": {
+                    "description": "Whether you enabled application layer controls.",
+                    "type": "boolean"
+                  },
+                  "applyBotmanControls": {
+                    "description": "Whether you enabled Bot Manager controls.",
+                    "type": "boolean"
+                  },
+                  "applyNetworkLayerControls": {
+                    "description": "Whether you enabled network layer controls.",
+                    "type": "boolean"
+                  },
+                  "applyRateControls": {
+                    "description": "Whether you enabled rate controls.",
+                    "type": "boolean"
+                  },
+                  "applyReputationControls": {
+                    "description": "Whether you enabled reputation controls.",
+                    "type": "boolean"
+                  },
+                  "applySlowPostControls": {
+                    "description": "Whether you enabled slow post controls.",
+                    "type": "boolean"
+                  }
+                },
+                "readOnly": true,
+                "required": [
+                  "applyApplicationLayerControls",
+                  "applyNetworkLayerControls",
+                  "applyRateControls",
+                  "applyReputationControls",
+                  "applyBotmanControls",
+                  "applyApiConstraints",
+                  "applySlowPostControls"
+                ],
+                "type": "object",
+                "x-akamai": {
+                  "file-path": "schemas/security-controls.yaml"
+                }
+              },
+              "fileExtensions": {
+                "description": "Contains a list of file extensions.",
+                "items": {
+                  "description": "The file extensions used in the path match.",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "filePaths": {
+                "description": "Contains a list of file paths.",
+                "items": {
+                  "description": "The path used in the path match.",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "hostnames": {
+                "description": "Contains a list of hostnames to protect.",
+                "items": {
+                  "description": "The hostnames to match the request on.",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "isNegativeFileExtensionMatch": {
+                "description": "Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.",
+                "type": "boolean"
+              },
+              "isNegativePathMatch": {
+                "description": "Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.",
+                "type": "boolean"
+              },
+              "securityPolicy": {
+                "additionalProperties": false,
+                "description": "The security policy associated with the match target.",
+                "properties": {
+                  "policyId": {
+                    "description": "Uniquely identifies the security policy.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "policyId"
+                ],
+                "type": "object"
+              },
+              "sequence": {
+                "description": "The position in the sequence of match targets.",
+                "type": "integer"
+              },
+              "targetId": {
+                "description": "Uniquely identifies the match target.",
+                "type": "integer"
+              },
+              "type": {
+                "description": "Describes the type of match target, either `website` or `api`.",
+                "enum": [
+                  "website",
+                  "api"
+                ],
+                "type": "string"
+              },
+              "validations": {
+                "additionalProperties": false,
+                "description": "__Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.",
+                "properties": {
+                  "errors": {
+                    "description": "The list of errors.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Contains feedback on validation.",
+                      "properties": {
+                        "detail": {
+                          "description": "The explanation of the error message.",
+                          "type": "string"
+                        },
+                        "fieldName": {
+                          "description": "The name of the field causing the validation problem.",
+                          "type": "string"
+                        },
+                        "jsonReference": {
+                          "description": "The JSON reference to the field in the resource.",
+                          "type": "string"
+                        },
+                        "title": {
+                          "description": "The title for the error.",
+                          "example": "Not Found",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "The URL for the error type.",
+                          "example": "/appsec/problem-types/INCOMPATIBLE-FIELD",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "type"
+                      ],
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/validation.yaml"
+                      }
+                    },
+                    "type": "array"
+                  },
+                  "notices": {
+                    "description": "The list of notices.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Contains feedback on validation.",
+                      "properties": {
+                        "detail": {
+                          "description": "The explanation of the error message.",
+                          "type": "string"
+                        },
+                        "fieldName": {
+                          "description": "The name of the field causing the validation problem.",
+                          "type": "string"
+                        },
+                        "jsonReference": {
+                          "description": "The JSON reference to the field in the resource.",
+                          "type": "string"
+                        },
+                        "title": {
+                          "description": "The title for the error.",
+                          "example": "Not Found",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "The URL for the error type.",
+                          "example": "/appsec/problem-types/INCOMPATIBLE-FIELD",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "type"
+                      ],
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/validation.yaml"
+                      }
+                    },
+                    "type": "array"
+                  },
+                  "warnings": {
+                    "description": "The list of warnings.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Contains feedback on validation.",
+                      "properties": {
+                        "detail": {
+                          "description": "The explanation of the error message.",
+                          "type": "string"
+                        },
+                        "fieldName": {
+                          "description": "The name of the field causing the validation problem.",
+                          "type": "string"
+                        },
+                        "jsonReference": {
+                          "description": "The JSON reference to the field in the resource.",
+                          "type": "string"
+                        },
+                        "title": {
+                          "description": "The title for the error.",
+                          "example": "Not Found",
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "The URL for the error type.",
+                          "example": "/appsec/problem-types/INCOMPATIBLE-FIELD",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "type"
+                      ],
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/validation.yaml"
+                      }
+                    },
+                    "type": "array"
+                  }
+                },
+                "readOnly": true,
+                "required": [
+                  "notices",
+                  "errors",
+                  "warnings"
+                ],
+                "type": "object",
+                "x-akamai": {
+                  "file-path": "schemas/validations.yaml"
+                }
+              }
+            },
+            "required": [
+              "type",
+              "securityPolicy"
+            ],
+            "type": "object",
+            "x-akamai": {
+              "file-path": "schemas/match-target.yaml"
+            }
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "apiTargets",
+        "websiteTargets"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "matchTargets"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/match-targets.yaml"
+  }
+}

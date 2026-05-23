@@ -1,0 +1,54 @@
+{
+  "operationId": "post-export-config-version-async-task",
+  "method": "POST",
+  "path": "/configs/{configId}/versions/{versionNumber}/export",
+  "summary": "Asynchronously export a configuration version",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "202",
+      "contentType": "application/json",
+      "example": {
+        "createdBy": "jkowalski@example.com",
+        "createdDate": "2025-08-06T10:44:05.016608Z",
+        "exportId": "161",
+        "exportStatus": "PENDING",
+        "retryAfter": 60,
+        "statusLink": "/appsec/v1/configs/24193/versions/39/export/161/status"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    },
+    {
+      "status": "409",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "An export task is already running. Please wait for the previous export task ('161') to complete before submitting a new one.",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/170237a02c617aa5",
+        "status": 409,
+        "title": "Invalid Input Error",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/INVALID-INPUT-ERROR"
+      }
+    }
+  ]
+}

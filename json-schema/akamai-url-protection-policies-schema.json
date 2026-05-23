@@ -1,0 +1,355 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/url-protection-policies",
+  "title": "url-protection-policies",
+  "additionalProperties": false,
+  "description": "Contains details about URL protection policies.",
+  "properties": {
+    "urlProtectionPolicies": {
+      "description": "A list of URL protection policies in the configuration version.",
+      "items": {
+        "additionalProperties": false,
+        "description": "Contains details about a URL protection policy.",
+        "properties": {
+          "apiDefinitions": {
+            "description": "The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.",
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "apiDefinitionId": {
+                  "description": "Uniquely identifies each API endpoint.",
+                  "format": "int64",
+                  "type": "integer"
+                },
+                "definedResources": {
+                  "description": "When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.",
+                  "type": "boolean"
+                },
+                "resourceIds": {
+                  "description": "The unique identifiers of the endpoint's resources.",
+                  "items": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "type": "array"
+                },
+                "undefinedResources": {
+                  "description": "When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.",
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "apiDefinitionId"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "bypassCondition": {
+            "additionalProperties": false,
+            "description": "Exempts specific clients from being processed by the URL protection policy.",
+            "properties": {
+              "atomicConditions": {
+                "description": "Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.",
+                "items": {
+                  "oneOf": [
+                    {
+                      "additionalProperties": false,
+                      "description": "Collects data needed for condition matches on request headers.",
+                      "properties": {
+                        "className": {
+                          "description": "Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.",
+                          "enum": [
+                            "RequestHeaderCondition"
+                          ],
+                          "type": "string"
+                        },
+                        "name": {
+                          "description": "Use `name` to check whether the specified header exists.",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "minItems": 1,
+                          "type": "array",
+                          "uniqueItems": true
+                        },
+                        "nameWildcard": {
+                          "description": "Whether to interpret `?` and `*` as wildcards in the specified `name`.",
+                          "type": "boolean"
+                        },
+                        "positiveMatch": {
+                          "description": "__Read-only__ Whether the condition triggers on a match or lack of match.",
+                          "readOnly": true,
+                          "type": "boolean"
+                        },
+                        "value": {
+                          "description": "A list of unique header values. Use both `value` and `name` to check whether the requesting client\u2019s header matches the specified headers.",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "nullable": true,
+                          "type": "array",
+                          "uniqueItems": true
+                        },
+                        "valueCase": {
+                          "description": "Whether to consider case when matching header values, `true` for case-sensitive matches.",
+                          "type": "boolean"
+                        },
+                        "valueWildcard": {
+                          "description": "Whether to interpret `?` and `*` as wildcards in the specified `value`.",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "className",
+                        "name"
+                      ],
+                      "title": "RequestHeaderCondition",
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/url-protection-bypass-request-header-condition.yaml"
+                      }
+                    },
+                    {
+                      "additionalProperties": false,
+                      "description": "Collects data needed for condition matches on client lists and network lists.",
+                      "properties": {
+                        "checkIps": {
+                          "description": "__Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.",
+                          "enum": [
+                            "connecting"
+                          ],
+                          "readOnly": true,
+                          "type": "string"
+                        },
+                        "className": {
+                          "description": "Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.",
+                          "enum": [
+                            "NetworkListCondition"
+                          ],
+                          "type": "string"
+                        },
+                        "positiveMatch": {
+                          "description": "__Read-only__ Whether the condition triggers on a match or lack of match.",
+                          "readOnly": true,
+                          "type": "boolean"
+                        },
+                        "value": {
+                          "description": "Identifies the client list or network list.",
+                          "items": {
+                            "minLength": 1,
+                            "type": "string"
+                          },
+                          "nullable": true,
+                          "type": "array",
+                          "uniqueItems": true
+                        }
+                      },
+                      "required": [
+                        "className",
+                        "value"
+                      ],
+                      "title": "NetworkListCondition",
+                      "type": "object",
+                      "x-akamai": {
+                        "file-path": "schemas/url-protection-bypass-client-list-condition.yaml"
+                      }
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "type": "object"
+          },
+          "categories": {
+            "description": "The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.",
+            "items": {
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "description": "Specify one or more load shedding categories for the URL protection policy.",
+                  "properties": {
+                    "type": {
+                      "description": "Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.",
+                      "enum": [
+                        "BOTS",
+                        "CLIENT_REPUTATIONS",
+                        "CLOUD_PROVIDERS",
+                        "PROXIES",
+                        "TOR_EXIT_NODES",
+                        "PLATFORM_DDOS_INTELLIGENCE"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Client list category",
+                  "type": "object",
+                  "x-akamai": {
+                    "file-path": "schemas/url-protection-category.yaml"
+                  }
+                },
+                {
+                  "additionalProperties": false,
+                  "description": "Defines a `CLIENT_LIST` load shedding category for a URL protection policy.",
+                  "properties": {
+                    "listIds": {
+                      "description": "A list of client list identifiers to match on.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
+                    "positiveMatch": {
+                      "description": "Whether the selected client lists match.",
+                      "type": "boolean"
+                    },
+                    "type": {
+                      "description": "Specify `CLIENT_LIST` to match on a client list.",
+                      "enum": [
+                        "CLIENT_LIST"
+                      ],
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ],
+                  "title": "Other categories",
+                  "type": "object",
+                  "x-akamai": {
+                    "file-path": "schemas/url-protection-client-list-category.yaml"
+                  }
+                }
+              ]
+            },
+            "type": "array"
+          },
+          "configId": {
+            "description": "Uniquely identifies the security configuration.",
+            "format": "int64",
+            "type": "integer"
+          },
+          "configVersion": {
+            "description": "The security configuration version.",
+            "type": "integer"
+          },
+          "createDate": {
+            "description": "__Read-only__ The timestamp when you created the URL protection policy.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "createdBy": {
+            "description": "__Read-only__ The username of the person who created the URL protection policy.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "description": {
+            "description": "A description of the rate policy.",
+            "type": "string"
+          },
+          "hostnamePaths": {
+            "description": "The hostname and path combinations to match on.",
+            "items": {
+              "additionalProperties": false,
+              "description": "The hostname and path combinations to match on.",
+              "properties": {
+                "hostname": {
+                  "description": "The hostnames you choose to match on.",
+                  "type": "string"
+                },
+                "paths": {
+                  "description": "The list of paths to match on.",
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "hostname",
+                "paths"
+              ],
+              "type": "object",
+              "x-akamai": {
+                "file-path": "schemas/url-protection-policy-hostpath.yaml"
+              }
+            },
+            "minItems": 1,
+            "type": "array"
+          },
+          "intelligentLoadShedding": {
+            "description": "Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.",
+            "type": "boolean"
+          },
+          "name": {
+            "description": "The rate policy's unique name.",
+            "type": "string"
+          },
+          "policyId": {
+            "description": "__Read-only__ Uniquely identifies the URL protection policy.",
+            "format": "int64",
+            "readOnly": true,
+            "type": "integer"
+          },
+          "protectionType": {
+            "description": "If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.",
+            "enum": [
+              "SINGLE",
+              "MULTIPLE"
+            ],
+            "type": "string"
+          },
+          "rateThreshold": {
+            "description": "The allowed hits per second during any five-second interval.",
+            "type": "integer"
+          },
+          "sheddingThresholdHitsPerSec": {
+            "description": "Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.",
+            "type": "integer"
+          },
+          "updateDate": {
+            "description": "__Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.",
+            "format": "date-time",
+            "readOnly": true,
+            "type": "string"
+          },
+          "updatedBy": {
+            "description": "__Read-only__ Username who last updated the URL protection policy.",
+            "readOnly": true,
+            "type": "string"
+          },
+          "used": {
+            "description": "__Read-only__ Whether you're currently using the URL protection policy.",
+            "readOnly": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "intelligentLoadShedding",
+          "rateThreshold",
+          "name"
+        ],
+        "type": "object",
+        "x-akamai": {
+          "file-path": "schemas/url-protection-policy.yaml"
+        }
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "urlProtectionPolicies"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/url-protection-policies.yaml"
+  }
+}

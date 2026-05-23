@@ -1,0 +1,160 @@
+{
+  "operationId": "get-eval-group-condition-exception",
+  "method": "GET",
+  "path": "/configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/eval-groups/{attackGroupId}/condition-exception",
+  "summary": "Get the exceptions of an evaluation attack group",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "advancedExceptions": {
+          "conditionOperator": "AND",
+          "conditions": [
+            {
+              "filenames": [
+                "*.aspx",
+                "*.js"
+              ],
+              "positiveMatch": true,
+              "type": "filenameMatch"
+            },
+            {
+              "paths": [
+                "/catalog"
+              ],
+              "positiveMatch": true,
+              "type": "pathMatch"
+            },
+            {
+              "clientLists": [
+                "88330_TESTIP1"
+              ],
+              "positiveMatch": true,
+              "type": "clientListMatch",
+              "useHeaders": true
+            }
+          ],
+          "headerCookieOrParamValues": [
+            {
+              "valueWildcard": true,
+              "values": [
+                "header1",
+                "cookie1",
+                "param1"
+              ]
+            }
+          ],
+          "specificHeaderCookieOrParamNameValue": [
+            {
+              "namesValues": [
+                {
+                  "names": [
+                    "header1"
+                  ],
+                  "values": [
+                    "value1"
+                  ]
+                }
+              ],
+              "selector": "REQUEST_HEADERS",
+              "wildcard": true
+            },
+            {
+              "namesValues": [
+                {
+                  "names": [
+                    "param-name"
+                  ],
+                  "values": [
+                    "param-value"
+                  ]
+                }
+              ],
+              "selector": "ARGS",
+              "wildcard": true
+            },
+            {
+              "namesValues": [
+                {
+                  "names": [
+                    "json-param1"
+                  ],
+                  "values": [
+                    "json-value1"
+                  ]
+                }
+              ],
+              "selector": "JSON_PAIRS",
+              "wildcard": true
+            },
+            {
+              "namesValues": [
+                {
+                  "names": [
+                    "cookie-name"
+                  ],
+                  "values": [
+                    "cookie1"
+                  ]
+                }
+              ],
+              "selector": "REQUEST_COOKIES",
+              "wildcard": true
+            }
+          ],
+          "specificHeaderCookieParamXmlOrJsonNames": [
+            {
+              "names": [
+                "test"
+              ],
+              "selector": "REQUEST_COOKIES_NAMES",
+              "wildcard": true
+            },
+            {
+              "names": [
+                "aaaa"
+              ],
+              "selector": "REQUEST_COOKIES",
+              "wildcard": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/json",
+      "example": {
+        "detail": "The request could not be understood by the server due to malformed syntax.",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Internal Server Error",
+        "instance": "12ab3c45-789d-01ef-2gh3-ijk4l56m78no",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "internal_server_error"
+      }
+    }
+  ]
+}

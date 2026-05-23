@@ -1,0 +1,80 @@
+{
+  "operationId": "post-tokens",
+  "method": "POST",
+  "path": "/tokens",
+  "summary": "Akamai Create an Access Token",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "allowOnProduction": false,
+        "allowOnStaging": true,
+        "expiry": "2021-09-30",
+        "name": "my_token",
+        "namespacePermissions": {
+          "marketing": [
+            "r",
+            "w"
+          ]
+        }
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "expiry": "2021-09-30",
+        "name": "my_token",
+        "uuid": "fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466",
+        "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      }
+    },
+    {
+      "status": "409",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Token with name my_token is already stored.",
+        "errorCode": "EKV_3000",
+        "instance": "/edgekv/error-instances/e0ddea79-a457-4f49-9d70-c4c22e674bcf",
+        "status": 409,
+        "title": "Conflict",
+        "type": "/edgekv/error-types/edgekv-conflict",
+        "additionalDetail": {
+          "requestId": "9c5c61e18b90013b"
+        }
+      }
+    },
+    {
+      "status": "422",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The JSON request body contained a syntax error or duplicate attributes.",
+        "errorCode": "EKV_2001",
+        "instance": "/edgekv/error-instances/e0ddea79-a457-4f49-9d70-c4c22e674bcf",
+        "status": 422,
+        "title": "Unprocessable Entity",
+        "type": "/edgekv/error-types/edgekv-unprocessable-entity",
+        "additionalDetail": {
+          "requestId": "9c5c61e18b90013b"
+        }
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "An internal error occurred.",
+        "errorCode": "EKV_0000",
+        "instance": "/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "/edgekv/error-types/edgekv-internal-server-error",
+        "additionalDetail": {
+          "requestId": "cd9b61e08148009b"
+        }
+      }
+    }
+  ]
+}

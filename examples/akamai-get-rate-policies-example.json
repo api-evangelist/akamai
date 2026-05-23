@@ -1,0 +1,252 @@
+{
+  "operationId": "get-rate-policies",
+  "method": "GET",
+  "path": "/configs/{configId}/versions/{versionNumber}/rate-policies",
+  "summary": "List rate policies",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "ratePolicies": [
+          {
+            "additionalMatchOptions": [
+              {
+                "positiveMatch": true,
+                "type": "IpAddressCondition",
+                "values": [
+                  "192.0.2.215"
+                ]
+              },
+              {
+                "positiveMatch": true,
+                "type": "RequestMethodCondition",
+                "values": [
+                  "GET"
+                ]
+              }
+            ],
+            "averageThreshold": 5,
+            "burstThreshold": 10,
+            "burstWindow": 3,
+            "clientIdentifier": "ip",
+            "clientIdentifiers": [
+              "ip"
+            ],
+            "condition": {
+              "atomicConditions": [
+                {
+                  "className": "TlsFingerprintCondition",
+                  "positiveMatch": true,
+                  "value": [
+                    "a797dc449ef113be",
+                    "ba51ec8d71259a5b3c92d8787370e2c3"
+                  ]
+                },
+                {
+                  "className": "ClientReputationCondition",
+                  "name": [
+                    "DOSATCK",
+                    "WEBATCK"
+                  ],
+                  "positiveMatch": true,
+                  "sharedIpHandling": "BOTH",
+                  "value": 3
+                },
+                {
+                  "className": "RequestHeaderCondition",
+                  "name": [
+                    "Accept",
+                    "Content-Type"
+                  ],
+                  "nameWildcard": true,
+                  "positiveMatch": true,
+                  "value": [
+                    "json",
+                    "xml"
+                  ],
+                  "valueCase": false,
+                  "valueWildcard": true
+                }
+              ],
+              "positiveMatch": true
+            },
+            "counterType": "per_edge",
+            "createDate": "2016-07-22T18:57:08Z",
+            "description": "AFW Test Extensions",
+            "evaluation": {
+              "averageThreshold": 5,
+              "burstThreshold": 8,
+              "burstWindow": 5,
+              "counterType": "region_aggregated",
+              "endDate": "2024-04-11T16:04:43Z",
+              "evaluationId": 97,
+              "evaluationStatus": "completed",
+              "startDate": "2024-03-28T16:04:43Z",
+              "version": 1
+            },
+            "fileExtensions": {
+              "positiveMatch": false,
+              "values": [
+                "3g2",
+                "3gp",
+                "aif",
+                "aiff",
+                "au",
+                "avi",
+                "bin",
+                "bmp",
+                "cab"
+              ]
+            },
+            "hosts": {
+              "positiveMatch": false,
+              "values": [
+                "www.myexamplehostname.org"
+              ]
+            },
+            "id": 484616,
+            "matchType": "path",
+            "name": "Test_Paths 2",
+            "path": {
+              "positiveMatch": true,
+              "values": [
+                "/login/",
+                "/path/"
+              ]
+            },
+            "pathMatchType": "Custom",
+            "pathUriPositiveMatch": true,
+            "penaltyBoxDuration": "TEN_MINUTES",
+            "queryParameters": [
+              {
+                "name": "productId",
+                "positiveMatch": true,
+                "valueInRange": false,
+                "values": [
+                  "BUB_12",
+                  "SUSH_11"
+                ]
+              }
+            ],
+            "requestType": "ClientRequest",
+            "sameActionOnIpv6": false,
+            "type": "WAF",
+            "updateDate": "2017-02-22T00:05:41Z",
+            "useXForwardForHeaders": true,
+            "used": false
+          },
+          {
+            "additionalMatchOptions": [
+              {
+                "positiveMatch": false,
+                "type": "NetworkListCondition",
+                "values": [
+                  "18198_DSWINTERNALTESTIPADDRES",
+                  "7054_FEOSERVERS"
+                ]
+              },
+              {
+                "positiveMatch": false,
+                "type": "UserAgentCondition",
+                "values": [
+                  "soasta",
+                  "MovableInk"
+                ]
+              }
+            ],
+            "apiSelectors": [
+              {
+                "apiDefinitionId": 602,
+                "definedResources": false,
+                "resourceIds": [
+                  748
+                ],
+                "undefinedResources": false
+              }
+            ],
+            "averageThreshold": 5,
+            "bodyParameters": [
+              {
+                "name": "Country",
+                "positiveMatch": true,
+                "valueInRange": false,
+                "values": [
+                  "USA",
+                  "Canada"
+                ]
+              }
+            ],
+            "burstThreshold": 10,
+            "clientIdentifier": "ip",
+            "clientIdentifiers": [
+              "ip"
+            ],
+            "counterType": "per_edge",
+            "createDate": "2016-07-22T18:57:08Z",
+            "description": "AFW Test Extensions",
+            "fileExtensions": {
+              "positiveMatch": false,
+              "values": [
+                "avi",
+                "bmp",
+                "jpg"
+              ]
+            },
+            "hosts": {
+              "positiveMatch": false,
+              "values": [
+                "www.myexamplehostname.org"
+              ]
+            },
+            "id": 484617,
+            "matchType": "api",
+            "name": "Test_Paths 2",
+            "pathMatchType": "Custom",
+            "penaltyBoxDuration": "TEN_MINUTES",
+            "queryParameters": [
+              {
+                "name": "productId",
+                "positiveMatch": true,
+                "valueInRange": false,
+                "values": [
+                  "BUB_12",
+                  "SUSH_11"
+                ]
+              }
+            ],
+            "requestType": "ClientRequest",
+            "sameActionOnIpv6": false,
+            "type": "WAF",
+            "updateDate": "2017-02-22T00:05:41Z",
+            "useXForwardForHeaders": true,
+            "used": false
+          }
+        ]
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    }
+  ]
+}

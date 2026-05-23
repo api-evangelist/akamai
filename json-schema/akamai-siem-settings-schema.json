@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/siem-settings",
+  "title": "siem-settings",
+  "additionalProperties": false,
+  "description": "Contains Security Information Event Management (SIEM) integration settings.",
+  "properties": {
+    "enableForAllPolicies": {
+      "description": "Whether you enabled SIEM for all the security policies in the configuration version.",
+      "type": "boolean"
+    },
+    "enableSiem": {
+      "description": "Whether you enabled SIEM in a security configuration version.",
+      "type": "boolean"
+    },
+    "enabledBotmanSiemEvents": {
+      "deprecated": true,
+      "description": "__Deprecated__ Whether you enabled SIEM for the Bot Manager events. Use `exceptions` parameter instead to set botman siem events exception.",
+      "type": "boolean",
+      "x-akamai": {
+        "status": "DEPRECATED"
+      }
+    },
+    "exceptions": {
+      "description": "Describes all attack type exceptions that will be ignored in SIEM events.",
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "actionTypes": {
+            "description": "Describes [actions](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be excluded for a particular attack type. A `*` value means all actions.",
+            "items": {
+              "enum": [
+                "*",
+                "alert",
+                "deny",
+                "all_custom",
+                "abort",
+                "allow",
+                "delay",
+                "ignore",
+                "monitor",
+                "slow",
+                "tarpit"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "protection": {
+            "description": "[Attack types](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be added as an exception.",
+            "enum": [
+              "ipgeo",
+              "rate",
+              "urlProtection",
+              "slowpost",
+              "customrules",
+              "waf",
+              "apirequestconstraints",
+              "clientrep",
+              "malwareprotection",
+              "botmanagement",
+              "aprProtection",
+              "aifirewallprotection"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "firewallPolicyIds": {
+      "description": "The list of security policy identifiers for which to enable the SIEM integration.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "includeJA4FingerprintToSiem": {
+      "description": "Whether you enabled JA4 header forwarding for SIEM.",
+      "type": "boolean"
+    },
+    "siemDefinitionId": {
+      "description": "Uniquely identifies the SIEM settings.",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "enableSiem"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/siem-settings.yaml"
+  }
+}

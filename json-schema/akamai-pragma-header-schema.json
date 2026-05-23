@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/pragma-header",
+  "title": "pragma-header",
+  "additionalProperties": false,
+  "description": "Describes which headers you can exclude from inspection when you pass a `Pragma` debug header.",
+  "properties": {
+    "action": {
+      "description": "The action to perform when a user passes a `Pragma` header. The only action currently supported is `REMOVE`.",
+      "enum": [
+        "REMOVE"
+      ],
+      "type": "string"
+    },
+    "conditionOperator": {
+      "description": "Use `OR` to match any condition, or `AND` to match on all conditions.",
+      "enum": [
+        "OR",
+        "AND"
+      ],
+      "type": "string"
+    },
+    "excludeCondition": {
+      "description": "The conditions to exclude from the default `remove` action. Any condition you set in this object appears in the `Pragma` header debug response object.",
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "header": {
+            "description": "The name of the request header. In the example, `accept`.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the request header to ignore from inspection. In the example, `type`.",
+            "type": "string"
+          },
+          "positiveMatch": {
+            "description": "When `true`, matches the selected values. When `false`, matches on anything outside the selected values.",
+            "type": "boolean"
+          },
+          "type": {
+            "description": "The header value you want to appear in the response. You can choose from `requestHeaderValueMatch`, `ipMatch`, `networkList`, or `queryParamNameValueMatch`.",
+            "enum": [
+              "requestHeaderValueMatch",
+              "ipMatch",
+              "networkList",
+              "queryParamNameValueMatch"
+            ],
+            "type": "string"
+          },
+          "useHeaders": {
+            "description": "Whether the condition should include  the `X-Forwarded-For` header (XFF) header. This only applies when the condition `type` is `IP_MATCH` or `NETWORK_LIST`.",
+            "type": "boolean"
+          },
+          "value": {
+            "description": "List of header values, query parameter values, IP addresses, or names of network lists. To manage networks lists, use the [Network Lists API](https://techdocs.akamai.com/network-lists/reference/api).",
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "valueCase": {
+            "description": "Whether to consider the case-sensitivity of the provided header value. This only applies when the condition `type` is `REQUEST_HEADER_VALUE_MATCH`.",
+            "type": "boolean"
+          },
+          "valueWildcard": {
+            "description": "Whether the provided header value includes wildcards, such as `*` or `?`. This only applies to the `REQUEST_HEADER_VALUE_MATCH` condition type.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "type",
+          "positiveMatch",
+          "value"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "override": {
+      "description": "Whether `Pragma` header override is enabled or disabled.",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "action"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/pragma-header.yaml"
+  }
+}

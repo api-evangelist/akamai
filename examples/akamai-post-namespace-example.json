@@ -1,0 +1,91 @@
+{
+  "operationId": "post-namespace",
+  "method": "POST",
+  "path": "/networks/{network}/namespaces",
+  "summary": "Akamai Create a Namespace",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "geoLocation": "US",
+        "groupId": 4284,
+        "namespace": "marketing",
+        "retentionInSeconds": 15724800
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "geoLocation": "US",
+        "groupId": 4284,
+        "namespace": "marketing",
+        "retentionInSeconds": 15724800
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "name": "Cannot change groupId",
+      "example": {
+        "detail": "groupId changes must be made through the reauthorize endpoint.",
+        "errorCode": "EKV_3000",
+        "instance": "/edgekv/error-instances/2c82be29-f909-4d42-b775-de404e264fd9",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "/edgekv/error-types/edgekv-bad-request",
+        "additionalDetail": {
+          "requestId": "5d424b9289ab9b43"
+        }
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "name": "Invalid Namespace",
+      "example": {
+        "detail": "Retention period must be specified.",
+        "errorCode": "EKV_2000",
+        "instance": "/edgekv/error-instances/48361e23-541d-4c39-ab4b-c8a194889b27",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "/edgekv/error-types/edgekv-bad-request",
+        "additionalDetail": {
+          "requestId": "baaf61e18fa20d95"
+        }
+      }
+    },
+    {
+      "status": "409",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "A namespace with the name marketing already exists with a different configuration",
+        "errorCode": "EKV_3000",
+        "instance": "/edgekv/error-instances/990ac1c3-aa20-4cb8-91fd-9c791d7653f5",
+        "status": 409,
+        "title": "Conflict",
+        "type": "/edgekv/error-types/edgekv-conflict",
+        "additionalDetail": {
+          "requestId": "c04b61e191f202f3"
+        }
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "An internal error occurred.",
+        "errorCode": "EKV_0000",
+        "instance": "/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "/edgekv/error-types/edgekv-internal-server-error",
+        "additionalDetail": {
+          "requestId": "cd9b61e08148009b"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "operationId": "put-initialize",
+  "method": "PUT",
+  "path": "/initialize",
+  "summary": "Akamai Initialize EdgeKV",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "dataAccessPolicy": {
+          "allowNamespacePolicyOverride": false,
+          "restrictDataAccess": true
+        }
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "102",
+      "contentType": "application/json",
+      "example": {
+        "accountStatus": "PENDING",
+        "cpcode": null,
+        "dataAccessPolicy": null,
+        "productionStatus": "PENDING",
+        "stagingStatus": "PENDING"
+      }
+    },
+    {
+      "status": "201",
+      "contentType": "application/json",
+      "example": {
+        "accountStatus": "INITIALIZED",
+        "cpcode": "1234567",
+        "productionStatus": "INITIALIZED",
+        "stagingStatus": "INITIALIZED",
+        "dataAccessPolicy": {
+          "allowNamespacePolicyOverride": false,
+          "restrictDataAccess": true
+        }
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You cannot set `restrictDataAccess` to false. Your account entitlement doesn't allow EdgeKV data access to Akamai's Standard TLS network.",
+        "errorCode": "EKV_1005",
+        "instance": "/edgekv/error-instances/2c82be29-f909-4d42-b775-de404e264fd9",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "/edgekv/error-types/edgekv-bad-request",
+        "additionalDetail": {
+          "requestId": "5d424b9289ab9b43"
+        }
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "An internal error occurred.",
+        "errorCode": "EKV_0000",
+        "instance": "/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "/edgekv/error-types/edgekv-internal-server-error",
+        "additionalDetail": {
+          "requestId": "cd9b61e08148009b"
+        }
+      }
+    }
+  ]
+}

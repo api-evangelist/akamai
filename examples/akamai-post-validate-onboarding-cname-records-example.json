@@ -1,0 +1,119 @@
+{
+  "operationId": "post-validate-onboarding-cname-records",
+  "method": "POST",
+  "path": "/onboardings/{onboardingId}/cname-to-akamai/validate",
+  "summary": "Validate hostname CNAME DNS records",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "cnameValidationStatus": "VALIDATION_SUCCESS",
+        "description": "Cname-to-akamai is now complete. You are live now with Akamai Servers",
+        "onboardingLink": "/appsec/v1/onboardings/2626",
+        "records": [
+          {
+            "recordName": "bugbash2.konaqa.com",
+            "recordStatus": "VALIDATED",
+            "recordTtl": 300,
+            "recordType": "CNAME",
+            "recordValue": "bugbash2.konaqa.com.edgekey.net"
+          },
+          {
+            "recordName": "bugbash3.konaqa.com",
+            "recordStatus": "VALIDATED",
+            "recordTtl": 300,
+            "recordType": "CNAME",
+            "recordValue": "bugbash2.konaqa.com.edgekey.net"
+          }
+        ]
+      }
+    },
+    {
+      "status": "202",
+      "contentType": "application/json",
+      "example": {
+        "cnameValidateLink": "/appsec/v1/onboardings/101/cname-to-akamai/validate",
+        "cnameValidationStatus": "VALIDATION_NEEDED",
+        "description": "Add all records to your DNS settings to cname hostnames to Akamai and validate the records to complete the onboarding",
+        "onboardingLink": "/appsec/v1/onboardings/101",
+        "records": [
+          {
+            "recordName": "test.hostname1.com",
+            "recordStatus": "NOT_VALIDATED",
+            "recordTtl": 300,
+            "recordType": "CNAME",
+            "recordValue": "test.hostname1.com.edgekey.net"
+          },
+          {
+            "recordName": "test.hostname2.com",
+            "recordStatus": "NOT_VALIDATED",
+            "recordTtl": 300,
+            "recordType": "CNAME",
+            "recordValue": "test.hostname2.com.edgekey.net"
+          }
+        ]
+      }
+    },
+    {
+      "status": "207",
+      "contentType": "application/json",
+      "example": {
+        "cnameValidateLink": "/appsec/v1/onboardings/101/cname-to-akamai/validate",
+        "cnameValidationStatus": "VALIDATION_NEEDED",
+        "description": "Add all records to your DNS settings to cname hostnames to Akamai and validate the records to complete the onboarding",
+        "onboardingLink": "/appsec/v1/onboardings/101",
+        "records": [
+          {
+            "recordName": "test.hostname1.com",
+            "recordStatus": "NOT_VALIDATED",
+            "recordTtl": 300,
+            "recordType": "CNAME",
+            "recordValue": "test.hostname1.com.edgekey.net"
+          },
+          {
+            "recordName": "test.hostname2.com",
+            "recordStatus": "NOT_VALIDATED",
+            "recordTtl": 300,
+            "recordType": "CNAME",
+            "recordValue": "test.hostname2.com.edgekey.net"
+          }
+        ]
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Could not retrieve validation records",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 500,
+        "title": "Something went wrong",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR"
+      }
+    }
+  ]
+}

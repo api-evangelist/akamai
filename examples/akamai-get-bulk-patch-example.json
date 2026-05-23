@@ -1,0 +1,183 @@
+{
+  "operationId": "get-bulk-patch",
+  "method": "GET",
+  "path": "/bulk/rules-patch-requests/{bulkPatchId}",
+  "summary": "Akamai List Bulk-patched Properties",
+  "requestExamples": [],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "bulkPatchId": 7,
+        "bulkPatchStatus": "COMPLETE",
+        "bulkPatchSubmitDate": "2018-01-18T00:00:00Z",
+        "bulkPatchUpdateDate": "2018-01-18T01:00:00Z",
+        "patchPropertyVersions": [
+          {
+            "etag": "a9dfe78cf93090516bde891d009eaf57",
+            "patchPropertyId": "prp_1",
+            "patchPropertyVersion": 2,
+            "patchPropertyVersionStatus": "COMPLETE",
+            "patchSubmitDate": "2018-01-18T00:00:00Z",
+            "patchUpdateDate": "2018-01-18T00:00:00Z",
+            "propertyVersionRulesLink": "/papi/v1/properties/prp_1/versions/1/rules",
+            "papiErrors": [
+              {
+                "detail": "The Verification Settings option on the `Origin Server` behavior is required.",
+                "errorLocation": "#/rules/behaviors/0/options/verificationMode",
+                "instance": "https://control.sqa2.qa.akamai.com/papi/v0/bulk/activations/1?contractId=ctr_C-0N7RAC7&groupId=grp_15225#853080b7-e411-432d-99ae-967e56b50d72",
+                "title": "Attribute not specified",
+                "type": "https://problems.luna.akamaiapis.net/papi/v0/validation/attribute_required"
+              }
+            ],
+            "papiWarnings": [
+              {
+                "detail": "The CP Code within `Content Provider Code` isn't configured for use with the product used by this property, Dynamic Site Accelerator. Traffic for this property might not show up under the correct traffic reports.",
+                "errorLocation": "#/rules/behaviors/1/options/value",
+                "instance": "https://control.sqa2.qa.akamai.com/papi/v0/bulk/activations/1?contractId=ctr_C-0N7RAC7&groupId=grp_15225#853080b7-e411-432d-99ae-967e56b50d72",
+                "title": "Unstable rule format",
+                "type": "https://problems.luna.akamaiapis.net/papi/v0/validation/product_behavior_issue.cpcode_incorrect_product"
+              }
+            ],
+            "patches": [
+              {
+                "op": "replace",
+                "path": "/rules/children/1/features/3/option/enabled",
+                "value": "on"
+              },
+              {
+                "op": "replace",
+                "path": "/rules/children/1/features/0/option/enabled",
+                "value": "on"
+              }
+            ]
+          },
+          {
+            "fatalError": "BAD SYNTAX UNABLE TO SAVE",
+            "patchPropertyId": "prp_15",
+            "patchPropertyVersion": 3,
+            "patchPropertyVersionStatus": "SUBMISSION_ERROR",
+            "patchSubmitDate": "2018-01-18T00:00:00Z",
+            "patchUpdateDate": "2018-01-18T00:00:00Z",
+            "patches": [
+              {
+                "op": "replace",
+                "path": "/rules/children/1/children/0/features/1/enabled",
+                "value": "on"
+              }
+            ]
+          },
+          {
+            "etag": "a9dfe78cf93090516bde891d009eaf57",
+            "patchPropertyId": "prp_3",
+            "patchPropertyVersion": 11,
+            "patchPropertyVersionStatus": "COMPLETE",
+            "patchSubmitDate": "2018-01-18T00:00:00Z",
+            "patchUpdateDate": "2018-01-18T00:00:00Z",
+            "propertyVersionRulesLink": "/papi/v1/properties/prp_3/versions/1/rules",
+            "patches": [
+              {
+                "op": "replace",
+                "path": "/rules/children/0/children/1/children/2/features/1/enabled",
+                "value": "on"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system cannot understand your request.  Please check the syntax and correct any problems.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "https://problems.luna.akamaiapis.net/papi/v0/http/bad-request"
+      }
+    },
+    {
+      "status": "401",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The request requires authentication.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 401,
+        "title": "Unauthorized",
+        "type": "https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The authorization token you provided does not allow access to this resource.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/forbidden"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system was unable to locate the requested resource.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/not-found"
+      }
+    },
+    {
+      "status": "405",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system does not support the method you provided for this resource.",
+        "instance": "/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "status": 405,
+        "title": "Method not allowed",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed"
+      }
+    },
+    {
+      "status": "406",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The system does not support the content-type restrictions provided by your 'Accept' header.",
+        "instance": "papi/v1/build#abc12345abcc02a7",
+        "status": 406,
+        "title": "Not Acceptable",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable"
+      }
+    },
+    {
+      "status": "429",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.",
+        "instance": "/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7",
+        "instanceKey": "1-12345",
+        "limit": 500,
+        "limitKey": "INCLUDES_PER_CONTRACT",
+        "remaining": 0,
+        "status": 429,
+        "title": "Too many includes",
+        "type": "https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded"
+      }
+    },
+    {
+      "status": "500",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "Our system is experiencing errors. We''ll get this fixed as soon as possible.",
+        "instance": "/papi/v1/properties/12345/activations#abc12345abcc02a7",
+        "status": 500,
+        "title": "Internal Server Error",
+        "type": "https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error"
+      }
+    }
+  ]
+}

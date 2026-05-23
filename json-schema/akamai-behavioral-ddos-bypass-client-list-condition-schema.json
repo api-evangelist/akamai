@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/behavioral-ddos-bypass-client-list-condition",
+  "title": "NetworkListCondition",
+  "additionalProperties": false,
+  "description": "Collects data needed for condition matches on client lists and network lists.",
+  "properties": {
+    "checkIps": {
+      "description": "__Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. Behavioral DDoS bypass supports `connecting` only.",
+      "enum": [
+        "connecting"
+      ],
+      "readOnly": true,
+      "type": "string"
+    },
+    "className": {
+      "description": "Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS fingerprint, against the specified client or network list. The only currently supported syntax is `NetworkListCondition`.",
+      "enum": [
+        "NetworkListCondition"
+      ],
+      "type": "string"
+    },
+    "positiveMatch": {
+      "description": "__Read-only__ Whether the condition triggers on a match or lack of match.",
+      "readOnly": true,
+      "type": "boolean"
+    },
+    "value": {
+      "description": "Identifies the client list or network list.",
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 0,
+      "nullable": true,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "className",
+    "value"
+  ],
+  "type": "object",
+  "x-akamai": {
+    "file-path": "schemas/behavioral-ddos-bypass-client-list-condition.yaml"
+  }
+}

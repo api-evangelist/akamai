@@ -1,0 +1,85 @@
+{
+  "operationId": "post-activations",
+  "method": "POST",
+  "path": "/activations",
+  "summary": "Activate a configuration version",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "action": "ACTIVATE",
+        "activationConfigs": [
+          {
+            "configId": 1,
+            "configVersion": 4
+          }
+        ],
+        "network": "STAGING",
+        "note": "Free text notes",
+        "notificationEmails": [
+          "a@example.com",
+          "b@example.com"
+        ]
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "200",
+      "contentType": "application/json",
+      "example": {
+        "action": "ACTIVATE",
+        "activationConfigs": [
+          {
+            "configId": 1,
+            "configName": "config 1",
+            "configVersion": 4,
+            "previousConfigVersion": 2
+          }
+        ],
+        "activationId": 1234,
+        "createDate": "2013-10-07T17:41:52+00:00",
+        "createdBy": "mrossi",
+        "dispatchCount": 1,
+        "estimate": "PTM5",
+        "network": "PRODUCTION",
+        "status": "RECEIVED"
+      }
+    },
+    {
+      "status": "202",
+      "contentType": "application/json",
+      "example": {
+        "createDate": "2018-06-19T11:27:55Z",
+        "links": {
+          "check-status": {
+            "href": "/appsec/v1/activations/status/f81c92c5-b150-4c41-9b53-9cef7969150a"
+          }
+        },
+        "statusId": "f81c92c5-b150-4c41-9b53-9cef7969150a"
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The request could not be understood by the server due to malformed syntax.",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 400,
+        "title": "Bad Request",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "You do not have the necessary access to perform this operation or the requested resource cannot be modified",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 403,
+        "title": "Forbidden",
+        "type": "https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED"
+      }
+    }
+  ]
+}

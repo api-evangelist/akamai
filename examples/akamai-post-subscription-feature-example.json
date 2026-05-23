@@ -1,0 +1,64 @@
+{
+  "operationId": "post-subscription-feature",
+  "method": "POST",
+  "path": "/configs/{configId}/notification/subscription/{feature}",
+  "summary": "Subscribe or unsubscribe to recommendation emails",
+  "requestExamples": [
+    {
+      "contentType": "application/json",
+      "example": {
+        "action": "subscribe",
+        "emails": [
+          "subscriber1@email.example.com",
+          "subscriber2@email.example.com",
+          "subscriber3@email.example.com"
+        ]
+      }
+    }
+  ],
+  "responseExamples": [
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "name": "email-validation-errors",
+      "example": {
+        "$ref": "../examples/400-subscription-email-validation-errors.json"
+      }
+    },
+    {
+      "status": "400",
+      "contentType": "application/problem+json",
+      "name": "invalid-action",
+      "example": {
+        "$ref": "../examples/400-subscription-invalid-action.json"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "name": "no-config",
+      "example": {
+        "$ref": "../examples/403-subscription-no-config-access.json"
+      }
+    },
+    {
+      "status": "403",
+      "contentType": "application/problem+json",
+      "name": "no-feature-scope",
+      "example": {
+        "$ref": "../examples/403-subscription-no-feature-scope.json"
+      }
+    },
+    {
+      "status": "404",
+      "contentType": "application/problem+json",
+      "example": {
+        "detail": "The requested resource is not found",
+        "instance": "https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749",
+        "status": 404,
+        "title": "Not Found",
+        "type": "https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND"
+      }
+    }
+  ]
+}
