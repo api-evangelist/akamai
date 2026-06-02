@@ -1,0 +1,220 @@
+asyncapi: '2.6.0'
+info:
+  title: Akamai Push / Streaming Surface
+  version: '1.0.0'
+  description: |
+    AsyncAPI model of the publicly documented push-style streaming and webhook
+    surface exposed by Akamai, derived from techdocs.akamai.com.
+
+    Akamai's documented push surface is concentrated in two products:
+
+    1. **DataStream 2** — streams CDN delivery logs to one of a fixed set of
+       documented destination connectors. One of the connector types is a
+       customer-controlled HTTPS endpoint, which acts as a webhook receiver
+       for log batches. Source:
+       https://techdocs.akamai.com/datastream2/reference/api
+       https://techdocs.akamai.com/datastream2/v2/reference/post-stream
+
+    2. **Identity Cloud Webhooks v3** — sends near real-time notifications
+       to a subscriber-configured listener endpoint when a user account is
+       created, deleted, or modified. Notifications are delivered as
+       Security Event Tokens (SETs) and verified via Identity Cloud's
+       published JSON Web Keys. Source:
+       https://techdocs.akamai.com/identity-cloud-webhooks/reference/api
+
+    Other Akamai streaming-adjacent products (SIEM Integration API, Event
+    Viewer API, Event Center API, Aura Log Streaming API) are **pull-based**
+    polling APIs, not push/webhook endpoints, and are not modeled here.
+    EdgeWorkers and EdgeKV do not expose a documented public event
+    subscription or webhook surface as of this writing.
+
+    This document models only Akamai-to-subscriber HTTPS push traffic; the
+    administrative APIs used to create and manage streams and webhook
+    subscriptions are modeled separately as REST/OpenAPI in this repo.
+  contact:
+    name: Akamai Technical Documentation
+    url: https://techdocs.akamai.com
+  license:
+    name: Proprietary
+    url: https://www.akamai.com/legal/terms/general-terms
+
+defaultContentType: application/json
+
+servers:
+  datastream2-subscriber:
+    url: '{customHttpsEndpoint}'
+    protocol: https
+    description: |
+      Customer-controlled HTTPS endpoint configured as the destination of a
+      DataStream 2 stream. Akamai POSTs log batches to this URL. Connector
+      type is `HTTPS` in the DataStream 2 v2 stream configuration. The
+      endpoint may use no authentication, HTTP Basic authentication, or
+      mTLS, and may be filtered by an IP access list. See:
+      https://techdocs.akamai.com/datastream2/v2/reference/post-stream
+    variables:
+      customHttpsEndpoint:
+        description: Full HTTPS URL of the subscriber's log receiver.
+        default: https://example.com/akamai/datastream
+  identity-cloud-listener:
+    url: '{listenerEndpoint}'
+    protocol: https
+    description: |
+      Customer-controlled HTTPS listener configured on an Identity Cloud
+      Webhooks v3 subscription. Akamai POSTs Security Event Tokens to this
+      URL when subscribed user-profile events occur. See:
+      https://techdocs.akamai.com/identity-cloud-webhooks/reference/api
+    variables:
+      listenerEndpoint:
+        description: Full HTTPS URL of the subscriber's webhook listener.
+        default: https://example.com/akamai/identity-cloud/webhooks
+
+channels:
+  datastream2/logs:
+    description: |
+      DataStream 2 log delivery channel. Akamai pushes batches of CDN log
+      records to the configured Custom HTTPS endpoint at low latency. The
+      payload may be sent as JSON logs or as structured logs, and may be
+      compressed (gzip) according to the stream's delivery configuration.
+      Akamai retries delivery up to 10 times within 5 minutes on HTTP 429
+      and 5XX responses, per the published DataStream 2 destination
+      documentation.
+
+      Available destinations documented for DataStream 2, of which this
+      channel models the `HTTPS` connector:
+      Amazon S3, S3-compatible, Azure Storage, Google Cloud Storage,
+      Datadog, Splunk, Sumo Logic, Elasticsearch, New Relic, Loggly,
+      Oracle Cloud, custom HTTPS endpoint.
+    servers:
+      - datastream2-subscriber
+    subscribe:
+      operationId: receiveDataStream2Batch
+      summary: Receive a DataStream 2 log batch.
+      description: |
+        Akamai pushes a batch of delivery log records to the subscriber's
+        custom HTTPS endpoint. Field-level content of each record depends
+        on the stream's `datasetFields` configuration and is therefore not
+        fixed here.
+      bindings:
+        http:
+          type: request
+          method: POST
+          bindingVersion: '0.3.0'
+      message:
+        $ref: '#/components/messages/DataStream2Batch'
+
+  identity-cloud/webhooks/v3:
+    description: |
+      Identity Cloud Webhooks v3 channel. Akamai pushes a Security Event
+      Token (SET) to the subscriber's listener endpoint whenever a
+      subscribed user-profile event occurs (entity created, deleted, or
+      modified, subject to the subscription's event filter). The SET is a
+      signed JWT verifiable against Identity Cloud's published JSON Web
+      Key set.
+    servers:
+      - identity-cloud-listener
+    subscribe:
+      operationId: receiveIdentityCloudWebhook
+      summary: Receive an Identity Cloud Webhooks v3 event.
+      description: |
+        Akamai posts a Security Event Token describing a user-profile
+        lifecycle event. Subscribers must verify the SET signature using
+        the published Identity Cloud JWK set before processing.
+        Undelivered events can be inspected and redelivery can be
+        scheduled via the Identity Cloud Webhooks v3 administrative API.
+      bindings:
+        http:
+          type: request
+          method: POST
+          bindingVersion: '0.3.0'
+      message:
+        $ref: '#/components/messages/IdentityCloudSecurityEventToken'
+
+components:
+  messages:
+    DataStream2Batch:
+      name: DataStream2Batch
+      title: DataStream 2 log batch
+      summary: A batch of CDN log records pushed to a Custom HTTPS endpoint.
+      contentType: application/json
+      headers:
+        type: object
+        description: |
+          DataStream 2 supports custom request headers configured on the
+          stream, used by subscribers for authentication or labeling
+          (for example, an `Authorization` header for HTTP Basic auth, or
+          a vendor-specific token header). Compression, when enabled,
+          surfaces via standard `Content-Encoding: gzip`.
+        properties:
+          Content-Type:
+            type: string
+            description: Format of the payload (JSON or structured logs).
+          Content-Encoding:
+            type: string
+            description: Set to `gzip` when log compression is enabled.
+          Authorization:
+            type: string
+            description: |
+              Present when the HTTPS connector is configured with
+              authentication (for example, HTTP Basic). mTLS is configured
+              at the TLS layer rather than via this header.
+      payload:
+        type: object
+        description: |
+          The body of a DataStream 2 push to a Custom HTTPS endpoint. The
+          exact field set of each log record is determined by the stream's
+          `datasetFields` configuration and is therefore not enumerated
+          here. Refer to the DataStream 2 dataset documentation for the
+          current authoritative list of dataset fields.
+        additionalProperties: true
+
+    IdentityCloudSecurityEventToken:
+      name: IdentityCloudSecurityEventToken
+      title: Identity Cloud Webhooks v3 Security Event Token
+      summary: |
+        A signed Security Event Token describing a user-profile lifecycle
+        event (entity created, deleted, or modified).
+      contentType: application/secevent+jwt
+      headers:
+        type: object
+        properties:
+          Content-Type:
+            type: string
+            description: |
+              Identity Cloud Webhooks v3 delivers events as Security Event
+              Tokens, which are JWTs. Subscribers verify the signature
+              against the published Identity Cloud JSON Web Key set before
+              trusting the payload.
+      payload:
+        type: object
+        description: |
+          The compact-serialized JWT body of a Security Event Token. The
+          decoded claim set identifies the subscription, the affected
+          entity, and the event type. Per the published Identity Cloud
+          Webhooks v3 documentation, supported events cover account
+          creation, deletion, and modification; the exact event-filter
+          keyword set is configurable on the subscription and authoritative
+          values live in Akamai's "supported event filter keywords"
+          reference.
+        additionalProperties: true
+
+  securitySchemes:
+    datastream2BasicAuth:
+      type: userPassword
+      description: |
+        Optional HTTP Basic authentication for the DataStream 2 Custom
+        HTTPS connector. Configured per-stream; credentials are stored on
+        the stream definition.
+    datastream2Mtls:
+      type: X509
+      description: |
+        Optional mutual TLS authentication for the DataStream 2 Custom
+        HTTPS connector.
+    identityCloudJwtSignature:
+      type: httpApiKey
+      in: header
+      name: Authorization
+      description: |
+        Identity Cloud Webhooks v3 deliveries are signed Security Event
+        Tokens (JWTs). Subscribers verify the JWT signature using the
+        public JSON Web Key set published by Identity Cloud rather than
+        a shared secret.
