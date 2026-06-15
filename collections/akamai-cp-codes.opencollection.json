@@ -1,0 +1,359 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: CP Codes and Reporting Groups API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CP codes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List CP codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/cpcodes",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Identifies the contract to filter data by. Include this optional parameter to narrow down the results to a specific contract only."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Identifies the access group to filter data by. Include this optional parameter to narrow down the results to a specific access group only."
+              },
+              {
+                "name": "productId",
+                "value": "{{productId}}",
+                "type": "query",
+                "description": "Identifies the product or service to filter data by. Include this optional parameter to narrow down the results to a specific product only."
+              },
+              {
+                "name": "cpcodeName",
+                "value": "{{cpcodeName}}",
+                "type": "query",
+                "description": "The name of the CP code to filter data by. Include this optional parameter to narrow down the results to a specific CP code name only."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists detailed information about CP codes available within your account and contract."
+        },
+        {
+          "info": {
+            "name": "Get a CP code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/cpcodes/:cpcodeId",
+            "params": [
+              {
+                "name": "cpcodeId",
+                "value": "{{cpcodeId}}",
+                "type": "path",
+                "description": "The identifier for the CP code."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get detailed information about a specific CP code. The details include the CP code type, name, time zone, as well as the account, contracts, and products it's assigned to. This operation also lists the access control group the CP code belongs to."
+        },
+        {
+          "info": {
+            "name": "Update a CP code",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/cprg/v1/cpcodes/:cpcodeId",
+            "params": [
+              {
+                "name": "cpcodeId",
+                "value": "{{cpcodeId}}",
+                "type": "path",
+                "description": "The identifier for the CP code."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modifies a specific CP code. After running the [GET a CP code](https://techdocs.akamai.com/cp-codes/reference/get-cpcode) operation, use the response to build a request body. You can only modify a CP code's name, time zone, and purgeable member."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Watermark limits",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a water-mark limit",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/cpcodes/contracts/:contractId/watermark-limits",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "path",
+                "description": "The identifier for the contract for which you want to check water-mark limits."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a watermark limit for CP codes for a specific contract within your account. For more details, see [Rate and resource limiting](https://techdocs.akamai.com/cp-codes/reference/rate-and-resource-limiting)."
+        },
+        {
+          "info": {
+            "name": "Get a water-mark limit for reporting groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/reporting-groups/contracts/:contractId/watermark-limits",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "path",
+                "description": "The identifier for the contract for which you want to check water-mark limits."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a watermark limit for CP reporting groups for a specific contract within your account. For more details, see [Rate and resource limiting](https://techdocs.akamai.com/cp-codes/reference/rate-and-resource-limiting)."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Reporting groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List reporting groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/reporting-groups",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Identifies the contract to filter data by. Include this optional parameter to narrow down the results to a specific contract only."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Identifies the access group to filter data by. Include this optional parameter to narrow down the results to a specific access group only."
+              },
+              {
+                "name": "reportingGroupName",
+                "value": "{{reportingGroupName}}",
+                "type": "query",
+                "description": "The name of the reporting group to filter data by. Include this optional parameter to narrow down the results to a specific reporting group name only."
+              },
+              {
+                "name": "cpcodeId",
+                "value": "{{cpcodeId}}",
+                "type": "query",
+                "description": "Identifies the CP code to filter data by. Include this optional parameter to narrow down the results to a specific CP code only."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists detailed information about reporting groups available for your account and contract."
+        },
+        {
+          "info": {
+            "name": "Create a reporting group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/cprg/v1/reporting-groups",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a reporting group. Make sure the reporting group's name is unique within an account. The `location` header in the response provides a relative path to the created reporting group."
+        },
+        {
+          "info": {
+            "name": "Get a reporting group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/reporting-groups/:reportingGroupId",
+            "params": [
+              {
+                "name": "reportingGroupId",
+                "value": "{{reportingGroupId}}",
+                "type": "path",
+                "description": "The identifier for the reporting group."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get detailed information about a specific reporting group. The details include the reporting group name and the access control group that it belongs to. This operations also lists the contracts and CP codes assigned to the reporting group."
+        },
+        {
+          "info": {
+            "name": "Update a reporting group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/cprg/v1/reporting-groups/:reportingGroupId",
+            "params": [
+              {
+                "name": "reportingGroupId",
+                "value": "{{reportingGroupId}}",
+                "type": "path",
+                "description": "The identifier for the reporting group."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modifies a specific reporting group. You should only modify a reporting group's name and assigned CP codes."
+        },
+        {
+          "info": {
+            "name": "Delete a reporting group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/cprg/v1/reporting-groups/:reportingGroupId",
+            "params": [
+              {
+                "name": "reportingGroupId",
+                "value": "{{reportingGroupId}}",
+                "type": "path",
+                "description": "The identifier for the reporting group."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Deletes a specific reporting group."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List products within a reporting group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cprg/v1/reporting-groups/:reportingGroupId/products",
+            "params": [
+              {
+                "name": "reportingGroupId",
+                "value": "{{reportingGroupId}}",
+                "type": "path",
+                "description": "The identifier for the reporting group."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists products and services assigned to a specific reporting group."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

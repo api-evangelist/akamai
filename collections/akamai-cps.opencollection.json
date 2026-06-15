@@ -1,0 +1,611 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: Certificate Provisioning System API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Enrollments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List enrollments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Specify the contract on which to operate or view."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "A list of the names of each enrollment."
+        },
+        {
+          "info": {
+            "name": "Create an enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/cps/v2/enrollments",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Specify the contract on which to operate or view."
+              },
+              {
+                "name": "deploy-not-after",
+                "value": "{{deploy-not-after}}",
+                "type": "query",
+                "description": "Don't deploy after this date (UTC)."
+              },
+              {
+                "name": "deploy-not-before",
+                "value": "{{deploy-not-before}}",
+                "type": "query",
+                "description": "Don't deploy before this date (UTC)."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an enrollment that contains all the information about the process that your certificate goes through from the time you request it, through renewal, and as you obtain subsequent versions."
+        },
+        {
+          "info": {
+            "name": "Get an enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets an enrollment."
+        },
+        {
+          "info": {
+            "name": "Update an enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "allow-cancel-pending-changes",
+                "value": "{{allow-cancel-pending-changes}}",
+                "type": "query",
+                "description": "All pending changes to be cancelled when updating an enrollment."
+              },
+              {
+                "name": "allow-staging-bypass",
+                "value": "{{allow-staging-bypass}}",
+                "type": "query",
+                "description": "Bypass staging and push meta-data updates directly to production network. Current change will also be updated with the same changes."
+              },
+              {
+                "name": "deploy-not-after",
+                "value": "{{deploy-not-after}}",
+                "type": "query",
+                "description": "Don't deploy after this date (UTC)."
+              },
+              {
+                "name": "deploy-not-before",
+                "value": "{{deploy-not-before}}",
+                "type": "query",
+                "description": "Don't deploy before this date (UTC)."
+              },
+              {
+                "name": "force-renewal",
+                "value": "{{force-renewal}}",
+                "type": "query",
+                "description": "Force certificate renewal for Enrollment."
+              },
+              {
+                "name": "renewal-date-check-override",
+                "value": "{{renewal-date-check-override}}",
+                "type": "query",
+                "description": "CPS will automatically start a Change to renew certificates in time before they expire. This automatic Change is started when Certificate's expiration is within a renewal window, and system will protect against other changes started during this renewal window. Setting `renewal-date-check-override=true` will allow creating a Change during the renewal window, potentially running the risk of ending up with an expired certificate on the network."
+              },
+              {
+                "name": "allow-missing-certificate-addition",
+                "value": "{{allow-missing-certificate-addition}}",
+                "type": "query",
+                "description": "Applicable for Third Party Dual Stack Enrollments, allows to update missing certificate. Option supported from v10."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an enrollment with changes. Response type will vary depending on the type and impact of change. For example, changing SANs list may return HTTP 202 Accepted since the operation require a new certificate and network deployment operations, and thus cannot be completed without a change. On the contrary, for example a Technical Contact name change may return HTTP 200 OK assuming there are no active change and when the operation does not require a new certificate."
+        },
+        {
+          "info": {
+            "name": "Remove an enrollment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "allow-cancel-pending-changes",
+                "value": "{{allow-cancel-pending-changes}}",
+                "type": "query",
+                "description": "All pending changes to be cancelled when updating an enrollment."
+              },
+              {
+                "name": "deploy-not-after",
+                "value": "{{deploy-not-after}}",
+                "type": "query",
+                "description": "Don't deploy after this date (UTC)."
+              },
+              {
+                "name": "deploy-not-before",
+                "value": "{{deploy-not-before}}",
+                "type": "query",
+                "description": "Don't deploy before this date (UTC)."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Removes an enrollment from CPS. Response type will vary depending on the state of the enrollment. Deleting an enrollment in the future or deleting when the enrollment has a certificate deployed to the network may return HTTP 202 Accepted. Deleting an enrollment which has not yet deployed certificate to the network will complete immediately and return HTTP 200 OK."
+        },
+        {
+          "info": {
+            "name": "Get DV history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/dv-history",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Domain name Validation history for the enrollment."
+        },
+        {
+          "info": {
+            "name": "Get certificate history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/history/certificates",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View the certificate history."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Changes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get change status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/changes/:changeId",
+            "params": [
+              {
+                "name": "changeId",
+                "value": "{{changeId}}",
+                "type": "path",
+                "description": "The change for this enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets the status of a pending change."
+        },
+        {
+          "info": {
+            "name": "Cancel a change",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/changes/:changeId",
+            "params": [
+              {
+                "name": "changeId",
+                "value": "{{changeId}}",
+                "type": "path",
+                "description": "The change for this enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Cancels a pending change."
+        },
+        {
+          "info": {
+            "name": "Get a deployment schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/changes/:changeId/deployment-schedule",
+            "params": [
+              {
+                "name": "changeId",
+                "value": "{{changeId}}",
+                "type": "path",
+                "description": "The change for this enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets the current deployment schedule settings describing when a change deploys to the network."
+        },
+        {
+          "info": {
+            "name": "Get a change",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/changes/:changeId/input/info/:allowedInputTypeParam",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": "{{Accept}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "allowedInputTypeParam",
+                "value": "{{allowedInputTypeParam}}",
+                "type": "path",
+                "description": "__Enum__ Found as the last part of `Change.allowedInput[].update` hypermedia URL. See [Change Input Content Type Mapping](https://techdocs.akamai.com/cps/reference/change-input-content-type-mapping) for details. Currently supported values include `change-management-info`, `lets-encrypt-challenges`, `post-verification-warnings`, `pre-verification-warnings`, `third-party-csr`."
+              },
+              {
+                "name": "changeId",
+                "value": "{{changeId}}",
+                "type": "path",
+                "description": "The change for this enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get detailed information of a pending change. Below is a sample where `allowedInput[].type` has the value `third-party-csr`. The acceptable `Accept` header depends on the value of the `allowedInput.type` for the Change instance. See [Change Input Content Type Mapping](https://techdocs.akamai.com/cps/reference/change-input-content-type-mapping) for details."
+        },
+        {
+          "info": {
+            "name": "Update a change",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/changes/:changeId/input/update/:allowedInputTypeParam",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": "{{Content-Type}}"
+              },
+              {
+                "name": "Accept",
+                "value": "{{Accept}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "allowedInputTypeParam",
+                "value": "{{allowedInputTypeParam}}",
+                "type": "path",
+                "description": "__Enum__ Found as the last part of `Change.allowedInput[].update` hypermedia URL. See [Change Input Content Type Mapping](https://techdocs.akamai.com/cps/reference/change-input-content-type-mapping) for details. Currently supported values include `change-management-ack`, `lets-encrypt-challenges-completed`, `post-verification-warnings-ack`, `pre-verification-warnings-ack`, `third-party-cert-and-trust-chain`."
+              },
+              {
+                "name": "changeId",
+                "value": "{{changeId}}",
+                "type": "path",
+                "description": "The change for this enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a pending change. Below is a sample where `allowedInput[].type` has the value `third-party-cert-and-trust-chain`. The acceptable `Content-Type` and `Accept` headers depends on the value of the `allowedInput.type` for the Change instance. See [Change Input Content Type Mapping](https://techdocs.akamai.com/cps/reference/change-input-content-type-mapping) for details."
+        },
+        {
+          "info": {
+            "name": "Get change history",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/history/changes",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Change history of an enrollment."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Deployments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Update a deployment schedule",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/changes/:changeId/deployment-schedule",
+            "params": [
+              {
+                "name": "changeId",
+                "value": "{{changeId}}",
+                "type": "path",
+                "description": "The change for this enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the current deployment schedule."
+        },
+        {
+          "info": {
+            "name": "List deployments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/deployments",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists the deployments for an enrollment."
+        },
+        {
+          "info": {
+            "name": "Get production deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/deployments/production",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets the enrollments deployed on the production network."
+        },
+        {
+          "info": {
+            "name": "Get staging deployment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/cps/v2/enrollments/:enrollmentId/deployments/staging",
+            "params": [
+              {
+                "name": "enrollmentId",
+                "value": "{{enrollmentId}}",
+                "type": "path",
+                "description": "Enrollment on which to perform the desired operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets the enrollments deployed on the staging network."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,643 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: EdgeKV API",
+    "version": "1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Namespaces",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Modify the Default Data Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/edgekv/v1/auth/database",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify the default Data Access Policy setting that's applied for newly created namespaces. You need an additional Standard TLS Support contract entitlement to call this operation. By default for existing customers, `restrictDataAccess` is `true`, and `allowNamespacePolicyOverride` is `false`."
+        },
+        {
+          "info": {
+            "name": "Akamai Reauthorize a Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/edgekv/v1/auth/namespaces/:namespaceId",
+            "params": [
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assign an existing namespace to a different Akamai access group."
+        },
+        {
+          "info": {
+            "name": "Akamai List Namespaces",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces",
+            "params": [
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "details",
+                "value": "{{details}}",
+                "type": "query",
+                "description": "__Enum__ Whether to return all namespace attributes or only names."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View a list of all EdgeKV namespaces."
+        },
+        {
+          "info": {
+            "name": "Akamai Create a Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces",
+            "params": [
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a namespace on Akamai's `STAGING` or `PRODUCTION` network. You should create namespaces in both networks so that you can test your EdgeWorkers code on staging."
+        },
+        {
+          "info": {
+            "name": "Akamai Get Namespace Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId",
+            "params": [
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View details for the specified namespace."
+        },
+        {
+          "info": {
+            "name": "Akamai Update Namespace Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId",
+            "params": [
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can update the retention period for any existing namespace other than the default namespace. It can take up to five minutes for a new retention policy to apply. The new retention period only applies to data added or updated in the namespace after this operation is complete. The retention period of existing data remains unchanged from the old retention period. Once you perform this operation you can't query the previously existing data. If you want to ensure that all data in the namespace has"
+        },
+        {
+          "info": {
+            "name": "Akamai List Groups Within a Namespace",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId/groups",
+            "params": [
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "List group identifiers created when writing items to a namespace. You need to specify at least one of these group identifiers in the `groupId` parameter when writing items to a specific namespace. The group identifier is a logical container for a set of items stored inside a given namespace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Permission groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Permission Groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/auth/groups",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View a list of access groups and your associated permission capabilities, such as create a namespace or read data from a namespace."
+        },
+        {
+          "info": {
+            "name": "Akamai Get a Permission Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/auth/groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeKV access group."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View details permissions available within the specified access group, such as create a namespace or read data from a namespace."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "EdgeKV status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Get the EdgeKV Initialization Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/initialize",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View the EdgeKV initialization status."
+        },
+        {
+          "info": {
+            "name": "Akamai Initialize EdgeKV",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/edgekv/v1/initialize",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You only need to initialize EdgeKV once. This operation adds the `default` EdgeKV namespace to Akamai's `STAGING` and `PRODUCTION` networks. It also creates a new dedicated CP code for you to track your EdgeKV usage. You won't be able to use any of the EdgeKV API operations or your EdgeKV database until initialization completes. You should only use the default namespace for experimentation and testing purposes. When deploying your EdgeKV database in production, use a new namespace with a differe"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Items Within a Group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId/groups/:groupId",
+            "params": [
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "path",
+                "description": "Unique identifier for each group within a namespace."
+              },
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "maxItems",
+                "value": "{{maxItems}}",
+                "type": "query",
+                "description": "If specified, maximum number of items to return per request, up to the system [limits](https://techdocs.akamai.com/edgekv/docs/limits)."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "query",
+                "description": "Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View the details of an EdgeKV item (key-value pair) within a group. You need to specify the `namespace` and `group` the item belongs to. This operation returns up to 100 items by default or the number of items specified in the `maxItems`. If there are more than the default or requested items in the specified group, the operation returns a random set of the default or requested items. It can take ten seconds or longer to read an item that has been written to EdgeKV. The API may respond with a 404"
+        },
+        {
+          "info": {
+            "name": "Akamai Read an Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId/groups/:groupId/items/:itemId",
+            "params": [
+              {
+                "name": "itemId",
+                "value": "{{itemId}}",
+                "type": "path",
+                "description": "Unique identifier for each item. The key of a key-value pair."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "path",
+                "description": "Unique identifier for each group within a namespace."
+              },
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "query",
+                "description": "Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Read an EdgeKV item. You need to specify the `namespace` and `group` the item belongs to. It can take ten seconds or longer to read an item that has been recently written to EdgeKV. The API may return a 404 error during that period. This is normal behavior for EdgeKV, which is an eventually consistent database."
+        },
+        {
+          "info": {
+            "name": "Akamai Write an Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId/groups/:groupId/items/:itemId",
+            "params": [
+              {
+                "name": "itemId",
+                "value": "{{itemId}}",
+                "type": "path",
+                "description": "Unique identifier for each item. The key of a key-value pair."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "path",
+                "description": "Unique identifier for each group within a namespace."
+              },
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "query",
+                "description": "Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create or update an EdgeKV item (name-value). You need to specify the `namespace` and `group` the item belongs to. The target `namespace` must already exist before writing, while the `group` is automatically created for you if it doesn't exist yet."
+        },
+        {
+          "info": {
+            "name": "Akamai Delete an Item",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/edgekv/v1/networks/:network/namespaces/:namespaceId/groups/:groupId/items/:itemId",
+            "params": [
+              {
+                "name": "itemId",
+                "value": "{{itemId}}",
+                "type": "path",
+                "description": "Unique identifier for each item. The key of a key-value pair."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "path",
+                "description": "Unique identifier for each group within a namespace."
+              },
+              {
+                "name": "namespaceId",
+                "value": "{{namespaceId}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "path",
+                "description": "__Enum__ Network environment to execute the API request on."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "query",
+                "description": "Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Mark an EdgeKV item for deletion. You need to specify the `namespace` and `group` the item belongs to. It can take ten seconds or longer for a deleted item to be removed from the database. If you attempt a read operation before the value has been updated globally, stale data may be returned until the update is complete. This is normal behavior for EdgeKV, which is an eventually consistent database."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Access tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Access Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/tokens",
+            "params": [
+              {
+                "name": "includeExpired",
+                "value": "{{includeExpired}}",
+                "type": "query",
+                "description": "Whether to include expired tokens that are less than 30 days old in the response."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View a list of EdgeKV access tokens."
+        },
+        {
+          "info": {
+            "name": "Akamai Create an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/edgekv/v1/tokens",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate an access token that allows an EdgeWorkers code bundle to access the specified namespace. Each token name needs to be unique and have a defined expiration of no longer than six months. You can't renew a token once it expires. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens)."
+        },
+        {
+          "info": {
+            "name": "Akamai Download an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/edgekv/v1/tokens/:tokenName",
+            "params": [
+              {
+                "name": "tokenName",
+                "value": "{{tokenName}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Download a previously created EdgeKV access token. To get a token you need to know the token `name`. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens)."
+        },
+        {
+          "info": {
+            "name": "Akamai Revoke an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/edgekv/v1/tokens/:tokenName",
+            "params": [
+              {
+                "name": "tokenName",
+                "value": "{{tokenName}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Once you revoke an access token, you can't undo it. You also need to update any deployed EdgeWorkers code bundles that use the old token with a new token, or requests to EdgeKV fail. Any requests from an EdgeWorkers code bundle using a revoked token cause a 401 error. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,589 @@
+{
+  "item": [
+    {
+      "id": "06c7bf97-2d2e-4837-9c04-f0d72e00538c",
+      "name": "Events",
+      "description": {
+        "content": "View security event data generated on the Akamai platform in your SIEM application.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "baed1e9b-1597-43b5-a81a-a35766bd9e7c",
+          "name": "Fetch security events",
+          "request": {
+            "name": "Fetch security events",
+            "description": {
+              "content": "Get security events data from your security configurations using one of two modes: [offset or time-based](https://techdocs.akamai.com/siem-integration/reference/query-parameter-combinations). Each mode orders event logs based on the logs' storage time in the database, not the time when the events actually occurred. This may result in delayed event logs in subsequent offset requests, or older event logs in time-based requests. While both methods have a 5-second latency, using `offset` allows subsequent calls to return logs for the 5 seconds omitted from the previous request. The time-based method omits logs from that 5 seconds of latency, so you may miss some logs from that period.\n\n If the connection is disrupted, use time-based mode to replay security events that occurred in the last 12 hours up to 5 seconds before your requested time range. Use `offset` and `limit` parameters in offset mode. Use `from`, `to`, and `limit` parameters in time-based mode. The potentially large response contains a series of JSON objects, each separated with a line break and each corresponding to a security event. The last line of the response is an [offset context](https://techdocs.akamai.com/siem-integration/reference/offsetcontext) object that provides `total` records fetched, an `offset` to use a starting point for the next batch of data, and any `limit` you specified. Run this operation continuously as long as it returns new logs to ensure you don't miss any. The API may return a maximum of 600,000 logs per request, while your configurations might generate many more in periods of high traffic.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<string>",
+                  "description": "This token denotes the last message.  If specified, this operation fetches only security events that have occurred since the last `offset` value. Use this parameter for offset mode, not for time-based requests."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Defines the approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000`, and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible. Expect requests to return a slightly higher number of security events than you set in the `limit` parameter, because data is stored in different buckets."
+                },
+                {
+                  "disabled": false,
+                  "key": "from",
+                  "value": "<integer>",
+                  "description": "The start of a specified time range, expressed in Unix epoch seconds. You need this to get time-based results for a set period, not for offset mode."
+                },
+                {
+                  "disabled": false,
+                  "key": "to",
+                  "value": "<integer>",
+                  "description": "The end of a specified time range, expressed in Unix epoch seconds. You can't use this parameter in offset mode, and it's optional in time-based mode. The value can't be any greater than the default value: five seconds before the current time."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "configId",
+                  "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b325b94f-aee6-412a-8d4b-e84ad684d8b3",
+              "name": "The response lists security events.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"$ref\": \"../examples/siem-event-200.json\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a180a5cd-b4f2-4776-a4f0-633084ee7f88",
+              "name": "[Bad request](https://techdocs.akamai.com/siem-integration/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.239\",\n  \"detail\": \"Missing mandatory parameter(s) or illegal parameter(s) in the request\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=12345\",\n  \"method\": \"GET\",\n  \"requestId\": \"9cf81a9\",\n  \"requestTime\": \"2023-06-20T15:02:30Z\",\n  \"serverIp\": \"192.0.2.74\",\n  \"title\": \"Missing mandatory parameter(s) or illegal parameter(s) in the request\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/missing-parameters\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f76505d-5e11-402f-8a59-68e31fb24395",
+              "name": "[Forbidden](https://techdocs.akamai.com/siem-integration/reference/403). You don't have permission to view the resource.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.85\",\n  \"detail\": \"The specified user is unauthorized to access the requested data\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=123\",\n  \"method\": \"GET\",\n  \"requestId\": \"9cf2274\",\n  \"requestTime\": \"2023-06-20T15:01:11Z\",\n  \"serverIp\": \"192.0.2.186\",\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f20f8cbc-0e5d-4eca-9510-df62e2b6c1ed",
+              "name": "[Not found](https://techdocs.akamai.com/siem-integration/reference/404). The resource wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.37\",\n  \"detail\": \"The data for the object requested does not exist\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=12345?offset=123\",\n  \"method\": \"GET\",\n  \"requestId\": \"9ab12ef\",\n  \"requestTime\": \"2023-06-20T15:02:30Z\",\n  \"serverIp\": \"192.0.2.196\",\n  \"title\": \"Not found\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ed5e5a5e-a235-4d64-a4ff-74714d2ce47a",
+              "name": "[Expired offset parameter in the request](https://techdocs.akamai.com/siem-integration/reference/416).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Requested Range Not Satisfiable",
+              "code": 416,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.228\",\n  \"detail\": \"Expired offset parameter in the request\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=12345?offset=123\",\n  \"method\": \"GET\",\n  \"requestId\": \"9ab12ef\",\n  \"requestTime\": \"2023-06-20T15:02:30Z\",\n  \"serverIp\": \"192.0.2.59\",\n  \"title\": \"Expired offset parameter in the request\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/offset-too-old\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "62c8df4a-c64f-49f9-aea2-50a591818729",
+              "name": "[Exceeded rate limit](https://techdocs.akamai.com/siem-integration/reference/429). Too many requests.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.130\",\n  \"detail\": \"Too many requests made from clients of this account\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=12345?offset=123\",\n  \"method\": \"GET\",\n  \"requestId\": \"9ab12ef\",\n  \"requestTime\": \"2023-06-20T15:02:30Z\",\n  \"serverIp\": \"192.0.2.113\",\n  \"title\": \"Too many requests\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/too-many-requests\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "662b84f5-0c73-4d4e-a140-80be99ed7c67",
+              "name": "[Any other server error](https://techdocs.akamai.com/siem-integration/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.201\",\n  \"detail\": \"Internal server error\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=12345?offset=123\",\n  \"method\": \"GET\",\n  \"requestId\": \"9ab12ef\",\n  \"requestTime\": \"2023-06-20T15:02:30Z\",\n  \"serverIp\": \"192.0.2.221\",\n  \"title\": \"Error\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68d0b68d-2a81-452f-8603-cb4d8c6d860a",
+              "name": "[Service unavailable](https://techdocs.akamai.com/siem-integration/reference/503).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "offset",
+                      "value": "c0bc409010aa6928e57cd5a3000433b9"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "10"
+                    },
+                    {
+                      "key": "from",
+                      "value": "1488816442"
+                    },
+                    {
+                      "key": "to",
+                      "value": "1488816784"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "configId",
+                      "description": "(Required) Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Service Unavailable",
+              "code": 503,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"clientIp\": \"192.0.2.20\",\n  \"detail\": \"There is no available backend system to respond to the request\",\n  \"instance\": \"https://akab-1234abcd.luna.akamaiapis.net/siem/v1/configs=12345?offset=123\",\n  \"method\": \"GET\",\n  \"requestId\": \"9ab12ef\",\n  \"requestTime\": \"2023-06-20T15:02:30Z\",\n  \"serverIp\": \"192.0.2.39\",\n  \"title\": \"Service unavailable\",\n  \"type\": \"https://problems.cloudsecurity.akamaiapis.net/siem/v1/service-unavailable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/siem/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b8b89cbb-bf71-4023-af2e-582bdb07c6f5",
+    "name": "Akamai: SIEM Integration API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Integrate third-party SIEM applications with Akamai security solutions.\n",
+      "type": "text/plain"
+    }
+  }
+}

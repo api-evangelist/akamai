@@ -1,0 +1,605 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: Sandbox API",
+    "version": "v0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sandboxes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List sandboxes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes",
+            "params": [
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This operation returns a list of sandboxes. In the response object, you can see the `sandboxId`, the developer who created the sandbox, and the sandbox `name`. The `X-Limit-Sandboxes-Remaining` in the response header indicates the number of remaining sandboxes you can create. Generally, you will only see a list of sandboxes you created. If your Control Center user role has permission to edit Property Manager configurations, you have access to view all the sandboxes within the account. You'll be "
+        },
+        {
+          "info": {
+            "name": "Create a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can create a sandbox based on an existing `property`, `hostname`, or property `version`. Refer to the example JSONs for each use case in the [Recipes](https://techdocs.akamai.com/sandbox/recipes). In order to create a sandbox with this method, you need to have an API client for the `Sandbox API` with read-write access and Property Manager authorization enabled in Control Center."
+        },
+        {
+          "info": {
+            "name": "Get a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a specific sandbox based on `sandboxId`."
+        },
+        {
+          "info": {
+            "name": "Modify a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Enable `isClonable` if you have preconfigured the settings for the sandbox and want to make it possible for other developers to create an exact replica in their development environment. You can also update the sandbox `name` to make it easy to identify when returned in a list or in a log line."
+        },
+        {
+          "info": {
+            "name": "Delete a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Remove a specific sandbox instance based on `sandboxId`. This is useful when you have completed testing and no longer need the sandbox, or when you are approaching the limit. There is a limit of 100 sandbox instances for each Control Center account. The `X-Limit-Sandboxes-Remaining` value in the response header indicates how many sandbox instances you have remaining to create."
+        },
+        {
+          "info": {
+            "name": "Clone a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/clone",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new sandbox instance based on the specified `sandboxId`. You can clone a sandbox that has `isClonable` enabled. This is useful if you want to copy a sandbox that was preconfigured by another developer within your organization."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "EdgeWorkers",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Download EdgeWorker code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/edgeworkers/:edgeWorkerId",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for the EdgeWorker."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Retrieve the script bundle in `.tgz` form for the specified `sandboxId` and `edgeWorkerId`. To learn more about EdgeWorkers, refer to the [EdgeWorkers API](https://techdocs.akamai.com/edgeworkers/reference/api)."
+        },
+        {
+          "info": {
+            "name": "Upload EdgeWorker code",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/edgeworkers/:edgeWorkerId",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for the EdgeWorker."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Add a script bundle for a given `edgeWorkerId` to the specified `sandboxId`."
+        },
+        {
+          "info": {
+            "name": "Delete EdgeWorker",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/edgeworkers/:edgeWorkerId",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for the EdgeWorker."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Delete an EdgeWorker with an `edgeWorkerId` from the specified `sandboxId`."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Properties",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This operation returns a list of sandbox properties available to the current user."
+        },
+        {
+          "info": {
+            "name": "Add a property to a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can add a property to a sandbox. Use this if you need to support more than one `hostname` in your sandbox environment."
+        },
+        {
+          "info": {
+            "name": "Read a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties/:sandboxPropertyId",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a specific property of a sandbox so you can review the information in the response body."
+        },
+        {
+          "info": {
+            "name": "Update a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties/:sandboxPropertyId",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the `requestHostnames` of the sandbox property. Your sandbox can support multiple hostnames for testing purposes."
+        },
+        {
+          "info": {
+            "name": "Delete a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties/:sandboxPropertyId",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Remove a property from a sandbox. This operation applies when the sandbox contains more than one property. You cannot delete the only property of a sandbox."
+        },
+        {
+          "info": {
+            "name": "Get a rule tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties/:sandboxPropertyId/rules",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a specific rule tree of a sandbox property. Each sandbox property references one rule tree. For more information on how content-handling rules are defined, review the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api)."
+        },
+        {
+          "info": {
+            "name": "Update a rule tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/properties/:sandboxPropertyId/rules",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify the rules of a sandbox property to make changes to content-handling behaviors for testing purposes within your development environment. Once you are satisfied with the results in your sandbox, you can use the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api) to apply the rule changes to your property configuration."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Rotate JWT",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Rotate the JWT",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/sandbox-api/v1/sandboxes/:sandboxId/rotateJWT",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Generate a new `jwtToken` (JSON Web Token) for the specified sandbox instance. Use this to prevent access to a particular sandbox by developers who had the previous JWT."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

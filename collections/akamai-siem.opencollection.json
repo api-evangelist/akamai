@@ -1,0 +1,61 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: SIEM Integration API",
+    "version": "v1"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Events",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch security events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/siem/v1/configs/:configId",
+            "params": [
+              {
+                "name": "configId",
+                "value": "",
+                "type": "path",
+                "description": "Unique identifier for each security configuration. To report on more than one configuration, separate integer identifiers with semicolons."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "This token denotes the last message.  If specified, this operation fetches only security events that have occurred since the last `offset` value. Use this parameter for offset mode, not for time-based requests."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Defines the approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000`, and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible. Expect requests to return a slightly higher number of security events than you set in the `limit` parameter, because data is stored in different buckets."
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query",
+                "description": "The start of a specified time range, expressed in Unix epoch seconds. You need this to get time-based results for a set period, not for offset mode."
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query",
+                "description": "The end of a specified time range, expressed in Unix epoch seconds. You can't use this parameter in offset mode, and it's optional in time-based mode. The value can't be any greater than the default value: five seconds before the current time."
+              }
+            ]
+          },
+          "docs": "Get security events data from your security configurations using one of two modes: [offset or time-based](https://techdocs.akamai.com/siem-integration/reference/query-parameter-combinations). Each mode orders event logs based on the logs' storage time in the database, not the time when the events actually occurred. This may result in delayed event logs in subsequent offset requests, or older event logs in time-based requests. While both methods have a 5-second latency, using `offset` allows subs"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,505 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: Network Lists API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Activations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Get Activation Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/network-list/v2/activations/:activationId",
+            "params": [
+              {
+                "name": "activationId",
+                "value": "{{activationId}}",
+                "type": "path",
+                "description": "The unique identifier for this activation request."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Provides detailed status for a given activation, including progress on _fast_ activation and other audit information, in addition to information ordinarily available from the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation."
+        },
+        {
+          "info": {
+            "name": "Akamai Activate a Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/environments/:environment/activate",
+            "params": [
+              {
+                "name": "environment",
+                "value": "{{environment}}",
+                "type": "path",
+                "description": "__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`."
+              },
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Activate the most recent `syncPoint` version of a network list in either the `STAGING` or `PRODUCTION` environment."
+        },
+        {
+          "info": {
+            "name": "Akamai Get Activation Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/environments/:environment/status",
+            "params": [
+              {
+                "name": "environment",
+                "value": "{{environment}}",
+                "type": "path",
+                "description": "__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`."
+              },
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Shows a network list's activation status on either the `STAGING` or `PRODUCTION` environment. The response reflects standard activation status. For fast activation status, see [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation)."
+        },
+        {
+          "info": {
+            "name": "Akamai Get an Activation's Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/sync-points/:syncPoint/history",
+            "params": [
+              {
+                "name": "syncPoint",
+                "value": "{{syncPoint}}",
+                "type": "path",
+                "description": "The network list version for which to retrieve the snapshot. This corresponds to the `syncPoint` the API exchanges for each successive modification to the network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details."
+              },
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "extended",
+                "value": "{{extended}}",
+                "type": "query",
+                "description": "When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets a version of a network list in its state when activated, with each version identified by its `syncPoint` value.  You can only get `syncPoint` versions that have been activated."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Network lists",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Network Lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/network-list/v2/network-lists",
+            "params": [
+              {
+                "name": "includeElements",
+                "value": "{{includeElements}}",
+                "type": "query",
+                "description": "If enabled, the response `list` includes all items.  For large network lists, this may slow responses and yield large response objects. The default `false` value when listing more than one network list omits the network list's elements and only provides higher-level metadata."
+              },
+              {
+                "name": "search",
+                "value": "{{search}}",
+                "type": "query",
+                "description": "Only list items that match the specified substring in any network list's `name` or `list` of items."
+              },
+              {
+                "name": "listType",
+                "value": "{{listType}}",
+                "type": "query",
+                "description": "__Enum__ Filters the output to lists of only the given type of network lists if provided, either `IP` or `GEO`.  This corresponds to the network list object's `type` member."
+              },
+              {
+                "name": "extended",
+                "value": "{{extended}}",
+                "type": "query",
+                "description": "When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "List all network lists available for an authenticated user who belongs to a group, optionally filtered by `listType` or based on a `search` string. Results appear within the `networkLists` array, which might be empty if no network lists are available to the client."
+        },
+        {
+          "info": {
+            "name": "Akamai Create a New Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/network-list/v2/network-lists",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new network list."
+        },
+        {
+          "info": {
+            "name": "Akamai Get a Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "extended",
+                "value": "{{extended}}",
+                "type": "query",
+                "description": "When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide."
+              },
+              {
+                "name": "includeElements",
+                "value": "{{includeElements}}",
+                "type": "query",
+                "description": "If enabled, the response `list` includes all items.  For large network lists, this may slow responses and yield large response objects. The default `true` value includes the list's contents."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets a network list's most recent `syncPoint` version."
+        },
+        {
+          "info": {
+            "name": "Akamai Update a Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "extended",
+                "value": "{{extended}}",
+                "type": "query",
+                "description": "When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide."
+              },
+              {
+                "name": "includeElements",
+                "value": "{{includeElements}}",
+                "type": "query",
+                "description": "If enabled, the response `list` includes all items.  For large network lists, this may slow responses and yield large response objects. The default `true` value includes the list's contents."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify the network list items and properties. Allows you to set the name, description and set of network list items to the resource. The current state of the list will be replaced with the properties and items you provide. The type cannot be changed."
+        },
+        {
+          "info": {
+            "name": "Akamai Delete a Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Removes a network list. You can only remove network lists that never activated. To deactivate a list, you can empty out its `list` of elements."
+        },
+        {
+          "info": {
+            "name": "Akamai Append Elements to a Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/append",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Appends a set of elements to a network list.  If the networks list's `type` is `IP`, the submitted `list` is a series of IP addresses or CIDR blocks.  If the type is `GEO`, it's a set of two-character country codes. (See the [EdgeScape Documentation](https://control.akamai.com/apps/download-center/#/products/3;name=EdgeScape) for more information. For a list of countries, go to __Data Codes__ &rArr; __Country Code__.)"
+        },
+        {
+          "info": {
+            "name": "Akamai Update Network List Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/details",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a network list's name or description."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Elements",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Add an Element",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/elements",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "element",
+                "value": "{{element}}",
+                "type": "query",
+                "description": "Specifies the element to add to the network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Adds the specified `element` to the list.  If the network list's `type` is `IP`, the value needs to be a URL-encoded IP address or CIDR block. If the type is `GEO`, it's a two-character country code. (See the [EdgeScape Documentation](https://control.akamai.com/apps/download-center/#/products/3;name=EdgeScape)) for more information. For a list of countries, go to __Data Codes__ &rArr; __Country Code__.)"
+        },
+        {
+          "info": {
+            "name": "Akamai Remove an Element",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/network-list/v2/network-lists/:networkListId/elements",
+            "params": [
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "element",
+                "value": "{{element}}",
+                "type": "query",
+                "description": "Specifies the element to add to the network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Removes the specified `element` from the list.  If the network list's `type` is `IP`, the value is a URL-encoded IP address or CIDR block. If the type is `GEO`, it's a two-character country code."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Subscribe to Network Lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/network-list/v2/notifications/subscribe",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Specifies a set of email addresses to inform Control Center account recipients about changes to a set of network lists."
+        },
+        {
+          "info": {
+            "name": "Akamai Unsubscribe to Network Lists",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/network-list/v2/notifications/unsubscribe",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Unsubscribes the listed users from a set of network lists."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
