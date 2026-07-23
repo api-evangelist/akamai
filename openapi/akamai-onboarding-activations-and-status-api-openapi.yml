@@ -1,0 +1,700 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Onboarding: Activations and status API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage your onboardings' activations, and the activation history for each onboarding.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage your onboardings' activations, and the activation history for each onboarding.
+  name: 'Onboarding: Activations and status'
+paths:
+  /onboardings/{onboardingId}/activations:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-activations.yaml
+      path-info: /onboardings/{onboardingId}/activations
+    post:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Activate an onboarding on the staging or production networks. You need to activate on the staging network before you can activate on production. Note that with this operation you can only activate on one network at a time. Once you activate on staging you can test your site as you normally would when using Property Manager or any of our security products.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-onboarding-activation
+      operationId: post-onboarding-activation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              network: STAGING
+              notificationEmails:
+              - test_user@akamai.com
+              - test_user2@akamai.com
+            schema:
+              additionalProperties: false
+              description: Describes the POST object to send when activating an onboarding.
+              properties:
+                network:
+                  description: The target Akamai activation environment, either `STAGING`` or `PRODUCTION``.
+                  enum:
+                  - STAGING
+                  - PRODUCTION
+                  minLength: 1
+                  type: string
+                notificationEmails:
+                  description: The email addresses to receive notifications regarding the activation.
+                  items:
+                    type: string
+                  minItems: 1
+                  type: array
+              required:
+              - notificationEmails
+              - network
+              type: object
+              x-akamai:
+                file-path: schemas/onboarding-activation-post.yaml
+        required: true
+      responses:
+        '202':
+          content:
+            application/json:
+              example:
+                activationId: 51
+                activationStatus: PENDING
+                activationStatusLink: /appsec/v1/onboardings/101/activations/51
+                createdBy: adevi
+                createdDate: '2014-03-02T02:22:12Z'
+                network: STAGING
+                onboardingLink: /appsec/v1/onboardings/101
+                percentComplete: 0
+                retryAfter: 1200
+              schema:
+                additionalProperties: false
+                description: Describes the response for activating an onboarding on the staging or production networks.
+                properties:
+                  activationId:
+                    description: The unique identifier for an activation.
+                    type: integer
+                  activationStatus:
+                    description: __Read-only__ The status of the activation. Activation can take about 20 minutes. A value of `ACTIVE` means activation succeeded and your site is ready for validation. A value of `FAILED` means the onboarding failed to activate and specific information about the failure is returned in the error response. When `PENDING`, the activation partially completed and the response shows you what additional steps you need to complete to finish your activation.
+                    enum:
+                    - PENDING
+                    - ACTIVE
+                    - FAILED
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  activationStatusLink:
+                    description: The URL for the operation to request the activation status.
+                    format: uri
+                    type: string
+                  completedDate:
+                    description: The ISO 8601 timestamp when the activation reaches a steady state and validates across the Akamai network.
+                    format: date-time
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the activation request.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  createdDate:
+                    description: __Read-only__ The ISO 8601 timestamp when the activation request was submitted.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  network:
+                    description: Specifies the network where you are activating your onboarding, either `STAGING`, or `PRODUCTION`.
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    minLength: 1
+                    type: string
+                  percentComplete:
+                    description: The percentage of the activation that is complete.
+                    type: integer
+                  retryAfter:
+                    description: The time remaining, in seconds, until the activation finishes. If your activation fails and you need to try activating again, you won't be able to until this value reaches `0`.
+                    type: integer
+                required:
+                - activationId
+                - activationStatus
+                - network
+                - createdDate
+                - createdBy
+                - activationStatusLink
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-activation-post-202.yaml
+          description: Successfully updated the onboarding settings.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Onboarding was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '409':
+          content:
+            application/problem+json:
+              examples:
+                activation-network-error:
+                  summary: Activation network error
+                  value:
+                    $ref: ../examples/409-onboarding-activation-network-error.json
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/409). Invalid onboarding Activation Request. See the `fieldErrors` and other fields provided in the response for more information.'
+          x-akamai:
+            file-path: errors/409-onboarding-activation.yaml
+        '422':
+          content:
+            application/problem+json:
+              examples:
+                activation-errors:
+                  summary: Unprocessable activation request
+                  value:
+                    $ref: ../examples/422-onboarding-activation-network-error.json
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Unprocessable content](https://techdocs.akamai.com/application-security/reference/422). Onboarding can''t be activated in the Production Network before Staging.'
+          x-akamai:
+            file-path: errors/422-onboarding-activation.yaml
+      summary: Activate an onboarding
+      tags:
+      - 'Onboarding: Activations and status'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+  /onboardings/{onboardingId}/activations/{activationId}:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    - description: A unique identifier for an activation.
+      in: path
+      name: activationId
+      required: true
+      schema:
+        example: 1234
+        type: integer
+      x-akamai:
+        file-path: parameters/activation-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-activations-status.yaml
+      path-info: /onboardings/{onboardingId}/activations/{activationId}
+    get:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Returns the status of an activation. Activations can take about 20 minutes. If the activation fails, to specific information about the failure is returned in the error response.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding-activation-status
+      operationId: get-onboarding-activation-status
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                activationId: 51
+                activationStatus: ACTIVE
+                activationStatusLink: /appsec/v1/onboardings/101/activations/51
+                completedDate: '2014-03-01T21:12:57Z'
+                createdBy: afero
+                createdDate: '2014-03-02T02:22:12Z'
+                network: STAGING
+                onboardingLink: /appsec/v1/onboardings/101
+              schema:
+                additionalProperties: false
+                description: Describes the response for activating an onboarding on the staging or production networks.
+                properties:
+                  activationId:
+                    description: The unique identifier for an activation.
+                    type: integer
+                  activationStatus:
+                    description: __Read-only__ The status of the activation. Activation can take about 20 minutes. A value of `ACTIVE` means activation succeeded and your site is ready for validation. A value of `FAILED` means the onboarding failed to activate and specific information about the failure is returned in the error response. When `PENDING`, the activation partially completed and the response shows you what additional steps you need to complete to finish your activation.
+                    enum:
+                    - PENDING
+                    - ACTIVE
+                    - FAILED
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  activationStatusLink:
+                    description: The URL for the operation to request the activation status.
+                    format: uri
+                    type: string
+                  completedDate:
+                    description: The ISO 8601 timestamp when the activation reaches a steady state and validates across the Akamai network.
+                    format: date-time
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the activation request.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  createdDate:
+                    description: __Read-only__ The ISO 8601 timestamp when the activation request was submitted.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  network:
+                    description: Specifies the network where you are activating your onboarding, either `STAGING`, or `PRODUCTION`.
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    minLength: 1
+                    type: string
+                  percentComplete:
+                    description: The percentage of the activation that is complete.
+                    type: integer
+                  retryAfter:
+                    description: The time remaining, in seconds, until the activation finishes. If your activation fails and you need to try activating again, you won't be able to until this value reaches `0`.
+                    type: integer
+                required:
+                - activationId
+                - activationStatus
+                - network
+                - createdDate
+                - createdBy
+                - activationStatusLink
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-activation-post-202.yaml
+          description: Onboarding Activation is completed.
+        '202':
+          content:
+            application/json:
+              example:
+                activationId: 51
+                activationStatus: PENDING
+                activationStatusLink: /appsec/v1/onboardings/101/activations/51
+                createdBy: hgildong
+                createdDate: '2014-03-02T02:22:12Z'
+                network: STAGING
+                onboardingLink: /appsec/v1/onboardings/101
+                percentComplete: 40
+                retryAfter: 500
+              schema:
+                additionalProperties: false
+                description: Describes the response for activating an onboarding on the staging or production networks.
+                properties:
+                  activationId:
+                    description: The unique identifier for an activation.
+                    type: integer
+                  activationStatus:
+                    description: __Read-only__ The status of the activation. Activation can take about 20 minutes. A value of `ACTIVE` means activation succeeded and your site is ready for validation. A value of `FAILED` means the onboarding failed to activate and specific information about the failure is returned in the error response. When `PENDING`, the activation partially completed and the response shows you what additional steps you need to complete to finish your activation.
+                    enum:
+                    - PENDING
+                    - ACTIVE
+                    - FAILED
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  activationStatusLink:
+                    description: The URL for the operation to request the activation status.
+                    format: uri
+                    type: string
+                  completedDate:
+                    description: The ISO 8601 timestamp when the activation reaches a steady state and validates across the Akamai network.
+                    format: date-time
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the activation request.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  createdDate:
+                    description: __Read-only__ The ISO 8601 timestamp when the activation request was submitted.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  network:
+                    description: Specifies the network where you are activating your onboarding, either `STAGING`, or `PRODUCTION`.
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    minLength: 1
+                    type: string
+                  percentComplete:
+                    description: The percentage of the activation that is complete.
+                    type: integer
+                  retryAfter:
+                    description: The time remaining, in seconds, until the activation finishes. If your activation fails and you need to try activating again, you won't be able to until this value reaches `0`.
+                    type: integer
+                required:
+                - activationId
+                - activationStatus
+                - network
+                - createdDate
+                - createdBy
+                - activationStatusLink
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-activation-post-202.yaml
+          description: Onboarding activation is in progress.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` or `activationId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                activationObject:
+                  activationStatus: FAILED
+                  createdBy: szhang
+                  createdTime: '2014-03-02T02:22:12Z'
+                  failedTime: '2014-03-02T02:22:12Z'
+                  network: STAGING
+                detail: Onboarding Activation failed.Please retry after sometime
+                errors:
+                - detail: ''
+                  status: ''
+                  title: ''
+                  type: ''
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7- a8d6-a92282cf1749
+                status: 500
+                title: Onboarding Activation Failed
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Onboarding activation failed.'
+          x-akamai:
+            file-path: errors/500-onboarding-activation.yaml
+      summary: Get an onboarding activation
+      tags:
+      - 'Onboarding: Activations and status'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

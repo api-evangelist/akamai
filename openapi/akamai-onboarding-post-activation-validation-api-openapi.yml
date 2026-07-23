@@ -1,0 +1,2974 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Onboarding: Post-activation validation API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage your post-activation validations and CNAME your hostnames to Akamai in order to go live.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage your post-activation validations and CNAME your hostnames to Akamai in order to go live.
+  name: 'Onboarding: Post-activation validation'
+paths:
+  /onboardings/{onboardingId}/certificate-validation:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-certificate-validation-status.yaml
+      path-info: /onboardings/{onboardingId}/certificate-validation
+    get:
+      description: __All products__ Returns the information you need to validate your certificate. Add the `TXT` DNS record listed in the  response to your DNS record. Adding the `TXT` record won't affect your website. Once you've added the `TXT` record, and before the token expires, run [Validate onboarding certificate](https://techdocs.akamai.com/application-security/docs/post-onboarding-certificate-validation) to validate the certificate.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding-certificate-validation
+      operationId: get-onboarding-certificate-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                certificateValidateLink: /appsec/v1/onboardings/101/certificate-validation/validate
+                certificateValidationStatus: VALIDATION_SUCCESS
+                description: Certificate Validation is complete.Please proceed with next steps.
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - hostname: www.test.com
+                  httpFilePath: http://www.test.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  httpToken: FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA.Q09uXf7yi3IHfsXvV6hGMNKJWtRyUFmUjzd_iQ1vVL0
+                  recordName: _acme-challenge.www.test.com.
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: TXT
+                  recordValue: jSwlQYgkF9Tus6C1us4ysx6QxCB95o3fXHKh9TvqiII
+                  urlRedirectFrom: http://www.test.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  urlRedirectTo: http://dcv.akamai.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                - hostname: www.test1.com
+                  httpFilePath: http://www.test1.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  httpToken: FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA.Q09uXf7yi3IHfsXvV6hGMNKJWtRyUFmUjzd_iQ1vVL0
+                  recordName: _acme-challenge.www.test1.com.
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: TXT
+                  recordValue: jSwlQYgkF9Tus6C1us4ysx6QxCB95o3fXHKh9TvqiII
+                  urlRedirectFrom: http://www.test1.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  urlRedirectTo: http://dcv1.akamai.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+              schema:
+                additionalProperties: false
+                description: Specifies the challenges necessary to validate the certificate.
+                properties:
+                  certificateValidateLink:
+                    description: The URL to call to validate your certificate.
+                    format: uri
+                    type: string
+                  certificateValidationStatus:
+                    description: The cumulative status for all certificate validation. If there is more than one certificate and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one certificate is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Details the steps you need to perform to validate your certificate.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists all hostname record information you need to validate your certificate.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname the certificate secures.
+                          minLength: 1
+                          type: string
+                        httpFilePath:
+                          description: The path to the HTTP file when validating your certificate with an HTTP token.
+                          minLength: 1
+                          type: string
+                        httpToken:
+                          description: The domain record's HTTP token you'll use to validate your certificate.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your certificate. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you may need to validate your site manually.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of domain record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The resource record's IP address.
+                          minLength: 1
+                          type: string
+                        urlRedirectFrom:
+                          description: The URL for the site you are redirecting `from` when you validate your certificate using a redirect.
+                          minLength: 1
+                          type: string
+                        urlRedirectTo:
+                          description: The URL you are redirecting `to` when you validate your certificate using a redirect.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - httpFilePath
+                      - httpToken
+                      - recordStatus
+                      - urlRedirectFrom
+                      - urlRedirectTo
+                      type: object
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - certificateValidateLink
+                - certificateValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-certificate-validation.yaml
+          description: Successfully retrieved certificate Challenges.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Failure to retrieve certificate challenges.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: List onboarding certificate challenges
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/certificate-validation/validate:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-certificate-validation.yaml
+      path-info: /onboardings/{onboardingId}/certificate-validation/validate
+    post:
+      description: __All products__ Validates the certificate's `TXT` DNS record. Once validation completes, it takes about five minutes to deploy the certificates across Akamai's global network. You can validate with HTTP token, DNS records, or URL redirect.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-onboarding-certificate-validation
+      operationId: post-onboarding-certificate-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                certificateValidateLink: /appsec/v1/onboardings/101/certificate-validation/validate
+                certificateValidationStatus: VALIDATION_SUCCESS
+                description: Certificate Validation is complete.Please proceed with next steps.
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - hostname: www.test.com
+                  httpFilePath: http://www.test.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  httpToken: FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA.Q09uXf7yi3IHfsXvV6hGMNKJWtRyUFmUjzd_iQ1vVL0
+                  recordName: _acme-challenge.www.test.com.
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: TXT
+                  recordValue: jSwlQYgkF9Tus6C1us4ysx6QxCB95o3fXHKh9TvqiII
+                  urlRedirectFrom: http://www.test.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  urlRedirectTo: http://dcv.akamai.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                - hostname: www.test1.com
+                  httpFilePath: http://www.test1.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  httpToken: FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA.Q09uXf7yi3IHfsXvV6hGMNKJWtRyUFmUjzd_iQ1vVL0
+                  recordName: _acme-challenge.www.test1.com.
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: TXT
+                  recordValue: jSwlQYgkF9Tus6C1us4ysx6QxCB95o3fXHKh9TvqiII
+                  urlRedirectFrom: http://www.test1.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  urlRedirectTo: http://dcv1.akamai.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+              schema:
+                additionalProperties: false
+                description: Specifies the challenges necessary to validate the certificate.
+                properties:
+                  certificateValidateLink:
+                    description: The URL to call to validate your certificate.
+                    format: uri
+                    type: string
+                  certificateValidationStatus:
+                    description: The cumulative status for all certificate validation. If there is more than one certificate and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one certificate is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Details the steps you need to perform to validate your certificate.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists all hostname record information you need to validate your certificate.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname the certificate secures.
+                          minLength: 1
+                          type: string
+                        httpFilePath:
+                          description: The path to the HTTP file when validating your certificate with an HTTP token.
+                          minLength: 1
+                          type: string
+                        httpToken:
+                          description: The domain record's HTTP token you'll use to validate your certificate.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your certificate. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you may need to validate your site manually.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of domain record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The resource record's IP address.
+                          minLength: 1
+                          type: string
+                        urlRedirectFrom:
+                          description: The URL for the site you are redirecting `from` when you validate your certificate using a redirect.
+                          minLength: 1
+                          type: string
+                        urlRedirectTo:
+                          description: The URL you are redirecting `to` when you validate your certificate using a redirect.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - httpFilePath
+                      - httpToken
+                      - recordStatus
+                      - urlRedirectFrom
+                      - urlRedirectTo
+                      type: object
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - certificateValidateLink
+                - certificateValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-certificate-validation.yaml
+          description: Successfully validated certificate challenges.
+        '207':
+          content:
+            application/json:
+              example:
+                certificateValidateLink: /appsec/v1/onboardings/101/certificate-validation/validate
+                certificateValidationStatus: VALIDATION_SUCCESS
+                description: Certificate Validation is complete.Please proceed with next steps.
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - hostname: www.test.com
+                  httpFilePath: http://www.test.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  httpToken: FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA.Q09uXf7yi3IHfsXvV6hGMNKJWtRyUFmUjzd_iQ1vVL0
+                  recordName: _acme-challenge.www.test.com.
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: TXT
+                  recordValue: jSwlQYgkF9Tus6C1us4ysx6QxCB95o3fXHKh9TvqiII
+                  urlRedirectFrom: http://www.test.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  urlRedirectTo: http://dcv.akamai.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                - hostname: www.test1.com
+                  httpFilePath: http://www.test1.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  httpToken: FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA.Q09uXf7yi3IHfsXvV6hGMNKJWtRyUFmUjzd_iQ1vVL0
+                  recordName: _acme-challenge.www.test1.com.
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: TXT
+                  recordValue: jSwlQYgkF9Tus6C1us4ysx6QxCB95o3fXHKh9TvqiII
+                  urlRedirectFrom: http://www.test1.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+                  urlRedirectTo: http://dcv1.akamai.com/.well-known/acme-challenge/FXdQ7d5o-4n156mUdKoWSA7VSsL5RCVbWiAVDUH0YBA
+              schema:
+                additionalProperties: false
+                description: Specifies the challenges necessary to validate the certificate.
+                properties:
+                  certificateValidateLink:
+                    description: The URL to call to validate your certificate.
+                    format: uri
+                    type: string
+                  certificateValidationStatus:
+                    description: The cumulative status for all certificate validation. If there is more than one certificate and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one certificate is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Details the steps you need to perform to validate your certificate.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists all hostname record information you need to validate your certificate.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname the certificate secures.
+                          minLength: 1
+                          type: string
+                        httpFilePath:
+                          description: The path to the HTTP file when validating your certificate with an HTTP token.
+                          minLength: 1
+                          type: string
+                        httpToken:
+                          description: The domain record's HTTP token you'll use to validate your certificate.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your certificate. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you may need to validate your site manually.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of domain record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The resource record's IP address.
+                          minLength: 1
+                          type: string
+                        urlRedirectFrom:
+                          description: The URL for the site you are redirecting `from` when you validate your certificate using a redirect.
+                          minLength: 1
+                          type: string
+                        urlRedirectTo:
+                          description: The URL you are redirecting `to` when you validate your certificate using a redirect.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - httpFilePath
+                      - httpToken
+                      - recordStatus
+                      - urlRedirectFrom
+                      - urlRedirectTo
+                      type: object
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - certificateValidateLink
+                - certificateValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-certificate-validation.yaml
+          description: "Partially validated\tCertificate Challenges."
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Validating certificate challenges failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Validate onboarding certificate
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/cname-to-akamai:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-cname-to-akamai-status.yaml
+      path-info: /onboardings/{onboardingId}/cname-to-akamai
+    get:
+      description: __All products__ Returns the DNS records you need to CNAME to Akamai. Once you update your CNAME record with the information in this call's response, your end user traffic starts to flow through Akamai's platform. Note that you can only CNAME to Akamai after an activation on staging or production is complete.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding-cname-records
+      operationId: get-onboarding-cname-records
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                cnameValidateLink: /appsec/v1/onboardings/101/cname-to-akamai/validate
+                cnameValidationStatus: VALIDATION_NEEDED
+                description: Add all records to your DNS settings to cname hostnames to Akamai and validate the records to complete the onboarding
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - recordName: test.hostname1.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: test.hostname1.com.edgekey.net
+                - recordName: test.hostname2.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: test.hostname2.com.edgekey.net
+              schema:
+                additionalProperties: false
+                description: Describes the record information to validate your CNAME.
+                properties:
+                  cnameValidateLink:
+                    description: The URL you call to validate your CNAME records.
+                    format: uri
+                    type: string
+                  cnameValidationStatus:
+                    description: The cumulative status for all CNAME validations. If there is more than one record and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one record is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Provides the information on CNAME the hostnames to Akamai to complete Onboarding.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: An array of CNAME records sets to be validated.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your DNS record. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of DNS record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The DNS record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - cnameValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-cname-validation.yaml
+          description: Successfully retrieved CNAME DNS records.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Retrieving CNAME records failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: List hostname CNAME DNS records
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/cname-to-akamai/validate:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-cname-to-akamai.yaml
+      path-info: /onboardings/{onboardingId}/cname-to-akamai
+    post:
+      description: '__All products__ Validates your site is ready to serve traffic. Call this operation after you''ve replaced the DNS entry that directs traffic to your site with the DNS CNAME records in [List hostname CNAME DNS records](https://techdocs.akamai.com/application-security/docs/get-onboarding-cname-records). In each record, set the time-to-live (TTL) to 300 seconds (5 minutes). Once this call completes, run [Get an onboarding](https://techdocs.akamai.com/application-security/docs/get-onboarding) to verify your onboarding is complete. When you''ve successfully completed any validations and CNAME changes, you''ll see `onboardingStatus: "COMPLETE"` in the response.'
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-validate-onboarding-cname-records
+      operationId: post-validate-onboarding-cname-records
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                cnameValidationStatus: VALIDATION_SUCCESS
+                description: Cname-to-akamai is now complete. You are live now with Akamai Servers
+                onboardingLink: /appsec/v1/onboardings/2626
+                records:
+                - recordName: bugbash2.konaqa.com
+                  recordStatus: VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: bugbash2.konaqa.com.edgekey.net
+                - recordName: bugbash3.konaqa.com
+                  recordStatus: VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: bugbash2.konaqa.com.edgekey.net
+              schema:
+                additionalProperties: false
+                description: Describes the record information to validate your CNAME.
+                properties:
+                  cnameValidationStatus:
+                    description: The cumulative status for all CNAME validations. If there is more than one record and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one record is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Describes any remaining actions necessary to validate CNAME record and complete the onboarding process.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists the CNAME records to validate.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your DNS record. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The DNS record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - cnameValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-cname-validation-200.yaml
+          description: Successfully validated CNAME DNS records.
+        '202':
+          content:
+            application/json:
+              example:
+                cnameValidateLink: /appsec/v1/onboardings/101/cname-to-akamai/validate
+                cnameValidationStatus: VALIDATION_NEEDED
+                description: Add all records to your DNS settings to cname hostnames to Akamai and validate the records to complete the onboarding
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - recordName: test.hostname1.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: test.hostname1.com.edgekey.net
+                - recordName: test.hostname2.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: test.hostname2.com.edgekey.net
+              schema:
+                additionalProperties: false
+                description: Describes the record information to validate your CNAME.
+                properties:
+                  cnameValidateLink:
+                    description: The URL you call to validate your CNAME records.
+                    format: uri
+                    type: string
+                  cnameValidationStatus:
+                    description: The cumulative status for all CNAME validations. If there is more than one record and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one record is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Provides the information on CNAME the hostnames to Akamai to complete Onboarding.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: An array of CNAME records sets to be validated.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your DNS record. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of DNS record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The DNS record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - cnameValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-cname-validation.yaml
+          description: Pending DNS record validation.
+        '207':
+          content:
+            application/json:
+              example:
+                cnameValidateLink: /appsec/v1/onboardings/101/cname-to-akamai/validate
+                cnameValidationStatus: VALIDATION_NEEDED
+                description: Add all records to your DNS settings to cname hostnames to Akamai and validate the records to complete the onboarding
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - recordName: test.hostname1.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: test.hostname1.com.edgekey.net
+                - recordName: test.hostname2.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 300
+                  recordType: CNAME
+                  recordValue: test.hostname2.com.edgekey.net
+              schema:
+                additionalProperties: false
+                description: Describes the record information to validate your CNAME.
+                properties:
+                  cnameValidateLink:
+                    description: The URL you call to validate your CNAME records.
+                    format: uri
+                    type: string
+                  cnameValidationStatus:
+                    description: The cumulative status for all CNAME validations. If there is more than one record and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one record is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  description:
+                    description: Provides the information on CNAME the hostnames to Akamai to complete Onboarding.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: An array of CNAME records sets to be validated.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your DNS record. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of DNS record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The DNS record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - cnameValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-cname-validation.yaml
+          description: Partially validated CNAME DNS records.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Retrieving CNAME records failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Validate hostname CNAME DNS records
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/domain-validation:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-domain-validation-status.yaml
+      path-info: /onboardings/{onboardingId}/domain-validation
+    get:
+      description: __All products__ Returns the information you need to validate your domains. Add the `TXT` or `CNAME` value listed in the response to your DNS record. Adding the record won't affect your website. Once you've added the record, and before the token expires, run [Validate onboarding domains](https://techdocs.akamai.com/application-security/docs/post-onboarding-domain-validation).
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding-domain-validation
+      operationId: get-onboarding-domain-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: 'Complete domain validation using one of the following three methods: 1. DNS token validation. Add a DNS entry for each hostname with the given `recordName`, `recordType`, `recordTTL`, and `recordValue` from this response. 2. URL redirect validation. Add the following URL redirect (HTTP status code 301 or 302) to the server hosting this domain from `urlRedirectFrom` to `urlRedirectTo`. 3. HTTP token validation. Create a file with an `httpRecordToken` in it and put the file in the designated `httpRecordFile` folder on your site. Once complete, run [Validate onboarding domains](https://techdocs.akamai.com/application-security/reference/post-onboarding-domain-validation).'
+                domainValidationLink: /appsec/v1/onboardings/101/domain-validation/validate
+                domainValidationStatus: VALIDATION_NEEDED
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - hostname: www.example.com
+                  httpFilePath: https://www.example.com/.well-known/akamai/akamai-challenge
+                  httpToken: Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+                  recordName: _acme-challenge.www.example.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 60
+                  recordType: CNAME
+                  recordValue: ac.e5faf53e128860434c9d9e8ec5d0602d.www.example.com.validate-akdv.net
+                  urlRedirectFrom: https://www.example.com/.well-known/akamai/akamai-challenge/DcSTISzoTF35eZET_wDnkg
+                  urlRedirectTo: https://validation.akamai.com/.well-known/akamai/akamai-challenge/Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+                - hostname: www2.example.com
+                  httpFilePath: https://ww2.example.com/.well-known/akamai/akamai-challenge
+                  httpToken: Abcde64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfYZ
+                  recordName: _acme-challenge.ww2.example.com
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: CNAME
+                  recordValue: bc.e5faf53e128860434c9d9e8ec5d0602d.www.example.com.validate-akdv.net
+                  urlRedirectFrom: https://ww2.example.com/.well-known/akamai/akamai-challenge/DcSTISzoTF35eZET_wDnkg
+                  urlRedirectTo: https://validation.akamai.com/.well-known/akamai/akamai-challenge/Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+              schema:
+                additionalProperties: false
+                description: Specifies the challenges necessary to validate domain ownership.
+                properties:
+                  description:
+                    description: Details the steps you need to perform to validate your domains.
+                    minLength: 1
+                    type: string
+                  domainValidationLink:
+                    description: The URL to call to validate your domains.
+                    format: uri
+                    type: string
+                  domainValidationStatus:
+                    description: The cumulative status for all domain validation. If there is more than one domain and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one domain is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists all hostname record information you need to validate your domains.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname that needs validation.
+                          minLength: 1
+                          type: string
+                        httpFilePath:
+                          description: The path to the HTTP file when validating your domain with an HTTP token.
+                          minLength: 1
+                          type: string
+                        httpToken:
+                          description: The domain record's HTTP token you'll use to validate your domain.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your domain. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you may need to validate your domain manually.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of domain record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The challenge record value.
+                          minLength: 1
+                          type: string
+                        urlRedirectFrom:
+                          description: The originating URL for the site you redirect from when you validate your domain using a redirect.
+                          minLength: 1
+                          type: string
+                        urlRedirectTo:
+                          description: The destination URL you redirect to when you validate your domain using a redirect.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - httpFilePath
+                      - httpToken
+                      - recordStatus
+                      - urlRedirectFrom
+                      - urlRedirectTo
+                      type: object
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - domainValidationLink
+                - domainValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-domain-validation.yaml
+          description: Successfully retrieved domain validation challenges.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Failure to retrieve domain challenges.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: List onboarding domain challenges
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/domain-validation/validate:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-domain-validation.yaml
+      path-info: /onboardings/{onboardingId}/domain-validation/validate
+    post:
+      description: __All products__ Verifies the domain validation challenges. You can validate with HTTP token, DNS records, or URL redirect.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-onboarding-domain-validation
+      operationId: post-onboarding-domain-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: 'Complete domain validation using one of the following three methods: 1. DNS token validation. Add a DNS entry for each hostname with the given `recordName`, `recordType`, `recordTTL`, and `recordValue` from this response. 2. URL redirect validation. Add the following URL redirect (HTTP status code 301 or 302) to the server hosting this domain from `urlRedirectFrom` to `urlRedirectTo`. 3. HTTP token validation. Create a file with an `httpRecordToken` in it and put the file in the designated `httpRecordFile` folder on your site. Once complete, run [Validate onboarding domains](https://techdocs.akamai.com/application-security/reference/post-onboarding-domain-validation).'
+                domainValidationLink: /appsec/v1/onboardings/101/domain-validation/validate
+                domainValidationStatus: VALIDATION_NEEDED
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - hostname: www.example.com
+                  httpFilePath: https://www.example.com/.well-known/akamai/akamai-challenge
+                  httpToken: Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+                  recordName: _acme-challenge.www.example.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 60
+                  recordType: CNAME
+                  recordValue: ac.e5faf53e128860434c9d9e8ec5d0602d.www.example.com.validate-akdv.net
+                  urlRedirectFrom: https://www.example.com/.well-known/akamai/akamai-challenge/DcSTISzoTF35eZET_wDnkg
+                  urlRedirectTo: https://validation.akamai.com/.well-known/akamai/akamai-challenge/Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+                - hostname: www2.example.com
+                  httpFilePath: https://ww2.example.com/.well-known/akamai/akamai-challenge
+                  httpToken: Abcde64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfYZ
+                  recordName: _acme-challenge.ww2.example.com
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: CNAME
+                  recordValue: bc.e5faf53e128860434c9d9e8ec5d0602d.www.example.com.validate-akdv.net
+                  urlRedirectFrom: https://ww2.example.com/.well-known/akamai/akamai-challenge/DcSTISzoTF35eZET_wDnkg
+                  urlRedirectTo: https://validation.akamai.com/.well-known/akamai/akamai-challenge/Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+              schema:
+                additionalProperties: false
+                description: Specifies the challenges necessary to validate domain ownership.
+                properties:
+                  description:
+                    description: Details the steps you need to perform to validate your domains.
+                    minLength: 1
+                    type: string
+                  domainValidationLink:
+                    description: The URL to call to validate your domains.
+                    format: uri
+                    type: string
+                  domainValidationStatus:
+                    description: The cumulative status for all domain validation. If there is more than one domain and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one domain is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists all hostname record information you need to validate your domains.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname that needs validation.
+                          minLength: 1
+                          type: string
+                        httpFilePath:
+                          description: The path to the HTTP file when validating your domain with an HTTP token.
+                          minLength: 1
+                          type: string
+                        httpToken:
+                          description: The domain record's HTTP token you'll use to validate your domain.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your domain. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you may need to validate your domain manually.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of domain record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The challenge record value.
+                          minLength: 1
+                          type: string
+                        urlRedirectFrom:
+                          description: The originating URL for the site you redirect from when you validate your domain using a redirect.
+                          minLength: 1
+                          type: string
+                        urlRedirectTo:
+                          description: The destination URL you redirect to when you validate your domain using a redirect.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - httpFilePath
+                      - httpToken
+                      - recordStatus
+                      - urlRedirectFrom
+                      - urlRedirectTo
+                      type: object
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - domainValidationLink
+                - domainValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-domain-validation.yaml
+          description: Successfully verified domain validation challenges.
+        '207':
+          content:
+            application/json:
+              example:
+                description: 'Complete domain validation using one of the following three methods: 1. DNS token validation. Add a DNS entry for each hostname with the given `recordName`, `recordType`, `recordTTL`, and `recordValue` from this response. 2. URL redirect validation. Add the following URL redirect (HTTP status code 301 or 302) to the server hosting this domain from `urlRedirectFrom` to `urlRedirectTo`. 3. HTTP token validation. Create a file with an `httpRecordToken` in it and put the file in the designated `httpRecordFile` folder on your site. Once complete, run [Validate onboarding domains](https://techdocs.akamai.com/application-security/reference/post-onboarding-domain-validation).'
+                domainValidationLink: /appsec/v1/onboardings/101/domain-validation/validate
+                domainValidationStatus: VALIDATION_NEEDED
+                onboardingLink: /appsec/v1/onboardings/101
+                records:
+                - hostname: www.example.com
+                  httpFilePath: https://www.example.com/.well-known/akamai/akamai-challenge
+                  httpToken: Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+                  recordName: _acme-challenge.www.example.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 60
+                  recordType: CNAME
+                  recordValue: ac.e5faf53e128860434c9d9e8ec5d0602d.www.example.com.validate-akdv.net
+                  urlRedirectFrom: https://www.example.com/.well-known/akamai/akamai-challenge/DcSTISzoTF35eZET_wDnkg
+                  urlRedirectTo: https://validation.akamai.com/.well-known/akamai/akamai-challenge/Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+                - hostname: www2.example.com
+                  httpFilePath: https://ww2.example.com/.well-known/akamai/akamai-challenge
+                  httpToken: Abcde64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfYZ
+                  recordName: _acme-challenge.ww2.example.com
+                  recordStatus: VALIDATED
+                  recordTtl: 60
+                  recordType: CNAME
+                  recordValue: bc.e5faf53e128860434c9d9e8ec5d0602d.www.example.com.validate-akdv.net
+                  urlRedirectFrom: https://ww2.example.com/.well-known/akamai/akamai-challenge/DcSTISzoTF35eZET_wDnkg
+                  urlRedirectTo: https://validation.akamai.com/.well-known/akamai/akamai-challenge/Kvcqs64nHpnKyytmX6ELnga0YM9C9BsJO-ubvXa5UBzR0D65xkOfIA
+              schema:
+                additionalProperties: false
+                description: Specifies the challenges necessary to validate domain ownership.
+                properties:
+                  description:
+                    description: Details the steps you need to perform to validate your domains.
+                    minLength: 1
+                    type: string
+                  domainValidationLink:
+                    description: The URL to call to validate your domains.
+                    format: uri
+                    type: string
+                  domainValidationStatus:
+                    description: The cumulative status for all domain validation. If there is more than one domain and each is valid, you'll see a value of `VALIDATION_SUCCESS`. If one domain is valid but another is not, it will say `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  records:
+                    description: Lists all hostname record information you need to validate your domains.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname that needs validation.
+                          minLength: 1
+                          type: string
+                        httpFilePath:
+                          description: The path to the HTTP file when validating your domain with an HTTP token.
+                          minLength: 1
+                          type: string
+                        httpToken:
+                          description: The domain record's HTTP token you'll use to validate your domain.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your domain. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you may need to validate your domain manually.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of domain record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The challenge record value.
+                          minLength: 1
+                          type: string
+                        urlRedirectFrom:
+                          description: The originating URL for the site you redirect from when you validate your domain using a redirect.
+                          minLength: 1
+                          type: string
+                        urlRedirectTo:
+                          description: The destination URL you redirect to when you validate your domain using a redirect.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - httpFilePath
+                      - httpToken
+                      - recordStatus
+                      - urlRedirectFrom
+                      - urlRedirectTo
+                      type: object
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - records
+                - domainValidationLink
+                - domainValidationStatus
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-domain-validation.yaml
+          description: Partially validated domain challenges.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal Server Error](https://techdocs.akamai.com/application-security/reference/500). Validating domain challenges failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Validate onboarding domains
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/origin-validation:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-origin-validation-status.yaml
+      path-info: /onboardings/{onboardingId}/origin-validation
+    get:
+      description: __All products__ Lists the DNS records for your origin. Once you make this call, visit your DNS provider account and create a new DNS type `A` record with the values returned in the response. In the rare case that you changed your origin values outside this setup, you can run [Skip origin validation](https://techdocs.akamai.com/application-security/docs/post-skip-onboarding-origin-validation) to proceed to the next step without validating your origin at this time.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding-origin-validation
+      operationId: get-onboarding-origin-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: Add all records to your DNS settings
+                onboardingLink: /appsec/v1/onboardings/2626
+                originSkipLink: /appsec/v1/onboardings/5533/origin-validation/skip
+                originValidateLink: /appsec/v1/onboardings/5533/origin-validation/validate
+                originValidationStatus: VALIDATION_NEEDED
+                records:
+                - hostname: test.hostname1.com
+                  recordName: origin-03bdb4-test.hostname1.com
+                  recordStatus: VALIDATED
+                  recordTtl: 900
+                  recordType: A
+                  recordValue: 192.0.2.233
+                - hostname: test.hostname2.com
+                  recordName: origin-86249f-test.hostname2.com
+                  recordStatus: NOT_VALIDATED
+                  recordTtl: 900
+                  recordType: A
+                  recordValue: 192.0.2.198
+              schema:
+                additionalProperties: false
+                description: Describes the information necessary to validate your origin.
+                properties:
+                  description:
+                    description: Specifies the instructions to be performed for Origin Validation.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  originSkipLink:
+                    description: The URL to call when you want to skip validating your origin.
+                    format: uri
+                    type: string
+                  originValidateLink:
+                    description: The URL to call when you want to validate your origin.
+                    format: uri
+                    type: string
+                  originValidationStatus:
+                    description: Overall status of the Validation Records, either `VALIDATION_SUCCESS` or `VALIDATION_NEEDED`.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  records:
+                    description: Lists all hostname records required to validate your origin.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: Specifies the hostname for which the record entry is generated.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your origin validation. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of DNS record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The origin's record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - originValidationStatus
+                - records
+                - originValidateLink
+                - originSkipLink
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-origin-validation.yaml
+          description: Successfully retrieved origin hostnames DNS records.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation..'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Retrieving certificate challenges failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: List origin hostname DNS records
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/origin-validation/skip:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-origin-validation-skip.yaml
+      path-info: /onboardings/{onboardingId}/origin-validation/skip
+    post:
+      description: __All products__ Skips the validation of `A` DNS record. In the rare case that you changed your origin values outside this onboarding, you can choose not to complete the origin validation process through this onboarding workflow. Skipping for any other reason may cause your site to become unreachable. When you choose to skip validating your origin through this call, the response shows the records with a value of `skipped`.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-skip-onboarding-origin-validation
+      operationId: post-skip-onboarding-origin-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: Origin Validation is complete.Please proceed with next steps.
+                onboardingLink: /appsec/v1/onboardings/2626
+                originValidationStatus: VALIDATION_SUCCESS
+                records:
+                - hostname: test.hostname1.com
+                  recordName: origin-03bdb4-test.hostname1.com
+                  recordStatus: SKIPPED
+                  recordTtl: 900
+                  recordType: A
+                  recordValue: 192.0.2.222
+                - hostname: test.hostname2.com
+                  recordName: origin-03bdb4-test.hostname2.com
+                  recordStatus: SKIPPED
+                  recordTtl: 900
+                  recordType: A
+                  recordValue: 192.0.2.102
+              schema:
+                additionalProperties: false
+                description: Describes skipping origin validation.
+                properties:
+                  description:
+                    description: Describes any remaining actions necessary to validate your origin, or skip validating your origin, and complete the onboarding process.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  originValidationStatus:
+                    description: Overall status of the validation process. When the value is `VALIDATION_SUCCESS`, you can continue on to the next step outlined in the onboarding process. If the value is `VALIDATION_NEEDED`, you may need to manually validate your origin.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  records:
+                    description: Lists all hostname records required to validate your origin.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: Specifies the hostname for which the record entry is generated.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your origin validation. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field. When the value is `SKIPPED`, you have indicated you do not want to validate your origin at this time. Note that the expectation is that you have previously validated your origin outside of this onboarding process.
+                          enum:
+                          - SKIPPED
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of DNS record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The origin's record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - originValidationStatus
+                - records
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-skip-origin-validation.yaml
+          description: Successfully skipped Origin Record Validation.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation..'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Call to validate origin records failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Skip origin hostnames DNS record validation
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+  /onboardings/{onboardingId}/origin-validation/validate:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-origin-validation.yaml
+      path-info: /onboardings/{onboardingId}/origin-validation/validate
+    post:
+      description: __All products__ Validates the `A` DNS record you entered into your DNS record. In the rare case that you changed your origin values outside this setup, you can run [Skip origin validation](https://techdocs.akamai.com/application-security/docs/post-skip-onboarding-origin-validation) to proceed to the next step without validating your origin at this time.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-onboarding-origin-validation
+      operationId: post-onboarding-origin-validation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: Origin Validation is complete.Please proceed with next steps.
+                onboardingLink: /appsec/v1/onboardings/2626
+                originValidationStatus: VALIDATION_SUCCESS
+                records:
+                - hostname: test.hostname1.com
+                  recordName: origin-03bdb4-test.hostname1.com
+                  recordStatus: VALIDATED
+                  recordTtl: 900
+                  recordType: A
+                  recordValue: 192.0.2.144
+                - hostname: test.hostname2.com
+                  recordName: origin-03bdb4-test.hostname2.com
+                  recordStatus: VALIDATED
+                  recordTtl: 900
+                  recordType: A
+                  recordValue: 192.0.2.237
+              schema:
+                additionalProperties: false
+                description: Describes validating an origin.
+                properties:
+                  description:
+                    description: Describes any remaining actions necessary to validate your origin and complete the onboarding process.
+                    minLength: 1
+                    type: string
+                  onboardingLink:
+                    description: The URL to get the onboarding's details.
+                    format: uri
+                    type: string
+                  originValidationStatus:
+                    description: Overall status of the validation process. When the value is `VALIDATION_SUCCESS`, you can continue on to the next step outlined in the onboarding process. If the value is `VALIDATION_NEEDED`, you may need to manually validate your origin.
+                    enum:
+                    - VALIDATION_SUCCESS
+                    - VALIDATION_NEEDED
+                    minLength: 1
+                    type: string
+                  records:
+                    description: Lists all hostname records required to validate your origin.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: Specifies the hostname for which the record entry is generated.
+                          minLength: 1
+                          type: string
+                        recordName:
+                          description: The fully qualified domain name (FQDN) of this record.
+                          minLength: 1
+                          type: string
+                        recordStatus:
+                          description: The status of your origin validation. When `VALIDATED`, you can proceed to the next step in the onboarding process. When `NOT_VALIDATED`, you  may need to take additional steps to complete the validation. This information appears in the `DESCRIPTION` field.
+                          enum:
+                          - VALIDATED
+                          - NOT_VALIDATED
+                          minLength: 1
+                          type: string
+                        recordTtl:
+                          description: The number of seconds that this record should live in cache before being re-fetched.
+                          type: integer
+                        recordType:
+                          description: The type of DNS record. For example, `A`, `TXT`, or `CNAME`.
+                          minLength: 1
+                          type: string
+                        recordValue:
+                          description: The origin's record's IP address.
+                          minLength: 1
+                          type: string
+                      required:
+                      - hostname
+                      - recordName
+                      - recordType
+                      - recordValue
+                      - recordTtl
+                      - recordStatus
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - description
+                - originValidationStatus
+                - records
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-origin-validation-200.yaml
+          description: Successfully validated origin records.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation..'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The `onboardingId` was not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Could not retrieve validation records
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 500
+                title: Something went wrong
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/INTERNAL-SERVER-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Conflict](https://techdocs.akamai.com/application-security/reference/500). Call to validate origin records failed.'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Validate origin hostnames DNS records
+      tags:
+      - 'Onboarding: Post-activation validation'
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

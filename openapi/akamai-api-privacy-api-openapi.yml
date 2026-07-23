@@ -1,0 +1,802 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens API privacy API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: API privacy
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/api-privacy:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the API privacy settings configured for an endpoint version and its assigned resources.
+      operationId: get-api-privacy-settings
+      summary: Get API privacy settings
+      tags:
+      - API privacy
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-api-privacy-settings
+      responses:
+        '200':
+          description: Operation succeeded.
+          content:
+            application/json:
+              example:
+                public: false
+                resources:
+                  '2926712':
+                    inheritsFromEndpoint: true
+                    notes: A book item within the bookstore API.
+                    path: /book/{bookId}
+                    public: false
+                    methods:
+                      GET:
+                        inheritsFromEndpoint: true
+                        public: false
+                      POST:
+                        inheritsFromEndpoint: true
+                        public: false
+              schema:
+                additionalProperties: false
+                description: Contains information about API privacy settings configured for an endpoint and its associated resources. You can configure API privacy settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - public
+                properties:
+                  public:
+                    description: Whether the endpoint is public, that is, accessible without an API key.
+                    type: boolean
+                  resources:
+                    description: Specifies each resource's privacy settings. This object is a map of resource IDs to API privacy settings.
+                    type: object
+                    additionalProperties:
+                      additionalProperties: false
+                      description: Specifies a resource's privacy settings. This object's keys are resource IDs, and values are the resource's privacy settings.
+                      title: Resource privacy settings
+                      type: object
+                      required:
+                      - public
+                      properties:
+                        inheritsFromEndpoint:
+                          description: Whether the resource inherits the top-level API privacy settings.
+                          readOnly: true
+                          type: boolean
+                        methods:
+                          additionalProperties: false
+                          description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                          type: object
+                          properties:
+                            DELETE:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            GET:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            HEAD:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            OPTIONS:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            PATCH:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            POST:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            PUT:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                        notes:
+                          description: The notes describing the purpose of the resource.
+                          minLength: 0
+                          readOnly: true
+                          type: string
+                        path:
+                          description: The URL path relative to the hostnames on which the resource resides.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        public:
+                          description: Whether the resource is public, that is, accessible without an API key.
+                          type: boolean
+                      x-akamai:
+                        file-path: schemas/apiPrivacySettingsResourceId.yaml
+                x-akamai:
+                  file-path: schemas/apiPrivacySettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the API privacy settings configured for an endpoint version and its assigned resources.
+      operationId: put-api-privacy-settings
+      summary: Edit API privacy settings
+      tags:
+      - API privacy
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-api-privacy-settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              public: false
+              resources:
+                '2926712':
+                  public: false
+                  methods:
+                    GET:
+                      public: false
+                    POST:
+                      public: false
+            schema:
+              additionalProperties: false
+              description: Contains information about API privacy settings configured for an endpoint and its associated resources. You can configure API privacy settings if the API Gateway product is in your contract.
+              type: object
+              required:
+              - public
+              properties:
+                public:
+                  description: Whether the endpoint is public, that is, accessible without an API key.
+                  example: '{{public}}'
+                  type: boolean
+                resources:
+                  description: Specifies each resource's privacy settings. This object is a map of resource IDs to API privacy settings.
+                  type: object
+                  additionalProperties:
+                    additionalProperties: false
+                    description: Specifies a resource's privacy settings. This object's keys are resource IDs, and values are the resource's privacy settings.
+                    title: Resource privacy settings
+                    type: object
+                    required:
+                    - public
+                    properties:
+                      inheritsFromEndpoint:
+                        description: Whether the resource inherits the top-level API privacy settings.
+                        readOnly: true
+                        type: boolean
+                      methods:
+                        additionalProperties: false
+                        description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                        type: object
+                        properties:
+                          DELETE:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                          GET:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                          HEAD:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                          OPTIONS:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                          PATCH:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                          POST:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                          PUT:
+                            additionalProperties: false
+                            description: Contains information about a method's privacy settings.
+                            type: object
+                            properties:
+                              inheritsFromEndpoint:
+                                description: Whether the method inherits the top-level API privacy settings.
+                                readOnly: true
+                                type: boolean
+                              public:
+                                description: Whether the method is public, that is, accessible without an API key.
+                                type: boolean
+                            x-akamai:
+                              file-path: schemas/apiPrivacySettingsMethod.yaml
+                      notes:
+                        description: The notes describing the purpose of the resource.
+                        minLength: 0
+                        readOnly: true
+                        type: string
+                      path:
+                        description: The URL path relative to the hostnames on which the resource resides.
+                        minLength: 1
+                        readOnly: true
+                        type: string
+                      public:
+                        description: Whether the resource is public, that is, accessible without an API key.
+                        type: boolean
+                    x-akamai:
+                      file-path: schemas/apiPrivacySettingsResourceId.yaml
+              x-akamai:
+                file-path: schemas/apiPrivacySettingsDto.yaml
+      responses:
+        '200':
+          description: The response shows updated privacy settings.
+          content:
+            application/json:
+              example:
+                public: false
+                resources:
+                  '2926712':
+                    inheritsFromEndpoint: true
+                    notes: A book item within the bookstore API.
+                    path: /book/{bookId}
+                    public: false
+                    methods:
+                      GET:
+                        inheritsFromEndpoint: true
+                        public: false
+                      POST:
+                        inheritsFromEndpoint: true
+                        public: false
+              schema:
+                additionalProperties: false
+                description: Contains information about API privacy settings configured for an endpoint and its associated resources. You can configure API privacy settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - public
+                properties:
+                  public:
+                    description: Whether the endpoint is public, that is, accessible without an API key.
+                    type: boolean
+                  resources:
+                    description: Specifies each resource's privacy settings. This object is a map of resource IDs to API privacy settings.
+                    type: object
+                    additionalProperties:
+                      additionalProperties: false
+                      description: Specifies a resource's privacy settings. This object's keys are resource IDs, and values are the resource's privacy settings.
+                      title: Resource privacy settings
+                      type: object
+                      required:
+                      - public
+                      properties:
+                        inheritsFromEndpoint:
+                          description: Whether the resource inherits the top-level API privacy settings.
+                          readOnly: true
+                          type: boolean
+                        methods:
+                          additionalProperties: false
+                          description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                          type: object
+                          properties:
+                            DELETE:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            GET:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            HEAD:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            OPTIONS:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            PATCH:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            POST:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                            PUT:
+                              additionalProperties: false
+                              description: Contains information about a method's privacy settings.
+                              type: object
+                              properties:
+                                inheritsFromEndpoint:
+                                  description: Whether the method inherits the top-level API privacy settings.
+                                  readOnly: true
+                                  type: boolean
+                                public:
+                                  description: Whether the method is public, that is, accessible without an API key.
+                                  type: boolean
+                              x-akamai:
+                                file-path: schemas/apiPrivacySettingsMethod.yaml
+                        notes:
+                          description: The notes describing the purpose of the resource.
+                          minLength: 0
+                          readOnly: true
+                          type: string
+                        path:
+                          description: The URL path relative to the hostnames on which the resource resides.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        public:
+                          description: Whether the resource is public, that is, accessible without an API key.
+                          type: boolean
+                      x-akamai:
+                        file-path: schemas/apiPrivacySettingsResourceId.yaml
+                x-akamai:
+                  file-path: schemas/apiPrivacySettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

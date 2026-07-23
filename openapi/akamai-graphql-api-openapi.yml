@@ -1,0 +1,866 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens GraphQL API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: GraphQL
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/graphql:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the GraphQL caching settings configured for an endpoint version.
+      operationId: get-graphql-settings
+      summary: Get GraphQL cache settings
+      tags:
+      - GraphQL
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-graphql-settings
+      responses:
+        '200':
+          description: The response shows current GraphQL cache settings.
+          content:
+            application/json:
+              example:
+                bodyParamName: body-param-name
+                cacheOrigin: false
+                cacheResponseOnError: null
+                detectError: false
+                enabled: true
+                maxQuerySize: null
+                nestingLevel: null
+                queryParamName: query-param-name
+                serveStale: null
+                downstreamCaching:
+                  headers: SAME_AS_ORIGIN
+                  lifetime: SMALLER_VALUE
+                  markAsPrivate: false
+                  option: ALLOW_CACHING
+                maxAge:
+                  duration: 420
+                  unit: HOURS
+                preRefreshing:
+                  enabled: true
+                  value: 50
+              schema:
+                additionalProperties: false
+                description: Contains information about GraphQL caching settings configured for an endpoint. GraphQL caching settings specify properties such as the query and body parameters that contain GraphQL queries, maximum age of cached content, and downstream cacheability. You can configure GraphQL caching settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - bodyParamName
+                - queryParamName
+                - maxAge
+                - downstreamCaching
+                - detectError
+                properties:
+                  bodyParamName:
+                    description: The name of the JSON body parameter that contains a GraphQL query in an incoming POST request. If the request's content type is `application/json`, this is the name of the key that contains a GraphQL query as its value. If the request's content type is `application/graphql`, edge servers treat the entire request body as a GraphQL query.
+                    type: string
+                  cacheOrigin:
+                    description: Whether to set the maximum age for caching GraphQL responses (TTL) to the value specified in your origin's `Cache-Control` HTTP response header.
+                    nullable: true
+                    type: boolean
+                  cacheResponseOnError:
+                    description: Whether edge servers should cache the response to a GraphQL-type request in case errors are present in the response body.
+                    nullable: true
+                    type: boolean
+                  detectError:
+                    description: By default, GraphQL queries return partial data if only a portion of a request fails. In such cases, status codes don't indicate errors. Instead, an `errors` array in a response body contains error details. This indicates whether edge servers should inspect the response body for the `errors` array.
+                    type: boolean
+                  downstreamCaching:
+                    additionalProperties: false
+                    description: Contains information about downstream caching settings. Downstream caching refers to the caching instructions assigned to objects sent with responses toward clients&mdash;browsers, mobile devices, or client proxies.
+                    type: object
+                    required:
+                    - option
+                    - markAsPrivate
+                    - lifetime
+                    - headers
+                    - maxAge
+                    properties:
+                      headers:
+                        default: SMALLER_VALUE
+                        description: The policy for sending headers downstream, either `CACHE_CONTROL_AND_EXPIRES` to send both `Cache-Control` and `Expires` headers, `CACHE_CONTROL` to send only the `Cache-Control` header, `EXPIRES` to send only the `Expires` header, or `SAME_AS_ORIGIN` to send the same headers as your origin.
+                        type: string
+                        enum:
+                        - CACHE_CONTROL_AND_EXPIRES
+                        - CACHE_CONTROL
+                        - EXPIRES
+                        - SAME_AS_ORIGIN
+                        - SMALLER_VALUE
+                      lifetime:
+                        default: SMALLER_VALUE
+                        description: The cache lifetime policy, either `SMALLER_VALUE` for a value smaller than specified in the origin header or the remaining edge TTL, `GREATER_VALUE` for a value greater than specified in the origin header or the remaining edge TTL, `REMAINING_EDGE_TTL` for a remaining edge TTL, `FULL_EDGE_TTL` for a full edge TTL, `FIXED_VALUE` for a value that you specify, or `CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL` for calculating the maximum age from the origin `Cache-Control` header.
+                        type: string
+                        enum:
+                        - SMALLER_VALUE
+                        - GREATER_VALUE
+                        - REMAINING_EDGE_TTL
+                        - FULL_EDGE_TTL
+                        - FIXED_VALUE
+                        - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
+                      markAsPrivate:
+                        description: Specifies whether to disallow storing responses in a shared cache. This is useful when you want to set a maximum age for the end client, but have shared caches not store the response.
+                        nullable: true
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration to keep content in a cache.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      option:
+                        default: ALLOW_CACHING
+                        description: The option for downstream caching, either `ALLOW_CACHING` to allow downstream caching, `ALLOW_CACHING_REQUIRES_REVALIDATION` to allow downstream caching, but require origin revalidation, `NOT_ALLOW_CACHING` to disallow downstream caching, `PASS_CACHEABILITY_HEADERS_FROM_ORIGIN` to pass cacheability headers from your origin, or `DO_NOT_SEND_HEADERS` to disallow sending headers and apply browser defaults.
+                        type: string
+                        enum:
+                        - ALLOW_CACHING
+                        - ALLOW_CACHING_REQUIRES_REVALIDATION
+                        - NOT_ALLOW_CACHING
+                        - PASS_CACHEABILITY_HEADERS_FROM_ORIGIN
+                        - DO_NOT_SEND_HEADERS
+                    x-akamai:
+                      file-path: schemas/cacheDownstreamDto.yaml
+                  enabled:
+                    description: Whether you enabled GraphQL caching for the endpoint.
+                    type: boolean
+                  maxAge:
+                    additionalProperties: false
+                    description: Contains information about the maximum duration to keep content in a cache.
+                    nullable: true
+                    type: object
+                    required:
+                    - duration
+                    - unit
+                    properties:
+                      duration:
+                        description: The maximum duration of content caching in the selected unit of time.
+                        type: integer
+                      unit:
+                        description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                        type: string
+                        enum:
+                        - SECONDS
+                        - MINUTES
+                        - HOURS
+                        - DAYS
+                    x-akamai:
+                      file-path: schemas/durationDto.yaml
+                  maxQuerySize:
+                    description: The maximum size of the query. A post body or a get response can't exceed 4 KBs.
+                    nullable: true
+                    type: integer
+                  nestingLevel:
+                    description: The number of supported nesting levels within a query. The maximum number is 100.
+                    nullable: true
+                    type: string
+                  preRefreshing:
+                    additionalProperties: false
+                    description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                    nullable: true
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enable cache prefreshing.
+                        type: boolean
+                      value:
+                        description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                        maximum: 99
+                        minimum: 0
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/preRefreshing.yaml
+                  queryParamName:
+                    description: The name of the query parameter that contains a GraphQL query in an incoming GET or POST request.
+                    type: string
+                  serveStale:
+                    description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
+                    nullable: true
+                    type: boolean
+                x-akamai:
+                  file-path: schemas/graphQLSettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the GraphQL caching settings configured for an endpoint version.
+      operationId: put-graphql-settings
+      summary: Edit GraphQL cache settings
+      tags:
+      - GraphQL
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-graphql-settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              bodyParamName: body-param-name
+              cacheOrigin: false
+              cacheResponseOnError: null
+              detectError: false
+              enabled: true
+              maxQuerySize: null
+              nestingLevel: null
+              queryParamName: query-param-name
+              serveStale: null
+              downstreamCaching:
+                headers: SAME_AS_ORIGIN
+                lifetime: SMALLER_VALUE
+                markAsPrivate: false
+                option: ALLOW_CACHING
+              maxAge:
+                duration: 420
+                unit: HOURS
+              preRefreshing:
+                enabled: true
+                value: 50
+            schema:
+              additionalProperties: false
+              description: Contains information about GraphQL caching settings configured for an endpoint. GraphQL caching settings specify properties such as the query and body parameters that contain GraphQL queries, maximum age of cached content, and downstream cacheability. You can configure GraphQL caching settings if the API Gateway product is in your contract.
+              type: object
+              required:
+              - enabled
+              - bodyParamName
+              - queryParamName
+              - maxAge
+              - downstreamCaching
+              - detectError
+              properties:
+                bodyParamName:
+                  description: The name of the JSON body parameter that contains a GraphQL query in an incoming POST request. If the request's content type is `application/json`, this is the name of the key that contains a GraphQL query as its value. If the request's content type is `application/graphql`, edge servers treat the entire request body as a GraphQL query.
+                  example: '{{bodyParamName}}'
+                  type: string
+                cacheOrigin:
+                  description: Whether to set the maximum age for caching GraphQL responses (TTL) to the value specified in your origin's `Cache-Control` HTTP response header.
+                  example: '{{cacheOrigin}}'
+                  nullable: true
+                  type: boolean
+                cacheResponseOnError:
+                  description: Whether edge servers should cache the response to a GraphQL-type request in case errors are present in the response body.
+                  example: '{{cacheResponseOnError}}'
+                  nullable: true
+                  type: boolean
+                detectError:
+                  description: By default, GraphQL queries return partial data if only a portion of a request fails. In such cases, status codes don't indicate errors. Instead, an `errors` array in a response body contains error details. This indicates whether edge servers should inspect the response body for the `errors` array.
+                  example: '{{detectError}}'
+                  type: boolean
+                downstreamCaching:
+                  additionalProperties: false
+                  description: Contains information about downstream caching settings. Downstream caching refers to the caching instructions assigned to objects sent with responses toward clients&mdash;browsers, mobile devices, or client proxies.
+                  type: object
+                  required:
+                  - option
+                  - markAsPrivate
+                  - lifetime
+                  - headers
+                  - maxAge
+                  properties:
+                    headers:
+                      default: SMALLER_VALUE
+                      description: The policy for sending headers downstream, either `CACHE_CONTROL_AND_EXPIRES` to send both `Cache-Control` and `Expires` headers, `CACHE_CONTROL` to send only the `Cache-Control` header, `EXPIRES` to send only the `Expires` header, or `SAME_AS_ORIGIN` to send the same headers as your origin.
+                      type: string
+                      enum:
+                      - CACHE_CONTROL_AND_EXPIRES
+                      - CACHE_CONTROL
+                      - EXPIRES
+                      - SAME_AS_ORIGIN
+                      - SMALLER_VALUE
+                    lifetime:
+                      default: SMALLER_VALUE
+                      description: The cache lifetime policy, either `SMALLER_VALUE` for a value smaller than specified in the origin header or the remaining edge TTL, `GREATER_VALUE` for a value greater than specified in the origin header or the remaining edge TTL, `REMAINING_EDGE_TTL` for a remaining edge TTL, `FULL_EDGE_TTL` for a full edge TTL, `FIXED_VALUE` for a value that you specify, or `CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL` for calculating the maximum age from the origin `Cache-Control` header.
+                      type: string
+                      enum:
+                      - SMALLER_VALUE
+                      - GREATER_VALUE
+                      - REMAINING_EDGE_TTL
+                      - FULL_EDGE_TTL
+                      - FIXED_VALUE
+                      - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
+                    markAsPrivate:
+                      description: Specifies whether to disallow storing responses in a shared cache. This is useful when you want to set a maximum age for the end client, but have shared caches not store the response.
+                      nullable: true
+                      type: boolean
+                    maxAge:
+                      additionalProperties: false
+                      description: Contains information about the maximum duration to keep content in a cache.
+                      nullable: true
+                      type: object
+                      required:
+                      - duration
+                      - unit
+                      properties:
+                        duration:
+                          description: The maximum duration of content caching in the selected unit of time.
+                          type: integer
+                        unit:
+                          description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                          type: string
+                          enum:
+                          - SECONDS
+                          - MINUTES
+                          - HOURS
+                          - DAYS
+                      x-akamai:
+                        file-path: schemas/durationDto.yaml
+                    option:
+                      default: ALLOW_CACHING
+                      description: The option for downstream caching, either `ALLOW_CACHING` to allow downstream caching, `ALLOW_CACHING_REQUIRES_REVALIDATION` to allow downstream caching, but require origin revalidation, `NOT_ALLOW_CACHING` to disallow downstream caching, `PASS_CACHEABILITY_HEADERS_FROM_ORIGIN` to pass cacheability headers from your origin, or `DO_NOT_SEND_HEADERS` to disallow sending headers and apply browser defaults.
+                      type: string
+                      enum:
+                      - ALLOW_CACHING
+                      - ALLOW_CACHING_REQUIRES_REVALIDATION
+                      - NOT_ALLOW_CACHING
+                      - PASS_CACHEABILITY_HEADERS_FROM_ORIGIN
+                      - DO_NOT_SEND_HEADERS
+                  x-akamai:
+                    file-path: schemas/cacheDownstreamDto.yaml
+                enabled:
+                  description: Whether you enabled GraphQL caching for the endpoint.
+                  example: '{{enabled}}'
+                  type: boolean
+                maxAge:
+                  additionalProperties: false
+                  description: Contains information about the maximum duration to keep content in a cache.
+                  nullable: true
+                  type: object
+                  required:
+                  - duration
+                  - unit
+                  properties:
+                    duration:
+                      description: The maximum duration of content caching in the selected unit of time.
+                      type: integer
+                    unit:
+                      description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                      type: string
+                      enum:
+                      - SECONDS
+                      - MINUTES
+                      - HOURS
+                      - DAYS
+                  x-akamai:
+                    file-path: schemas/durationDto.yaml
+                maxQuerySize:
+                  description: The maximum size of the query. A post body or a get response can't exceed 4 KBs.
+                  example: '{{maxQuerySize}}'
+                  nullable: true
+                  type: integer
+                nestingLevel:
+                  description: The number of supported nesting levels within a query. The maximum number is 100.
+                  example: '{{nestingLevel}}'
+                  nullable: true
+                  type: string
+                preRefreshing:
+                  additionalProperties: false
+                  description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                  nullable: true
+                  type: object
+                  required:
+                  - enabled
+                  properties:
+                    enabled:
+                      description: Whether you enable cache prefreshing.
+                      type: boolean
+                    value:
+                      description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                      maximum: 99
+                      minimum: 0
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/preRefreshing.yaml
+                queryParamName:
+                  description: The name of the query parameter that contains a GraphQL query in an incoming GET or POST request.
+                  example: '{{queryParamName}}'
+                  type: string
+                serveStale:
+                  description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
+                  example: '{{serveStale}}'
+                  nullable: true
+                  type: boolean
+              x-akamai:
+                file-path: schemas/graphQLSettingsDto.yaml
+      responses:
+        '200':
+          description: The response reflects updated GraphQL cache settings.
+          content:
+            application/json:
+              example:
+                bodyParamName: body-param-name
+                cacheOrigin: false
+                cacheResponseOnError: null
+                detectError: false
+                enabled: true
+                maxQuerySize: null
+                nestingLevel: null
+                queryParamName: query-param-name
+                serveStale: null
+                downstreamCaching:
+                  headers: SAME_AS_ORIGIN
+                  lifetime: SMALLER_VALUE
+                  markAsPrivate: false
+                  option: ALLOW_CACHING
+                maxAge:
+                  duration: 420
+                  unit: HOURS
+                preRefreshing:
+                  enabled: true
+                  value: 50
+              schema:
+                additionalProperties: false
+                description: Contains information about GraphQL caching settings configured for an endpoint. GraphQL caching settings specify properties such as the query and body parameters that contain GraphQL queries, maximum age of cached content, and downstream cacheability. You can configure GraphQL caching settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - bodyParamName
+                - queryParamName
+                - maxAge
+                - downstreamCaching
+                - detectError
+                properties:
+                  bodyParamName:
+                    description: The name of the JSON body parameter that contains a GraphQL query in an incoming POST request. If the request's content type is `application/json`, this is the name of the key that contains a GraphQL query as its value. If the request's content type is `application/graphql`, edge servers treat the entire request body as a GraphQL query.
+                    type: string
+                  cacheOrigin:
+                    description: Whether to set the maximum age for caching GraphQL responses (TTL) to the value specified in your origin's `Cache-Control` HTTP response header.
+                    nullable: true
+                    type: boolean
+                  cacheResponseOnError:
+                    description: Whether edge servers should cache the response to a GraphQL-type request in case errors are present in the response body.
+                    nullable: true
+                    type: boolean
+                  detectError:
+                    description: By default, GraphQL queries return partial data if only a portion of a request fails. In such cases, status codes don't indicate errors. Instead, an `errors` array in a response body contains error details. This indicates whether edge servers should inspect the response body for the `errors` array.
+                    type: boolean
+                  downstreamCaching:
+                    additionalProperties: false
+                    description: Contains information about downstream caching settings. Downstream caching refers to the caching instructions assigned to objects sent with responses toward clients&mdash;browsers, mobile devices, or client proxies.
+                    type: object
+                    required:
+                    - option
+                    - markAsPrivate
+                    - lifetime
+                    - headers
+                    - maxAge
+                    properties:
+                      headers:
+                        default: SMALLER_VALUE
+                        description: The policy for sending headers downstream, either `CACHE_CONTROL_AND_EXPIRES` to send both `Cache-Control` and `Expires` headers, `CACHE_CONTROL` to send only the `Cache-Control` header, `EXPIRES` to send only the `Expires` header, or `SAME_AS_ORIGIN` to send the same headers as your origin.
+                        type: string
+                        enum:
+                        - CACHE_CONTROL_AND_EXPIRES
+                        - CACHE_CONTROL
+                        - EXPIRES
+                        - SAME_AS_ORIGIN
+                        - SMALLER_VALUE
+                      lifetime:
+                        default: SMALLER_VALUE
+                        description: The cache lifetime policy, either `SMALLER_VALUE` for a value smaller than specified in the origin header or the remaining edge TTL, `GREATER_VALUE` for a value greater than specified in the origin header or the remaining edge TTL, `REMAINING_EDGE_TTL` for a remaining edge TTL, `FULL_EDGE_TTL` for a full edge TTL, `FIXED_VALUE` for a value that you specify, or `CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL` for calculating the maximum age from the origin `Cache-Control` header.
+                        type: string
+                        enum:
+                        - SMALLER_VALUE
+                        - GREATER_VALUE
+                        - REMAINING_EDGE_TTL
+                        - FULL_EDGE_TTL
+                        - FIXED_VALUE
+                        - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
+                      markAsPrivate:
+                        description: Specifies whether to disallow storing responses in a shared cache. This is useful when you want to set a maximum age for the end client, but have shared caches not store the response.
+                        nullable: true
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration to keep content in a cache.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      option:
+                        default: ALLOW_CACHING
+                        description: The option for downstream caching, either `ALLOW_CACHING` to allow downstream caching, `ALLOW_CACHING_REQUIRES_REVALIDATION` to allow downstream caching, but require origin revalidation, `NOT_ALLOW_CACHING` to disallow downstream caching, `PASS_CACHEABILITY_HEADERS_FROM_ORIGIN` to pass cacheability headers from your origin, or `DO_NOT_SEND_HEADERS` to disallow sending headers and apply browser defaults.
+                        type: string
+                        enum:
+                        - ALLOW_CACHING
+                        - ALLOW_CACHING_REQUIRES_REVALIDATION
+                        - NOT_ALLOW_CACHING
+                        - PASS_CACHEABILITY_HEADERS_FROM_ORIGIN
+                        - DO_NOT_SEND_HEADERS
+                    x-akamai:
+                      file-path: schemas/cacheDownstreamDto.yaml
+                  enabled:
+                    description: Whether you enabled GraphQL caching for the endpoint.
+                    type: boolean
+                  maxAge:
+                    additionalProperties: false
+                    description: Contains information about the maximum duration to keep content in a cache.
+                    nullable: true
+                    type: object
+                    required:
+                    - duration
+                    - unit
+                    properties:
+                      duration:
+                        description: The maximum duration of content caching in the selected unit of time.
+                        type: integer
+                      unit:
+                        description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                        type: string
+                        enum:
+                        - SECONDS
+                        - MINUTES
+                        - HOURS
+                        - DAYS
+                    x-akamai:
+                      file-path: schemas/durationDto.yaml
+                  maxQuerySize:
+                    description: The maximum size of the query. A post body or a get response can't exceed 4 KBs.
+                    nullable: true
+                    type: integer
+                  nestingLevel:
+                    description: The number of supported nesting levels within a query. The maximum number is 100.
+                    nullable: true
+                    type: string
+                  preRefreshing:
+                    additionalProperties: false
+                    description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                    nullable: true
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enable cache prefreshing.
+                        type: boolean
+                      value:
+                        description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                        maximum: 99
+                        minimum: 0
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/preRefreshing.yaml
+                  queryParamName:
+                    description: The name of the query parameter that contains a GraphQL query in an incoming GET or POST request.
+                    type: string
+                  serveStale:
+                    description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
+                    nullable: true
+                    type: boolean
+                x-akamai:
+                  file-path: schemas/graphQLSettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

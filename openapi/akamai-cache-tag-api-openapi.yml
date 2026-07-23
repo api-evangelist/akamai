@@ -1,0 +1,688 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Cache tag API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Purge by cache tag.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Purge by cache tag.
+  name: Cache tag
+paths:
+  /delete/tag/{network}:
+    parameters:
+    - description: __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL.
+      in: path
+      name: network
+      required: true
+      schema:
+        default: production
+        enum:
+        - staging
+        - production
+        example: production
+        type: string
+      x-akamai:
+        file-path: parameters/network-path.yaml
+    x-akamai:
+      file-path: paths/delete-tag.yaml
+      path-info: /delete/tag/{network}
+    post:
+      description: Deletes content on the selected set of cache tags for the selected `network`. In most cases, you should [invalidate](https://techdocs.akamai.com/purge-cache/reference/post-invalidate-tag) rather than delete content. Invalidation keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Fast Purge API
+        url: https://techdocs.akamai.com/purge-cache/reference/post-delete-tag
+      operationId: post-delete-tag
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              objects:
+              - black-friday
+              - electronics
+              - laptops
+              - tablets
+            schema:
+              additionalProperties: false
+              description: Specifies a list of cache tags to invalidate or delete.
+              properties:
+                objects:
+                  description: An array of cache tag strings you want to purge.
+                  items:
+                    type: string
+                  type: array
+              required:
+              - objects
+              type: object
+              x-akamai:
+                file-path: schemas/post-tag.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                detail: Request accepted
+                estimatedSeconds: 5
+                httpStatus: 201
+                purgeId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: Successful POST of a purge request.
+          headers:
+            X-Ratelimit-Limit:
+              description: The burst limit that specifies how many requests you can make in excess of the imposed rate limit. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 100
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-limit.yaml
+            X-Ratelimit-Limit-Objects:
+              description: The burst limit that specifies how many objects you can add to a request in excess of the imposed rate limit. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 10000
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-limit-objects.yaml
+            X-Ratelimit-Limit-Per-Second:
+              description: Maximum sustainable number of requests allowed each second per account. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 50
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-limit-per-second.yaml
+            X-Ratelimit-Limit-Per-Second-Objects:
+              description: Maximum sustainable number of objects allowed each second per request. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 200
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-limit-per-second-objects.yaml
+            X-Ratelimit-Remaining:
+              description: The number of requests left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 99
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-remaining.yaml
+            X-Ratelimit-Remaining-Objects:
+              description: The number of objects left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 10000
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-remaining-objects.yaml
+            X-Ratelimit-Seconds-To-Refresh-Limit:
+              description: The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 0.02
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-seconds-to-refresh-limit.yaml
+            X-Ratelimit-Seconds-To-Refresh-Limit-Objects:
+              description: The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit-Objects`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 0
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-seconds-to-refresh-limit-objects.yaml
+        '400':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: Invalid or malformed hostname
+                httpStatus: 400
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                title: bad URL hostname
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Bad request](https://techdocs.akamai.com/purge-cache/reference/400).'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: http://fpj-test.bad-ideas2.org/
+                httpStatus: 403
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                title: unauthorized arl
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/purge-cache/reference/403).'
+          x-akamai:
+            file-path: errors/403.yaml
+        '429':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: ''
+                httpStatus: 429
+                rateLimit: 5000
+                rateLimitCurrentRequestSize: 45
+                rateLimitRemaining: 34
+                supportId: edtp-NZbXzFpHBjcJeryhw6PVgG
+                title: TAG Rate Limit exceeded
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Too many requests](https://techdocs.akamai.com/purge-cache/reference/429).'
+          x-akamai:
+            file-path: errors/429-tag.yaml
+        '500':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: If problem persists over multiple requests, please contact Customer Care
+                httpStatus: 500
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                title: internal error
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/purge-cache/reference/500).'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Delete by cache tag
+      tags:
+      - Cache tag
+      x-akamai:
+        supports-account-switch-key: false
+  /invalidate/tag/{network}:
+    parameters:
+    - description: __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL.
+      in: path
+      name: network
+      required: true
+      schema:
+        default: production
+        enum:
+        - staging
+        - production
+        example: production
+        type: string
+      x-akamai:
+        file-path: parameters/network-path.yaml
+    x-akamai:
+      file-path: paths/invalidate-tag.yaml
+      path-info: /invalidate/tag/{network}
+    post:
+      description: Invalidates content on the selected set of cache tags for the selected `network`. You should consider invalidating content by default. This keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Fast Purge API
+        url: https://techdocs.akamai.com/purge-cache/reference/post-invalidate-tag
+      operationId: post-invalidate-tag
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            example:
+              objects:
+              - black-friday
+              - electronics
+              - laptops
+              - tablets
+            schema:
+              additionalProperties: false
+              description: Specifies a list of cache tags to invalidate or delete.
+              properties:
+                objects:
+                  description: An array of cache tag strings you want to purge.
+                  items:
+                    type: string
+                  type: array
+              required:
+              - objects
+              type: object
+              x-akamai:
+                file-path: schemas/post-tag.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                detail: Request accepted
+                estimatedSeconds: 5
+                httpStatus: 201
+                purgeId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: Successful POST of a purge request.
+          headers:
+            X-Ratelimit-Limit:
+              description: The burst limit that specifies how many requests you can make in excess of the imposed rate limit. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 100
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-limit.yaml
+            X-Ratelimit-Limit-Objects:
+              description: The burst limit that specifies how many objects you can add to a request in excess of the imposed rate limit. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 10000
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-limit-objects.yaml
+            X-Ratelimit-Limit-Per-Second:
+              description: Maximum sustainable number of requests allowed each second per account. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 50
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-limit-per-second.yaml
+            X-Ratelimit-Limit-Per-Second-Objects:
+              description: Maximum sustainable number of objects allowed each second per request. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 200
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-limit-per-second-objects.yaml
+            X-Ratelimit-Remaining:
+              description: The number of requests left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 99
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-remaining.yaml
+            X-Ratelimit-Remaining-Objects:
+              description: The number of objects left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 10000
+                type: integer
+              x-akamai:
+                file-path: headers/x-ratelimit-remaining-objects.yaml
+            X-Ratelimit-Seconds-To-Refresh-Limit:
+              description: The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 0.02
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-seconds-to-refresh-limit.yaml
+            X-Ratelimit-Seconds-To-Refresh-Limit-Objects:
+              description: The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit-Objects`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.
+              schema:
+                example: 0
+                type: number
+              x-akamai:
+                file-path: headers/x-ratelimit-seconds-to-refresh-limit-objects.yaml
+        '400':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: Invalid or malformed hostname
+                httpStatus: 400
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                title: bad URL hostname
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Bad request](https://techdocs.akamai.com/purge-cache/reference/400).'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: http://fpj-test.bad-ideas2.org/
+                httpStatus: 403
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                title: unauthorized arl
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/purge-cache/reference/403).'
+          x-akamai:
+            file-path: errors/403.yaml
+        '429':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: ''
+                httpStatus: 429
+                rateLimit: 5000
+                rateLimitCurrentRequestSize: 45
+                rateLimitRemaining: 34
+                supportId: edtp-NZbXzFpHBjcJeryhw6PVgG
+                title: TAG Rate Limit exceeded
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Too many requests](https://techdocs.akamai.com/purge-cache/reference/429).'
+          x-akamai:
+            file-path: errors/429-tag.yaml
+        '500':
+          content:
+            application/api-problem+json:
+              example:
+                describedBy: https://techdocs.akamai.com/purge-cache/reference/api-errors
+                detail: If problem persists over multiple requests, please contact Customer Care
+                httpStatus: 500
+                supportId: edcp-NZbXzFpHBjcJeryhw6PVgG
+                title: internal error
+              schema:
+                additionalProperties: true
+                description: V3 Purge response schema.
+                properties:
+                  describedBy:
+                    description: A URL that describes the API's error response.
+                    type: string
+                  detail:
+                    description: Detailed information about the HTTP status code returned with the response.
+                    type: string
+                  estimatedSeconds:
+                    description: The estimated number of seconds before the purge is to complete.
+                    type: integer
+                  httpStatus:
+                    description: The HTTP code that indicates the status of the request to invalidate or purge content. Successful requests yield a `201` code.
+                    type: integer
+                  purgeId:
+                    description: Unique identifier for the purge request.
+                    type: string
+                  supportId:
+                    description: Identifier to provide Akamai Technical Support if issues arise.
+                    type: string
+                  title:
+                    description: Describes the response type, for example, `Rate Limit exceeded`.
+                    type: string
+                required:
+                - httpStatus
+                - supportId
+                - detail
+                type: object
+                x-akamai:
+                  file-path: schemas/response.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/purge-cache/reference/500).'
+          x-akamai:
+            file-path: errors/500.yaml
+      summary: Invalidate by cache tag
+      tags:
+      - Cache tag
+      x-akamai:
+        supports-account-switch-key: false
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

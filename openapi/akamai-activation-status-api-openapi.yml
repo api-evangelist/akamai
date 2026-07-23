@@ -1,0 +1,348 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Activation status API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Get status information about your activations and activation
+
+    requests.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Get status information about your activations and activation
+
+    requests.'
+  name: Activation status
+paths:
+  /activations/status/{statusId}:
+    parameters:
+    - description: UUID of this activation request status.
+      in: path
+      name: statusId
+      required: true
+      schema:
+        example: f81c92c5-b150-4c41-9b53-9cef7969150a
+        type: string
+      x-akamai:
+        file-path: parameters/status-id-path.yaml
+    x-akamai:
+      file-path: paths/activations-status.yaml
+      path-info: /activations/status/{statusId}
+    get:
+      description: __All products__ Returns the status of a long-running activation request. Any errors that occur when generating the activation cause this API to respond with the underlying error status.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-activations-status
+      operationId: get-activations-status
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                createDate: '2018-06-19T11:27:55Z'
+                statusId: f81c92c5-b150-4c41-9b53-9cef7969150a
+              schema:
+                additionalProperties: false
+                description: Describes the status of the activation.
+                properties:
+                  createDate:
+                    description: The time when you submitted this activation request.
+                    format: date-time
+                    type: string
+                  statusId:
+                    description: Uniquely identifies the activation request. You can use this identifier to poll for the status of your activation request.
+                    type: string
+                required:
+                - statusId
+                - createDate
+                type: object
+                x-akamai:
+                  file-path: schemas/activation-request-status-in-progress.yaml
+          description: Your activation request is still being created. Keep polling this API to get the latest status.
+          headers:
+            Retry-After:
+              description: The recommended wait time (in seconds) before calling this endpoint to check the status again.
+              schema:
+                type: string
+        '303':
+          content:
+            application/json:
+              example:
+                activationId: 1234
+              schema:
+                additionalProperties: false
+                description: Describes an activation.
+                properties:
+                  activationId:
+                    description: Uniquely identifies the activation once the activation request is complete. You can use this identifier with the activation endpoints.
+                    type: integer
+                required:
+                - activationId
+                type: object
+                x-akamai:
+                  file-path: schemas/activation-request-status-complete.yaml
+          description: Your activation is ready. Follow the redirect to get the latest status.
+          headers:
+            Location:
+              description: The path at which the newly created activation can be found.
+              schema:
+                type: string
+      summary: Get an activation request status
+      tags:
+      - Activation status
+      x-akamai:
+        labels:
+        - All products
+  /activations/{activationId}:
+    parameters:
+    - description: A unique identifier for an activation.
+      in: path
+      name: activationId
+      required: true
+      schema:
+        example: 1234
+        type: integer
+      x-akamai:
+        file-path: parameters/activation-id-path.yaml
+    x-akamai:
+      file-path: paths/activation.yaml
+      path-info: /activations/{activationId}
+    get:
+      description: __All products__ Returns the status of an activation.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-activation
+      operationId: get-activation
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                action: ACTIVATE
+                activationConfigs:
+                - configId: 1
+                  configName: config 1
+                  configVersion: 4
+                  previousConfigVersion: 2
+                activationId: 1234
+                createDate: '2013-10-07T17:41:52+00:00'
+                createdBy: mrossi
+                dispatchCount: 1
+                estimate: PTM5
+                network: PRODUCTION
+                status: RECEIVED
+              schema:
+                additionalProperties: false
+                description: Contains the activation status and settings for a configuration version.
+                properties:
+                  action:
+                    description: The action performed on this activation, either `ACTIVATE` or `DEACTIVATE`.
+                    enum:
+                    - ACTIVATE
+                    - DEACTIVATE
+                    type: string
+                  activationConfigs:
+                    description: Specifies the security configuration and activation version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        configId:
+                          description: The origin identifier or the activation's destination configuration.
+                          type: integer
+                        configName:
+                          description: The name you assigned to the configuration. This field is provided for information purposes and only appears in the API output.
+                          type: string
+                        configVersion:
+                          description: The origin version or the activation's destination configuration.
+                          type: integer
+                        previousConfigVersion:
+                          description: __Read-only__ The previous active configuration version.
+                          readOnly: true
+                          type: integer
+                      required:
+                      - configId
+                      - configVersion
+                      type: object
+                    type: array
+                  activationId:
+                    description: Uniquely identifies the activation.
+                    type: integer
+                  completionDate:
+                    description: __Read-only__ The ISO 8601 timestamp at which the activation reaches a steady state and validates across the Akamai network.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createDate:
+                    description: __Read-only__ The ISO 8601 timestamp at which the activation request was submitted.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the activation request.
+                    readOnly: true
+                    type: string
+                  dispatchCount:
+                    description: __Read-only__ The number of times which this activation has been dispatched to the Akamai edge network. A number greater than 1 indicates that this activation may be retried due to network safety concerns.
+                    readOnly: true
+                    type: integer
+                  estimate:
+                    description: The estimated time remaining to complete the activation in ISO 8601 duration format, starting when the response is generated.
+                    type: string
+                  network:
+                    description: The Akamai activation environment, either `STAGING` or `PRODUCTION`.
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                    type: string
+                  status:
+                    description: The current activation status, either `RECEIVED`, `LIVE`, `DEPLOYED`, `CANCELING`, `STOPPED`, `REMOVED`, `ROLLBACK`, `ACTIVATED`, `FAILED`, `CANCELLING`, or `UNDEPLOYED`.
+                    enum:
+                    - RECEIVED
+                    - LIVE
+                    - DEPLOYED
+                    - STOPPED
+                    - REMOVED
+                    - ROLLBACK
+                    - ACTIVATED
+                    - FAILED
+                    - CANCELLING
+                    - UNDEPLOYED
+                    type: string
+                required:
+                - activationId
+                - action
+                - network
+                - status
+                - activationConfigs
+                - createdBy
+                - createDate
+                type: object
+                x-akamai:
+                  file-path: schemas/activation-status.yaml
+          description: Successfully returned activation status.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to this activation.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Get activation status
+      tags:
+      - Activation status
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

@@ -1,0 +1,1544 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Cache API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Cache
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/cache:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the caching settings configured for an endpoint version and its assigned resources.
+      operationId: get-cache-settings
+      summary: Get cache settings
+      tags:
+      - Cache
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-cache-settings
+      responses:
+        '200':
+          description: Response data shows current cache settings.
+          content:
+            application/json:
+              example:
+                enabled: true
+                option: CACHE
+                preRefreshing: null
+                serveStale: true
+                cacheKey:
+                  customize: true
+                  exactMatch: true
+                  option: INCLUDE_ALL_PRESERVE_ORDER
+                  parameters: null
+                downstreamCaching:
+                  headers: CACHE_CONTROL_AND_EXPIRES
+                  lifetime: SMALLER_VALUE
+                  markAsPrivate: false
+                  maxAge: null
+                  option: ALLOW_CACHING
+                errorCaching:
+                  enabled: true
+                  preserveStale: true
+                  maxAge:
+                    duration: 80
+                    unit: SECONDS
+                maxAge:
+                  duration: 100
+                  unit: SECONDS
+                resources:
+                  '2926712':
+                    inheritsFromEndpoint: true
+                    option: CACHE
+                    path: /book/{bookId}
+                    serveStale: true
+                    methods:
+                    - POST
+                    - GET
+                    cacheKey:
+                      customize: true
+                      exactMatch: true
+                      option: INCLUDE_ALL_PRESERVE_ORDER
+                      parameters: null
+                    maxAge:
+                      duration: 100
+                      unit: SECONDS
+                  '2935128':
+                    inheritsFromEndpoint: false
+                    option: CACHE
+                    path: /user/{userId}
+                    serveStale: false
+                    methods:
+                    - POST
+                    - GET
+                    - PUT
+                    cacheKey:
+                      customize: false
+                      exactMatch: true
+                      option: INCLUDE_ALL_PRESERVE_ORDER
+                      parameters: null
+                    maxAge:
+                      duration: 120
+                      unit: SECONDS
+                  '2935139':
+                    inheritsFromEndpoint: true
+                    option: CACHE
+                    path: /magazine/{magazineId}
+                    serveStale: true
+                    methods:
+                    - GET
+                    cacheKey:
+                      customize: true
+                      exactMatch: true
+                      option: INCLUDE_ALL_PRESERVE_ORDER
+                      parameters: null
+                    maxAge:
+                      duration: 100
+                      unit: SECONDS
+              schema:
+                additionalProperties: false
+                description: Contains information about caching settings configured for an endpoint. Caching settings specify properties such as the maximum age of cached content, caching HTTP error responses, downstream cacheability, and cache key customization. You can set specific caching instructions for each resource within an endpoint version. You can configure caching settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - option
+                - downstreamCaching
+                - errorCaching
+                properties:
+                  cacheKey:
+                    additionalProperties: false
+                    description: Contains information about cache key settings.
+                    type: object
+                    required:
+                    - customize
+                    properties:
+                      customize:
+                        description: Whether you want to customize cache key settings for an endpoint.
+                        type: boolean
+                      exactMatch:
+                        description: Whether query parameters in incoming requests should match exactly the string items in the corresponding `parameters` member. If false, even the parameters that just begin with the strings you specified in the `parameters` member will match. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                        nullable: true
+                        type: boolean
+                      option:
+                        description: The option for cache key customization. If you select `INCLUDE` or `IGNORE`, also specify the corresponding `parameters` member.
+                        nullable: true
+                        type: string
+                        enum:
+                        - INCLUDE_ALL_PRESERVE_ORDER
+                        - INCLUDE_ALL_ALPHABETIZE_ORDER
+                        - IGNORE_ALL
+                        - INCLUDE
+                        - IGNORE
+                      parameters:
+                        description: The list of parameters to include in or exclude from cache keys, depending on the `option` you selected. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                        nullable: true
+                        type: array
+                        items:
+                          type: string
+                    x-akamai:
+                      file-path: schemas/cacheKeyDto.yaml
+                  downstreamCaching:
+                    additionalProperties: false
+                    description: Contains information about downstream caching settings. Downstream caching refers to the caching instructions assigned to objects sent with responses toward clients&mdash;browsers, mobile devices, or client proxies.
+                    type: object
+                    required:
+                    - option
+                    - lifetime
+                    - headers
+                    properties:
+                      headers:
+                        description: The policy for sending headers downstream, either `CACHE_CONTROL_AND_EXPIRES` to send both `Cache-Control` and `Expires` headers, `CACHE_CONTROL` to send only the `Cache-Control` header, `EXPIRES` to send only the `Expires` header, or `SAME_AS_ORIGIN` to send the same headers as your origin.
+                        type: string
+                        enum:
+                        - CACHE_CONTROL_AND_EXPIRES
+                        - CACHE_CONTROL
+                        - EXPIRES
+                        - SAME_AS_ORIGIN
+                      lifetime:
+                        default: SMALLER_VALUE
+                        description: The cache lifetime policy, either `SMALLER_VALUE` for a value smaller than specified in the origin header or the remaining edge TTL, `GREATER_VALUE` for a value greater than specified in the origin header or the remaining edge TTL, `REMAINING_EDGE_TTL` for a remaining edge TTL, `FULL_EDGE_TTL` for a full edge TTL, `FIXED_VALUE` for a value that you specify, or `CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL` for calculating the maximum age from the origin `Cache-Control` header.
+                        type: string
+                        enum:
+                        - SMALLER_VALUE
+                        - GREATER_VALUE
+                        - REMAINING_EDGE_TTL
+                        - FULL_EDGE_TTL
+                        - FIXED_VALUE
+                        - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
+                      markAsPrivate:
+                        default: false
+                        description: Specifies whether to disallow storing responses in a shared cache. Use this when you want to set a maximum age for the end client, but have shared caches not store the response.
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration to keep content in a cache.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      option:
+                        default: ALLOW_CACHING
+                        description: The option for downstream caching, either `ALLOW_CACHING` to allow downstream caching, `ALLOW_CACHING_REQUIRES_REVALIDATION` to allow downstream caching, but require origin revalidation, `NOT_ALLOW_CACHING` to disallow downstream caching, `PASS_CACHEABILITY_HEADERS_FROM_ORIGIN` to pass cacheability headers from your origin, or `DO_NOT_SEND_HEADERS` to disallow sending headers and apply browser defaults.
+                        type: string
+                        enum:
+                        - ALLOW_CACHING
+                        - ALLOW_CACHING_REQUIRES_REVALIDATION
+                        - NOT_ALLOW_CACHING
+                        - PASS_CACHEABILITY_HEADERS_FROM_ORIGIN
+                        - DO_NOT_SEND_HEADERS
+                  enabled:
+                    description: Whether you enabled caching for the endpoint.
+                    type: boolean
+                  errorCaching:
+                    additionalProperties: false
+                    description: Contains information about error caching settings.
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enabled error caching.
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration to keep error responses in a cache.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      preserveStale:
+                        default: false
+                        description: Whether to preserve stale responses when the origin is unreachable and content revalidation isn't possible.
+                        type: boolean
+                  maxAge:
+                    additionalProperties: false
+                    description: Contains information about the maximum duration to keep content in a cache.
+                    nullable: true
+                    type: object
+                    required:
+                    - duration
+                    - unit
+                    properties:
+                      duration:
+                        description: The maximum duration of content caching in the selected unit of time.
+                        type: integer
+                      unit:
+                        description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                        type: string
+                        enum:
+                        - SECONDS
+                        - MINUTES
+                        - HOURS
+                        - DAYS
+                    x-akamai:
+                      file-path: schemas/durationDto.yaml
+                  option:
+                    default: CACHE
+                    description: The options for how to pass cached content, either `CACHE` to enable caching in Akamai platform servers according to the instructions you specify, `BYPASS_CACHE` to disallow caching in Akamai platform servers and keep the existing cache entries, `NO_STORE` to disallow caching in Akamai platform servers and remove the existing cache entries, `HONOR_ORIGIN_CACHE_CONTROL` to apply caching instructions specified in your origin's `Cache-Control` header, `HONOR_ORIGIN_EXPIRES` to apply caching instructions specified in your origin's `Expires` header, or `HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES` to apply caching instructions specified in your origin's `Cache-Control` and `Expires` headers.
+                    type: string
+                    enum:
+                    - CACHE
+                    - NO_STORE
+                    - BYPASS_CACHE
+                    - HONOR_ORIGIN_CACHE_CONTROL
+                    - HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES
+                    - HONOR_ORIGIN_EXPIRES
+                  preRefreshing:
+                    additionalProperties: false
+                    description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                    nullable: true
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enable cache prefreshing.
+                        type: boolean
+                      value:
+                        description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                        maximum: 99
+                        minimum: 0
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/preRefreshing.yaml
+                  resources:
+                    description: Contains information about caching settings for each resource assigned to an endpoint version. This object is a map where the keys are resource IDs and values are cache settings applied to them.
+                    type: object
+                    additionalProperties:
+                      additionalProperties: false
+                      description: Contains information about caching settings for each resource.
+                      title: Resource's caching settings
+                      type: object
+                      required:
+                      - path
+                      - methods
+                      - option
+                      - maxAge
+                      - serveStale
+                      - cacheKey
+                      - preRefreshing
+                      - inheritsFromEndpoint
+                      properties:
+                        cacheKey:
+                          additionalProperties: false
+                          description: Contains information about cache key settings.
+                          type: object
+                          required:
+                          - customize
+                          properties:
+                            customize:
+                              description: Whether you want to customize cache key settings for an endpoint.
+                              type: boolean
+                            exactMatch:
+                              description: Whether query parameters in incoming requests should match exactly the string items in the corresponding `parameters` member. If false, even the parameters that just begin with the strings you specified in the `parameters` member will match. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                              nullable: true
+                              type: boolean
+                            option:
+                              description: The option for cache key customization. If you select `INCLUDE` or `IGNORE`, also specify the corresponding `parameters` member.
+                              nullable: true
+                              type: string
+                              enum:
+                              - INCLUDE_ALL_PRESERVE_ORDER
+                              - INCLUDE_ALL_ALPHABETIZE_ORDER
+                              - IGNORE_ALL
+                              - INCLUDE
+                              - IGNORE
+                            parameters:
+                              description: The list of parameters to include in or exclude from cache keys, depending on the `option` you selected. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                              nullable: true
+                              type: array
+                              items:
+                                type: string
+                          x-akamai:
+                            file-path: schemas/cacheKeyDto.yaml
+                        inheritsFromEndpoint:
+                          description: Whether the resource inherits the top-level API caching settings.
+                          type: boolean
+                        maxAge:
+                          additionalProperties: false
+                          description: Contains information about the maximum duration of keeping content in a cache. If set, overwrites the max age instructions set at the endpoint level.
+                          nullable: true
+                          type: object
+                          required:
+                          - duration
+                          - unit
+                          properties:
+                            duration:
+                              description: The maximum duration of content caching in the selected unit of time.
+                              type: integer
+                            unit:
+                              description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                              type: string
+                              enum:
+                              - SECONDS
+                              - MINUTES
+                              - HOURS
+                              - DAYS
+                          x-akamai:
+                            file-path: schemas/durationDto.yaml
+                        methods:
+                          description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                          minItems: 0
+                          nullable: true
+                          readOnly: true
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - HEAD
+                            - DELETE
+                            - POST
+                            - GET
+                            - OPTIONS
+                            - PUT
+                            - PATCH
+                        option:
+                          default: CACHE
+                          description: The resource caching option, either `CACHE` to enable caching in Akamai platform servers according to the instructions you specify, `BYPASS_CACHE` to send requests straight to origin and disallow caching in downstream caches, `NO_STORE` to disallow caching in Akamai platform servers, `HONOR_ORIGIN_CACHE_CONTROL` to apply caching instructions specified in your origin's `Cache-Control` header, `HONOR_ORIGIN_EXPIRES` to apply caching instructions specified in your origin's `Expires` header, or `HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES` to apply caching instructions specified in your origin's `Cache-Control` and `Expires` headers. If set, overwrites the caching instructions set at the endpoint level.
+                          type: string
+                          enum:
+                          - CACHE
+                          - NO_STORE
+                          - BYPASS_CACHE
+                          - HONOR_ORIGIN_CACHE_CONTROL
+                          - HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES
+                          - HONOR_ORIGIN_EXPIRES
+                        path:
+                          description: The URL path relative to the hostnames on which the resource resides.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        preRefreshing:
+                          additionalProperties: false
+                          description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                          nullable: true
+                          type: object
+                          required:
+                          - enabled
+                          properties:
+                            enabled:
+                              description: Whether you enable cache prefreshing.
+                              type: boolean
+                            value:
+                              description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                              maximum: 99
+                              minimum: 0
+                              type: integer
+                          x-akamai:
+                            file-path: schemas/preRefreshing.yaml
+                        serveStale:
+                          description: Whether to serve stale objects when the origin is unreachable and content revalidation is not possible.
+                          type: boolean
+                      x-akamai:
+                        file-path: schemas/resources-cache.yaml
+                  serveStale:
+                    description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
+                    type: boolean
+                x-akamai:
+                  file-path: schemas/cacheSettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: You don't have permission to access the API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: The required resource is not found.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the caching settings configured for an endpoint version and its assigned resources.
+      operationId: put-cache-settings
+      summary: Edit cache settings
+      tags:
+      - Cache
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-cache-settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              enabled: true
+              option: CACHE
+              preRefreshing: null
+              serveStale: true
+              cacheKey:
+                customize: true
+                exactMatch: true
+                option: INCLUDE_ALL_PRESERVE_ORDER
+                parameters: null
+              downstreamCaching:
+                headers: CACHE_CONTROL_AND_EXPIRES
+                lifetime: SMALLER_VALUE
+                markAsPrivate: false
+                maxAge: null
+                option: ALLOW_CACHING
+              errorCaching:
+                enabled: true
+                preserveStale: true
+                maxAge:
+                  duration: 80
+                  unit: SECONDS
+              maxAge:
+                duration: 100
+                unit: SECONDS
+              resources:
+                '2926712':
+                  inheritsFromEndpoint: true
+                  option: CACHE
+                  path: /book/{bookId}
+                  serveStale: true
+                  methods:
+                  - POST
+                  - GET
+                  cacheKey:
+                    customize: true
+                    exactMatch: true
+                    option: INCLUDE_ALL_PRESERVE_ORDER
+                    parameters: null
+                  maxAge:
+                    duration: 100
+                    unit: SECONDS
+                '2935128':
+                  inheritsFromEndpoint: false
+                  option: CACHE
+                  path: /user/{userId}
+                  serveStale: false
+                  methods:
+                  - POST
+                  - GET
+                  - PUT
+                  cacheKey:
+                    customize: false
+                    exactMatch: true
+                    option: INCLUDE_ALL_PRESERVE_ORDER
+                    parameters: null
+                  maxAge:
+                    duration: 120
+                    unit: SECONDS
+                '2935139':
+                  inheritsFromEndpoint: true
+                  option: CACHE
+                  path: /magazine/{magazineId}
+                  serveStale: true
+                  methods:
+                  - GET
+                  cacheKey:
+                    customize: true
+                    exactMatch: true
+                    option: INCLUDE_ALL_PRESERVE_ORDER
+                    parameters: null
+                  maxAge:
+                    duration: 100
+                    unit: SECONDS
+            schema:
+              additionalProperties: false
+              description: Contains information about caching settings configured for an endpoint. Caching settings specify properties such as the maximum age of cached content, caching HTTP error responses, downstream cacheability, and cache key customization. You can set specific caching instructions for each resource within an endpoint version. You can configure caching settings if the API Gateway product is in your contract.
+              type: object
+              required:
+              - enabled
+              - option
+              - downstreamCaching
+              - errorCaching
+              properties:
+                cacheKey:
+                  additionalProperties: false
+                  description: Contains information about cache key settings.
+                  type: object
+                  required:
+                  - customize
+                  properties:
+                    customize:
+                      description: Whether you want to customize cache key settings for an endpoint.
+                      type: boolean
+                    exactMatch:
+                      description: Whether query parameters in incoming requests should match exactly the string items in the corresponding `parameters` member. If false, even the parameters that just begin with the strings you specified in the `parameters` member will match. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                      nullable: true
+                      type: boolean
+                    option:
+                      description: The option for cache key customization. If you select `INCLUDE` or `IGNORE`, also specify the corresponding `parameters` member.
+                      nullable: true
+                      type: string
+                      enum:
+                      - INCLUDE_ALL_PRESERVE_ORDER
+                      - INCLUDE_ALL_ALPHABETIZE_ORDER
+                      - IGNORE_ALL
+                      - INCLUDE
+                      - IGNORE
+                    parameters:
+                      description: The list of parameters to include in or exclude from cache keys, depending on the `option` you selected. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                      nullable: true
+                      type: array
+                      items:
+                        type: string
+                  x-akamai:
+                    file-path: schemas/cacheKeyDto.yaml
+                downstreamCaching:
+                  additionalProperties: false
+                  description: Contains information about downstream caching settings. Downstream caching refers to the caching instructions assigned to objects sent with responses toward clients&mdash;browsers, mobile devices, or client proxies.
+                  type: object
+                  required:
+                  - option
+                  - lifetime
+                  - headers
+                  properties:
+                    headers:
+                      description: The policy for sending headers downstream, either `CACHE_CONTROL_AND_EXPIRES` to send both `Cache-Control` and `Expires` headers, `CACHE_CONTROL` to send only the `Cache-Control` header, `EXPIRES` to send only the `Expires` header, or `SAME_AS_ORIGIN` to send the same headers as your origin.
+                      type: string
+                      enum:
+                      - CACHE_CONTROL_AND_EXPIRES
+                      - CACHE_CONTROL
+                      - EXPIRES
+                      - SAME_AS_ORIGIN
+                    lifetime:
+                      default: SMALLER_VALUE
+                      description: The cache lifetime policy, either `SMALLER_VALUE` for a value smaller than specified in the origin header or the remaining edge TTL, `GREATER_VALUE` for a value greater than specified in the origin header or the remaining edge TTL, `REMAINING_EDGE_TTL` for a remaining edge TTL, `FULL_EDGE_TTL` for a full edge TTL, `FIXED_VALUE` for a value that you specify, or `CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL` for calculating the maximum age from the origin `Cache-Control` header.
+                      type: string
+                      enum:
+                      - SMALLER_VALUE
+                      - GREATER_VALUE
+                      - REMAINING_EDGE_TTL
+                      - FULL_EDGE_TTL
+                      - FIXED_VALUE
+                      - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
+                    markAsPrivate:
+                      default: false
+                      description: Specifies whether to disallow storing responses in a shared cache. Use this when you want to set a maximum age for the end client, but have shared caches not store the response.
+                      type: boolean
+                    maxAge:
+                      additionalProperties: false
+                      description: Contains information about the maximum duration to keep content in a cache.
+                      nullable: true
+                      type: object
+                      required:
+                      - duration
+                      - unit
+                      properties:
+                        duration:
+                          description: The maximum duration of content caching in the selected unit of time.
+                          type: integer
+                        unit:
+                          description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                          type: string
+                          enum:
+                          - SECONDS
+                          - MINUTES
+                          - HOURS
+                          - DAYS
+                      x-akamai:
+                        file-path: schemas/durationDto.yaml
+                    option:
+                      default: ALLOW_CACHING
+                      description: The option for downstream caching, either `ALLOW_CACHING` to allow downstream caching, `ALLOW_CACHING_REQUIRES_REVALIDATION` to allow downstream caching, but require origin revalidation, `NOT_ALLOW_CACHING` to disallow downstream caching, `PASS_CACHEABILITY_HEADERS_FROM_ORIGIN` to pass cacheability headers from your origin, or `DO_NOT_SEND_HEADERS` to disallow sending headers and apply browser defaults.
+                      type: string
+                      enum:
+                      - ALLOW_CACHING
+                      - ALLOW_CACHING_REQUIRES_REVALIDATION
+                      - NOT_ALLOW_CACHING
+                      - PASS_CACHEABILITY_HEADERS_FROM_ORIGIN
+                      - DO_NOT_SEND_HEADERS
+                enabled:
+                  description: Whether you enabled caching for the endpoint.
+                  example: '{{enabled}}'
+                  type: boolean
+                errorCaching:
+                  additionalProperties: false
+                  description: Contains information about error caching settings.
+                  type: object
+                  required:
+                  - enabled
+                  properties:
+                    enabled:
+                      description: Whether you enabled error caching.
+                      type: boolean
+                    maxAge:
+                      additionalProperties: false
+                      description: Contains information about the maximum duration to keep error responses in a cache.
+                      nullable: true
+                      type: object
+                      required:
+                      - duration
+                      - unit
+                      properties:
+                        duration:
+                          description: The maximum duration of content caching in the selected unit of time.
+                          type: integer
+                        unit:
+                          description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                          type: string
+                          enum:
+                          - SECONDS
+                          - MINUTES
+                          - HOURS
+                          - DAYS
+                      x-akamai:
+                        file-path: schemas/durationDto.yaml
+                    preserveStale:
+                      default: false
+                      description: Whether to preserve stale responses when the origin is unreachable and content revalidation isn't possible.
+                      type: boolean
+                maxAge:
+                  additionalProperties: false
+                  description: Contains information about the maximum duration to keep content in a cache.
+                  nullable: true
+                  type: object
+                  required:
+                  - duration
+                  - unit
+                  properties:
+                    duration:
+                      description: The maximum duration of content caching in the selected unit of time.
+                      type: integer
+                    unit:
+                      description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                      type: string
+                      enum:
+                      - SECONDS
+                      - MINUTES
+                      - HOURS
+                      - DAYS
+                  x-akamai:
+                    file-path: schemas/durationDto.yaml
+                option:
+                  default: CACHE
+                  description: The options for how to pass cached content, either `CACHE` to enable caching in Akamai platform servers according to the instructions you specify, `BYPASS_CACHE` to disallow caching in Akamai platform servers and keep the existing cache entries, `NO_STORE` to disallow caching in Akamai platform servers and remove the existing cache entries, `HONOR_ORIGIN_CACHE_CONTROL` to apply caching instructions specified in your origin's `Cache-Control` header, `HONOR_ORIGIN_EXPIRES` to apply caching instructions specified in your origin's `Expires` header, or `HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES` to apply caching instructions specified in your origin's `Cache-Control` and `Expires` headers.
+                  example: '{{option}}'
+                  type: string
+                  enum:
+                  - CACHE
+                  - NO_STORE
+                  - BYPASS_CACHE
+                  - HONOR_ORIGIN_CACHE_CONTROL
+                  - HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES
+                  - HONOR_ORIGIN_EXPIRES
+                preRefreshing:
+                  additionalProperties: false
+                  description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                  nullable: true
+                  type: object
+                  required:
+                  - enabled
+                  properties:
+                    enabled:
+                      description: Whether you enable cache prefreshing.
+                      type: boolean
+                    value:
+                      description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                      maximum: 99
+                      minimum: 0
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/preRefreshing.yaml
+                resources:
+                  description: Contains information about caching settings for each resource assigned to an endpoint version. This object is a map where the keys are resource IDs and values are cache settings applied to them.
+                  type: object
+                  additionalProperties:
+                    additionalProperties: false
+                    description: Contains information about caching settings for each resource.
+                    title: Resource's caching settings
+                    type: object
+                    required:
+                    - path
+                    - methods
+                    - option
+                    - maxAge
+                    - serveStale
+                    - cacheKey
+                    - preRefreshing
+                    - inheritsFromEndpoint
+                    properties:
+                      cacheKey:
+                        additionalProperties: false
+                        description: Contains information about cache key settings.
+                        type: object
+                        required:
+                        - customize
+                        properties:
+                          customize:
+                            description: Whether you want to customize cache key settings for an endpoint.
+                            type: boolean
+                          exactMatch:
+                            description: Whether query parameters in incoming requests should match exactly the string items in the corresponding `parameters` member. If false, even the parameters that just begin with the strings you specified in the `parameters` member will match. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                            nullable: true
+                            type: boolean
+                          option:
+                            description: The option for cache key customization. If you select `INCLUDE` or `IGNORE`, also specify the corresponding `parameters` member.
+                            nullable: true
+                            type: string
+                            enum:
+                            - INCLUDE_ALL_PRESERVE_ORDER
+                            - INCLUDE_ALL_ALPHABETIZE_ORDER
+                            - IGNORE_ALL
+                            - INCLUDE
+                            - IGNORE
+                          parameters:
+                            description: The list of parameters to include in or exclude from cache keys, depending on the `option` you selected. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                            nullable: true
+                            type: array
+                            items:
+                              type: string
+                        x-akamai:
+                          file-path: schemas/cacheKeyDto.yaml
+                      inheritsFromEndpoint:
+                        description: Whether the resource inherits the top-level API caching settings.
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration of keeping content in a cache. If set, overwrites the max age instructions set at the endpoint level.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      methods:
+                        description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                        minItems: 0
+                        nullable: true
+                        readOnly: true
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                          - HEAD
+                          - DELETE
+                          - POST
+                          - GET
+                          - OPTIONS
+                          - PUT
+                          - PATCH
+                      option:
+                        default: CACHE
+                        description: The resource caching option, either `CACHE` to enable caching in Akamai platform servers according to the instructions you specify, `BYPASS_CACHE` to send requests straight to origin and disallow caching in downstream caches, `NO_STORE` to disallow caching in Akamai platform servers, `HONOR_ORIGIN_CACHE_CONTROL` to apply caching instructions specified in your origin's `Cache-Control` header, `HONOR_ORIGIN_EXPIRES` to apply caching instructions specified in your origin's `Expires` header, or `HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES` to apply caching instructions specified in your origin's `Cache-Control` and `Expires` headers. If set, overwrites the caching instructions set at the endpoint level.
+                        type: string
+                        enum:
+                        - CACHE
+                        - NO_STORE
+                        - BYPASS_CACHE
+                        - HONOR_ORIGIN_CACHE_CONTROL
+                        - HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES
+                        - HONOR_ORIGIN_EXPIRES
+                      path:
+                        description: The URL path relative to the hostnames on which the resource resides.
+                        minLength: 1
+                        readOnly: true
+                        type: string
+                      preRefreshing:
+                        additionalProperties: false
+                        description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                        nullable: true
+                        type: object
+                        required:
+                        - enabled
+                        properties:
+                          enabled:
+                            description: Whether you enable cache prefreshing.
+                            type: boolean
+                          value:
+                            description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                            maximum: 99
+                            minimum: 0
+                            type: integer
+                        x-akamai:
+                          file-path: schemas/preRefreshing.yaml
+                      serveStale:
+                        description: Whether to serve stale objects when the origin is unreachable and content revalidation is not possible.
+                        type: boolean
+                    x-akamai:
+                      file-path: schemas/resources-cache.yaml
+                serveStale:
+                  description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
+                  example: '{{serveStale}}'
+                  type: boolean
+              x-akamai:
+                file-path: schemas/cacheSettingsDto.yaml
+      responses:
+        '200':
+          description: Operation succeeded.
+          content:
+            application/json:
+              example:
+                enabled: true
+                option: CACHE
+                preRefreshing: null
+                serveStale: true
+                cacheKey:
+                  customize: true
+                  exactMatch: true
+                  option: INCLUDE_ALL_PRESERVE_ORDER
+                  parameters: null
+                downstreamCaching:
+                  headers: CACHE_CONTROL_AND_EXPIRES
+                  lifetime: SMALLER_VALUE
+                  markAsPrivate: false
+                  maxAge: null
+                  option: ALLOW_CACHING
+                errorCaching:
+                  enabled: true
+                  preserveStale: true
+                  maxAge:
+                    duration: 80
+                    unit: SECONDS
+                maxAge:
+                  duration: 100
+                  unit: SECONDS
+                resources:
+                  '2926712':
+                    inheritsFromEndpoint: true
+                    option: CACHE
+                    path: /book/{bookId}
+                    serveStale: true
+                    methods:
+                    - POST
+                    - GET
+                    cacheKey:
+                      customize: true
+                      exactMatch: true
+                      option: INCLUDE_ALL_PRESERVE_ORDER
+                      parameters: null
+                    maxAge:
+                      duration: 100
+                      unit: SECONDS
+                  '2935128':
+                    inheritsFromEndpoint: false
+                    option: CACHE
+                    path: /user/{userId}
+                    serveStale: false
+                    methods:
+                    - POST
+                    - GET
+                    - PUT
+                    cacheKey:
+                      customize: false
+                      exactMatch: true
+                      option: INCLUDE_ALL_PRESERVE_ORDER
+                      parameters: null
+                    maxAge:
+                      duration: 120
+                      unit: SECONDS
+                  '2935139':
+                    inheritsFromEndpoint: true
+                    option: CACHE
+                    path: /magazine/{magazineId}
+                    serveStale: true
+                    methods:
+                    - GET
+                    cacheKey:
+                      customize: true
+                      exactMatch: true
+                      option: INCLUDE_ALL_PRESERVE_ORDER
+                      parameters: null
+                    maxAge:
+                      duration: 100
+                      unit: SECONDS
+              schema:
+                additionalProperties: false
+                description: Contains information about caching settings configured for an endpoint. Caching settings specify properties such as the maximum age of cached content, caching HTTP error responses, downstream cacheability, and cache key customization. You can set specific caching instructions for each resource within an endpoint version. You can configure caching settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - option
+                - downstreamCaching
+                - errorCaching
+                properties:
+                  cacheKey:
+                    additionalProperties: false
+                    description: Contains information about cache key settings.
+                    type: object
+                    required:
+                    - customize
+                    properties:
+                      customize:
+                        description: Whether you want to customize cache key settings for an endpoint.
+                        type: boolean
+                      exactMatch:
+                        description: Whether query parameters in incoming requests should match exactly the string items in the corresponding `parameters` member. If false, even the parameters that just begin with the strings you specified in the `parameters` member will match. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                        nullable: true
+                        type: boolean
+                      option:
+                        description: The option for cache key customization. If you select `INCLUDE` or `IGNORE`, also specify the corresponding `parameters` member.
+                        nullable: true
+                        type: string
+                        enum:
+                        - INCLUDE_ALL_PRESERVE_ORDER
+                        - INCLUDE_ALL_ALPHABETIZE_ORDER
+                        - IGNORE_ALL
+                        - INCLUDE
+                        - IGNORE
+                      parameters:
+                        description: The list of parameters to include in or exclude from cache keys, depending on the `option` you selected. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                        nullable: true
+                        type: array
+                        items:
+                          type: string
+                    x-akamai:
+                      file-path: schemas/cacheKeyDto.yaml
+                  downstreamCaching:
+                    additionalProperties: false
+                    description: Contains information about downstream caching settings. Downstream caching refers to the caching instructions assigned to objects sent with responses toward clients&mdash;browsers, mobile devices, or client proxies.
+                    type: object
+                    required:
+                    - option
+                    - lifetime
+                    - headers
+                    properties:
+                      headers:
+                        description: The policy for sending headers downstream, either `CACHE_CONTROL_AND_EXPIRES` to send both `Cache-Control` and `Expires` headers, `CACHE_CONTROL` to send only the `Cache-Control` header, `EXPIRES` to send only the `Expires` header, or `SAME_AS_ORIGIN` to send the same headers as your origin.
+                        type: string
+                        enum:
+                        - CACHE_CONTROL_AND_EXPIRES
+                        - CACHE_CONTROL
+                        - EXPIRES
+                        - SAME_AS_ORIGIN
+                      lifetime:
+                        default: SMALLER_VALUE
+                        description: The cache lifetime policy, either `SMALLER_VALUE` for a value smaller than specified in the origin header or the remaining edge TTL, `GREATER_VALUE` for a value greater than specified in the origin header or the remaining edge TTL, `REMAINING_EDGE_TTL` for a remaining edge TTL, `FULL_EDGE_TTL` for a full edge TTL, `FIXED_VALUE` for a value that you specify, or `CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL` for calculating the maximum age from the origin `Cache-Control` header.
+                        type: string
+                        enum:
+                        - SMALLER_VALUE
+                        - GREATER_VALUE
+                        - REMAINING_EDGE_TTL
+                        - FULL_EDGE_TTL
+                        - FIXED_VALUE
+                        - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
+                      markAsPrivate:
+                        default: false
+                        description: Specifies whether to disallow storing responses in a shared cache. Use this when you want to set a maximum age for the end client, but have shared caches not store the response.
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration to keep content in a cache.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      option:
+                        default: ALLOW_CACHING
+                        description: The option for downstream caching, either `ALLOW_CACHING` to allow downstream caching, `ALLOW_CACHING_REQUIRES_REVALIDATION` to allow downstream caching, but require origin revalidation, `NOT_ALLOW_CACHING` to disallow downstream caching, `PASS_CACHEABILITY_HEADERS_FROM_ORIGIN` to pass cacheability headers from your origin, or `DO_NOT_SEND_HEADERS` to disallow sending headers and apply browser defaults.
+                        type: string
+                        enum:
+                        - ALLOW_CACHING
+                        - ALLOW_CACHING_REQUIRES_REVALIDATION
+                        - NOT_ALLOW_CACHING
+                        - PASS_CACHEABILITY_HEADERS_FROM_ORIGIN
+                        - DO_NOT_SEND_HEADERS
+                  enabled:
+                    description: Whether you enabled caching for the endpoint.
+                    type: boolean
+                  errorCaching:
+                    additionalProperties: false
+                    description: Contains information about error caching settings.
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enabled error caching.
+                        type: boolean
+                      maxAge:
+                        additionalProperties: false
+                        description: Contains information about the maximum duration to keep error responses in a cache.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      preserveStale:
+                        default: false
+                        description: Whether to preserve stale responses when the origin is unreachable and content revalidation isn't possible.
+                        type: boolean
+                  maxAge:
+                    additionalProperties: false
+                    description: Contains information about the maximum duration to keep content in a cache.
+                    nullable: true
+                    type: object
+                    required:
+                    - duration
+                    - unit
+                    properties:
+                      duration:
+                        description: The maximum duration of content caching in the selected unit of time.
+                        type: integer
+                      unit:
+                        description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                        type: string
+                        enum:
+                        - SECONDS
+                        - MINUTES
+                        - HOURS
+                        - DAYS
+                    x-akamai:
+                      file-path: schemas/durationDto.yaml
+                  option:
+                    default: CACHE
+                    description: The options for how to pass cached content, either `CACHE` to enable caching in Akamai platform servers according to the instructions you specify, `BYPASS_CACHE` to disallow caching in Akamai platform servers and keep the existing cache entries, `NO_STORE` to disallow caching in Akamai platform servers and remove the existing cache entries, `HONOR_ORIGIN_CACHE_CONTROL` to apply caching instructions specified in your origin's `Cache-Control` header, `HONOR_ORIGIN_EXPIRES` to apply caching instructions specified in your origin's `Expires` header, or `HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES` to apply caching instructions specified in your origin's `Cache-Control` and `Expires` headers.
+                    type: string
+                    enum:
+                    - CACHE
+                    - NO_STORE
+                    - BYPASS_CACHE
+                    - HONOR_ORIGIN_CACHE_CONTROL
+                    - HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES
+                    - HONOR_ORIGIN_EXPIRES
+                  preRefreshing:
+                    additionalProperties: false
+                    description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                    nullable: true
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enable cache prefreshing.
+                        type: boolean
+                      value:
+                        description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                        maximum: 99
+                        minimum: 0
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/preRefreshing.yaml
+                  resources:
+                    description: Contains information about caching settings for each resource assigned to an endpoint version. This object is a map where the keys are resource IDs and values are cache settings applied to them.
+                    type: object
+                    additionalProperties:
+                      additionalProperties: false
+                      description: Contains information about caching settings for each resource.
+                      title: Resource's caching settings
+                      type: object
+                      required:
+                      - path
+                      - methods
+                      - option
+                      - maxAge
+                      - serveStale
+                      - cacheKey
+                      - preRefreshing
+                      - inheritsFromEndpoint
+                      properties:
+                        cacheKey:
+                          additionalProperties: false
+                          description: Contains information about cache key settings.
+                          type: object
+                          required:
+                          - customize
+                          properties:
+                            customize:
+                              description: Whether you want to customize cache key settings for an endpoint.
+                              type: boolean
+                            exactMatch:
+                              description: Whether query parameters in incoming requests should match exactly the string items in the corresponding `parameters` member. If false, even the parameters that just begin with the strings you specified in the `parameters` member will match. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                              nullable: true
+                              type: boolean
+                            option:
+                              description: The option for cache key customization. If you select `INCLUDE` or `IGNORE`, also specify the corresponding `parameters` member.
+                              nullable: true
+                              type: string
+                              enum:
+                              - INCLUDE_ALL_PRESERVE_ORDER
+                              - INCLUDE_ALL_ALPHABETIZE_ORDER
+                              - IGNORE_ALL
+                              - INCLUDE
+                              - IGNORE
+                            parameters:
+                              description: The list of parameters to include in or exclude from cache keys, depending on the `option` you selected. This is only relevant if you set the corresponding `option` member to either `INCLUDE` or `IGNORE`.
+                              nullable: true
+                              type: array
+                              items:
+                                type: string
+                          x-akamai:
+                            file-path: schemas/cacheKeyDto.yaml
+                        inheritsFromEndpoint:
+                          description: Whether the resource inherits the top-level API caching settings.
+                          type: boolean
+                        maxAge:
+                          additionalProperties: false
+                          description: Contains information about the maximum duration of keeping content in a cache. If set, overwrites the max age instructions set at the endpoint level.
+                          nullable: true
+                          type: object
+                          required:
+                          - duration
+                          - unit
+                          properties:
+                            duration:
+                              description: The maximum duration of content caching in the selected unit of time.
+                              type: integer
+                            unit:
+                              description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                              type: string
+                              enum:
+                              - SECONDS
+                              - MINUTES
+                              - HOURS
+                              - DAYS
+                          x-akamai:
+                            file-path: schemas/durationDto.yaml
+                        methods:
+                          description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                          minItems: 0
+                          nullable: true
+                          readOnly: true
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - HEAD
+                            - DELETE
+                            - POST
+                            - GET
+                            - OPTIONS
+                            - PUT
+                            - PATCH
+                        option:
+                          default: CACHE
+                          description: The resource caching option, either `CACHE` to enable caching in Akamai platform servers according to the instructions you specify, `BYPASS_CACHE` to send requests straight to origin and disallow caching in downstream caches, `NO_STORE` to disallow caching in Akamai platform servers, `HONOR_ORIGIN_CACHE_CONTROL` to apply caching instructions specified in your origin's `Cache-Control` header, `HONOR_ORIGIN_EXPIRES` to apply caching instructions specified in your origin's `Expires` header, or `HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES` to apply caching instructions specified in your origin's `Cache-Control` and `Expires` headers. If set, overwrites the caching instructions set at the endpoint level.
+                          type: string
+                          enum:
+                          - CACHE
+                          - NO_STORE
+                          - BYPASS_CACHE
+                          - HONOR_ORIGIN_CACHE_CONTROL
+                          - HONOR_ORIGIN_CACHE_CONTROL_AND_EXPIRES
+                          - HONOR_ORIGIN_EXPIRES
+                        path:
+                          description: The URL path relative to the hostnames on which the resource resides.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        preRefreshing:
+                          additionalProperties: false
+                          description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
+                          nullable: true
+                          type: object
+                          required:
+                          - enabled
+                          properties:
+                            enabled:
+                              description: Whether you enable cache prefreshing.
+                              type: boolean
+                            value:
+                              description: Percentage of TTL after which cache content will be refreshed. Need to be in the range of `0-99`.
+                              maximum: 99
+                              minimum: 0
+                              type: integer
+                          x-akamai:
+                            file-path: schemas/preRefreshing.yaml
+                        serveStale:
+                          description: Whether to serve stale objects when the origin is unreachable and content revalidation is not possible.
+                          type: boolean
+                      x-akamai:
+                        file-path: schemas/resources-cache.yaml
+                  serveStale:
+                    description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
+                    type: boolean
+                x-akamai:
+                  file-path: schemas/cacheSettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

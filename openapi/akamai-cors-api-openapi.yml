@@ -1,0 +1,509 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens CORS API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: CORS
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/cors:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the cross-origin resource sharing (CORS) settings configured for an endpoint version.
+      operationId: get-cors-settings
+      summary: Get CORS settings
+      tags:
+      - CORS
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-cors-settings
+      responses:
+        '200':
+          description: Response data shows current CORS settings.
+          content:
+            application/json:
+              example:
+                allowCredentials: false
+                enabled: true
+                preflightMaxAge: 86400
+                allowedHeaders:
+                - Akamai-Cors-Allowed
+                allowedMethods:
+                - GET
+                allowedOrigins:
+                - '*'
+                exposedHeaders:
+                - Akamai-Cors-Exposed
+              schema:
+                additionalProperties: false
+                description: Contains information about cross-origin resource sharing (CORS) settings configured for an endpoint. CORS enables clients to request restricted resources from external domains outside the domain that served the first resource. You can configure CORS settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - preflightMaxAge
+                properties:
+                  allowCredentials:
+                    default: false
+                    description: Whether you allow credentialed HTTP requests to access your resources. Credentials may be cookies or TLS client certificates.
+                    type: boolean
+                  allowedHeaders:
+                    description: The HTTP header names that you allow using the `Access-Control-Allow-Headers` header.
+                    type: array
+                    items:
+                      type: string
+                  allowedMethods:
+                    description: The HTTP methods that you allow using the `Access-Control-Allow-Methods` header, either `GET`, `PUT`, `POST`, `DELETE`, `OPTIONS`, `PATCH`, or `HEAD`.
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - GET
+                      - PUT
+                      - POST
+                      - DELETE
+                      - OPTIONS
+                      - PATCH
+                      - HEAD
+                  allowedOrigins:
+                    description: The origin hostnames that you allow using the `Access-Control-Allow-Origin` header. The wildcard (`*`) means all hostnames.
+                    type: array
+                    items:
+                      type: string
+                  enabled:
+                    description: Whether you enabled CORS for the endpoint.
+                    type: boolean
+                  exposedHeaders:
+                    description: The headers that you expose using the `Access-Control-Expose-Headers` header. By exposing a header, you allow clients to access it.
+                    type: array
+                    items:
+                      type: string
+                  preflightMaxAge:
+                    description: The maximum time in seconds for caching responses to preflight requests.
+                    type: integer
+                x-akamai:
+                  file-path: schemas/corsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the cross-origin resource sharing (CORS) settings configured for an endpoint version.
+      operationId: put-cors-settings
+      summary: Edit CORS settings
+      tags:
+      - CORS
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-cors-settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              allowCredentials: false
+              enabled: true
+              preflightMaxAge: 86400
+              allowedHeaders:
+              - Akamai-Cors-Allowed
+              allowedMethods:
+              - GET
+              allowedOrigins:
+              - '*'
+              exposedHeaders:
+              - Akamai-Cors-Exposed
+            schema:
+              additionalProperties: false
+              description: Contains information about cross-origin resource sharing (CORS) settings configured for an endpoint. CORS enables clients to request restricted resources from external domains outside the domain that served the first resource. You can configure CORS settings if the API Gateway product is in your contract.
+              type: object
+              required:
+              - enabled
+              - preflightMaxAge
+              properties:
+                allowCredentials:
+                  default: false
+                  description: Whether you allow credentialed HTTP requests to access your resources. Credentials may be cookies or TLS client certificates.
+                  example: '{{allowCredentials}}'
+                  type: boolean
+                allowedHeaders:
+                  description: The HTTP header names that you allow using the `Access-Control-Allow-Headers` header.
+                  type: array
+                  items:
+                    type: string
+                allowedMethods:
+                  description: The HTTP methods that you allow using the `Access-Control-Allow-Methods` header, either `GET`, `PUT`, `POST`, `DELETE`, `OPTIONS`, `PATCH`, or `HEAD`.
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - GET
+                    - PUT
+                    - POST
+                    - DELETE
+                    - OPTIONS
+                    - PATCH
+                    - HEAD
+                allowedOrigins:
+                  description: The origin hostnames that you allow using the `Access-Control-Allow-Origin` header. The wildcard (`*`) means all hostnames.
+                  type: array
+                  items:
+                    type: string
+                enabled:
+                  description: Whether you enabled CORS for the endpoint.
+                  example: '{{enabled}}'
+                  type: boolean
+                exposedHeaders:
+                  description: The headers that you expose using the `Access-Control-Expose-Headers` header. By exposing a header, you allow clients to access it.
+                  type: array
+                  items:
+                    type: string
+                preflightMaxAge:
+                  description: The maximum time in seconds for caching responses to preflight requests.
+                  example: '{{preflightMaxAge}}'
+                  type: integer
+              x-akamai:
+                file-path: schemas/corsDto.yaml
+      responses:
+        '200':
+          description: The response shows updated CORS data.
+          content:
+            application/json:
+              example:
+                allowCredentials: false
+                enabled: true
+                preflightMaxAge: 86400
+                allowedHeaders:
+                - Akamai-Cors-Allowed
+                allowedMethods:
+                - GET
+                allowedOrigins:
+                - '*'
+                exposedHeaders:
+                - Akamai-Cors-Exposed
+              schema:
+                additionalProperties: false
+                description: Contains information about cross-origin resource sharing (CORS) settings configured for an endpoint. CORS enables clients to request restricted resources from external domains outside the domain that served the first resource. You can configure CORS settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - preflightMaxAge
+                properties:
+                  allowCredentials:
+                    default: false
+                    description: Whether you allow credentialed HTTP requests to access your resources. Credentials may be cookies or TLS client certificates.
+                    type: boolean
+                  allowedHeaders:
+                    description: The HTTP header names that you allow using the `Access-Control-Allow-Headers` header.
+                    type: array
+                    items:
+                      type: string
+                  allowedMethods:
+                    description: The HTTP methods that you allow using the `Access-Control-Allow-Methods` header, either `GET`, `PUT`, `POST`, `DELETE`, `OPTIONS`, `PATCH`, or `HEAD`.
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - GET
+                      - PUT
+                      - POST
+                      - DELETE
+                      - OPTIONS
+                      - PATCH
+                      - HEAD
+                  allowedOrigins:
+                    description: The origin hostnames that you allow using the `Access-Control-Allow-Origin` header. The wildcard (`*`) means all hostnames.
+                    type: array
+                    items:
+                      type: string
+                  enabled:
+                    description: Whether you enabled CORS for the endpoint.
+                    type: boolean
+                  exposedHeaders:
+                    description: The headers that you expose using the `Access-Control-Expose-Headers` header. By exposing a header, you allow clients to access it.
+                    type: array
+                    items:
+                      type: string
+                  preflightMaxAge:
+                    description: The maximum time in seconds for caching responses to preflight requests.
+                    type: integer
+                x-akamai:
+                  file-path: schemas/corsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

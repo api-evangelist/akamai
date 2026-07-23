@@ -1,0 +1,3270 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Activations API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage your security configuration activations.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage your security configuration activations.
+  name: Activations
+paths:
+  /activations:
+    x-akamai:
+      file-path: paths/activations.yaml
+      path-info: /activations
+    post:
+      description: __All products__ Activates one or more configurations globally. Note that you need to explicitly list any invalid hosts in the `acknowledgedInvalidHostsByConfig` parameter in order to successfully activate a configuration that includes invalid hostnames. If you have an invalid hostname that isn't explicitly called out you'll receive an error telling you to add them to `acknowledgedInvalidHostsByConfig`. See [Activate with invalid hostnames](https://techdocs.akamai.com/application-security/reference/activate-with-invalid-hostnames) for instructions.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-activations
+      operationId: post-activations
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              action: ACTIVATE
+              activationConfigs:
+              - configId: 1
+                configVersion: 4
+              network: STAGING
+              note: Free text notes
+              notificationEmails:
+              - a@example.com
+              - b@example.com
+            schema:
+              additionalProperties: false
+              properties:
+                acknowledgedInvalidHosts:
+                  description: The list of invalid hostnames in the security configuration to activate. In some cases, you may want to activate a security configuration with hostnames that WAF can't protect (for example, hostnames not managed as Akamai properties, or managed under a different contract than the configuration). By default, the existence of invalid hostnames blocks activation with a warning. The warning includes the names of the invalid hostnames. If you want to activate a configuration with invalid hostnames, enter the hostnames in this array. This field is now deprecated. Use `acknowledgedInvalidHostsByConfig` instead.
+                  items:
+                    type: string
+                  type: array
+                acknowledgedInvalidHostsByConfig:
+                  description: The list of invalid hostnames per security configuration to activate. In some cases, you may want to activate a security configuration with hostnames that WAF can't protect (for example, hostnames not managed as Akamai properties, or managed under a different contract than the configuration). By default, the existence of invalid hostnames blocks activation with a warning. The warning includes the names of the invalid hostnames. If you want to activate a configuration with invalid hostnames, enter the hostnames and the configuration ID in this array.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      configId:
+                        description: Uniquely identifies the security configuration with invalid hostnames.
+                        type: integer
+                      invalidHosts:
+                        description: The list of invalid hostnames in the security configuration.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - configId
+                    - invalidHosts
+                    type: object
+                  type: array
+                action:
+                  description: The action to take, either `ACTIVATE` or `DEACTIVATE`.
+                  enum:
+                  - ACTIVATE
+                  - DEACTIVATE
+                  type: string
+                activationConfigs:
+                  description: Specifies the security configuration and version to activate or deactivate.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      configId:
+                        description: The origin identifier or destination configuration to activate.
+                        type: integer
+                      configVersion:
+                        description: The origin version or destination configuration to activate.
+                        type: integer
+                    required:
+                    - configId
+                    - configVersion
+                    type: object
+                  maxItems: 2
+                  minItems: 1
+                  type: array
+                network:
+                  description: The target Akamai activation environment, either `STAGING` or `PRODUCTION`.
+                  enum:
+                  - STAGING
+                  - PRODUCTION
+                  type: string
+                note:
+                  description: The notes you entered for the activation.
+                  type: string
+                notificationEmails:
+                  description: The email addresses to notify when the activation happens.
+                  items:
+                    type: string
+                  type: array
+              required:
+              - action
+              - activationConfigs
+              - network
+              - note
+              - notificationEmails
+              type: object
+              x-akamai:
+                file-path: schemas/activations-post.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                action: ACTIVATE
+                activationConfigs:
+                - configId: 1
+                  configName: config 1
+                  configVersion: 4
+                  previousConfigVersion: 2
+                activationId: 1234
+                createDate: '2013-10-07T17:41:52+00:00'
+                createdBy: mrossi
+                dispatchCount: 1
+                estimate: PTM5
+                network: PRODUCTION
+                status: RECEIVED
+              schema:
+                additionalProperties: false
+                description: Contains the activation status and settings for a configuration version.
+                properties:
+                  action:
+                    description: The action performed on this activation, either `ACTIVATE` or `DEACTIVATE`.
+                    enum:
+                    - ACTIVATE
+                    - DEACTIVATE
+                    type: string
+                  activationConfigs:
+                    description: Specifies the security configuration and activation version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        configId:
+                          description: The origin identifier or the activation's destination configuration.
+                          type: integer
+                        configName:
+                          description: The name you assigned to the configuration. This field is provided for information purposes and only appears in the API output.
+                          type: string
+                        configVersion:
+                          description: The origin version or the activation's destination configuration.
+                          type: integer
+                        previousConfigVersion:
+                          description: __Read-only__ The previous active configuration version.
+                          readOnly: true
+                          type: integer
+                      required:
+                      - configId
+                      - configVersion
+                      type: object
+                    type: array
+                  activationId:
+                    description: Uniquely identifies the activation.
+                    type: integer
+                  completionDate:
+                    description: __Read-only__ The ISO 8601 timestamp at which the activation reaches a steady state and validates across the Akamai network.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createDate:
+                    description: __Read-only__ The ISO 8601 timestamp at which the activation request was submitted.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the activation request.
+                    readOnly: true
+                    type: string
+                  dispatchCount:
+                    description: __Read-only__ The number of times which this activation has been dispatched to the Akamai edge network. A number greater than 1 indicates that this activation may be retried due to network safety concerns.
+                    readOnly: true
+                    type: integer
+                  estimate:
+                    description: The estimated time remaining to complete the activation in ISO 8601 duration format, starting when the response is generated.
+                    type: string
+                  network:
+                    description: The Akamai activation environment, either `STAGING` or `PRODUCTION`.
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                    type: string
+                  status:
+                    description: The current activation status, either `RECEIVED`, `LIVE`, `DEPLOYED`, `CANCELING`, `STOPPED`, `REMOVED`, `ROLLBACK`, `ACTIVATED`, `FAILED`, `CANCELLING`, or `UNDEPLOYED`.
+                    enum:
+                    - RECEIVED
+                    - LIVE
+                    - DEPLOYED
+                    - STOPPED
+                    - REMOVED
+                    - ROLLBACK
+                    - ACTIVATED
+                    - FAILED
+                    - CANCELLING
+                    - UNDEPLOYED
+                    type: string
+                required:
+                - activationId
+                - action
+                - network
+                - status
+                - activationConfigs
+                - createdBy
+                - createDate
+                type: object
+                x-akamai:
+                  file-path: schemas/activation-status.yaml
+          description: Activation request successful.
+        '202':
+          content:
+            application/json:
+              example:
+                createDate: '2018-06-19T11:27:55Z'
+                links:
+                  check-status:
+                    href: /appsec/v1/activations/status/f81c92c5-b150-4c41-9b53-9cef7969150a
+                statusId: f81c92c5-b150-4c41-9b53-9cef7969150a
+              schema:
+                additionalProperties: false
+                description: Describes the activation request's status upon creation.
+                properties:
+                  createDate:
+                    description: The time when you submitted this activation request.
+                    format: date-time
+                    type: string
+                  links:
+                    additionalProperties: false
+                    description: A 303 response returns a link to additional information about your activation request status.
+                    properties:
+                      check-status:
+                        additionalProperties: false
+                        description: Returns details about the status of the activation request.
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        required:
+                        - href
+                        type: object
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                    required:
+                    - check-status
+                    type: object
+                  statusId:
+                    description: Uniquely identifies the activation request. You can use this ID to poll for the status of your activation request.
+                    type: string
+                required:
+                - statusId
+                - createDate
+                type: object
+                x-akamai:
+                  file-path: schemas/activation-request-status-created.yaml
+          description: Activation request launched.
+          headers:
+            Location:
+              description: Location at which you can find the status of the ongoing job to create your activation request.
+              schema:
+                type: string
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Activate a configuration version
+      tags:
+      - Activations
+      x-akamai:
+        labels:
+        - All products
+  /ids/{edgeWorkerId}/activations:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    post:
+      description: Activate an existing EdgeWorker version on the Akamai network, either staging or production.
+      operationId: post-activations
+      summary: Akamai Activate an EdgeWorker Version
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-activations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              network: PRODUCTION
+              note: Version 2 fixes an issue detected in production.
+              version: '2'
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - network
+              - version
+              properties:
+                network:
+                  description: The network on which the version will be activated, either `STAGING` or `PRODUCTION`.
+                  example: '{{network}}'
+                  type: string
+                  enum:
+                  - STAGING
+                  - PRODUCTION
+                note:
+                  description: Note to specify why the version is being activated.
+                  example: '{{note}}'
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+                version:
+                  description: Unique identifier of the version that will be activated.
+                  example: '{{version}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/activations-post.yaml
+      responses:
+        '201':
+          description: Provides details for an EdgeWorker activation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT3456
+                activationId: 3
+                createdBy: jsmith
+                createdTime: '2020-04-05T18:17:46Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2020-04-05T18:17:46Z'
+                network: PRODUCTION
+                note: Version 2 fixes an issue detected in production.
+                status: PRESUBMIT
+                version: '2'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdBy:
+                    description: Username of the person who activated the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was activated.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the activation was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the version is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to specify why the version is being activated.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The activation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/activations-post-201.yaml
+          headers:
+            Location:
+              description: Use this URL to fetch the new resource.
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/Location.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: View the list of activations for an existing EdgeWorker based on ID. You can choose to specify the version in the request. The response filters the list of activations down by version number.
+      operationId: get-activations
+      summary: Akamai List Activations
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-activations
+      responses:
+        '200':
+          description: This section describes a list of EdgeWorker activations.
+          content:
+            application/json:
+              example:
+                activations:
+                - accountId: A-CCT7890
+                  activationId: 3
+                  createdBy: jkowalski
+                  createdTime: '2020-07-09T09:03:28Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2020-07-09T09:04:42Z'
+                  network: PRODUCTION
+                  note: Version 2 fixes an issue detected in production.
+                  status: PENDING
+                  version: '2'
+                - accountId: A-CCT9012
+                  activationId: 1
+                  createdBy: jsmith
+                  createdTime: '2020-07-09T08:13:54Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2020-07-09T08:35:02Z'
+                  network: STAGING
+                  status: IN_PROGRESS
+                  version: '1'
+                - accountId: A-CCT5678
+                  activationId: 2
+                  createdBy: adevi
+                  createdTime: '2020-07-10T14:23:42Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2020-07-10T14:53:25Z'
+                  network: PRODUCTION
+                  status: COMPLETE
+                  version: '2'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - activations
+                properties:
+                  activations:
+                    description: List of EdgeWorker activations.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - edgeWorkerId
+                      - version
+                      - activationId
+                      - accountId
+                      - status
+                      - network
+                      - createdBy
+                      - createdTime
+                      - lastModifiedTime
+                      properties:
+                        accountId:
+                          description: Identifier for the account under which the EdgeWorker was created.
+                          minLength: 1
+                          type: string
+                        activationId:
+                          description: Unique identifier of the activation.
+                          minimum: 1
+                          type: integer
+                        createdBy:
+                          description: Username of the person who created the EdgeWorker.
+                          minLength: 1
+                          type: string
+                        createdTime:
+                          description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                          format: date-time
+                          type: string
+                        edgeWorkerId:
+                          description: Unique identifier of the EdgeWorker.
+                          minimum: 1
+                          type: integer
+                        lastModifiedTime:
+                          description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                          format: date-time
+                          type: string
+                        network:
+                          description: The network on which the version is activated, either `PRODUCTION` or `STAGING`.
+                          type: string
+                          enum:
+                          - STAGING
+                          - PRODUCTION
+                        note:
+                          description: Note to specify why the version is being activated.
+                          maxLength: 128
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The activation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                          type: string
+                          enum:
+                          - PRESUBMIT
+                          - PENDING
+                          - IN_PROGRESS
+                          - ABORTED
+                          - ERROR
+                          - COMPLETE
+                          - DELETED_BY_AKAMAI
+                          - EXPIRED
+                          - CANCELLED
+                        version:
+                          description: Unique identifier of the version.
+                          minLength: 1
+                          type: string
+                      x-akamai:
+                        file-path: schemas/activation-get-200.yaml
+                x-akamai:
+                  file-path: schemas/activations-get-200.yaml
+      parameters:
+      - description: Unique identifier for a specific EdgeWorker version.
+        example: '{{version}}'
+        in: query
+        name: version
+        schema:
+          example: '5'
+          type: string
+        x-akamai:
+          file-path: parameters/version-query.yaml
+      - description: When enabled, limits results to show only currently activate versions. Pair this with a `network` to get the version that's currently active on a specific network. Otherwise the response may include up to two versions.
+        example: '{{activeOnNetwork}}'
+        in: query
+        name: activeOnNetwork
+        schema:
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/activeOnNetwork-query.yaml
+      - description: __Enum__ When enabled, limits results to show only versions activated on a specific network, either `STAGING` or `PRODUCTION`. Pair this with `activeOnNetwork=true` to get the version that's currently active on the specified network.
+        example: '{{network}}'
+        in: query
+        name: network
+        schema:
+          example: STAGING
+          type: string
+          enum:
+          - STAGING
+          - PRODUCTION
+        x-akamai:
+          file-path: parameters/activationNetwork-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/activations/rollback:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    post:
+      description: Reactivate the EdgeWorker version that was previously active on the Akamai network, either staging or production.
+      operationId: post-rollback-to-previous-active-version
+      summary: Akamai Roll Back to the Previous Active EdgeWorker Version
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-rollback-to-previous-active-version
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              network: STAGING
+              note: An issue was detected in the latest active version.
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - network
+              properties:
+                network:
+                  description: The network on which the version previously active will be reactivated, either `STAGING` or `PRODUCTION`.
+                  example: '{{network}}'
+                  type: string
+                  enum:
+                  - STAGING
+                  - PRODUCTION
+                note:
+                  description: Note to specify the reason for the rollback.
+                  example: '{{note}}'
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/activation-rollback-post.yaml
+      responses:
+        '201':
+          description: Provides details for an EdgeWorker activation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT5678
+                activationId: 3
+                createdBy: jsmith
+                createdTime: '2020-04-05T18:17:46Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2020-04-05T18:17:46Z'
+                network: PRODUCTION
+                note: Version 2 fixes an issue detected in production.
+                status: PRESUBMIT
+                version: '2'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdBy:
+                    description: Username of the person who activated the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was activated.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the activation was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the version is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to specify why the version is being activated.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The activation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/activations-post-201.yaml
+          headers:
+            Location:
+              description: Use this URL to fetch the new resource.
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/Location.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/activations/{activationId}:
+    parameters:
+    - description: Unique identifier for an EdgeWorkers activation.
+      example: '{{activationId}}'
+      in: path
+      name: activationId
+      required: true
+      schema:
+        example: 3
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/activationId-path.yaml
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: View details for a specific activation.
+      operationId: get-activation
+      summary: Akamai Get an Activation
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-activation
+      responses:
+        '200':
+          description: Provides details for an EdgeWorker activation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT1234
+                activationId: 3
+                createdBy: jsmith
+                createdTime: '2020-08-04T11:42:56Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2020-08-04T12:00:03Z'
+                network: PRODUCTION
+                note: Version 2 fixes an issue detected in production.
+                status: PENDING
+                version: '2'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the version is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to specify why the version is being activated.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The activation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/activation-get-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    delete:
+      description: Cancel a pending activation. You can cancel any activation whose `status` is still `PENDING`. After that you need to wait for the activation to complete and then deactivate it. Once the deactivation is complete you can then delete the EdgeWorker version.
+      operationId: delete-activation
+      summary: Akamai Cancel an Activation
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/delete-activation
+      responses:
+        '200':
+          description: Provides details for an EdgeWorker activation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT1234
+                activationId: 3
+                createdBy: jsmith
+                createdTime: '2020-08-04T11:42:56Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2020-08-04T12:00:03Z'
+                network: PRODUCTION
+                note: Version 2 fixes an issue detected in production.
+                status: CANCELLED
+                version: '2'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the version is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to specify why the version is being activated.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The activation status of the EdgeWorker version is `CANCELLED` after you cancel a `PRESUBMIT` or `PENDING` activation.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/activation-delete-200.yaml
+      parameters:
+      - description: Unique identifier for an EdgeWorkers activation.
+        example: '{{activationId}}'
+        in: path
+        name: activationId
+        required: true
+        schema:
+          example: 3
+          minimum: 1
+          type: integer
+        x-akamai:
+          file-path: parameters/activationId-path.yaml
+      - description: Unique identifier for an EdgeWorker.
+        example: '{{edgeWorkerId}}'
+        in: path
+        name: edgeWorkerId
+        required: true
+        schema:
+          example: 42
+          minimum: 1
+          type: integer
+        x-akamai:
+          file-path: parameters/edgeWorkerId-path.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /activations/{activationId}:
+    parameters:
+    - description: The unique identifier for this activation request.
+      example: '{{activationId}}'
+      in: path
+      name: activationId
+      required: true
+      schema:
+        example: 130439
+        type: integer
+      x-akamai:
+        file-path: parameters/activationId-path.yaml
+    get:
+      description: Provides detailed status for a given activation, including progress on _fast_ activation and other audit information, in addition to information ordinarily available from the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation.
+      operationId: get-activation
+      summary: Akamai Get Activation Details
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's Network Lists API
+        url: https://techdocs.akamai.com/network-lists/reference/get-activation
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              example:
+                activationId: 1303191
+                createDate: '2018-03-13T10:26:23.659Z'
+                createdBy: szhang
+                environment: STAGING
+                fast: false
+                networkList:
+                  activationComments: Allow local IPs
+                  activationStatus: PENDING_ACTIVATION
+                  syncPoint: 0
+                  uniqueId: 38069_INTERNALWHITELIST
+                  links:
+                    appendItems:
+                      href: /networklist-api/38069_INTERNALWHITELIST/append
+                      method: POST
+                    retrieve:
+                      href: /networklist-api/38069_INTERNALWHITELIST
+                    statusInProduction:
+                      href: /networklist-api/38069_INTERNALWHITELIST/environments/PRODUCTION/status
+                    statusInStaging:
+                      href: /networklist-api/38069_INTERNALWHITELIST/environments/STAGING/status
+                    syncPointHistory:
+                      href: /networklist-api/38069_INTERNALWHITELIST/sync-points/0/history
+                    update:
+                      href: /networklist-api/38069_INTERNALWHITELIST
+                      method: PUT
+              schema:
+                additionalProperties: false
+                description: Provides additional details about an activation, as the response to the [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation) operation.
+                type: object
+                required:
+                - activationId
+                - environment
+                - networkList
+                - createDate
+                - createdBy
+                properties:
+                  activationId:
+                    description: Unique identifier for the activation.
+                    type: integer
+                  createDate:
+                    description: ISO 8601 timestamp indicating when the network list was first created.
+                    example: '2017-06-01T15:13:40.36Z'
+                    type: string
+                  createdBy:
+                    description: Username of this list's creator.
+                    type: string
+                  environment:
+                    description: The Akamai network on which this activation was requested, either `STAGING` or `PRODUCTION`.
+                    type: string
+                    enum:
+                    - PRODUCTION
+                    - STAGING
+                  estimate:
+                    description: Estimated time remaining to complete the activation, in ISO 8601 duration format, relative to when this response generated. This member may be omitted under standard activation when `fast` indicates `false`, or during the early processing stages of some fast activations when the activation path is still being determined.
+                    type: string
+                  initial:
+                    description: Indicates if this is the network list's first activation on this network. Initial activation typically takes about 25 minutes, whereas updates typically take 5 to 10 minutes.
+                    type: boolean
+                  networkList:
+                    additionalProperties: false
+                    description: Provides details on the activated network list ordinarily available from the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation.
+                    type: object
+                    required:
+                    - syncPoint
+                    - uniqueId
+                    - activationStatus
+                    properties:
+                      activationComments:
+                        description: Further information related to the activation. This reflects the `comments` from the initial activation request.
+                        type: string
+                      activationId:
+                        description: Unique identifier for the most recent activation request. May be absent if the list is inactive, or if this object in embedded within an outer object envelope.
+                        type: integer
+                      activationStatus:
+                        description: This network list's current activation status in the specified `environment`. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state.
+                        type: string
+                        enum:
+                        - INACTIVE
+                        - ACTIVE
+                        - MODIFIED
+                        - PENDING_ACTIVATION
+                        - FAILED
+                        - PENDING_DEACTIVATION
+                      dispatchCount:
+                        description: Number of activation attempts for this security configuration.
+                        type: integer
+                      fast:
+                        default: true
+                        description: A network list's initial activation is relatively slow, indicated here with a `false` value. A `true` value indicates subsequent fast activations.
+                        type: boolean
+                      links:
+                        additionalProperties: false
+                        description: Encapsulates the set of [API hypermedia](https://techdocs.akamai.com/network-lists/reference/api-hypermedia) to access a set of resources related to this activation. The object is arranged as a hash of keys, each of which represents a link relation.
+                        type: object
+                        properties:
+                          activateInProduction:
+                            additionalProperties: false
+                            description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `PRODUCTION` environment.
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          activateInStaging:
+                            additionalProperties: false
+                            description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `STAGING` environment.
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          activationDetails:
+                            additionalProperties: false
+                            description: A link to [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation).
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          appendItems:
+                            additionalProperties: false
+                            description: A link to [Append elements to a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-append).
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          retrieve:
+                            additionalProperties: false
+                            description: A link to [Get a network list](https://techdocs.akamai.com/network-lists/reference/get-network-list).
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          statusInProduction:
+                            additionalProperties: false
+                            description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `PRODUCTION` environment.
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          statusInStaging:
+                            additionalProperties: false
+                            description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `STAGING` environment.
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                          update:
+                            additionalProperties: false
+                            description: A link to [Update a network list](https://techdocs.akamai.com/network-lists/reference/put-network-list).
+                            type: object
+                            required:
+                            - href
+                            properties:
+                              detail:
+                                description: Any additional information about the target of the link.
+                                type: string
+                              href:
+                                description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                                type: string
+                              method:
+                                default: GET
+                                description: The HTTP method with which to call the `href`, `GET` by default.
+                                type: string
+                            x-akamai:
+                              file-path: schemas/link.yaml
+                      syncPoint:
+                        description: The version of the currently activated network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details.
+                        type: integer
+                      uniqueId:
+                        description: Unique identifier for this network list, corresponding to the `networkListId` URL parameter.
+                        readOnly: true
+                        type: string
+                    x-akamai:
+                      file-path: schemas/status.yaml
+                  status:
+                    description: Reflects lower-level fast activation status. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on possible status values. This member may be omitted under standard activation when `fast` indicates `false`, or after activation has completed.
+                    type: string
+                    enum:
+                    - RECEIVED
+                    - LIVE
+                    - DEPLOYED
+                    - ACTIVATED
+                    - ROLLBACK
+                    - FAILED
+                    - CANCELING
+                    - STOPPED
+                    - DEACTIVATED
+                x-akamai:
+                  file-path: schemas/activation-request.yaml
+        '400':
+          description: Incorrect client input. See the field errors provided in the response for more information.  This error may also be returned in place of a 404 if a URL parameter was provided in an incorrect format.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Incorrect URL. Check that the network list ID and other URL parameters are valid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: We encountered an unexpected issue while processing your request. Please follow the advice provided in the message.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /network-lists/{networkListId}/environments/{environment}/activate:
+    parameters:
+    - description: '__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.'
+      example: '{{environment}}'
+      in: path
+      name: environment
+      required: true
+      schema:
+        example: PRODUCTION
+        type: string
+        enum:
+        - STAGING
+        - PRODUCTION
+      x-akamai:
+        file-path: parameters/environment-path.yaml
+    - description: Unique identifier for each network list.
+      example: '{{networkListId}}'
+      in: path
+      name: networkListId
+      required: true
+      schema:
+        example: 12345_BLACKLISTEDGEOS
+        type: string
+      x-akamai:
+        file-path: parameters/networkListId-path.yaml
+    post:
+      description: Activate the most recent `syncPoint` version of a network list in either the `STAGING` or `PRODUCTION` environment.
+      operationId: post-network-list-activate
+      summary: Akamai Activate a Network List
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's Network Lists API
+        url: https://techdocs.akamai.com/network-lists/reference/post-network-list-activate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              comments: Allow IPs of new employees who joined this week
+              notificationRecipients:
+              - it-team@example.com
+              - security-team@example.com
+            schema:
+              additionalProperties: false
+              description: Requests a new activation.
+              type: object
+              properties:
+                comments:
+                  description: Descriptive text to accompany the activation. This is reflected in the activation object's `activationComments` member.
+                  example: '{{comments}}'
+                  type: string
+                notificationRecipients:
+                  description: List of email addresses of Control Center users who receive an email when activation of this list is complete. Don't add addresses to this list without the recipients' consent.
+                  minItems: 1
+                  type: array
+                  uniqueItems: true
+                  items:
+                    type: string
+                siebelTicketId:
+                  description: If the activation is linked to a Siebel ticket, this identifies the ticket.
+                  example: '{{siebelTicketId}}'
+                  type: string
+              x-akamai:
+                file-path: schemas/activate.yaml
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              example:
+                activationComments: Allow IPs of new employees who joined this week
+                activationId: 12345
+                activationStatus: PENDING_ACTIVATION
+                dispatchCount: 1
+                fast: false
+                syncPoint: 5
+                uniqueId: 25614_GENERALLIST
+                links:
+                  activationDetails:
+                    href: /network-list/v2/network-lists/activations/12345/
+                  appendItems:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/append
+                    method: POST
+                  retrieve:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST
+                  statusInProduction:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/environments/PRODUCTION/status
+                  statusInStaging:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/environments/STAGING/status
+                  syncPointHistory:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/sync-points/5/history
+                  update:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST
+                    method: PUT
+              schema:
+                additionalProperties: false
+                description: Represents a network list's activation status, as the response to the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation.
+                type: object
+                required:
+                - syncPoint
+                - uniqueId
+                - activationStatus
+                properties:
+                  activationComments:
+                    description: Further information related to the activation. This reflects the `comments` from the initial activation request.
+                    type: string
+                  activationId:
+                    description: Unique identifier for the most recent activation request. May be absent if the list is inactive, or if this object in embedded within an outer object envelope.
+                    type: integer
+                  activationStatus:
+                    description: This network list's current activation status in the specified `environment`. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state.
+                    type: string
+                    enum:
+                    - INACTIVE
+                    - ACTIVE
+                    - MODIFIED
+                    - PENDING_ACTIVATION
+                    - FAILED
+                    - PENDING_DEACTIVATION
+                  dispatchCount:
+                    description: Number of activation attempts for this security configuration.
+                    type: integer
+                  fast:
+                    default: true
+                    description: A network list's initial activation is relatively slow, indicated here with a `false` value. A `true` value indicates subsequent fast activations.
+                    type: boolean
+                  links:
+                    additionalProperties: false
+                    description: Encapsulates the set of [API hypermedia](https://techdocs.akamai.com/network-lists/reference/api-hypermedia) to access a set of resources related to this activation. The object is arranged as a hash of keys, each of which represents a link relation.
+                    type: object
+                    properties:
+                      activateInProduction:
+                        additionalProperties: false
+                        description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `PRODUCTION` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      activateInStaging:
+                        additionalProperties: false
+                        description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `STAGING` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      activationDetails:
+                        additionalProperties: false
+                        description: A link to [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      appendItems:
+                        additionalProperties: false
+                        description: A link to [Append elements to a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-append).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      retrieve:
+                        additionalProperties: false
+                        description: A link to [Get a network list](https://techdocs.akamai.com/network-lists/reference/get-network-list).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      statusInProduction:
+                        additionalProperties: false
+                        description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `PRODUCTION` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      statusInStaging:
+                        additionalProperties: false
+                        description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `STAGING` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      update:
+                        additionalProperties: false
+                        description: A link to [Update a network list](https://techdocs.akamai.com/network-lists/reference/put-network-list).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                  syncPoint:
+                    description: The version of the currently activated network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details.
+                    type: integer
+                  uniqueId:
+                    description: Unique identifier for this network list, corresponding to the `networkListId` URL parameter.
+                    readOnly: true
+                    type: string
+                x-akamai:
+                  file-path: schemas/status.yaml
+        '400':
+          description: Incorrect client input. See the field errors provided in the response for more information.  This error may also be returned in place of a 404 if a URL parameter was provided in an incorrect format.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Incorrect URL. Check that the network list ID and other URL parameters are valid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: We encountered an unexpected issue while processing your request. Please follow the advice provided in the message.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /network-lists/{networkListId}/environments/{environment}/status:
+    parameters:
+    - description: '__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.'
+      example: '{{environment}}'
+      in: path
+      name: environment
+      required: true
+      schema:
+        example: PRODUCTION
+        type: string
+        enum:
+        - STAGING
+        - PRODUCTION
+      x-akamai:
+        file-path: parameters/environment-path.yaml
+    - description: Unique identifier for each network list.
+      example: '{{networkListId}}'
+      in: path
+      name: networkListId
+      required: true
+      schema:
+        example: 12345_BLACKLISTEDGEOS
+        type: string
+      x-akamai:
+        file-path: parameters/networkListId-path.yaml
+    get:
+      description: Shows a network list's activation status on either the `STAGING` or `PRODUCTION` environment. The response reflects standard activation status. For fast activation status, see [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation).
+      operationId: get-network-list-status
+      summary: Akamai Get Activation Status
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's Network Lists API
+        url: https://techdocs.akamai.com/network-lists/reference/get-network-list-status
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              example:
+                activationComments: Allow IPs of new employees who joined this week
+                activationId: 12345
+                activationStatus: PENDING_ACTIVATION
+                dispatchCount: 1
+                fast: false
+                syncPoint: 5
+                uniqueId: 25614_GENERALLIST
+                links:
+                  activationDetails:
+                    href: /network-list/v2/network-lists/activations/12345/
+                  appendItems:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/append
+                    method: POST
+                  retrieve:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST
+                  statusInProduction:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/environments/PRODUCTION/status
+                  statusInStaging:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/environments/STAGING/status
+                  syncPointHistory:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST/sync-points/5/history
+                  update:
+                    href: /networklist-api/rest/v2/network-lists/25614_GENERALLIST
+                    method: PUT
+              schema:
+                additionalProperties: false
+                description: Represents a network list's activation status, as the response to the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation.
+                type: object
+                required:
+                - syncPoint
+                - uniqueId
+                - activationStatus
+                properties:
+                  activationComments:
+                    description: Further information related to the activation. This reflects the `comments` from the initial activation request.
+                    type: string
+                  activationId:
+                    description: Unique identifier for the most recent activation request. May be absent if the list is inactive, or if this object in embedded within an outer object envelope.
+                    type: integer
+                  activationStatus:
+                    description: This network list's current activation status in the specified `environment`. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state.
+                    type: string
+                    enum:
+                    - INACTIVE
+                    - ACTIVE
+                    - MODIFIED
+                    - PENDING_ACTIVATION
+                    - FAILED
+                    - PENDING_DEACTIVATION
+                  dispatchCount:
+                    description: Number of activation attempts for this security configuration.
+                    type: integer
+                  fast:
+                    default: true
+                    description: A network list's initial activation is relatively slow, indicated here with a `false` value. A `true` value indicates subsequent fast activations.
+                    type: boolean
+                  links:
+                    additionalProperties: false
+                    description: Encapsulates the set of [API hypermedia](https://techdocs.akamai.com/network-lists/reference/api-hypermedia) to access a set of resources related to this activation. The object is arranged as a hash of keys, each of which represents a link relation.
+                    type: object
+                    properties:
+                      activateInProduction:
+                        additionalProperties: false
+                        description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `PRODUCTION` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      activateInStaging:
+                        additionalProperties: false
+                        description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `STAGING` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      activationDetails:
+                        additionalProperties: false
+                        description: A link to [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      appendItems:
+                        additionalProperties: false
+                        description: A link to [Append elements to a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-append).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      retrieve:
+                        additionalProperties: false
+                        description: A link to [Get a network list](https://techdocs.akamai.com/network-lists/reference/get-network-list).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      statusInProduction:
+                        additionalProperties: false
+                        description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `PRODUCTION` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      statusInStaging:
+                        additionalProperties: false
+                        description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `STAGING` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      update:
+                        additionalProperties: false
+                        description: A link to [Update a network list](https://techdocs.akamai.com/network-lists/reference/put-network-list).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                  syncPoint:
+                    description: The version of the currently activated network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details.
+                    type: integer
+                  uniqueId:
+                    description: Unique identifier for this network list, corresponding to the `networkListId` URL parameter.
+                    readOnly: true
+                    type: string
+                x-akamai:
+                  file-path: schemas/status.yaml
+        '400':
+          description: Incorrect client input. See the field errors provided in the response for more information.  This error may also be returned in place of a 404 if a URL parameter was provided in an incorrect format.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Incorrect URL. Check that the network list ID and other URL parameters are valid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: We encountered an unexpected issue while processing your request. Please follow the advice provided in the message.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /network-lists/{networkListId}/sync-points/{syncPoint}/history:
+    parameters:
+    - description: The network list version for which to retrieve the snapshot. This corresponds to the `syncPoint` the API exchanges for each successive modification to the network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details.
+      example: '{{syncPoint}}'
+      in: path
+      name: syncPoint
+      required: true
+      schema:
+        example: 65
+        type: integer
+      x-akamai:
+        file-path: parameters/syncPoint-path.yaml
+    - description: Unique identifier for each network list.
+      example: '{{networkListId}}'
+      in: path
+      name: networkListId
+      required: true
+      schema:
+        example: 12345_BLACKLISTEDGEOS
+        type: string
+      x-akamai:
+        file-path: parameters/networkListId-path.yaml
+    get:
+      description: Gets a version of a network list in its state when activated, with each version identified by its `syncPoint` value.  You can only get `syncPoint` versions that have been activated.
+      operationId: get-network-list-history
+      summary: Akamai Get an Activation's Snapshot
+      tags:
+      - Activations
+      externalDocs:
+        description: See documentation for this operation in Akamai's Network Lists API
+        url: https://techdocs.akamai.com/network-lists/reference/get-network-list-history
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              example:
+                contractId: K-0N7RAK7
+                elementCount: 13
+                groupId: 517014
+                name: My Network List
+                networkListType: networkListResponse
+                readOnly: true
+                shared: true
+                syncPoint: 65
+                type: IP
+                uniqueId: 1024_NETWORKLIST
+                list:
+                - 192.0.2.51/24
+                - 12.129.0.0/15
+                - 12.211.0.0/15
+                - 192.0.2.127/24
+                - 192.0.2.80/24
+                - 12.231.0.0/14
+                - 12.235.0.0/14
+                - 192.0.2.71/24
+                - 192.0.2.237/24
+                - 192.0.2.125/24
+                - 192.0.2.243/24
+                - 192.0.2.82/24
+                - 192.0.2.220/24
+                links:
+                  activateInProduction:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU/environments/PRODUCTION/activate
+                    method: POST
+                  activateInStaging:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU/environments/STAGING/activate
+                    method: POST
+                  appendItems:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU/append
+                    method: POST
+                  retrieve:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU
+                  statusInProduction:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU/environments/PRODUCTION/status
+                  statusInStaging:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU/environments/STAGING/status
+                  update:
+                    href: /network-list/v2/network-lists/1024_AMAZONELASTICCOMPUTECLOU
+                    method: PUT
+              schema:
+                additionalProperties: false
+                description: Encapsulates information about each network list.
+                type: object
+                required:
+                - name
+                - syncPoint
+                - type
+                - uniqueId
+                properties:
+                  accessControlGroup:
+                    description: Name of this network list's access control group (ACG).
+                    type: string
+                  contractId:
+                    description: Identifies the contract where you want to create the list. You need to have write access to the contract you specify. If you include a `contractId`, you need to pair it with a `groupId`.
+                    maxLength: 20
+                    minLength: 5
+                    type: string
+                  createDate:
+                    description: ISO 8601 timestamp indicating when the network list was first created. Available only when using the `extended` query parameter to retrieve network list data.
+                    example: '2017-06-01T15:13:40.36Z'
+                    format: date-time
+                    type: string
+                  createdBy:
+                    description: Username of this list's creator. Available only when using the `extended` query parameter to retrieve network list data.
+                    type: string
+                  description:
+                    description: Detailed description of the list.
+                    maxLength: 255
+                    minLength: 1
+                    type: string
+                  elementCount:
+                    description: Reflects the number of elements in the `list` array, which may not necessarily appear in the object when retrieving the list with the `includeElements` query parameter set to `false`.
+                    type: integer
+                  expeditedProductionActivationStatus:
+                    description: For clients with access to _expedited_ activations on select servers, provides the most recent activation status in the `PRODUCTION` environment. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state. Available only when using the `extended` query parameter to retrieve network list data.
+                    example: INACTIVE
+                    type: string
+                    enum:
+                    - INACTIVE
+                    - ACTIVE
+                    - MODIFIED
+                    - PENDING_ACTIVATION
+                    - FAILED
+                    - PENDING_DEACTIVATION
+                  expeditedStagingActivationStatus:
+                    description: For clients with access to _expedited_ activations on select servers, provides the most recent activation status in the `STAGING` environment. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state. Available only when using the `extended` query parameter to retrieve network list data.
+                    example: INACTIVE
+                    type: string
+                    enum:
+                    - INACTIVE
+                    - ACTIVE
+                    - MODIFIED
+                    - PENDING_ACTIVATION
+                    - FAILED
+                    - PENDING_DEACTIVATION
+                  groupId:
+                    description: Identifies the group where you want to create the list. You need to have write access to the group you specify. If you include a `groupId`, you need to pair it with a `contractId`.
+                    type: number
+                  links:
+                    additionalProperties: false
+                    description: Encapsulates the set of [API hypermedia](https://techdocs.akamai.com/network-lists/reference/api-hypermedia) to access a set of resources related to this network list. The object is arranged as a hash of keys, each of which represents a link relation.
+                    type: object
+                    properties:
+                      activateInProduction:
+                        additionalProperties: false
+                        description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `PRODUCTION` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      activateInStaging:
+                        additionalProperties: false
+                        description: A link to [Activate a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-activate) in the `STAGING` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      activationDetails:
+                        additionalProperties: false
+                        description: A link to [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      appendItems:
+                        additionalProperties: false
+                        description: A link to [Append elements to a network list](https://techdocs.akamai.com/network-lists/reference/post-network-list-append).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      retrieve:
+                        additionalProperties: false
+                        description: A link to [Get a network list](https://techdocs.akamai.com/network-lists/reference/get-network-list).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      statusInProduction:
+                        additionalProperties: false
+                        description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `PRODUCTION` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      statusInStaging:
+                        additionalProperties: false
+                        description: A link to [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) for the `STAGING` environment.
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                      update:
+                        additionalProperties: false
+                        description: A link to [Update a network list](https://techdocs.akamai.com/network-lists/reference/put-network-list).
+                        type: object
+                        required:
+                        - href
+                        properties:
+                          detail:
+                            description: Any additional information about the target of the link.
+                            type: string
+                          href:
+                            description: URL to access or perform the action on a related resource. May be expressed as an absolute server path, or relative to the current URL call.
+                            type: string
+                          method:
+                            default: GET
+                            description: The HTTP method with which to call the `href`, `GET` by default.
+                            type: string
+                        x-akamai:
+                          file-path: schemas/link.yaml
+                  list:
+                    description: Defines the network list's set of elements. If the `type` is `IP`, values are any combination of IPv4 addresses, IPv6 addresses, or CIDR blocks. If the `type` is `GEO`, values are ISO 3166 two-character country codes. This array does not appear in the object if you get it with the `includeElements` query parameter set to `false`.
+                    type: array
+                    items:
+                      example: FR
+                      minLength: 0
+                      type: string
+                  name:
+                    description: Display name of the network list.
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  networkListType:
+                    description: If set to `extendedNetworkListResponse`, indicates that the current data features members enabled with the `extended` query parameter. Otherwise a plain `networkListResponse` value indicates this additional data is absent.
+                    example: extendedNetworkListResponse
+                    type: string
+                    enum:
+                    - networkListResponse
+                    - extendedNetworkListResponse
+                  productionActivationStatus:
+                    description: The most recent activation status of the current list in the `PRODUCTION` environment.  See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state. Available only when using the `extended` query parameter to retrieve network list data.
+                    example: INACTIVE
+                    type: string
+                    enum:
+                    - INACTIVE
+                    - ACTIVE
+                    - MODIFIED
+                    - PENDING_ACTIVATION
+                    - FAILED
+                    - PENDING_DEACTIVATION
+                  readOnly:
+                    default: false
+                    description: If `true`, indicates that you don't have permission to modify the network list. This may indicate either a network list that Akamai manages, or insufficient permission for your API client's identity to modify a customer-managed list. The default value is `false`.
+                    type: boolean
+                  shared:
+                    default: false
+                    description: Indicates if this list has been shared with you by Akamai or some other account. Shared lists are always read-only.
+                    type: boolean
+                  stagingActivationStatus:
+                    description: The most recent activation status of the current list in the `STAGING` environment. See [Activation States](https://techdocs.akamai.com/network-lists/reference/activation-states) for details on each activation state. Available only when using the `extended` query parameter to retrieve network list data.
+                    example: INACTIVE
+                    type: string
+                    enum:
+                    - INACTIVE
+                    - ACTIVE
+                    - MODIFIED
+                    - PENDING_ACTIVATION
+                    - FAILED
+                    - PENDING_DEACTIVATION
+                  syncPoint:
+                    default: 0
+                    description: Identifies each version of the network list, which increments each time it's modified. You need to include this value in any requests to modify the list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details.
+                    minimum: 0
+                    type: integer
+                  type:
+                    description: The network list type, either `IP` for IP addresses and CIDR blocks, or `GEO` for two-letter country codes.
+                    type: string
+                    enum:
+                    - IP
+                    - GEO
+                  uniqueId:
+                    description: A unique identifier for each network list, corresponding to the `networkListId` URL parameter.
+                    minLength: 3
+                    readOnly: true
+                    type: string
+                  updateDate:
+                    description: ISO 8601 timestamp indicating when the network list was last modified. Available only when using the `extended` query parameter to retrieve network list data.
+                    example: '2017-06-01T15:13:40.36Z'
+                    format: date-time
+                    type: string
+                  updatedBy:
+                    description: Username of this list's creator. Available only when using the `extended` query parameter to retrieve network list data.
+                    type: string
+                x-akamai:
+                  file-path: schemas/retrieve.yaml
+        '400':
+          description: Incorrect client input. See the field errors provided in the response for more information.  This error may also be returned in place of a 404 if a URL parameter was provided in an incorrect format.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Incorrect URL. Check that the network list ID and other URL parameters are valid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: We encountered an unexpected issue while processing your request. Please follow the advice provided in the message.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - type
+                - status
+                - title
+                properties:
+                  detail:
+                    description: Detailed error message provided by the server.
+                    type: string
+                  errors:
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - type
+                      - status
+                      - title
+                      properties:
+                        detail:
+                          description: Detailed error message provided by the server.
+                          type: string
+                        fieldErrors:
+                          description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                          type: object
+                          additionalProperties:
+                            type: string
+                        instance:
+                          description: Referenceable URL for this error occurrence.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                          type: string
+                        status:
+                          description: HTTP status code.
+                          example: 404
+                          type: integer
+                        title:
+                          description: Title for the error.
+                          example: Not Found
+                          type: string
+                        type:
+                          description: URL for the error type.
+                          example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                          type: string
+                      x-akamai:
+                        file-path: schemas/error-nested.yaml
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                    additionalProperties:
+                      type: string
+                  instance:
+                    description: Referenceable URL for this error occurrence.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: Title for the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.
+        example: '{{extended}}'
+        in: query
+        name: extended
+        schema:
+          default: false
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/extended_extended.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

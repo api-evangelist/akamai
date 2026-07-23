@@ -1,0 +1,1425 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Error responses API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Error responses
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/error-responses:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the error response settings configured for an endpoint version.
+      operationId: get-error-response-setting
+      summary: Get error response settings
+      tags:
+      - Error responses
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-error-response-setting
+      responses:
+        '200':
+          description: The response shows current error settings.
+          content:
+            application/json:
+              example:
+                API_KEY_FORBIDDEN:
+                  body: '{"title":"The API key you provided does not have access to the requested resource." }'
+                  overrideDefaults: false
+                  statusCode: 403
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                API_KEY_INVALID:
+                  body: '{"title":"The API key you provided does not exist." }'
+                  overrideDefaults: false
+                  statusCode: 401
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                JWT_CLAIM_VALUE_INVALID:
+                  body: '{"title":"The JWT claim value did not pass the JWT validation." }'
+                  overrideDefaults: false
+                  statusCode: 401
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                JWT_SIGNATURE_INVALID:
+                  body: '{"title":"The JSON web signature in JWT did not pass the JWT validation." }'
+                  overrideDefaults: false
+                  statusCode: 401
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                QUOTA_EXCEEDED:
+                  body: '{"title":"The quota limit for the API key you provided has been exceeded during the current time period." }'
+                  overrideDefaults: false
+                  statusCode: 429
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+              schema:
+                additionalProperties: false
+                description: Contains information about error response settings configured for an endpoint. If an inbound client request fails, API Gateway returns a default error response with a JSON-formatted description and a status code. You can customize the descriptions, status codes, and headers of selected error responses to help API consumers identify the cause of an error and troubleshoot effectively. You can configure error response settings if the API Gateway product is in your contract.
+                type: object
+                properties:
+                  API_KEY_FORBIDDEN:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  API_KEY_INVALID:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  JWT_CLAIM_VALUE_INVALID:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  JWT_SIGNATURE_INVALID:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  QUOTA_EXCEEDED:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                x-akamai:
+                  file-path: schemas/errorResponsesDto.yaml
+        '400':
+          description: Some of request input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: The required resource is not found.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the error response settings configured for an endpoint version.
+      operationId: put-error-response-setting
+      summary: Edit error response settings
+      tags:
+      - Error responses
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-error-response-setting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              API_KEY_FORBIDDEN:
+                body: '{"title":"The API key you provided does not have access to the requested resource." }'
+                statusCode: 403
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+              API_KEY_INVALID:
+                body: '{"title":"The API key you provided does not exist." }'
+                statusCode: 401
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+              JWT_CLAIM_VALUE_INVALID:
+                body: '{"title":"The JWT claim value did not pass the JWT validation." }'
+                statusCode: 401
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+              JWT_SIGNATURE_INVALID:
+                body: '{"title":"The JSON web signature in JWT did not pass the JWT validation." }'
+                statusCode: 401
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+              QUOTA_EXCEEDED:
+                body: '{"title":"The quota limit for the API key you provided has been exceeded during the current time period." }'
+                statusCode: 429
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+            schema:
+              additionalProperties: false
+              description: Contains information about error response settings configured for an endpoint. If an inbound client request fails, API Gateway returns a default error response with a JSON-formatted description and a status code. You can customize the descriptions, status codes, and headers of selected error responses to help API consumers identify the cause of an error and troubleshoot effectively. You can configure error response settings if the API Gateway product is in your contract.
+              type: object
+              properties:
+                API_KEY_FORBIDDEN:
+                  additionalProperties: false
+                  description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                  type: object
+                  required:
+                  - statusCode
+                  properties:
+                    body:
+                      description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                      type: string
+                    headers:
+                      description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                      type: array
+                      items:
+                        additionalProperties: false
+                        type: object
+                        required:
+                        - name
+                        - value
+                        properties:
+                          name:
+                            description: The name of the HTTP header to return in case of the error.
+                            type: string
+                          value:
+                            description: The value of the HTTP header to return in case of the error.
+                            type: string
+                    overrideDefaults:
+                      description: Whether you overrode the default error response.
+                      readOnly: true
+                      type: boolean
+                    statusCode:
+                      description: The status code to return in case of the error.
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/errorResponseDto.yaml
+                API_KEY_INVALID:
+                  additionalProperties: false
+                  description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                  type: object
+                  required:
+                  - statusCode
+                  properties:
+                    body:
+                      description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                      type: string
+                    headers:
+                      description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                      type: array
+                      items:
+                        additionalProperties: false
+                        type: object
+                        required:
+                        - name
+                        - value
+                        properties:
+                          name:
+                            description: The name of the HTTP header to return in case of the error.
+                            type: string
+                          value:
+                            description: The value of the HTTP header to return in case of the error.
+                            type: string
+                    overrideDefaults:
+                      description: Whether you overrode the default error response.
+                      readOnly: true
+                      type: boolean
+                    statusCode:
+                      description: The status code to return in case of the error.
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/errorResponseDto.yaml
+                JWT_CLAIM_VALUE_INVALID:
+                  additionalProperties: false
+                  description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                  type: object
+                  required:
+                  - statusCode
+                  properties:
+                    body:
+                      description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                      type: string
+                    headers:
+                      description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                      type: array
+                      items:
+                        additionalProperties: false
+                        type: object
+                        required:
+                        - name
+                        - value
+                        properties:
+                          name:
+                            description: The name of the HTTP header to return in case of the error.
+                            type: string
+                          value:
+                            description: The value of the HTTP header to return in case of the error.
+                            type: string
+                    overrideDefaults:
+                      description: Whether you overrode the default error response.
+                      readOnly: true
+                      type: boolean
+                    statusCode:
+                      description: The status code to return in case of the error.
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/errorResponseDto.yaml
+                JWT_SIGNATURE_INVALID:
+                  additionalProperties: false
+                  description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                  type: object
+                  required:
+                  - statusCode
+                  properties:
+                    body:
+                      description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                      type: string
+                    headers:
+                      description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                      type: array
+                      items:
+                        additionalProperties: false
+                        type: object
+                        required:
+                        - name
+                        - value
+                        properties:
+                          name:
+                            description: The name of the HTTP header to return in case of the error.
+                            type: string
+                          value:
+                            description: The value of the HTTP header to return in case of the error.
+                            type: string
+                    overrideDefaults:
+                      description: Whether you overrode the default error response.
+                      readOnly: true
+                      type: boolean
+                    statusCode:
+                      description: The status code to return in case of the error.
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/errorResponseDto.yaml
+                QUOTA_EXCEEDED:
+                  additionalProperties: false
+                  description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                  type: object
+                  required:
+                  - statusCode
+                  properties:
+                    body:
+                      description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                      type: string
+                    headers:
+                      description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                      type: array
+                      items:
+                        additionalProperties: false
+                        type: object
+                        required:
+                        - name
+                        - value
+                        properties:
+                          name:
+                            description: The name of the HTTP header to return in case of the error.
+                            type: string
+                          value:
+                            description: The value of the HTTP header to return in case of the error.
+                            type: string
+                    overrideDefaults:
+                      description: Whether you overrode the default error response.
+                      readOnly: true
+                      type: boolean
+                    statusCode:
+                      description: The status code to return in case of the error.
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/errorResponseDto.yaml
+              x-akamai:
+                file-path: schemas/errorResponsesDto.yaml
+      responses:
+        '200':
+          description: Operation succeeded.
+          content:
+            application/json:
+              example:
+                API_KEY_FORBIDDEN:
+                  body: '{"title":"The API key you provided does not have access to the requested resource." }'
+                  overrideDefaults: false
+                  statusCode: 403
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                API_KEY_INVALID:
+                  body: '{"title":"The API key you provided does not exist." }'
+                  overrideDefaults: false
+                  statusCode: 401
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                JWT_CLAIM_VALUE_INVALID:
+                  body: '{"title":"The JWT claim value did not pass the JWT validation." }'
+                  overrideDefaults: false
+                  statusCode: 401
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                JWT_SIGNATURE_INVALID:
+                  body: '{"title":"The JSON web signature in JWT did not pass the JWT validation." }'
+                  overrideDefaults: false
+                  statusCode: 401
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+                QUOTA_EXCEEDED:
+                  body: '{"title":"The quota limit for the API key you provided has been exceeded during the current time period." }'
+                  overrideDefaults: false
+                  statusCode: 429
+                  headers:
+                  - name: Content-Type
+                    value: application/problem+json
+              schema:
+                additionalProperties: false
+                description: Contains information about error response settings configured for an endpoint. If an inbound client request fails, API Gateway returns a default error response with a JSON-formatted description and a status code. You can customize the descriptions, status codes, and headers of selected error responses to help API consumers identify the cause of an error and troubleshoot effectively. You can configure error response settings if the API Gateway product is in your contract.
+                type: object
+                properties:
+                  API_KEY_FORBIDDEN:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  API_KEY_INVALID:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  JWT_CLAIM_VALUE_INVALID:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  JWT_SIGNATURE_INVALID:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                  QUOTA_EXCEEDED:
+                    additionalProperties: false
+                    description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                    type: object
+                    required:
+                    - statusCode
+                    properties:
+                      body:
+                        description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                        type: string
+                      headers:
+                        description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - name
+                          - value
+                          properties:
+                            name:
+                              description: The name of the HTTP header to return in case of the error.
+                              type: string
+                            value:
+                              description: The value of the HTTP header to return in case of the error.
+                              type: string
+                      overrideDefaults:
+                        description: Whether you overrode the default error response.
+                        readOnly: true
+                        type: boolean
+                      statusCode:
+                        description: The status code to return in case of the error.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/errorResponseDto.yaml
+                x-akamai:
+                  file-path: schemas/errorResponsesDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/error-responses/{type}:
+    parameters:
+    - description: __Enum__ The type of the customizable error response.
+      example: '{{type}}'
+      in: path
+      name: type
+      required: true
+      schema:
+        example: API_KEY_INVALID
+        type: string
+        enum:
+        - API_KEY_INVALID
+        - API_KEY_FORBIDDEN
+        - QUOTA_EXCEEDED
+        - JWT_SIGNATURE_INVALID
+        - JWT_CLAIM_VALUE_INVALID
+      x-akamai:
+        file-path: parameters/type-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns a customizable error response of the selected type.
+      operationId: get-error-responses-type
+      summary: Get an error response
+      tags:
+      - Error responses
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-error-responses-type
+      responses:
+        '200':
+          description: The response shows the current error response.
+          content:
+            application/json:
+              example:
+                body: '{"title":"The API key you provided does not exist." }'
+                overrideDefaults: false
+                statusCode: 401
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+              schema:
+                additionalProperties: false
+                description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                type: object
+                required:
+                - statusCode
+                properties:
+                  body:
+                    description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                    type: string
+                  headers:
+                    description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - name
+                      - value
+                      properties:
+                        name:
+                          description: The name of the HTTP header to return in case of the error.
+                          type: string
+                        value:
+                          description: The value of the HTTP header to return in case of the error.
+                          type: string
+                  overrideDefaults:
+                    description: Whether you overrode the default error response.
+                    readOnly: true
+                    type: boolean
+                  statusCode:
+                    description: The status code to return in case of the error.
+                    type: integer
+                x-akamai:
+                  file-path: schemas/errorResponseDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates a customizable error response of the selected type.
+      operationId: put-get-error-responses-type
+      summary: Edit an error response
+      tags:
+      - Error responses
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-get-error-responses-type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              body: '{"title":"The API key you provided does not exist." }'
+              statusCode: 401
+              headers:
+              - name: Content-Type
+                value: application/problem+json
+            schema:
+              additionalProperties: false
+              description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+              type: object
+              required:
+              - statusCode
+              properties:
+                body:
+                  description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                  example: '{{body}}'
+                  type: string
+                headers:
+                  description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                  type: array
+                  items:
+                    additionalProperties: false
+                    type: object
+                    required:
+                    - name
+                    - value
+                    properties:
+                      name:
+                        description: The name of the HTTP header to return in case of the error.
+                        type: string
+                      value:
+                        description: The value of the HTTP header to return in case of the error.
+                        type: string
+                overrideDefaults:
+                  description: Whether you overrode the default error response.
+                  example: '{{overrideDefaults}}'
+                  readOnly: true
+                  type: boolean
+                statusCode:
+                  description: The status code to return in case of the error.
+                  example: '{{statusCode}}'
+                  type: integer
+              x-akamai:
+                file-path: schemas/errorResponseDto.yaml
+      responses:
+        '200':
+          description: The response reflects the updated error response.
+          content:
+            application/json:
+              example:
+                body: '{"title":"The API key you provided does not exist." }'
+                overrideDefaults: false
+                statusCode: 401
+                headers:
+                - name: Content-Type
+                  value: application/problem+json
+              schema:
+                additionalProperties: false
+                description: 'Contains information about a customizable error response. You can customize the following error types: `API_KEY_INVALID`, `API_KEY_FORBIDDEN`, `QUOTA_EXCEEDED`, `JWT_SIGNATURE_INVALID`, `JWT_CLAIM_VALUE_INVALID`.'
+                type: object
+                required:
+                - statusCode
+                properties:
+                  body:
+                    description: The response body to return in case of the error. The value should have the proper formatting to reflect the content type. For example, in case of a JSON body format, enclose the text in curly brackets (`{}`).
+                    type: string
+                  headers:
+                    description: The list of HTTP headers to return in case of the error. By default, API Gateway returns the `Content-Type` header with a value of `application/problem+json` which reflects the default response body. If the `body` member indicates a different content type, set the `Content-Type` header to the appropriate value. For example, in case of an XML body, the value could be `application/problem+xml`.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - name
+                      - value
+                      properties:
+                        name:
+                          description: The name of the HTTP header to return in case of the error.
+                          type: string
+                        value:
+                          description: The value of the HTTP header to return in case of the error.
+                          type: string
+                  overrideDefaults:
+                    description: Whether you overrode the default error response.
+                    readOnly: true
+                    type: boolean
+                  statusCode:
+                    description: The status code to return in case of the error.
+                    type: integer
+                x-akamai:
+                  file-path: schemas/errorResponseDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

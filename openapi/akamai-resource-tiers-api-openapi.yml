@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Resource tiers API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Resource tiers
+paths:
+  /resource-tiers:
+    get:
+      description: View the list of available resource tiers for a specific contract ID. The resource tier defines the resource consumption limits for an EdgeWorker ID.
+      operationId: get-resource-tiers
+      summary: Akamai List Resource Tiers
+      tags:
+      - Resource tiers
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-resource-tiers
+      responses:
+        '200':
+          description: Describes a list of resource tiers.
+          content:
+            application/json:
+              example:
+                resourceTiers:
+                - resourceTierId: 100
+                  resourceTierName: Basic Compute
+                  edgeWorkerLimits:
+                  - limitName: Maximum CPU time during initialization
+                    limitUnit: MILLISECOND
+                    limitValue: 30
+                  - limitName: Maximum wall time during initialization
+                    limitUnit: MILLISECOND
+                    limitValue: 100
+                  - limitName: Maximum number of HTTP sub-requests allowed in parallel per EdgeWorker ID
+                    limitUnit: COUNT
+                    limitValue: 0
+                  - limitName: Maximum memory usage per event handler
+                    limitUnit: BYTE
+                    limitValue: 1310720
+                  - limitName: Maximum CPU time per event handler
+                    limitUnit: MILLISECOND
+                    limitValue: 10
+                  - limitName: Maximum wall time per event handler
+                    limitUnit: MILLISECOND
+                    limitValue: 100
+                  - limitName: Maximum number of HTTP sub-requests allowed from a parent request
+                    limitUnit: COUNT
+                    limitValue: 0
+                  - limitName: Maximum number of HTTP sub-requests allowed in parallel with the parent request
+                    limitUnit: COUNT
+                    limitValue: 0
+                  - limitName: Maximum wall time per HTTP sub-request
+                    limitUnit: MILLISECOND
+                    limitValue: 0
+                  - limitName: Maximum response size per HTTP sub-request
+                    limitUnit: BYTE
+                    limitValue: 0
+                  - limitName: Maximum memory usage for responseProvider
+                    limitUnit: BYTE
+                    limitValue: 2097152
+                  - limitName: Maximum CPU time for responseProvider
+                    limitUnit: MILLISECOND
+                    limitValue: 100
+                  - limitName: Maximum wall time for responseProvider
+                    limitUnit: MILLISECOND
+                    limitValue: 4000
+                  - limitName: Maximum number of HTTP sub-requests allowed for responseProvider
+                    limitUnit: COUNT
+                    limitValue: 50
+                  - limitName: Maximum number of HTTP sub-requests allowed in parallel for responseProvider
+                    limitUnit: COUNT
+                    limitValue: 5
+                  - limitName: Maximum wall time for HTTP sub-requests during the execution of the responseProvider event handler
+                    limitUnit: MILLISECOND
+                    limitValue: 1000
+                  - limitName: Maximum response size for HTTP sub-requests during the responseProvider event handler
+                    limitUnit: BYTE
+                    limitValue: 1048576
+                - resourceTierId: 200
+                  resourceTierName: Dynamic Compute
+                  edgeWorkerLimits:
+                  - limitName: Maximum CPU time during initialization
+                    limitUnit: MILLISECOND
+                    limitValue: 30
+                  - limitName: Maximum wall time during initialization
+                    limitUnit: MILLISECOND
+                    limitValue: 100
+                  - limitName: Maximum number of HTTP sub-requests allowed in parallel per EdgeWorker ID
+                    limitUnit: COUNT
+                    limitValue: 0
+                  - limitName: Maximum memory usage per event handler
+                    limitUnit: BYTE
+                    limitValue: 1310720
+                  - limitName: Maximum CPU time per event handler
+                    limitUnit: MILLISECOND
+                    limitValue: 50
+                  - limitName: Maximum wall time per event handler
+                    limitUnit: MILLISECOND
+                    limitValue: 4000
+                  - limitName: Maximum number of HTTP sub-requests allowed from a parent request
+                    limitUnit: COUNT
+                    limitValue: 1
+                  - limitName: Maximum number of HTTP sub-requests allowed in parallel with the parent request
+                    limitUnit: COUNT
+                    limitValue: 1
+                  - limitName: Maximum wall time per HTTP sub-request
+                    limitUnit: MILLISECOND
+                    limitValue: 1000
+                  - limitName: Maximum response size per HTTP sub-request
+                    limitUnit: BYTE
+                    limitValue: 1048576
+                  - limitName: Maximum memory usage for responseProvider
+                    limitUnit: BYTE
+                    limitValue: 2097152
+                  - limitName: Maximum CPU time for responseProvider
+                    limitUnit: MILLISECOND
+                    limitValue: 100
+                  - limitName: Maximum wall time for responseProvider
+                    limitUnit: MILLISECOND
+                    limitValue: 4000
+                  - limitName: Maximum number of HTTP sub-requests allowed for responseProvider
+                    limitUnit: COUNT
+                    limitValue: 50
+                  - limitName: Maximum number of HTTP sub-requests allowed in parallel for responseProvider
+                    limitUnit: COUNT
+                    limitValue: 5
+                  - limitName: Maximum wall time for HTTP sub-requests during the execution of the responseProvider event handler
+                    limitUnit: MILLISECOND
+                    limitValue: 1000
+                  - limitName: Maximum response size for HTTP sub-requests during the execution of the responseProvider event handler
+                    limitUnit: BYTE
+                    limitValue: 1048576
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - resourceTiers
+                properties:
+                  resourceTiers:
+                    description: List of resource tiers.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - resourceTierId
+                      - resourceTierName
+                      - edgeWorkerLimits
+                      properties:
+                        edgeWorkerLimits:
+                          description: List of EdgeWorker limits.
+                          minItems: 1
+                          type: array
+                          items:
+                            additionalProperties: false
+                            description: Provides details for an EdgeWorker limit.
+                            type: object
+                            required:
+                            - limitName
+                            - limitValue
+                            properties:
+                              limitName:
+                                description: Name of the limit.
+                                minLength: 1
+                                readOnly: true
+                                type: string
+                              limitUnit:
+                                description: Unit of the limit, either `BYTE`, `MILLISECOND`, or `COUNT`.
+                                readOnly: true
+                                type: string
+                                enum:
+                                - BYTE
+                                - MILLISECOND
+                                - COUNT
+                              limitValue:
+                                description: Value of the limit.
+                                minimum: 0
+                                readOnly: true
+                                type: integer
+                            x-akamai:
+                              file-path: schemas/ew-limit.yaml
+                        resourceTierId:
+                          description: Unique identifier of the resource tier.
+                          minimum: 1
+                          type: integer
+                        resourceTierName:
+                          description: Name of the resource tier.
+                          minLength: 1
+                          type: string
+                      x-akamai:
+                        file-path: schemas/resource-tier-get-200.yaml
+                x-akamai:
+                  file-path: schemas/resource-tiers-get-200.yaml
+      parameters:
+      - description: Unique identifier of a contract.
+        example: '{{contractId}}'
+        in: query
+        name: contractId
+        required: true
+        schema:
+          example: 1-599K
+          type: string
+        x-akamai:
+          file-path: parameters/contractId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

@@ -1,0 +1,1164 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Attack payload logs API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Manage the attack payload log settings for your security
+
+    configurations.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Manage the attack payload log settings for your security
+
+    configurations.'
+  name: Attack payload logs
+paths:
+  /configs/{configId}/versions/{versionNumber}/advanced-settings/logging/attack-payload:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-logging-attack-payload.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/advanced-settings/logging/attack-payload
+    get:
+      description: __All products__ Lists attack payload log settings for a configuration. When set to `NONE`, the request body and response body show as redacted in the log. For example, `JSON_PAIRS:redacted`. Attack payload logging is on by default, and in most cases you should leave it enabled. This operation applies at the configuration level, and therefore applies to all policies within a configuration. If you want to view these settings for a specific policy, run [Get attack payload logging settings for a policy](https://techdocs.akamai.com/application-security/reference/get-policies-attack-payload-logging).
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-advanced-settings-attack-payload-logging
+      operationId: get-advanced-settings-attack-payload-logging
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                enabled: true
+                requestBody:
+                  type: ATTACK_PAYLOAD
+                responseBody:
+                  type: NONE
+              schema:
+                additionalProperties: false
+                description: The GET Response JSON for attack payload logging.
+                properties:
+                  enabled:
+                    description: Whether attack payload logging is enabled.
+                    type: boolean
+                  requestBody:
+                    additionalProperties: false
+                    description: The settings for how Akamai's network logs attack payloads in request bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                  responseBody:
+                    additionalProperties: false
+                    description: The settings for how Akamai's network logs attack payloads in response bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                required:
+                - enabled
+                - requestBody
+                - responseBody
+                type: object
+                x-akamai:
+                  file-path: schemas/attack-payload-logging-get-200.yaml
+          description: Successfully retrieved the attack payload logging settings.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Get the attack payload log settings for a configuration
+      tags:
+      - Attack payload logs
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Enable, disable, or update attack payload log settings for a configuration. When set to `NONE`, the request body and response body show as redacted in the log. For example, `JSON_PAIRS:redacted`. When set to `RESPONSE_BODY` or `REQUEST_BODY` the log shows only the string flagged as a possible attack, and not the entire request or response body. This operation applies at the configuration level, and therefore applies to all policies within a configuration. If you want to override these settings for a specific policy, run [Modify attack payload log settings for a policy](https://techdocs.akamai.com/application-security/reference/put-policies-attack-payload-logging).
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-advanced-settings-attack-payload-logging
+      operationId: put-advanced-settings-attack-payload-logging
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              enabled: true
+              requestBody:
+                type: ATTACK_PAYLOAD
+              responseBody:
+                type: NONE
+            schema:
+              additionalProperties: false
+              description: The PUT Request JSON for attack payload logging.
+              properties:
+                enabled:
+                  description: Whether attack payload logging is enabled.
+                  type: boolean
+                requestBody:
+                  additionalProperties: false
+                  description: Settings for request body.
+                  properties:
+                    type:
+                      description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                      enum:
+                      - ATTACK_PAYLOAD
+                      - NONE
+                      type: string
+                  required:
+                  - type
+                  type: object
+                  x-akamai:
+                    file-path: schemas/attack-payload-logging.yaml
+                responseBody:
+                  additionalProperties: false
+                  description: Settings for response body.
+                  properties:
+                    type:
+                      description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                      enum:
+                      - ATTACK_PAYLOAD
+                      - NONE
+                      type: string
+                  required:
+                  - type
+                  type: object
+                  x-akamai:
+                    file-path: schemas/attack-payload-logging.yaml
+              required:
+              - enabled
+              - requestBody
+              - responseBody
+              type: object
+              x-akamai:
+                file-path: schemas/attack-payload-logging-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                enabled: true
+                requestBody:
+                  type: ATTACK_PAYLOAD
+                responseBody:
+                  type: NONE
+              schema:
+                additionalProperties: false
+                description: The PUT Response JSON for attack payload logging.
+                properties:
+                  enabled:
+                    description: Whether attack payload logging is enabled.
+                    type: boolean
+                  requestBody:
+                    additionalProperties: false
+                    description: The settings for how our network logs attack payloads in request bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                  responseBody:
+                    additionalProperties: false
+                    description: The settings for how our network logs attack payloads in response bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                required:
+                - enabled
+                - requestBody
+                - responseBody
+                type: object
+                x-akamai:
+                  file-path: schemas/attack-payload-logging-put-200.yaml
+          description: Successfully updated the attack payload logging settings:.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have permission to write to this resource.'
+          x-akamai:
+            file-path: errors/403-client-write-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Modify attack payload log settings for a configuration
+      tags:
+      - Attack payload logs
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/advanced-settings/logging/attack-payload:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-logging-attack-payload.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/advanced-settings/logging/attack-payload
+    get:
+      description: __All products__ List a security policy's settings for attack payload logging. Attack payload logging is on by default, and in most cases you should leave it enabled. When set to `NONE`, the request body and response body appear as `redacted` in the log. For example, `JSON_PAIRS:redacted`. This operation applies at the security policy level, and overrides the attack payload logging settings at the configuration level on a per-policy basis.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-policies-attack-payload-logging
+      operationId: get-policies-attack-payload-logging
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                enabled: true
+                override: true
+                requestBody:
+                  type: ATTACK_PAYLOAD
+                responseBody:
+                  type: NONE
+              schema:
+                additionalProperties: false
+                description: The GET Response JSON for Security Policy attack payload logging.
+                properties:
+                  enabled:
+                    description: Whether attack payload logging is enabled.
+                    type: boolean
+                  override:
+                    description: When `true`, use the security policy's attack payload log settings instead of the settings at the configuration level.
+                    type: boolean
+                  requestBody:
+                    additionalProperties: false
+                    description: The settings for how our network logs attack payloads in request bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                  responseBody:
+                    additionalProperties: false
+                    description: The settings for how our network logs attack payloads in response bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                required:
+                - override
+                - enabled
+                - requestBody
+                - responseBody
+                type: object
+                x-akamai:
+                  file-path: schemas/policy-attack-payload-logging-get-200.yaml
+          description: Successfully retrieved the policy attack payload logging settings.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Get attack payload logging settings for a policy
+      tags:
+      - Attack payload logs
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Update attack payload logging settings for a specific policy. This operation applies at the security policy level, and overrides the attack payload logging settings at the configuration level on a per-policy basis. When set to `NONE`, the request body and response body appear as `redacted` in the log. For example, `JSON_PAIRS:redacted`.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-policies-attack-payload-logging
+      operationId: put-policies-attack-payload-logging
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              enabled: true
+              override: true
+              requestBody:
+                type: ATTACK_PAYLOAD
+              responseBody:
+                type: NONE
+            schema:
+              additionalProperties: false
+              description: Describes the security policy attack payload logging settings.
+              properties:
+                enabled:
+                  description: When enabled, log attack payloads in requests and responses.
+                  type: boolean
+                override:
+                  description: When `true`, use the security policy's attack payload logging settings instead of the settings at the configuration level. Note that when `type` is `NONE`, the request body and response body show as redacted in the log. For example, `JSON_PAIRS:redacted`.
+                  type: boolean
+                requestBody:
+                  additionalProperties: false
+                  description: The settings for how Akamai's network logs attack payloads in request bodies.
+                  properties:
+                    type:
+                      description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                      enum:
+                      - ATTACK_PAYLOAD
+                      - NONE
+                      type: string
+                  required:
+                  - type
+                  type: object
+                  x-akamai:
+                    file-path: schemas/attack-payload-logging.yaml
+                responseBody:
+                  additionalProperties: false
+                  description: The settings for how Akamai's network logs attack payloads in response bodies.
+                  properties:
+                    type:
+                      description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                      enum:
+                      - ATTACK_PAYLOAD
+                      - NONE
+                      type: string
+                  required:
+                  - type
+                  type: object
+                  x-akamai:
+                    file-path: schemas/attack-payload-logging.yaml
+              required:
+              - override
+              - enabled
+              - requestBody
+              - responseBody
+              type: object
+              x-akamai:
+                file-path: schemas/policy-attack-payload-logging-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                enabled: true
+                override: true
+                requestBody:
+                  type: ATTACK_PAYLOAD
+                responseBody:
+                  type: NONE
+              schema:
+                additionalProperties: false
+                description: The PUT Response JSON for Security Policy attack payload logging.
+                properties:
+                  enabled:
+                    description: When enabled, log attack payloads in requests and responses.
+                    type: boolean
+                  override:
+                    description: When `true`, use the security policy's attack payload logging settings instead of the settings at the configuration level. Note that when `type` is `NONE`, the request body and response body show as redacted in the log. For example, `JSON_PAIRS:redacted`.
+                    type: boolean
+                  requestBody:
+                    additionalProperties: false
+                    description: The settings for how our network logs attack payloads in request bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                  responseBody:
+                    additionalProperties: false
+                    description: The settings for how our network logs attack payloads in response bodies.
+                    properties:
+                      type:
+                        description: Use `ATTACK_PAYLOAD` to log attack payloads for all requests, or use `NONE` if you don't want to log the attack payloads. Note that when set to `NONE`, you'll see `redacted` in the logging information instead of a blank space or sensitive information. For example, `JSON_PAIRS:redacted`.
+                        enum:
+                        - ATTACK_PAYLOAD
+                        - NONE
+                        type: string
+                    required:
+                    - type
+                    type: object
+                    x-akamai:
+                      file-path: schemas/attack-payload-logging.yaml
+                required:
+                - override
+                - enabled
+                - requestBody
+                - responseBody
+                type: object
+                x-akamai:
+                  file-path: schemas/policy-attack-payload-logging-put-200.yaml
+          description: Successfully updated the policy attack payload logging settings.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have permission to write to this resource.'
+          x-akamai:
+            file-path: errors/403-client-write-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Modify attack payload logging settings for a policy
+      tags:
+      - Attack payload logs
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

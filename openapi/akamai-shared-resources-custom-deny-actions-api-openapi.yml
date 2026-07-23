@@ -1,0 +1,1225 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Shared resources: Custom deny actions API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Manage your custom deny actions for security configurations and
+
+    policies.  Custom deny actions let you serve error messages,
+
+    pages, and responses that meet your organization''s unique needs.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Manage your custom deny actions for security configurations and
+
+    policies.  Custom deny actions let you serve error messages,
+
+    pages, and responses that meet your organization''s unique needs.'
+  name: 'Shared resources: Custom deny actions'
+paths:
+  /configs/{configId}/versions/{versionNumber}/custom-deny:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-custom-denies.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/custom-deny
+    post:
+      description: __All products__ Create a new custom deny action for a specific configuration version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-custom-deny
+      operationId: post-custom-deny
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: test description
+              name: new custom deny
+              parameters:
+              - displayName: Prevent browser caching
+                name: prevent_browser_cache
+                value: 'true'
+              - displayName: Response body content
+                name: response_body_content
+                value: json desc
+              - displayName: Response content type
+                name: response_content_type
+                value: application/xml
+              - displayName: Response status code
+                name: response_status_code
+                value: '403'
+            schema:
+              additionalProperties: false
+              description: Contains details about a custom deny action.
+              properties:
+                description:
+                  description: Describes the custom deny action.
+                  type: string
+                id:
+                  description: __Read-only__ Uniquely identifies the custom deny action.
+                  readOnly: true
+                  type: string
+                name:
+                  description: The name you assigned to the custom deny action.
+                  type: string
+                parameters:
+                  description: Describes the custom deny parameters.
+                  items:
+                    additionalProperties: false
+                    description: Contains a list of parameters for the custom deny action. These parameters are not the same type of parameters you usually include in the path of a request.
+                    properties:
+                      displayName:
+                        description: The description of the custom deny parameter.
+                        type: string
+                      name:
+                        description: The custom deny parameter you choose instead of the Akamai default response. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                        enum:
+                        - response_status_code
+                        - prevent_browser_cache
+                        - response_content_type
+                        - response_body_content
+                        - response_header_name
+                        - response_header_value
+                        - custom_deny_hostname
+                        - custom_deny_path
+                        - include_true_ip
+                        - include_reference_id
+                        type: string
+                      value:
+                        description: The value you assign to the custom deny parameter. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                        type: string
+                    required:
+                    - name
+                    - value
+                    type: object
+                  type: array
+              required:
+              - name
+              - parameters
+              type: object
+              x-akamai:
+                file-path: schemas/custom-deny.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                description: test description
+                id: deny_custom_622919
+                name: new custom deny
+                parameters:
+                - displayName: Prevent browser caching
+                  name: prevent_browser_cache
+                  value: 'true'
+                - displayName: Response body content
+                  name: response_body_content
+                  value: json body
+                - displayName: Response content type
+                  name: response_content_type
+                  value: application/xml
+                - displayName: Response status code
+                  name: response_status_code
+                  value: '403'
+              schema:
+                additionalProperties: false
+                description: Contains details about a custom deny action.
+                properties:
+                  description:
+                    description: Describes the custom deny action.
+                    type: string
+                  id:
+                    description: __Read-only__ Uniquely identifies the custom deny action.
+                    readOnly: true
+                    type: string
+                  name:
+                    description: The name you assigned to the custom deny action.
+                    type: string
+                  parameters:
+                    description: Describes the custom deny parameters.
+                    items:
+                      additionalProperties: false
+                      description: Contains a list of parameters for the custom deny action. These parameters are not the same type of parameters you usually include in the path of a request.
+                      properties:
+                        displayName:
+                          description: The description of the custom deny parameter.
+                          type: string
+                        name:
+                          description: The custom deny parameter you choose instead of the Akamai default response. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                          enum:
+                          - response_status_code
+                          - prevent_browser_cache
+                          - response_content_type
+                          - response_body_content
+                          - response_header_name
+                          - response_header_value
+                          - custom_deny_hostname
+                          - custom_deny_path
+                          - include_true_ip
+                          - include_reference_id
+                          type: string
+                        value:
+                          description: The value you assign to the custom deny parameter. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                required:
+                - name
+                - parameters
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-deny.yaml
+          description: Successfully created a custom deny action.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to custom deny actions in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Create a custom deny action
+      tags:
+      - 'Shared resources: Custom deny actions'
+      x-akamai:
+        labels:
+        - All products
+    get:
+      description: __All products__ Returns custom deny actions for a specific security configuration version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-custom-deny-actions
+      operationId: get-custom-deny-actions
+      parameters:
+      - description: Filter results by name, description, or ID. You can match on substrings.
+        in: query
+        name: search
+        schema:
+          example: SQL Injection
+          type: string
+        x-akamai:
+          file-path: parameters/search-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                customDenyList:
+                - description: Custom Deny Example 1
+                  id: deny_custom_622918
+                  name: Custom Deny Example 1
+                  parameters:
+                  - displayName: Prevent browser caching
+                    name: prevent_browser_cache
+                    value: 'true'
+                  - displayName: Response body content
+                    name: response_body_content
+                    value: body comes here2222.
+                  - displayName: Response content type
+                    name: response_content_type
+                    value: application/json
+                  - displayName: Response status code
+                    name: response_status_code
+                    value: '403'
+                - description: Custom Deny Example 2
+                  id: deny_custom_622919
+                  name: Custom Deny Example 2
+                  parameters:
+                  - displayName: Prevent browser caching
+                    name: prevent_browser_cache
+                    value: 'true'
+                  - displayName: Response body content
+                    name: response_body_content
+                    value: response body.
+                  - displayName: Response content type
+                    name: response_content_type
+                    value: application/json
+                  - displayName: Response status code
+                    name: response_status_code
+                    value: '403'
+              schema:
+                additionalProperties: false
+                description: Contains details about custom deny actions.
+                properties:
+                  customDenyList:
+                    description: A list of custom deny actions in this configuration version.
+                    items:
+                      additionalProperties: false
+                      description: Contains details about a custom deny action.
+                      properties:
+                        description:
+                          description: Describes the custom deny action.
+                          type: string
+                        id:
+                          description: __Read-only__ Uniquely identifies the custom deny action.
+                          readOnly: true
+                          type: string
+                        name:
+                          description: The name you assigned to the custom deny action.
+                          type: string
+                        parameters:
+                          description: Describes the custom deny parameters.
+                          items:
+                            additionalProperties: false
+                            description: Contains a list of parameters for the custom deny action. These parameters are not the same type of parameters you usually include in the path of a request.
+                            properties:
+                              displayName:
+                                description: The description of the custom deny parameter.
+                                type: string
+                              name:
+                                description: The custom deny parameter you choose instead of the Akamai default response. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                                enum:
+                                - response_status_code
+                                - prevent_browser_cache
+                                - response_content_type
+                                - response_body_content
+                                - response_header_name
+                                - response_header_value
+                                - custom_deny_hostname
+                                - custom_deny_path
+                                - include_true_ip
+                                - include_reference_id
+                                type: string
+                              value:
+                                description: The value you assign to the custom deny parameter. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                                type: string
+                            required:
+                            - name
+                            - value
+                            type: object
+                          type: array
+                      required:
+                      - name
+                      - parameters
+                      type: object
+                      x-akamai:
+                        file-path: schemas/custom-deny.yaml
+                    type: array
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-denies.yaml
+          description: Successfully returned custom deny actions.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to custom deny actions in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List custom deny actions
+      tags:
+      - 'Shared resources: Custom deny actions'
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/custom-deny/{customDenyId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for each custom deny action.
+      in: path
+      name: customDenyId
+      required: true
+      schema:
+        example: '112231'
+        type: string
+      x-akamai:
+        file-path: parameters/custom-deny-id-path.yaml
+    x-akamai:
+      file-path: paths/config-custom-deny.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/custom-deny/{customDenyId}
+    get:
+      description: __All products__ Returns the specified custom deny action.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-custom-deny-action
+      operationId: get-custom-deny-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: test description
+                id: deny_custom_622919
+                name: new custom deny
+                parameters:
+                - displayName: Prevent browser caching
+                  name: prevent_browser_cache
+                  value: 'true'
+                - displayName: Response body content
+                  name: response_body_content
+                  value: json body
+                - displayName: Response content type
+                  name: response_content_type
+                  value: application/xml
+                - displayName: Response status code
+                  name: response_status_code
+                  value: '403'
+              schema:
+                additionalProperties: false
+                description: Contains details about a custom deny action.
+                properties:
+                  description:
+                    description: Describes the custom deny action.
+                    type: string
+                  id:
+                    description: __Read-only__ Uniquely identifies the custom deny action.
+                    readOnly: true
+                    type: string
+                  name:
+                    description: The name you assigned to the custom deny action.
+                    type: string
+                  parameters:
+                    description: Describes the custom deny parameters.
+                    items:
+                      additionalProperties: false
+                      description: Contains a list of parameters for the custom deny action. These parameters are not the same type of parameters you usually include in the path of a request.
+                      properties:
+                        displayName:
+                          description: The description of the custom deny parameter.
+                          type: string
+                        name:
+                          description: The custom deny parameter you choose instead of the Akamai default response. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                          enum:
+                          - response_status_code
+                          - prevent_browser_cache
+                          - response_content_type
+                          - response_body_content
+                          - response_header_name
+                          - response_header_value
+                          - custom_deny_hostname
+                          - custom_deny_path
+                          - include_true_ip
+                          - include_reference_id
+                          type: string
+                        value:
+                          description: The value you assign to the custom deny parameter. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                required:
+                - name
+                - parameters
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-deny.yaml
+          description: Successfully returned custom deny action.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to custom deny action in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or custom deny action wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get a custom deny action
+      tags:
+      - 'Shared resources: Custom deny actions'
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Update details for a specific custom deny action.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-custom-deny
+      operationId: put-custom-deny
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: test description
+              id: deny_custom_622919
+              name: new custom deny
+              parameters:
+              - displayName: Prevent browser caching
+                name: prevent_browser_cache
+                value: 'true'
+              - displayName: Response body content
+                name: response_body_content
+                value: json desc
+              - displayName: Response content type
+                name: response_content_type
+                value: application/xml
+              - displayName: Response status code
+                name: response_status_code
+                value: '403'
+            schema:
+              additionalProperties: false
+              description: Contains details about a custom deny action.
+              properties:
+                description:
+                  description: Describes the custom deny action.
+                  type: string
+                id:
+                  description: __Read-only__ Uniquely identifies the custom deny action.
+                  readOnly: true
+                  type: string
+                name:
+                  description: The name you assigned to the custom deny action.
+                  type: string
+                parameters:
+                  description: Describes the custom deny parameters.
+                  items:
+                    additionalProperties: false
+                    description: Contains a list of parameters for the custom deny action. These parameters are not the same type of parameters you usually include in the path of a request.
+                    properties:
+                      displayName:
+                        description: The description of the custom deny parameter.
+                        type: string
+                      name:
+                        description: The custom deny parameter you choose instead of the Akamai default response. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                        enum:
+                        - response_status_code
+                        - prevent_browser_cache
+                        - response_content_type
+                        - response_body_content
+                        - response_header_name
+                        - response_header_value
+                        - custom_deny_hostname
+                        - custom_deny_path
+                        - include_true_ip
+                        - include_reference_id
+                        type: string
+                      value:
+                        description: The value you assign to the custom deny parameter. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                        type: string
+                    required:
+                    - name
+                    - value
+                    type: object
+                  type: array
+              required:
+              - name
+              - parameters
+              type: object
+              x-akamai:
+                file-path: schemas/custom-deny.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: test description
+                id: deny_custom_622919
+                name: new custom deny
+                parameters:
+                - displayName: Prevent browser caching
+                  name: prevent_browser_cache
+                  value: 'true'
+                - displayName: Response body content
+                  name: response_body_content
+                  value: json body
+                - displayName: Response content type
+                  name: response_content_type
+                  value: application/xml
+                - displayName: Response status code
+                  name: response_status_code
+                  value: '403'
+              schema:
+                additionalProperties: false
+                description: Contains details about a custom deny action.
+                properties:
+                  description:
+                    description: Describes the custom deny action.
+                    type: string
+                  id:
+                    description: __Read-only__ Uniquely identifies the custom deny action.
+                    readOnly: true
+                    type: string
+                  name:
+                    description: The name you assigned to the custom deny action.
+                    type: string
+                  parameters:
+                    description: Describes the custom deny parameters.
+                    items:
+                      additionalProperties: false
+                      description: Contains a list of parameters for the custom deny action. These parameters are not the same type of parameters you usually include in the path of a request.
+                      properties:
+                        displayName:
+                          description: The description of the custom deny parameter.
+                          type: string
+                        name:
+                          description: The custom deny parameter you choose instead of the Akamai default response. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                          enum:
+                          - response_status_code
+                          - prevent_browser_cache
+                          - response_content_type
+                          - response_body_content
+                          - response_header_name
+                          - response_header_value
+                          - custom_deny_hostname
+                          - custom_deny_path
+                          - include_true_ip
+                          - include_reference_id
+                          type: string
+                        value:
+                          description: The value you assign to the custom deny parameter. For available values, see [Deny name values](https://techdocs.akamai.com/application-security/reference/deny-name-values).
+                          type: string
+                      required:
+                      - name
+                      - value
+                      type: object
+                    type: array
+                required:
+                - name
+                - parameters
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-deny.yaml
+          description: Successfully updated custom deny action.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to custom deny action in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or custom deny action wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify a custom deny action
+      tags:
+      - 'Shared resources: Custom deny actions'
+      x-akamai:
+        labels:
+        - All products
+    delete:
+      description: __All products__ Delete a custom deny action. You can't delete a custom deny action that is actively in use. To delete the custom deny action, first activate an older configuration version or create a new version without the policy in place.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-custom-deny
+      operationId: delete-custom-deny
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successfully deleted the custom deny action.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to custom deny action in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or custom deny action wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Remove a custom deny action
+      tags:
+      - 'Shared resources: Custom deny actions'
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

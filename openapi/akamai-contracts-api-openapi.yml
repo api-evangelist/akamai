@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Contracts API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Contracts
+paths:
+  /contracts:
+    x-akamai:
+      file-path: paths/contracts.yaml
+      path-for-file: /contracts
+    get:
+      description: View the list of contract IDs that you can use to list resource tiers.
+      operationId: get-contracts
+      summary: Akamai List Contract IDs
+      tags:
+      - Contracts
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-contracts
+      responses:
+        '200':
+          description: This object provides a set of contract IDs that you can use to list resource tiers.
+          content:
+            application/json:
+              example:
+                contractIds:
+                - 1-599K
+                - B-M-28QYF3M
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - contractIds
+                properties:
+                  contractIds:
+                    description: List of contract IDs.
+                    minItems: 1
+                    type: array
+                    items:
+                      description: List of contract IDs.
+                      minLength: 1
+                      type: string
+                x-akamai:
+                  file-path: schemas/contract-ids-get-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

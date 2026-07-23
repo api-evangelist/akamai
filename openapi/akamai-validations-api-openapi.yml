@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Validations API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Validations
+paths:
+  /validations:
+    post:
+      description: Return a list of errors and warnings containing details on how to fix your code bundle. See [Validation types](https://techdocs.akamai.com/edgeworkers/reference/validation-types). In order to run this operation you need to provide an EdgeWorkers code bundle as a GZIP binary file in the request body, with a `Content-Type` of `application/gzip`.
+      operationId: post-validations
+      summary: Akamai Validate an EdgeWorkers Code Bundle
+      tags:
+      - Validations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-validations
+      requestBody:
+        required: true
+        content:
+          application/gzip:
+            schema:
+              format: binary
+              type: string
+      responses:
+        '200':
+          description: Provides details for an EdgeWorkers code bundle validation.
+          content:
+            application/json:
+              example:
+                errors:
+                - message: 'static validation failed : main.js::9:16 SyntaxError: Unexpected identifier.'
+                  type: STATIC_VALIDATION_FAILED
+                - message: manifest file is invalid
+                  type: INVALID_MANIFEST
+                warnings:
+                - message: The EdgeKV access token is still valid but will expire soon.
+                  type: ACCESS_TOKEN_EXPIRING_SOON
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - errors
+                - warnings
+                properties:
+                  errors:
+                    description: List of validation errors.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Provides details for an EdgeWorker code bundle validation error.
+                      type: object
+                      required:
+                      - type
+                      - message
+                      properties:
+                        message:
+                          description: Message containing more details about the validation error.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        type:
+                          description: The type of the validation error. See [Validation error types](https://techdocs.akamai.com/edgeworkers/reference/validation-types).
+                          readOnly: true
+                          type: string
+                          enum:
+                          - ACCESS_TOKEN_EXPIRED
+                          - ACCESS_TOKEN_INVALID
+                          - ACCESS_TOKEN_MISSING
+                          - EDGEKV_FILE_MISSING
+                          - EDGEKV_TOKENS_FILE_MISSING
+                          - EMPTY_TARBALL
+                          - INVALID_EDGEKV_IMPORTS
+                          - INVALID_GZIP_FORMAT
+                          - INVALID_MANIFEST
+                          - INVALID_TAR_ARCHIVE
+                          - MAX_COMPRESSED_SIZE_EXCEEDED
+                          - MAX_UNCOMPRESSED_SIZE_EXCEEDED
+                          - MISSING_MANDATORY_FILES
+                          - STATIC_VALIDATION_FAILED
+                          - DEPENDENCY_NOT_FOUND
+                          - MISSING_MEGABUNDLE_JSON_FILE
+                          - MISSING_DEPENDENCIES_DIRECTORY
+                          - INVALID_MEGABUNDLE_JSON_FILE
+                      x-akamai:
+                        file-path: schemas/validation-error.yaml
+                  warnings:
+                    description: List of validation warnings.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Provides details for an EdgeWorker code bundle validation warning.
+                      type: object
+                      required:
+                      - type
+                      - message
+                      properties:
+                        message:
+                          description: Message containing more details about the validation warning.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        type:
+                          description: The type of the validation warning. See [Validation warning types](https://techdocs.akamai.com/edgeworkers/reference/validation-types).
+                          readOnly: true
+                          type: string
+                          enum:
+                          - ACCESS_TOKEN_EXPIRING_SOON
+                      x-akamai:
+                        file-path: schemas/validation-warning.yaml
+                x-akamai:
+                  file-path: schemas/validations-post-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

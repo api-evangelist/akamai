@@ -1,0 +1,865 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Access tokens
+paths:
+  /tokens:
+    post:
+      description: Generate an access token that allows an EdgeWorkers code bundle to access the specified namespace. Each token name needs to be unique and have a defined expiration of no longer than six months. You can't renew a token once it expires. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).
+      operationId: post-tokens
+      summary: Akamai Create an Access Token
+      tags:
+      - Access tokens
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/post-tokens
+      requestBody:
+        content:
+          application/json:
+            example:
+              allowOnProduction: false
+              allowOnStaging: true
+              expiry: '2021-09-30'
+              name: my_token
+              namespacePermissions:
+                marketing:
+                - r
+                - w
+            schema:
+              additionalProperties: false
+              description: Lists properties related to EdgeKV access token.
+              type: object
+              required:
+              - allowOnProduction
+              - allowOnStaging
+              - expiry
+              - name
+              - namespacePermissions
+              properties:
+                allowOnProduction:
+                  description: Whether to allow this token access to the Akamai production network.
+                  example: '{{allowOnProduction}}'
+                  type: boolean
+                allowOnStaging:
+                  description: Whether to allow this token access to the Akamai staging network.
+                  example: '{{allowOnStaging}}'
+                  type: boolean
+                expiry:
+                  description: Desired token expiration date in ISO 8601 format, `YYYY-MM-DD`, such as `2022-01-31`. Expiry can be up to six months from creation.
+                  example: '{{expiry}}'
+                  type: string
+                name:
+                  description: Friendly name of the token.  Used when retrieving tokens by name.
+                  example: '{{name}}'
+                  type: string
+                namespacePermissions:
+                  description: Namespace identifiers the token should have access to, plus the associated read, write, and delete permissions. All specified namespaces need the same database Data Access Policy. A namespace's Data Access Policy comes from the value of the `restrictDataAccess`, set when creating a namespace.
+                  maxProperties: 20
+                  minProperties: 1
+                  type: object
+                  additionalProperties:
+                    description: 'List of permissions a token should have on a namespace. This array''s key is the name of the namespace that you want to grant permissions to. To list namespaces see, [List namespaces](https://techdocs.akamai.com/edgekv/reference/get-namespaces). You can specify `r` for read, `w` for write, or `d` for delete. '
+                    maxItems: 3
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum:
+                      - r
+                      - w
+                      - d
+                    x-akamai:
+                      file-path: schemas/token-namespace.yaml
+                restrictToEdgeWorkerIds:
+                  description: A set of EdgeWorker IDs authorized to access EdgeKV via the token. By default if you omit this array, the token authorizes access for all IDs.
+                  type: array
+                  items:
+                    type: string
+              x-akamai:
+                file-path: schemas/token.yaml
+      responses:
+        '200':
+          description: Returns generated token.
+          content:
+            application/json:
+              example:
+                expiry: '2021-09-30'
+                name: my_token
+                uuid: fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466
+                value: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+              schema:
+                allOf:
+                - additionalProperties: false
+                  type: object
+                  required:
+                  - expiry
+                  - name
+                  - uuid
+                  properties:
+                    expiry:
+                      description: The expiration date in ISO 8601 format, `YYYY-MM-DD`, such as `2022-01-31`.
+                      format: date
+                      type: string
+                    name:
+                      description: The name assigned to the access token. You can't modify an access token name.
+                      type: string
+                    uuid:
+                      description: A generated unique identifier for the access token.
+                      format: uuid
+                      type: string
+                - additionalProperties: false
+                  type: object
+                  required:
+                  - value
+                  properties:
+                    value:
+                      description: The access token value for use in the `edgekv_tokens.js` file.
+                      type: string
+        '409':
+          description: An existing token using the same name was found.
+          content:
+            application/problem+json:
+              example:
+                detail: Token with name my_token is already stored.
+                errorCode: EKV_3000
+                instance: /edgekv/error-instances/e0ddea79-a457-4f49-9d70-c4c22e674bcf
+                status: 409
+                title: Conflict
+                type: /edgekv/error-types/edgekv-conflict
+                additionalDetail:
+                  requestId: 9c5c61e18b90013b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '422':
+          description: The specified token JSON contained a syntax error or duplicate attributes.
+          content:
+            application/problem+json:
+              example:
+                detail: The JSON request body contained a syntax error or duplicate attributes.
+                errorCode: EKV_2001
+                instance: /edgekv/error-instances/e0ddea79-a457-4f49-9d70-c4c22e674bcf
+                status: 422
+                title: Unprocessable Entity
+                type: /edgekv/error-types/edgekv-unprocessable-entity
+                additionalDetail:
+                  requestId: 9c5c61e18b90013b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: Internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: View a list of EdgeKV access tokens.
+      operationId: get-tokens
+      summary: Akamai List Access Tokens
+      tags:
+      - Access tokens
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/get-tokens
+      responses:
+        '200':
+          description: Returns a list of EdgeKV access tokens you have permissions to see.
+          content:
+            application/json:
+              example:
+                tokens:
+                - expiry: '2021-09-30'
+                  name: token1
+                  uuid: 12886ccf-7662-5f19-b039-766740ce227f
+                - expiry: '2021-09-30'
+                  name: my_token
+                  uuid: a600dfaa-3b7a-5d2a-bae3-b0c0d0e88e4a
+              schema:
+                additionalProperties: false
+                description: Represents a collection of tokens.
+                type: object
+                required:
+                - tokens
+                properties:
+                  tokens:
+                    description: A list of tokens.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - expiry
+                      - name
+                      - uuid
+                      properties:
+                        expiry:
+                          description: The expiration date in ISO 8601 format, `YYYY-MM-DD`, such as `2022-01-31`.
+                          format: date
+                          type: string
+                        name:
+                          description: The name assigned to the access token. You can't modify an access token name.
+                          type: string
+                        uuid:
+                          description: A generated unique identifier for the access token.
+                          format: uuid
+                          type: string
+                x-akamai:
+                  file-path: schemas/list-tokens-200.yaml
+        '404':
+          description: No tokens are found.
+          content:
+            application/problem+json:
+              example:
+                detail: No tokens exist.
+                errorCode: EKV_3000
+                instance: /edgekv/error-instances/420e5e11-210f-4d16-ab84-eebf4b70757a
+                status: 404
+                title: Not Found
+                type: /edgekv/error-types/edgekv-not-found
+                additionalDetail:
+                  requestId: aad261e0a45b000a
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: Internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: Whether to include expired tokens that are less than 30 days old in the response.
+        example: '{{includeExpired}}'
+        in: query
+        name: includeExpired
+        schema:
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/includeExpired-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /tokens/{tokenName}:
+    parameters:
+    - description: Unique identifier for each namespace.
+      example: '{{tokenName}}'
+      in: path
+      name: tokenName
+      required: true
+      schema:
+        example: my_token
+        type: string
+      x-akamai:
+        file-path: parameters/tokenId-path.yaml
+    get:
+      description: Download a previously created EdgeKV access token. To get a token you need to know the token `name`. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).
+      operationId: get-token
+      summary: Akamai Download an Access Token
+      tags:
+      - Access tokens
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/get-token
+      responses:
+        '200':
+          description: Returns an EdgeKV access token.
+          content:
+            application/json:
+              example:
+                expiry: '2021-09-30'
+                name: my_token
+                uuid: fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466
+                value: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+              schema:
+                allOf:
+                - additionalProperties: false
+                  type: object
+                  required:
+                  - expiry
+                  - name
+                  - uuid
+                  properties:
+                    expiry:
+                      description: The expiration date in ISO 8601 format, `YYYY-MM-DD`, such as `2022-01-31`.
+                      format: date
+                      type: string
+                    name:
+                      description: The name assigned to the access token. You can't modify an access token name.
+                      type: string
+                    uuid:
+                      description: A generated unique identifier for the access token.
+                      format: uuid
+                      type: string
+                - additionalProperties: false
+                  type: object
+                  required:
+                  - value
+                  properties:
+                    value:
+                      description: The access token value for use in the `edgekv_tokens.js` file.
+                      type: string
+        '400':
+          description: Invalid token name.
+          content:
+            application/problem+json:
+              example:
+                detail: Name contains invalid characters.
+                errorCode: EKV_2000
+                instance: /edgekv/error-instances/0959b9b3-8043-4f87-9510-0e752160d713
+                status: 400
+                title: Bad Request
+                type: /edgekv/error-types/edgekv-bad-request
+                additionalDetail:
+                  requestId: e30761e0a7b6072b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Token is not found.
+          content:
+            application/problem+json:
+              example:
+                detail: Token with name token1 does not exist.
+                errorCode: EKV_3000
+                instance: /edgekv/error-instances/e77c8cc1-3698-412a-b574-64fc12c05741
+                status: 404
+                title: Not Found
+                type: /edgekv/error-types/edgekv-not-found
+                additionalDetail:
+                  requestId: b08961e0a5540233
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '410':
+          description: Token has expired.
+          content:
+            application/problem+json:
+              example:
+                detail: Token has expired.
+                errorCode: EKV_3000
+                instance: /edgekv/error-instances/e77c8cc1-3698-412a-b574-64fc12c05741
+                status: 410
+                title: Not Found
+                type: /edgekv/error-types/edgekv-not-found
+                additionalDetail:
+                  requestId: b08961e0a5540233
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: Internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    delete:
+      description: Once you revoke an access token, you can't undo it. You also need to update any deployed EdgeWorkers code bundles that use the old token with a new token, or requests to EdgeKV fail. Any requests from an EdgeWorkers code bundle using a revoked token cause a 401 error. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).
+      operationId: delete-token
+      summary: Akamai Revoke an Access Token
+      tags:
+      - Access tokens
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/delete-token
+      responses:
+        '200':
+          description: Token revocation successful.
+          content:
+            application/json:
+              example:
+                name: my_token
+                uuid: fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466
+              schema:
+                additionalProperties: false
+                description: Lists properties related to an EdgeKV access token.
+                type: object
+                required:
+                - name
+                - uuid
+                properties:
+                  name:
+                    description: The name assigned to the access token. You can't modify an access token name.
+                    type: string
+                  uuid:
+                    description: A generated unique identifier for the access token.
+                    format: uuid
+                    type: string
+                x-akamai:
+                  file-path: schemas/tokens-delete-200.yaml
+        '400':
+          description: Invalid token name.
+          content:
+            application/problem+json:
+              example:
+                detail: Name contains invalid characters.
+                errorCode: EKV_2000
+                instance: /edgekv/error-instances/0959b9b3-8043-4f87-9510-0e752160d713
+                status: 400
+                title: Bad Request
+                type: /edgekv/error-types/edgekv-bad-request
+                additionalDetail:
+                  requestId: e30761e0a7b6072b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Token is not found.
+          content:
+            application/problem+json:
+              example:
+                detail: Token with name token1 does not exist.
+                errorCode: EKV_3000
+                instance: /edgekv/error-instances/e77c8cc1-3698-412a-b574-64fc12c05741
+                status: 404
+                title: Not Found
+                type: /edgekv/error-types/edgekv-not-found
+                additionalDetail:
+                  requestId: b08961e0a5540233
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: Internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

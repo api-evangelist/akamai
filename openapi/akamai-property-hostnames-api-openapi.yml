@@ -1,0 +1,2807 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Property hostnames API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Property hostnames
+paths:
+  /hostnames:
+    x-akamai:
+      file-path: paths/hostnames.yaml
+      path-for-file: /hostnames
+    x-akamai-descriptor-tools:
+      displayName: hostnames
+      group: Hostnames
+    get:
+      description: This operation lists active property hostnames for all properties available in an account. Use the optional query parameters to paginate, sort, and filter the results. You can nest and combine filters to obtain desired results. To view paginated results, use the response's `nextLink` and `previousLink`.
+      operationId: get-hostnames
+      summary: Akamai List Hostnames for an Account
+      tags:
+      - Property hostnames
+      externalDocs:
+        description: See documentation for this operation in Akamai's Property Manager API
+        url: https://techdocs.akamai.com/property-mgr/reference/get-hostnames
+      responses:
+        '200':
+          description: The response lists property hostnames for properties in a current account.
+          content:
+            application/json:
+              example:
+                accountId: act_A-CCT3456
+                currentSort: hostname:a
+                defaultSort: hostname:a
+                availableSort:
+                - hostname:a
+                - hostname:d
+                hostnames:
+                  currentItemCount: 3
+                  nextLink: /papi/v1/hostnames?offset=3&limit=3
+                  previousLink: /papi/v1/hostnames?offset=0&limit=3
+                  totalItems: 17
+                  items:
+                  - cnameFrom: www.example.com
+                    contractId: ctr_C-0N7RAC7
+                    groupId: grp_15225
+                    propertyId: prp_123345
+                    propertyName: example.com
+                    propertyType: TRADITIONAL
+                    stagingCertType: CPS_MANAGED
+                    stagingCnameTo: www.example.com.edgekey.net
+                    stagingCnameType: EDGE_HOSTNAME
+                    stagingEdgeHostnameId: ehn_895822
+                  - cnameFrom: www.example2.com
+                    contractId: ctr_C-0N7RAC71
+                    groupId: grp_15225
+                    productionCertType: DEFAULT
+                    productionCnameTo: www.example2.com.edgekey.net
+                    productionCnameType: EDGE_HOSTNAME
+                    productionEdgeHostnameId: ehn_895825
+                    propertyId: prp_123424
+                    propertyName: example2.com
+                    propertyType: TRADITIONAL
+                  - cnameFrom: www.example3.com
+                    contractId: ctr_C-0N7RAC7
+                    groupId: grp_15225
+                    productionCertType: DEFAULT
+                    productionCnameTo: www.example3.com.edgekey.net
+                    productionCnameType: EDGE_HOSTNAME
+                    productionEdgeHostnameId: ehn_895833
+                    propertyId: prp_123424
+                    propertyName: example3.com
+                    propertyType: HOSTNAME_BUCKET
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                additionalProperties: false
+                description: A common outer wrapping object structure. It provides additional contextual details for a set of requested data. The data itself is available under various inner members' `items` array, even individual items.
+                id: resource:/descriptors/papi/v1/schemas/GetAccountHostnamesResponse.json#
+                type: object
+                required:
+                - accountId
+                - hostnames
+                - currentSort
+                - defaultSort
+                - availableSort
+                properties:
+                  accountId:
+                    description: Identifies the prevailing account under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `act_` prefix.
+                    type: string
+                  availableSort:
+                    description: 'Available sorting options: `hostname:a` for ascending, and `hostname:d` for descending.'
+                    minItems: 1
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                      - hostname:a
+                      - hostname:d
+                  currentSort:
+                    description: The sorting criteria applied to the response, either `hostname:a` for ascending, or `hostname:d` for descending.
+                    type: string
+                    enum:
+                    - hostname:a
+                    - hostname:d
+                  defaultSort:
+                    default: hostname:a
+                    description: If you didn't specify any query parameters in the request, this shows the default `hostname:a` sorting criteria.
+                    type: string
+                  hostnames:
+                    additionalProperties: false
+                    description: The set of requested hostnames, available within an `items` array.
+                    type: object
+                    required:
+                    - items
+                    - nextLink
+                    - totalItems
+                    - currentItemCount
+                    properties:
+                      currentItemCount:
+                        description: The number of items present in the current response body view.
+                        minimum: 0
+                        type: integer
+                      items:
+                        description: Each hostname.
+                        type: array
+                        items:
+                          anyOf:
+                          - additionalProperties: false
+                            description: Active property hostnames within a current account. Relevant response objects appear within the outer envelope's `hostnames.items` array.
+                            title: STAGING
+                            type: object
+                            properties:
+                              cnameFrom:
+                                description: The hostname that your end users see, indicated by the `Host` header in end user requests.
+                                type: string
+                              contractId:
+                                description: Identifies the prevailing contract under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `ctr_` prefix.
+                                type: string
+                              groupId:
+                                description: Identifies the prevailing group under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `grp_` prefix.
+                                type: string
+                              propertyId:
+                                description: Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix. Don't use this value if you want to exchange data with the Identity and Access Manager API. See [Manage properties and includes](https://techdocs.akamai.com/iam-api/reference/manage-access-to-properties-and-includes).
+                                type: string
+                              propertyName:
+                                description: A descriptive name for the property.
+                                type: string
+                              propertyType:
+                                description: Specifies the type of the property. Either `TRADITIONAL` for properties where you pair property hostnames with the property version, or `HOSTNAME_BUCKET` where you manage property hostnames independently of the property version.
+                                type: string
+                                enum:
+                                - HOSTNAME_BUCKET
+                                - TRADITIONAL
+                              stagingCertType:
+                                description: Indicates the type of the certificate used in the property hostname. Either the `CPS_MANAGED` for the custom certificates you create with the [Certificate Provisioning System API](https://techdocs.akamai.com/cps/reference) (CPS), or `DEFAULT` for certificates deployed automatically. Note that you can't specify the `DEFAULT` value if your account hostname uses the `akamaized.net` domain suffix.
+                                type: string
+                                enum:
+                                - CPS_MANAGED
+                                - DEFAULT
+                              stagingCnameTo:
+                                description: The edge hostname you point the property hostname to so that you can start serving traffic through Akamai servers. This member corresponds to the edge hostname object's `edgeHostnameDomain` member.
+                                type: string
+                              stagingCnameType:
+                                description: Indicates the type of CNAME you used in the staging network, either `EDGE_HOSTNAME` or `CUSTOM`.
+                                type: string
+                                enum:
+                                - EDGE_HOSTNAME
+                                - CUSTOM
+                              stagingEdgeHostnameId:
+                                description: Identifies the edge hostname you mapped your traffic to on the staging network. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `ehn_` prefix.
+                                type: string
+                          - additionalProperties: false
+                            description: Active property hostnames within a current account. Relevant response objects appear within the outer envelope's `hostnames.items` array.
+                            title: PRODUCTION
+                            type: object
+                            properties:
+                              cnameFrom:
+                                description: The hostname that your end users see, indicated by the `Host` header in end user requests.
+                                type: string
+                              contractId:
+                                description: Identifies the prevailing contract under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `ctr_` prefix.
+                                type: string
+                              groupId:
+                                description: Identifies the prevailing group under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `grp_` prefix.
+                                type: string
+                              productionCertType:
+                                description: Indicates the type of the certificate used in the property hostname. Either the `CPS_MANAGED` for the custom certificates you create with the [Certificate Provisioning System API](https://techdocs.akamai.com/cps/reference) (CPS), or `DEFAULT` for certificates deployed automatically. Note that you can't specify the `DEFAULT` value if your account hostname uses the `akamaized.net` domain suffix.
+                                type: string
+                                enum:
+                                - CPS_MANAGED
+                                - DEFAULT
+                              productionCnameTo:
+                                description: The edge hostname you point the property hostname to so that you can start serving traffic through Akamai servers. This member corresponds to the edge hostname object's `edgeHostnameDomain` member.
+                                type: string
+                              productionCnameType:
+                                description: Indicates the type of CNAME you used in the production network, either `EDGE_HOSTNAME` or `CUSTOM`.
+                                type: string
+                                enum:
+                                - EDGE_HOSTNAME
+                                - CUSTOM
+                              productionEdgeHostnameId:
+                                description: Identifies the edge hostname you mapped your traffic to on the production network. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `ehn_` prefix.
+                                type: string
+                              propertyId:
+                                description: Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix. Don't use this value if you want to exchange data with the Identity and Access Manager API. See [Manage properties and includes](https://techdocs.akamai.com/iam-api/reference/manage-access-to-properties-and-includes).
+                                type: string
+                              propertyName:
+                                description: A descriptive name for the property.
+                                type: string
+                              propertyType:
+                                description: Specifies the type of the property. Either `TRADITIONAL` for properties where you pair property hostnames with the property version, or `HOSTNAME_BUCKET` where you manage property hostnames independently of the property version.
+                                type: string
+                                enum:
+                                - HOSTNAME_BUCKET
+                                - TRADITIONAL
+                      nextLink:
+                        description: For paginated responses, this links to the next set of response items.
+                        type: string
+                      previousLink:
+                        description: For paginated responses, this links to the next set of response items.
+                        type: string
+                      totalItems:
+                        description: The total count of items returned for the requested criteria.
+                        minimum: 0
+                        type: integer
+                x-akamai:
+                  file-path: schemas/account-hostnames-get-response.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system cannot understand your request.  Please check the syntax and correct any problems.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/papi/v0/http/bad-request
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                detail: The request requires authentication.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 401
+                title: Unauthorized
+                type: https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                detail: The authorization token you provided does not allow access to this resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/forbidden
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/property-mgr/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system was unable to locate the requested resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/not-found
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system does not support the method you provided for this resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 405
+                title: Method not allowed
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+        '406':
+          description: '[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system does not support the content-type restrictions provided by your 'Accept' header.
+                instance: papi/v1/build#abc12345abcc02a7
+                status: 406
+                title: Not Acceptable
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/406.yaml
+        '429':
+          description: '[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).'
+          content:
+            application/problem+json:
+              example:
+                detail: Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.
+                instance: /papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                instanceKey: 1-12345
+                limit: 500
+                limitKey: INCLUDES_PER_CONTRACT
+                remaining: 0
+                status: 429
+                title: Too many includes
+                type: https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                - limitKey
+                - instanceKey
+                - limit
+                - remaining
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  instanceKey:
+                    description: Identifies the resource the limit is imposed on.
+                    minLength: 1
+                    type: string
+                  limit:
+                    description: The overall limit.
+                    type: integer
+                  limitKey:
+                    description: The limit that got exceeded with the operation.
+                    minLength: 1
+                    type: string
+                  remaining:
+                    description: Number of items left to deploy.
+                    type: integer
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem-429.yaml
+          x-akamai:
+            file-path: errors/429.yaml
+        '500':
+          description: '[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).'
+          content:
+            application/problem+json:
+              example:
+                detail: Our system is experiencing errors. We''ll get this fixed as soon as possible.
+                instance: /papi/v1/properties/12345/activations#abc12345abcc02a7
+                status: 500
+                title: Internal Server Error
+                type: https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/500.yaml
+      parameters:
+      - description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.
+        example: '{{PAPI-Use-Prefixes}}'
+        in: header
+        name: PAPI-Use-Prefixes
+        required: true
+        schema:
+          example: 'false'
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+        x-akamai:
+          file-path: parameters/PAPI-Use-Prefixes-header.yaml
+      - description: For paginated responses, specifies the page of results you want to navigate to, starting from `0`.
+        example: '{{offset}}'
+        in: query
+        name: offset
+        required: false
+        schema:
+          example: 10
+          minimum: 0
+          type: integer
+        x-akamai:
+          file-path: parameters/offset-query.yaml
+      - description: For paginated responses, specifies the number of `hostnames` objects to include on each page.
+        example: '{{limit}}'
+        in: query
+        name: limit
+        required: false
+        schema:
+          example: 50
+          minimum: 1
+          type: integer
+        x-akamai:
+          file-path: parameters/limit-optional.yaml
+      - description: __Enum__ Sort the results based on the `cnameFrom` value, either `hostname:a` for ascending or `hostname:d` for descending order. The default is `hostname:a`.
+        example: '{{sort}}'
+        in: query
+        name: sort
+        required: false
+        schema:
+          default: hostname:a
+          example: hostname:a
+          type: string
+          enum:
+          - hostname:a
+          - hostname:d
+        x-akamai:
+          file-path: parameters/sort-query.yaml
+      - description: Filter the results by `cnameFrom`. Supports wildcard matches with `*`.
+        example: '{{hostname}}'
+        in: query
+        name: hostname
+        required: false
+        schema:
+          example: www.example.com
+          type: string
+        x-akamai:
+          file-path: parameters/hostname-query.yaml
+      - description: Filter the results by edge hostname. Supports wildcard matches with `*`.
+        example: '{{cnameTo}}'
+        in: query
+        name: cnameTo
+        schema:
+          example: example.com.edgekey.net
+          type: string
+        x-akamai:
+          file-path: parameters/cnameTo-query.yaml
+      - description: __Enum__ Network of activated hostnames, either `STAGING` or `PRODUCTION`.
+        example: '{{network}}'
+        in: query
+        name: network
+        required: false
+        schema:
+          example: PRODUCTION
+          type: string
+          enum:
+          - PRODUCTION
+          - STAGING
+        x-akamai:
+          file-path: parameters/network-query.yaml
+      - description: Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix.
+        example: '{{contractId}}'
+        in: query
+        name: contractId
+        required: false
+        schema:
+          example: ctr_1-1TJZFW
+          type: string
+        x-akamai:
+          file-path: parameters/contractId-optional-hostnames.yaml
+      - description: Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix.
+        example: '{{groupId}}'
+        in: query
+        name: groupId
+        required: false
+        schema:
+          example: grp_15166
+          type: string
+        x-akamai:
+          file-path: parameters/groupId-optional-hostnames.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /hostnames/certificate-challenges:
+    x-akamai:
+      file-path: paths/hostname-certificate-challenges.yaml
+      path-for-file: /hostnames/certificate-challenges
+    x-akamai-descriptor-tools:
+      displayName: certificateChallenges
+      group: Hostnames
+    post:
+      description: 'If you''re using Secure by Default, you can generate the domain validation challenges ahead of setting hostnames for your property. Ordinarily, you get the challenges when you [add hostnames to a property version](https://techdocs.akamai.com/property-mgr/reference/patch-property-version-hostnames) or [add hostnames to a property''s hostname bucket](https://techdocs.akamai.com/property-mgr/reference/patch-property-hostnames). This operation returns the `validationCname` object that you use to validate the certificate''s domain. For each requested property hostname, create a new CNAME record in the DNS configuration and map the object''s `hostname` to the `target`.
+
+
+        **Note**: If you''re using a new account, first register it on the Akamai network by activating any property version on either staging or production. Otherwise, your attempts to generate certificates will fail with a [403](https://techdocs.akamai.com/property-mgr/reference/403) error.'
+      operationId: post-certificate-challenges
+      summary: Akamai Generate Domain Validation Challenges
+      tags:
+      - Property hostnames
+      externalDocs:
+        description: See documentation for this operation in Akamai's Property Manager API
+        url: https://techdocs.akamai.com/property-mgr/reference/post-certificate-challenges
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              cnamesFrom:
+              - www.example1.com
+              - www.example2.com
+            schema:
+              $schema: http://json-schema.org/draft-04-schema#
+              description: Creates domain validation challenges to validate the certificate's domain.
+              id: resource:/descriptors/papi/v1/schemas/PostCertificateChallengesRequestV0.json#
+              javaType: com.akamai.luna.papi.model.PostCertificateChallengesRequest
+              type: object
+              required:
+              - cnamesFrom
+              properties:
+                cnamesFrom:
+                  description: Lists the property hostnames to generate certificate domain validation challenges for. You can only specify property hostnames that you want to deploy using default certificates.
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+              x-akamai:
+                file-path: schemas/hostnames-certificate-challenges-request.yaml
+      responses:
+        '200':
+          description: The response shows default certificate's domain validation challenges for the requested property hostnames.
+          content:
+            application/json:
+              example:
+                accountId: act_A-CCT9012
+                hostnames:
+                  items:
+                  - cnameFrom: www.example1.com
+                    validationCname:
+                      hostname: _acme-challenge.www.example1.com
+                      target: ac.afae21b9a98d2d845d8032da0d689252.www.example1.com.validate-akdv.net
+                  - cnameFrom: www.example2.com
+                    validationCname:
+                      hostname: _acme-challenge.www.example2.com.com
+                      target: ac.afae21b9a98d2d845d8032da0d689252.www.example2.com.validate-akdv.net
+              schema:
+                $schema: http://json-schema.org/draft-04-schema#
+                additionalProperties: false
+                description: A common outer wrapping object structure. It provides additional contextual details for a set of requested data. The data itself is available under various inner members' `items` array.
+                id: resource:/descriptors/papi/v1/schemas/PostCertificateChallengesResponseV0.json#
+                javaType: com.akamai.luna.papi.model.PostCertificateChallengesResponse
+                type: object
+                properties:
+                  accountId:
+                    description: Identifies the prevailing account under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `act_` prefix.
+                    type: string
+                  hostnames:
+                    additionalProperties: false
+                    description: The set of requested default certificate challenges, available within an `items` array.
+                    type: object
+                    properties:
+                      items:
+                        description: Specifies the certificate domain validation challenges for your property hostnames. Relevant response objects appear within the outer [Envelope](#envelope) object's `hostnames.items` array.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - cnameFrom
+                          - validationCname
+                          properties:
+                            cnameFrom:
+                              description: The hostname that your end users see, indicated by the `Host` header in end user requests.
+                              type: string
+                            validationCname:
+                              additionalProperties: false
+                              description: The CNAME record used to validate the certificate's domain.
+                              type: object
+                              required:
+                              - hostname
+                              - target
+                              properties:
+                                hostname:
+                                  description: The hostname part of the CNAME record used to validate the certificate's domain.
+                                  type: string
+                                target:
+                                  description: The destination part of the CNAME record used to validate the certificate's domain.
+                                  type: string
+                x-akamai:
+                  file-path: schemas/hostnames-certificate-challenges-post-response.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system cannot understand your request.  Please check the syntax and correct any problems.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/papi/v0/http/bad-request
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                detail: The request requires authentication.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 401
+                title: Unauthorized
+                type: https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                detail: The authorization token you provided does not allow access to this resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/forbidden
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/property-mgr/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system was unable to locate the requested resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/not-found
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system does not support the method you provided for this resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 405
+                title: Method not allowed
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+        '406':
+          description: '[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system does not support the content-type restrictions provided by your 'Accept' header.
+                instance: papi/v1/build#abc12345abcc02a7
+                status: 406
+                title: Not Acceptable
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/406.yaml
+        '415':
+          description: '[Unsupported media type](https://techdocs.akamai.com/property-mgr/reference/415).'
+          content:
+            application/problem+json:
+              example:
+                detail: Our system does not support requests in the format you're sending.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 415
+                title: Unsupported Media Type
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/unsupported-media-type
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/415.yaml
+        '429':
+          description: '[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).'
+          content:
+            application/problem+json:
+              example:
+                detail: Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.
+                instance: /papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                instanceKey: 1-12345
+                limit: 500
+                limitKey: INCLUDES_PER_CONTRACT
+                remaining: 0
+                status: 429
+                title: Too many includes
+                type: https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                - limitKey
+                - instanceKey
+                - limit
+                - remaining
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  instanceKey:
+                    description: Identifies the resource the limit is imposed on.
+                    minLength: 1
+                    type: string
+                  limit:
+                    description: The overall limit.
+                    type: integer
+                  limitKey:
+                    description: The limit that got exceeded with the operation.
+                    minLength: 1
+                    type: string
+                  remaining:
+                    description: Number of items left to deploy.
+                    type: integer
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem-429.yaml
+          x-akamai:
+            file-path: errors/429.yaml
+        '500':
+          description: '[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).'
+          content:
+            application/problem+json:
+              example:
+                detail: Our system is experiencing errors. We''ll get this fixed as soon as possible.
+                instance: /papi/v1/properties/12345/activations#abc12345abcc02a7
+                status: 500
+                title: Internal Server Error
+                type: https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/500.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /hostnames/{hostname}/audit-history:
+    x-akamai:
+      file-path: paths/hostname-audit-history.yaml
+      path-for-file: /hostnames/{hostname}/audit-history
+    x-akamai-descriptor-tools:
+      displayName: hostnameAuditHistory
+      group: Hostnames
+    parameters:
+    - description: The `cnameFrom` for the hostname your end users see, indicated by the `Host` header in end user requests.
+      example: '{{hostname}}'
+      in: path
+      name: hostname
+      required: true
+      schema:
+        example: www.example.com
+        type: string
+      x-akamai:
+        file-path: parameters/hostname-path.yaml
+    get:
+      description: Gets a detailed record of all modifications made to a property hostname.
+      operationId: get-hostname-audit-history
+      summary: Akamai Get Audit History
+      tags:
+      - Property hostnames
+      externalDocs:
+        description: See documentation for this operation in Akamai's Property Manager API
+        url: https://techdocs.akamai.com/property-mgr/reference/get-hostname-audit-history
+      responses:
+        '200':
+          description: The response shows the audit history for the requested property hostname. The response includes information when the property hostname was first created and activated, might also show other changes if the item was later edited.
+          content:
+            application/json:
+              example:
+                hostname: www.example.com
+                history:
+                  items:
+                  - action: ADD
+                    certProvisioningType: CPS_MANAGED
+                    cnameTo: example.com.edgesuite.net
+                    contractId: ctr_K-0N7RAK7
+                    edgeHostnameId: ehn_895824
+                    groupId: grp_15225
+                    network: PRODUCTION
+                    propertyId: prp_175780
+                    timestamp: '2020-05-14T17:08:55Z'
+                    user: ecole
+                  - action: MOVE
+                    certProvisioningType: CPS_MANAGED
+                    cnameTo: example.com.edgesuite.net
+                    contractId: ctr_K-0N7RAK7
+                    edgeHostnameId: ehn_895824
+                    groupId: grp_15225
+                    network: PRODUCTION
+                    propertyId: prp_175780
+                    timestamp: '2020-05-14T17:08:55Z'
+                    user: ecole
+                  - action: ACTIVATE
+                    certProvisioningType: CPS_MANAGED
+                    cnameTo: example.com.edgesuite.net
+                    contractId: ctr_C-0N7RAC71
+                    edgeHostnameId: ehn_895824
+                    groupId: grp_15225
+                    network: STAGING
+                    propertyId: prp_175780
+                    timestamp: '2020-05-14T17:08:55Z'
+                    user: jdoe
+                  - action: REMOVE
+                    certProvisioningType: CPS_MANAGED
+                    cnameTo: example.com.edgesuite.net
+                    contractId: ctr_K-0N7RAK71
+                    edgeHostnameId: ehn_895824
+                    groupId: grp_15225
+                    network: STAGING
+                    propertyId: prp_175780
+                    timestamp: '2020-05-14T17:08:55Z'
+                    user: jdoe
+                  - action: DEACTIVATE
+                    certProvisioningType: CPS_MANAGED
+                    cnameTo: example.com.edgesuite.net
+                    contractId: ctr_C-0N7RAC7
+                    edgeHostnameId: ehn_895824
+                    groupId: grp_15225
+                    network: STAGING
+                    propertyId: prp_175780
+                    timestamp: '2020-05-14T20:00:00Z'
+                    user: jdoe
+              schema:
+                $schema: http://json-schema.org/draft-04/schema#
+                additionalProperties: false
+                description: A common outer wrapping object structure. It provides additional contextual details for a set of requested data. The data itself is available under various inner members' `items` array.
+                id: resource:/descriptors/papi/v1/schemas/GetHostnameAuditHistoryResponse.json#
+                type: object
+                properties:
+                  history:
+                    additionalProperties: false
+                    description: The set of requested property hostname data, available within an `items` array.
+                    type: object
+                    properties:
+                      items:
+                        description: Each entry specifies a change to the requested property hostname with details about the user who made that modification and the time it happened. Relevant response objects appear in a descending chronological order within the outer envelope's `history.items` array.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - action
+                          - edgeHostnameId
+                          - certProvisioningType
+                          - propertyId
+                          - groupId
+                          - contractId
+                          - user
+                          - timestamp
+                          properties:
+                            action:
+                              description: 'The type of action performed to the property hostname, either:
+
+
+                                - `ACTIVATE` if the hostname is currently serving traffic,
+
+                                - `DEACTIVATE` if the hostname isn''t serving traffic,
+
+                                - `ADD` if the user requested to add the hostname to a property,
+
+                                - `REMOVE` if the user requested to remove the hostname from a property,
+
+                                - `MOVE` if the hostname was moved from one property to another,
+
+                                - `MODIFY` if the user changed the `edgeHostnameId` or `certProvisioningType` values for an already-activated hostname,
+
+                                - `ABORTED` when the user request to cancel the hostname activation,
+
+                                - `ERROR` if the hostname activation failed.'
+                              type: string
+                              enum:
+                              - ADD
+                              - ACTIVATE
+                              - REMOVE
+                              - DEACTIVATE
+                              - MOVE
+                              - MODIFY
+                              - ABORTED
+                              - ERROR
+                            certProvisioningType:
+                              description: Indicates the type of the certificate used in the property hostname. Either the `CPS_MANAGED` for the custom certificates you create with the [Certificate Provisioning System API](https://techdocs.akamai.com/cps/reference) (CPS), or `DEFAULT` for certificates deployed automatically. Note that you can't specify the `DEFAULT` value if your account hostname uses the `akamaized.net` domain suffix.
+                              type: string
+                              enum:
+                              - CPS_MANAGED
+                              - DEFAULT
+                            cnameTo:
+                              description: The edge hostname you point the property hostname to so that you can start serving traffic through Akamai servers. This member corresponds to the edge hostname object's `edgeHostnameDomain` member.
+                              type: string
+                            contractId:
+                              description: Identifies the prevailing contract under which you requested the data. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `ctr_` prefix.
+                              type: string
+                            edgeHostnameId:
+                              description: Identifies the edge hostname you mapped your traffic to. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `ehn_` prefix.
+                              type: string
+                            groupId:
+                              description: Identifies the group under which the property activated. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `grp_` prefix.
+                              type: string
+                            network:
+                              description: The network of activated hostnames, either `STAGING` or `PRODUCTION`.
+                              type: string
+                              enum:
+                              - STAGING
+                              - PRODUCTION
+                            propertyId:
+                              description: Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on how to omit the ID's `prp_` prefix. Don't use this value if you want to exchange data with the Identity and Access Manager API. See [Manage properties and includes](https://techdocs.akamai.com/iam-api/reference/manage-access-to-properties-and-includes).
+                              type: string
+                            timestamp:
+                              description: Indicates when the action occurred.
+                              type: string
+                            user:
+                              description: The user who initiated the action.
+                              type: string
+                  hostname:
+                    description: The `cnameFrom` for the hostname your end users see, indicated by the `Host` header in end user requests.
+                    type: string
+                x-akamai:
+                  file-path: schemas/hostnames-audit-history-get-response.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system cannot understand your request.  Please check the syntax and correct any problems.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/papi/v0/http/bad-request
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                detail: The request requires authentication.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 401
+                title: Unauthorized
+                type: https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                detail: The authorization token you provided does not allow access to this resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/forbidden
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/property-mgr/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system was unable to locate the requested resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/not-found
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system does not support the method you provided for this resource.
+                instance: /papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                status: 405
+                title: Method not allowed
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+        '406':
+          description: '[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).'
+          content:
+            application/problem+json:
+              example:
+                detail: The system does not support the content-type restrictions provided by your 'Accept' header.
+                instance: papi/v1/build#abc12345abcc02a7
+                status: 406
+                title: Not Acceptable
+                type: https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/406.yaml
+        '429':
+          description: '[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).'
+          content:
+            application/problem+json:
+              example:
+                detail: Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.
+                instance: /papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7
+                instanceKey: 1-12345
+                limit: 500
+                limitKey: INCLUDES_PER_CONTRACT
+                remaining: 0
+                status: 429
+                title: Too many includes
+                type: https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                - limitKey
+                - instanceKey
+                - limit
+                - remaining
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  instanceKey:
+                    description: Identifies the resource the limit is imposed on.
+                    minLength: 1
+                    type: string
+                  limit:
+                    description: The overall limit.
+                    type: integer
+                  limitKey:
+                    description: The limit that got exceeded with the operation.
+                    minLength: 1
+                    type: string
+                  remaining:
+                    description: Number of items left to deploy.
+                    type: integer
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem-429.yaml
+          x-akamai:
+            file-path: errors/429.yaml
+        '500':
+          description: '[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).'
+          content:
+            application/problem+json:
+              example:
+                detail: Our system is experiencing errors. We''ll get this fixed as soon as possible.
+                instance: /papi/v1/properties/12345/activations#abc12345abcc02a7
+                status: 500
+                title: Internal Server Error
+                type: https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error
+              schema:
+                additionalProperties: false
+                description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                type: object
+                required:
+                - type
+                - title
+                - status
+                - detail
+                - instance
+                properties:
+                  detail:
+                    description: Diagnostic instructions to locate and fix the problem.
+                    minLength: 1
+                    type: string
+                  errors:
+                    description: For errors with more than one detected problem, this represents each as a nested Problem Details object.
+                    minItems: 0
+                    type: array
+                    uniqueItems: true
+                    items:
+                      additionalProperties: false
+                      description: Represents error data in the [RFC 7807](https://www.rfc-editor.org/rfc/rfc7807) Problem Details format.
+                      type: object
+                      required:
+                      - type
+                      - title
+                      - detail
+                      properties:
+                        detail:
+                          description: Diagnostic instructions to locate and fix the problem.
+                          minLength: 1
+                          type: string
+                        instance:
+                          description: Unique value generated with each API call.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The HTTP status code that categorizes this error case.
+                          maximum: 600
+                          minimum: 100
+                          type: integer
+                        title:
+                          description: A summary of each error case.
+                          minLength: 1
+                          type: string
+                        type:
+                          description: Identifies each error case.
+                          format: uri
+                          type: string
+                      x-akamai:
+                        file-path: schemas/problem-nested.yaml
+                  instance:
+                    description: Unique value generated with each API call.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The HTTP status code that categorizes this error case.
+                    maximum: 600
+                    minimum: 100
+                    type: integer
+                  title:
+                    description: A summary of each error case.
+                    minLength: 1
+                    type: string
+                  type:
+                    description: Identifies each error case.
+                    format: uri
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/500.yaml
+      parameters:
+      - description: __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.
+        example: '{{PAPI-Use-Prefixes}}'
+        in: header
+        name: PAPI-Use-Prefixes
+        required: true
+        schema:
+          example: 'false'
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+        x-akamai:
+          file-path: parameters/PAPI-Use-Prefixes-header.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

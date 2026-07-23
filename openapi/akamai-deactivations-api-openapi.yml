@@ -1,0 +1,440 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Deactivations API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Deactivations
+paths:
+  /ids/{edgeWorkerId}/deactivations:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    post:
+      description: Deactivate an existing EdgeWorker version on the Akamai network, either staging or production.
+      operationId: post-deactivations
+      summary: Akamai Deactivate an EdgeWorker Version
+      tags:
+      - Deactivations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-deactivations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              network: PRODUCTION
+              note: EdgeWorker ID 42 is no longer used in production.
+              version: '2'
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - network
+              - version
+              properties:
+                network:
+                  description: The network on which the version will be deactivated, either `STAGING` or `PRODUCTION`.
+                  example: '{{network}}'
+                  type: string
+                  enum:
+                  - STAGING
+                  - PRODUCTION
+                note:
+                  description: Note to specify why the version is being deactivated.
+                  example: '{{note}}'
+                  minLength: 1
+                  type: string
+                version:
+                  description: Unique identifier of the version that will be deactivated.
+                  example: '{{version}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/deactivations-post.yaml
+      responses:
+        '201':
+          description: Provides details for an EdgeWorker deactivation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT3456
+                createdBy: jsmith
+                createdTime: '2020-04-05T18:17:46Z'
+                deactivationId: 3
+                edgeWorkerId: 42
+                lastModifiedTime: '2020-04-05T18:17:46Z'
+                network: PRODUCTION
+                note: EdgeWorker ID 42 is no longer used in production.
+                status: PRESUBMIT
+                version: '5'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - deactivationId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  deactivationId:
+                    description: Unique identifier of the deactivation.
+                    minimum: 1
+                    type: integer
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the version is deactivated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to specify why the version is being deactivated.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The deactivation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/deactivations-post-201.yaml
+          headers:
+            Location:
+              description: Use this URL to fetch the new resource.
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/Location.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: View the list of deactivations for an existing EdgeWorker. You can limit the results to a specific `version`.
+      operationId: get-deactivations
+      summary: Akamai List Deactivations
+      tags:
+      - Deactivations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-deactivations
+      responses:
+        '200':
+          description: This section describes a list of EdgeWorker deactivations.
+          content:
+            application/json:
+              example:
+                deactivations:
+                - accountId: A-CCT7890
+                  createdBy: jperez
+                  createdTime: '2020-07-09T09:03:28Z'
+                  deactivationId: 3
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2020-07-09T09:04:42Z'
+                  network: PRODUCTION
+                  note: EdgeWorker ID 42 is no longer used in production.
+                  status: PENDING
+                  version: '2'
+                - accountId: A-CCT7890
+                  createdBy: jsmith
+                  createdTime: '2020-07-09T08:13:54Z'
+                  deactivationId: 1
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2020-07-09T08:35:02Z'
+                  network: STAGING
+                  status: IN_PROGRESS
+                  version: '1'
+                - accountId: A-CCT7890
+                  createdBy: jsmith
+                  createdTime: '2020-07-10T14:23:42Z'
+                  deactivationId: 2
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2020-07-10T14:53:25Z'
+                  network: PRODUCTION
+                  status: COMPLETE
+                  version: '2'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - deactivations
+                properties:
+                  deactivations:
+                    description: List of EdgeWorker deactivations.
+                    minItems: 0
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - edgeWorkerId
+                      - version
+                      - deactivationId
+                      - accountId
+                      - status
+                      - network
+                      - createdBy
+                      - createdTime
+                      - lastModifiedTime
+                      properties:
+                        accountId:
+                          description: Identifier for the account under which the EdgeWorker was created.
+                          minLength: 1
+                          type: string
+                        createdBy:
+                          description: Username of the person who created the EdgeWorker.
+                          minLength: 1
+                          type: string
+                        createdTime:
+                          description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                          format: date-time
+                          type: string
+                        deactivationId:
+                          description: Unique identifier of the deactivation.
+                          minimum: 1
+                          type: integer
+                        edgeWorkerId:
+                          description: Unique identifier of the EdgeWorker.
+                          minimum: 1
+                          type: integer
+                        lastModifiedTime:
+                          description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                          format: date-time
+                          type: string
+                        network:
+                          description: The network on which the version is deactivated, either `PRODUCTION` or `STAGING`.
+                          type: string
+                          enum:
+                          - STAGING
+                          - PRODUCTION
+                        note:
+                          description: Note to specify why the version is being deactivated.
+                          minLength: 1
+                          type: string
+                        status:
+                          description: The deactivation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                          type: string
+                          enum:
+                          - PRESUBMIT
+                          - PENDING
+                          - IN_PROGRESS
+                          - ABORTED
+                          - ERROR
+                          - COMPLETE
+                          - DELETED_BY_AKAMAI
+                          - EXPIRED
+                          - CANCELLED
+                        version:
+                          description: Unique identifier of the version.
+                          minLength: 1
+                          type: string
+                      x-akamai:
+                        file-path: schemas/deactivation-get-200.yaml
+                x-akamai:
+                  file-path: schemas/deactivations-get-200.yaml
+      parameters:
+      - description: Unique identifier for a specific EdgeWorker version.
+        example: '{{version}}'
+        in: query
+        name: version
+        schema:
+          example: '5'
+          type: string
+        x-akamai:
+          file-path: parameters/version-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/deactivations/{deactivationId}:
+    parameters:
+    - description: Unique identifier for an EdgeWorker deactivation.
+      example: '{{deactivationId}}'
+      in: path
+      name: deactivationId
+      required: true
+      schema:
+        example: 3
+        type: integer
+      x-akamai:
+        file-path: parameters/deactivationId-path.yaml
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: View details for a specific deactivation.
+      operationId: get-deactivation
+      summary: Akamai Get a Deactivation
+      tags:
+      - Deactivations
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-deactivation
+      responses:
+        '200':
+          description: Provides details for an EdgeWorker deactivation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT5678
+                createdBy: jsmith
+                createdTime: '2020-08-04T11:42:56Z'
+                deactivationId: 3
+                edgeWorkerId: 42
+                lastModifiedTime: '2020-08-04T12:00:03Z'
+                network: PRODUCTION
+                note: EdgeWorker ID 42 is no longer used in production.
+                status: PENDING
+                version: '9'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - deactivationId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  deactivationId:
+                    description: Unique identifier of the deactivation.
+                    minimum: 1
+                    type: integer
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the version is deactivated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to specify why the version is being deactivated.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The deactivation status of the EdgeWorker version, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, or `EXPIRED`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/deactivation-get-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

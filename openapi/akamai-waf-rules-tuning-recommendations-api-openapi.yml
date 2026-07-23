@@ -1,0 +1,1711 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens WAF rules: Tuning recommendations API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage the tuning recommendations for your WAF attack groups.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage the tuning recommendations for your WAF attack groups.
+  name: 'WAF rules: Tuning recommendations'
+paths:
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-recommendations.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations
+    post:
+      description: __Adaptive Security Engine__ Accept, decline, or reset the recommended exception. Accepting a tuning recommendation creates or updates the exception for the attack group. Use `reset` to restore a declined recommendation to a neutral state so you can accept it or decline it again later.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-recommendations
+      operationId: post-recommendations
+      parameters:
+      - description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active and evaluation recommendations.
+        in: query
+        name: type
+        schema:
+          default: ACTIVE
+          enum:
+          - ACTIVE
+          - EVALUATION
+          - ALL
+          example: ACTIVE
+          type: string
+        x-akamai:
+          file-path: parameters/type-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              action: ACCEPT
+              selectorId: 84220
+            schema:
+              additionalProperties: false
+              description: The POST Request JSON for accepting, declining or resetting a selector.
+              properties:
+                action:
+                  description: How you want to respond to the exception recommendation. Use `ACCEPT` to add the recommendation to your policy, rule, or attack group. Use `DECLINE` to reject the recommendation, or `RESET` to undo a previous `DECLINE` action.
+                  enum:
+                  - ACCEPT
+                  - DECLINE
+                  - RESET
+                  type: string
+                selectorId:
+                  description: The unique identifier for the selector referenced in the recommendation.
+                  type: integer
+              required:
+              - action
+              - selectorId
+              type: object
+              x-akamai:
+                file-path: schemas/selector.yaml
+        required: true
+      responses:
+        '201':
+          content: {}
+          description: Successfully accepted, declined, or reset a recommendation selector.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have permission to write to this resource.'
+          x-akamai:
+            file-path: errors/403-client-write-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Respond to exception recommendations
+      tags:
+      - 'WAF rules: Tuning recommendations'
+      x-akamai:
+        labels:
+        - Adaptive Security Engine
+    get:
+      description: __Adaptive Security Engine__ Lists available tuning recommendations for a policy. Our system can identify patterns of false positives, and suggests exceptions for you to include in your policy.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-recommendations
+      operationId: get-recommendations
+      parameters:
+      - description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active and evaluation recommendations.
+        in: query
+        name: type
+        schema:
+          default: ACTIVE
+          enum:
+          - ACTIVE
+          - EVALUATION
+          - ALL
+          example: ACTIVE
+          type: string
+        x-akamai:
+          file-path: parameters/type-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                attackGroupRecommendations:
+                - group: CMD
+                  recommendations:
+                  - description: This selector triggered on 3458 unique IPs over a period of 7 hours.
+                    exceptions:
+                    - selector:
+                        enhanced: false
+                        names:
+                        - WWW-Exc_Header
+                        - WWW-Auth
+                        numberOfExceptions: 2
+                        selector: REQUEST_HEADERS
+                        type: AAG_SPECIFIC
+                        wildcard: false
+                      selectorId: 77
+                    ruleSetType: ACTIVE
+                - group: SQL
+                  recommendations:
+                  - description: Recommendation for SQL
+                    exceptions:
+                    - selector:
+                        enhanced: false
+                        names:
+                        - test
+                        numberOfExceptions: 1
+                        selector: ARGS_NAMES
+                        type: AAG_SPECIFIC
+                        wildcard: true
+                      selectorId: 76
+                    ruleSetType: EVALUATION
+                evaluationPeriodEnd: '2021-05-08T03:10:43Z'
+                evaluationPeriodStart: '2021-04-08T03:10:43Z'
+                ruleRecommendations:
+                - declinedRecommendations:
+                  - description: 100001 recommendation
+                    exceptions:
+                    - selector:
+                        enhanced: false
+                        names:
+                        - XML-PAIR-02-TEST
+                        selector: XML_PAIRS
+                        type: AAG_SPECIFIC
+                        wildcard: true
+                      selectorId: 19557
+                    ruleSetType: ACTIVE
+                  id: 100001
+                  recommendations:
+                  - description: Description for SQL
+                    exceptions:
+                    - selector:
+                        enhanced: false
+                        names:
+                        - JSON_PAIR_001
+                        selector: JSON_PAIRS
+                        type: AAG_SPECIFIC
+                        wildcard: true
+                      selectorId: 84220
+                    ruleSetType: EVALUATION
+              schema:
+                additionalProperties: false
+                description: Encapsulates data for Adaptive Security Engine exception recommendations.
+                properties:
+                  attackGroupRecommendations:
+                    description: The Adaptive Security Engine recommended exceptions for your attack groups.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        declinedRecommendations:
+                          description: Exception recommendations you previously chose to ignore. Run [Respond to exception recommendations](https://techdocs.akamai.com/application-security/reference/post-recommendations) with a value of `RESET` if you want to undo your previous setting.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              description:
+                                description: Describes why the proposed tuning exception is recommended.
+                                type: string
+                              evidences:
+                                description: Provides additional information about the recommendation.
+                                type: string
+                              exceptions:
+                                description: Describes the exception fields that allow you to conditionally exclude requests from inspection.
+                                items:
+                                  additionalProperties: false
+                                  description: Conditionally exclude requests from inspection.
+                                  properties:
+                                    recommendationId:
+                                      description: The unique identifier for the recommendation.
+                                      type: integer
+                                    selector:
+                                      additionalProperties: false
+                                      description: Identifies the part of the request to exclude.
+                                      properties:
+                                        enhanced:
+                                          description: Whether the exception recommendations are for enhanced selectors.
+                                          type: boolean
+                                        names:
+                                          description: List of names.
+                                          items:
+                                            type: string
+                                          type: array
+                                        numberOfExceptions:
+                                          description: The number of exceptions Adaptive Security Engine recommends.
+                                          type: integer
+                                        selector:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                          enum:
+                                          - REQUEST_HEADERS
+                                          - ARGS
+                                          - JSON_PAIRS
+                                          - XML_PAIRS
+                                          - REQUEST_COOKIES
+                                          - REQUEST_HEADERS_NAMES
+                                          - REQUEST_COOKIES_NAMES
+                                          - ARGS_NAMES
+                                          - JSON_NAMES
+                                          - REQUEST_PROTOCOL
+                                          - REQUEST_URI
+                                          - REQUEST_METHOD
+                                          - REQUEST_FILENAME
+                                          - QUERY_STRING
+                                          - REQUEST_PATH_SEGMENT
+                                          - FILES_NAMES
+                                          - REQUEST_BODY
+                                          - REQBODY_PROCESSOR_ERROR
+                                          - VALUES
+                                          type: string
+                                        type:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                          enum:
+                                          - GENERIC
+                                          - SPECIFIC
+                                          - WILDCARD
+                                          - EXACT
+                                          - AAG_SPECIFIC
+                                          - ENHANCED_GENERIC
+                                          - ENHANCED_SPECIFIC
+                                          - ENHANCED_EXACT
+                                          - ENHANCED_VALUES
+                                          type: string
+                                        wildcard:
+                                          description: Whether the provided value is a wildcard.
+                                          type: boolean
+                                      required:
+                                      - enhanced
+                                      type: object
+                                    selectorId:
+                                      description: The unique identifier for the selector referenced in the recommendation.
+                                      type: integer
+                                  type: object
+                                type: array
+                              ruleSetType:
+                                description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                                enum:
+                                - ACTIVE
+                                - EVALUATION
+                                type: string
+                            type: object
+                          type: array
+                        group:
+                          description: The unique identifier for an attack group.
+                          type: string
+                        recommendations:
+                          description: Describes the recommended exception values.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              description:
+                                description: Describes why the proposed tuning exception is recommended.
+                                type: string
+                              evidences:
+                                description: Provides additional information about the recommendation.
+                                type: string
+                              exceptions:
+                                description: Conditionally exclude requests from inspection.
+                                items:
+                                  additionalProperties: false
+                                  properties:
+                                    recommendationId:
+                                      description: The unique identifier for the recommendation.
+                                      type: integer
+                                    selector:
+                                      additionalProperties: false
+                                      description: Identifies the part of the request to exclude.
+                                      properties:
+                                        enhanced:
+                                          description: Whether the exception recommendations are for enhanced selectors.
+                                          type: boolean
+                                        names:
+                                          description: List of names.
+                                          items:
+                                            type: string
+                                          type: array
+                                        numberOfExceptions:
+                                          description: The number of exceptions Adaptive Security Engine recommends.
+                                          type: integer
+                                        selector:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                          enum:
+                                          - REQUEST_HEADERS
+                                          - ARGS
+                                          - JSON_PAIRS
+                                          - XML_PAIRS
+                                          - REQUEST_COOKIES
+                                          - REQUEST_HEADERS_NAMES
+                                          - REQUEST_COOKIES_NAMES
+                                          - ARGS_NAMES
+                                          - JSON_NAMES
+                                          - REQUEST_PROTOCOL
+                                          - REQUEST_URI
+                                          - REQUEST_METHOD
+                                          - REQUEST_FILENAME
+                                          - QUERY_STRING
+                                          - REQUEST_PATH_SEGMENT
+                                          - FILES_NAMES
+                                          - REQUEST_BODY
+                                          - REQBODY_PROCESSOR_ERROR
+                                          - VALUES
+                                          type: string
+                                        type:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                          enum:
+                                          - GENERIC
+                                          - SPECIFIC
+                                          - WILDCARD
+                                          - EXACT
+                                          - AAG_SPECIFIC
+                                          - ENHANCED_GENERIC
+                                          - ENHANCED_SPECIFIC
+                                          - ENHANCED_EXACT
+                                          - ENHANCED_VALUES
+                                          type: string
+                                        wildcard:
+                                          description: Whether the provided value is a wildcard.
+                                          type: boolean
+                                      required:
+                                      - enhanced
+                                      type: object
+                                    selectorId:
+                                      description: The unique identifier for the selector referenced in the recommendation.
+                                      type: integer
+                                  type: object
+                                type: array
+                              ruleSetType:
+                                description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                                enum:
+                                - ACTIVE
+                                - EVALUATION
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  evaluationPeriodEnd:
+                    description: The ISO 8601 date your evaluation period ends.
+                    type: string
+                  evaluationPeriodStart:
+                    description: The ISO 8601 date your evaluation period starts.
+                    type: string
+                  ruleRecommendations:
+                    description: Lists exception recommendations for rules.
+                    items:
+                      additionalProperties: false
+                      description: The exceptions for your rules recommended by Adaptive Security Engine.
+                      properties:
+                        declinedRecommendations:
+                          description: Exception recommendations you previously chose to ignore. Run [Respond to exception recommendations](https://techdocs.akamai.com/application-security/reference/post-recommendations) operation with a value of `RESET` if you want to undo your previous setting.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              description:
+                                description: Describes why the proposed tuning exception is recommended.
+                                type: string
+                              evidences:
+                                description: Provides additional information about the recommendation.
+                                type: string
+                              exceptions:
+                                description: Conditionally exclude requests from inspection.
+                                items:
+                                  additionalProperties: false
+                                  description: Conditionally exclude requests from inspection.
+                                  properties:
+                                    recommendationId:
+                                      description: The unique identifier for the recommendation.
+                                      type: integer
+                                    selector:
+                                      additionalProperties: false
+                                      description: Identifies the part of the request to exclude.
+                                      properties:
+                                        enhanced:
+                                          description: Whether the exception recommendations are for enhanced selectors.
+                                          type: boolean
+                                        names:
+                                          description: List of names.
+                                          items:
+                                            type: string
+                                          type: array
+                                        numberOfExceptions:
+                                          description: The number of exceptions Adaptive Security Engine recommends.
+                                          type: integer
+                                        selector:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                          enum:
+                                          - REQUEST_HEADERS
+                                          - ARGS
+                                          - JSON_PAIRS
+                                          - XML_PAIRS
+                                          - REQUEST_COOKIES
+                                          - REQUEST_HEADERS_NAMES
+                                          - REQUEST_COOKIES_NAMES
+                                          - ARGS_NAMES
+                                          - JSON_NAMES
+                                          - REQUEST_PROTOCOL
+                                          - REQUEST_URI
+                                          - REQUEST_METHOD
+                                          - REQUEST_FILENAME
+                                          - QUERY_STRING
+                                          - REQUEST_PATH_SEGMENT
+                                          - FILES_NAMES
+                                          - REQUEST_BODY
+                                          - REQBODY_PROCESSOR_ERROR
+                                          - VALUES
+                                          type: string
+                                        type:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                          enum:
+                                          - GENERIC
+                                          - SPECIFIC
+                                          - WILDCARD
+                                          - EXACT
+                                          - AAG_SPECIFIC
+                                          - ENHANCED_GENERIC
+                                          - ENHANCED_SPECIFIC
+                                          - ENHANCED_EXACT
+                                          - ENHANCED_VALUES
+                                          type: string
+                                        wildcard:
+                                          description: Whether the provided value is a wildcard.
+                                          type: boolean
+                                      required:
+                                      - enhanced
+                                      type: object
+                                    selectorId:
+                                      description: The unique identifier for the selector referenced in the recommendation.
+                                      type: integer
+                                  type: object
+                                type: array
+                              ruleSetType:
+                                description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                                enum:
+                                - ACTIVE
+                                - EVALUATION
+                                type: string
+                            type: object
+                          type: array
+                        id:
+                          description: The unique identifier for a rule. In other operations, you may see this as a `ruleId`.
+                          type: integer
+                        recommendations:
+                          description: Describes the recommended exception values.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              description:
+                                description: Describes why the proposed tuning exception is recommended.
+                                type: string
+                              evidences:
+                                description: Provides additional information about the recommendation.
+                                type: string
+                              exceptions:
+                                description: Conditionally exclude requests from inspection.
+                                items:
+                                  additionalProperties: false
+                                  properties:
+                                    recommendationId:
+                                      description: The unique identifier for the recommendation.
+                                      type: integer
+                                    selector:
+                                      additionalProperties: false
+                                      description: Identifies the part of the request to exclude.
+                                      properties:
+                                        enhanced:
+                                          description: Whether the exception recommendations are for enhanced selectors.
+                                          type: boolean
+                                        names:
+                                          description: List of names.
+                                          items:
+                                            type: string
+                                          type: array
+                                        numberOfExceptions:
+                                          description: The number of exceptions Adaptive Security Engine recommends.
+                                          type: integer
+                                        selector:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                          enum:
+                                          - REQUEST_HEADERS
+                                          - ARGS
+                                          - JSON_PAIRS
+                                          - XML_PAIRS
+                                          - REQUEST_COOKIES
+                                          - REQUEST_HEADERS_NAMES
+                                          - REQUEST_COOKIES_NAMES
+                                          - ARGS_NAMES
+                                          - JSON_NAMES
+                                          - REQUEST_PROTOCOL
+                                          - REQUEST_URI
+                                          - REQUEST_METHOD
+                                          - REQUEST_FILENAME
+                                          - QUERY_STRING
+                                          - REQUEST_PATH_SEGMENT
+                                          - FILES_NAMES
+                                          - REQUEST_BODY
+                                          - REQBODY_PROCESSOR_ERROR
+                                          - VALUES
+                                          type: string
+                                        type:
+                                          description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                          enum:
+                                          - GENERIC
+                                          - SPECIFIC
+                                          - WILDCARD
+                                          - EXACT
+                                          - AAG_SPECIFIC
+                                          - ENHANCED_GENERIC
+                                          - ENHANCED_SPECIFIC
+                                          - ENHANCED_EXACT
+                                          - ENHANCED_VALUES
+                                          type: string
+                                        wildcard:
+                                          description: Whether the provided value is a wildcard.
+                                          type: boolean
+                                      required:
+                                      - enhanced
+                                      type: object
+                                    selectorId:
+                                      description: The unique identifier for the selector referenced in the recommendation.
+                                      type: integer
+                                  type: object
+                                type: array
+                              ruleSetType:
+                                description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                                enum:
+                                - ACTIVE
+                                - EVALUATION
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                type: object
+                x-akamai:
+                  file-path: schemas/recommendations.yaml
+          description: Successfully returned the resource.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get tuning recommendations for a policy
+      tags:
+      - 'WAF rules: Tuning recommendations'
+      x-akamai:
+        labels:
+        - Adaptive Security Engine
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations/attack-groups/{attackGroupId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    - description: A unique identifier for each attack group.
+      in: path
+      name: attackGroupId
+      required: true
+      schema:
+        example: CMD
+        type: string
+      x-akamai:
+        file-path: parameters/attack-group-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-recommendations-attack-group.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations/attack-groups/{attackGroupId}
+    get:
+      description: __Adaptive Security Engine__ Returns available tuning recommendations for an attack group. Our system can identify patterns of false positives, and suggests exceptions for you to include in your attack group.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-attack-group
+      operationId: get-attack-group
+      parameters:
+      - description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active and evaluation recommendations.
+        in: query
+        name: type
+        schema:
+          default: ACTIVE
+          enum:
+          - ACTIVE
+          - EVALUATION
+          - ALL
+          example: ACTIVE
+          type: string
+        x-akamai:
+          file-path: parameters/type-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                declinedRecommendations:
+                - description: CMD recommendation
+                  exceptions:
+                  - selector:
+                      enhanced: false
+                      names:
+                      - XML-PAIR-02-TEST
+                      selector: XML_PAIRS
+                      type: AAG_SPECIFIC
+                      wildcard: true
+                    selectorId: 19557
+                group: CMD
+                recommendations:
+                - description: This selector triggered on 3458 unique IPs over a period of 7 hours.
+                  exceptions:
+                  - selector:
+                      enhanced: false
+                      names:
+                      - WWW-Exc_Header
+                      - WWW-Auth
+                      numberOfExceptions: 2
+                      selector: REQUEST_HEADERS
+                      type: AAG_SPECIFIC
+                      wildcard: false
+                    selectorId: 77
+              schema:
+                additionalProperties: false
+                description: Attack Group Recommendation details.
+                properties:
+                  declinedRecommendations:
+                    description: Exception recommendations you previously chose to ignore. Run [Respond to exception recommendations](https://techdocs.akamai.com/application-security/reference/post-recommendations) with a value of `RESET` if you want to undo your previous setting.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        description:
+                          description: Describes why the proposed tuning exception is recommended.
+                          type: string
+                        evidences:
+                          description: Provides additional information about the recommendation.
+                          type: string
+                        exceptions:
+                          description: Conditionally exclude requests from inspection.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              recommendationId:
+                                description: The unique identifier for the recommendation.
+                                type: integer
+                              selector:
+                                additionalProperties: false
+                                description: Identifies the part of the request to exclude.
+                                properties:
+                                  enhanced:
+                                    description: Whether the exception recommendations are for enhanced selectors.
+                                    type: boolean
+                                  names:
+                                    description: List of names.
+                                    items:
+                                      type: string
+                                    type: array
+                                  numberOfExceptions:
+                                    description: The number of exceptions Adaptive Security Engine recommends.
+                                    type: integer
+                                  selector:
+                                    description: Identifies the part of the request to exclude. See [selector values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                    enum:
+                                    - REQUEST_HEADERS
+                                    - ARGS
+                                    - JSON_PAIRS
+                                    - XML_PAIRS
+                                    - REQUEST_COOKIES
+                                    - REQUEST_HEADERS_NAMES
+                                    - REQUEST_COOKIES_NAMES
+                                    - ARGS_NAMES
+                                    - JSON_NAMES
+                                    - REQUEST_PROTOCOL
+                                    - REQUEST_URI
+                                    - REQUEST_METHOD
+                                    - REQUEST_FILENAME
+                                    - QUERY_STRING
+                                    - REQUEST_PATH_SEGMENT
+                                    - FILES_NAMES
+                                    - REQUEST_BODY
+                                    - REQBODY_PROCESSOR_ERROR
+                                    - VALUES
+                                    type: string
+                                  type:
+                                    description: See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                    enum:
+                                    - GENERIC
+                                    - SPECIFIC
+                                    - WILDCARD
+                                    - EXACT
+                                    - AAG_SPECIFIC
+                                    - ENHANCED_GENERIC
+                                    - ENHANCED_SPECIFIC
+                                    - ENHANCED_EXACT
+                                    - ENHANCED_VALUES
+                                    type: string
+                                  wildcard:
+                                    description: Whether the provided value is a wildcard.
+                                    type: boolean
+                                required:
+                                - enhanced
+                                type: object
+                              selectorId:
+                                description: The unique identifier for the selector referenced in the recommendation.
+                                type: integer
+                            type: object
+                          type: array
+                        ruleSetType:
+                          description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                          enum:
+                          - ACTIVE
+                          - EVALUATION
+                          type: string
+                      type: object
+                    type: array
+                  group:
+                    description: The attack group the recommendations are for.
+                    type: string
+                  recommendations:
+                    description: Lists recommended exception values for an attack group.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        description:
+                          description: Describes why the proposed tuning exception is recommended.
+                          type: string
+                        evidences:
+                          description: Provides additional information about the recommendation.
+                          type: string
+                        exceptions:
+                          description: Describes the exception fields that allow you to conditionally exclude requests from inspection.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              recommendationId:
+                                description: The unique identifier for the recommendation.
+                                type: integer
+                              selector:
+                                additionalProperties: false
+                                description: Identifies the part of the request to exclude.
+                                properties:
+                                  enhanced:
+                                    description: Whether the exception recommendations are for enhanced selectors.
+                                    type: boolean
+                                  names:
+                                    description: List of names.
+                                    items:
+                                      type: string
+                                    type: array
+                                  numberOfExceptions:
+                                    description: The number of exceptions Adaptive Security Engine recommends.
+                                    type: integer
+                                  selector:
+                                    description: Identifies the part of the request to exclude. See [selector values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                    enum:
+                                    - REQUEST_HEADERS
+                                    - ARGS
+                                    - JSON_PAIRS
+                                    - XML_PAIRS
+                                    - REQUEST_COOKIES
+                                    - REQUEST_HEADERS_NAMES
+                                    - REQUEST_COOKIES_NAMES
+                                    - ARGS_NAMES
+                                    - JSON_NAMES
+                                    - REQUEST_PROTOCOL
+                                    - REQUEST_URI
+                                    - REQUEST_METHOD
+                                    - REQUEST_FILENAME
+                                    - QUERY_STRING
+                                    - REQUEST_PATH_SEGMENT
+                                    - FILES_NAMES
+                                    - REQUEST_BODY
+                                    - REQBODY_PROCESSOR_ERROR
+                                    - VALUES
+                                    type: string
+                                  type:
+                                    description: Additional request attributes to exclude from inspection. See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                    enum:
+                                    - GENERIC
+                                    - SPECIFIC
+                                    - WILDCARD
+                                    - EXACT
+                                    - AAG_SPECIFIC
+                                    - ENHANCED_GENERIC
+                                    - ENHANCED_SPECIFIC
+                                    - ENHANCED_EXACT
+                                    - ENHANCED_VALUES
+                                    type: string
+                                  wildcard:
+                                    description: Whether the provided value is a wildcard.
+                                    type: boolean
+                                required:
+                                - enhanced
+                                type: object
+                              selectorId:
+                                description: The unique identifier for the selector referenced in the recommendation.
+                                type: integer
+                            type: object
+                          type: array
+                        ruleSetType:
+                          description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                          enum:
+                          - ACTIVE
+                          - EVALUATION
+                          type: string
+                      type: object
+                    type: array
+                type: object
+                x-akamai:
+                  file-path: schemas/group-recommendations.yaml
+          description: Successfully returned recommendations.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to recommendations in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Recommendations not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List tuning recommendations for an attack group
+      tags:
+      - 'WAF rules: Tuning recommendations'
+      x-akamai:
+        labels:
+        - Adaptive Security Engine
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations/rules/{ruleId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    - description: A unique identifier for rule.
+      in: path
+      name: ruleId
+      required: true
+      schema:
+        example: 699989
+        type: integer
+      x-akamai:
+        file-path: parameters/rule-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-recommendations-rule.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/recommendations/rules/{ruleId}
+    get:
+      description: __Adaptive Security Engine__ Returns available tuning recommendations for a rule. Our system can identify patterns of false positives, and suggests exceptions for you to include in your rule. In cases where your rules are already optimum, the response payload returns empty.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-recommendations-rule
+      operationId: get-recommendations-rule
+      parameters:
+      - description: __Enum__ If `ACTIVE`, includes only active recommendations, the default. If `EVALUATION`, includes only evaluation recommendations. If `ALL`, includes both active and evaluation recommendations.
+        in: query
+        name: type
+        schema:
+          default: ACTIVE
+          enum:
+          - ACTIVE
+          - EVALUATION
+          - ALL
+          example: ACTIVE
+          type: string
+        x-akamai:
+          file-path: parameters/type-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                declinedRecommendations:
+                - description: 100001 recommendation
+                  exceptions:
+                  - selector:
+                      enhanced: false
+                      names:
+                      - XML-PAIR-02-TEST
+                      selector: XML_PAIRS
+                      type: AAG_SPECIFIC
+                      wildcard: true
+                    selectorId: 19557
+                id: 100001
+                recommendations:
+                - description: Description for SQL
+                  exceptions:
+                  - selector:
+                      enhanced: false
+                      names:
+                      - JSON_PAIR_001
+                      selector: JSON_PAIRS
+                      type: AAG_SPECIFIC
+                      wildcard: true
+                    selectorId: 84220
+              schema:
+                additionalProperties: false
+                description: Recommendation details.
+                properties:
+                  declinedRecommendations:
+                    description: Exception recommendations you previously chose to ignore. Run [Respond to exception recommendations](https://techdocs.akamai.com/application-security/reference/post-recommendations) with a value of `RESET` if you want to undo your previous setting.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        description:
+                          description: Exception recommendations you previously chose to ignore. Run [Respond to exception recommendations](https://techdocs.akamai.com/application-security/reference/post-recommendations) with a value of `RESET` if you want to undo your previous setting.
+                          type: string
+                        evidences:
+                          description: Provides additional information about the recommendation.
+                          type: string
+                        exceptions:
+                          description: Conditionally exclude requests from inspection.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              recommendationId:
+                                description: The unique identifier for the recommendation.
+                                type: integer
+                              selector:
+                                additionalProperties: false
+                                description: Identifies the part of the request to exclude.
+                                properties:
+                                  enhanced:
+                                    description: Whether the exception recommendations are for enhanced selectors.
+                                    type: boolean
+                                  names:
+                                    description: List of names.
+                                    items:
+                                      type: string
+                                    type: array
+                                  numberOfExceptions:
+                                    description: The number of exceptions Adaptive Security Engine recommends.
+                                    type: integer
+                                  selector:
+                                    description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                    enum:
+                                    - REQUEST_HEADERS
+                                    - ARGS
+                                    - JSON_PAIRS
+                                    - XML_PAIRS
+                                    - REQUEST_COOKIES
+                                    - REQUEST_HEADERS_NAMES
+                                    - REQUEST_COOKIES_NAMES
+                                    - ARGS_NAMES
+                                    - JSON_NAMES
+                                    - REQUEST_PROTOCOL
+                                    - REQUEST_URI
+                                    - REQUEST_METHOD
+                                    - REQUEST_FILENAME
+                                    - QUERY_STRING
+                                    - REQUEST_PATH_SEGMENT
+                                    - FILES_NAMES
+                                    - REQUEST_BODY
+                                    - REQBODY_PROCESSOR_ERROR
+                                    - VALUES
+                                    type: string
+                                  type:
+                                    description: See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                    enum:
+                                    - GENERIC
+                                    - SPECIFIC
+                                    - WILDCARD
+                                    - EXACT
+                                    - AAG_SPECIFIC
+                                    - ENHANCED_GENERIC
+                                    - ENHANCED_SPECIFIC
+                                    - ENHANCED_EXACT
+                                    - ENHANCED_VALUES
+                                    type: string
+                                  wildcard:
+                                    description: Whether the provided value is a wildcard.
+                                    type: boolean
+                                required:
+                                - enhanced
+                                type: object
+                              selectorId:
+                                description: The unique identifier for the selector referenced in the recommendation.
+                                type: integer
+                            type: object
+                          type: array
+                        ruleSetType:
+                          description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                          enum:
+                          - ACTIVE
+                          - EVALUATION
+                          type: string
+                      type: object
+                    type: array
+                  id:
+                    description: The unique identifier for a rule. In other operations, you may see this as a `ruleId`.
+                    type: integer
+                  recommendations:
+                    description: Describes the recommended exception values for a rule.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        description:
+                          description: Describes why the proposed tuning exception is recommended.
+                          type: string
+                        evidences:
+                          description: Provides additional information about the recommendation.
+                          type: string
+                        exceptions:
+                          description: Conditionally exclude requests from inspection.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              recommendationId:
+                                description: The unique identifier for the recommendation.
+                                type: integer
+                              selector:
+                                additionalProperties: false
+                                description: Identifies the part of the request to exclude.
+                                properties:
+                                  enhanced:
+                                    description: Whether the exception recommendations are for enhanced selectors.
+                                    type: boolean
+                                  names:
+                                    description: List of names.
+                                    items:
+                                      type: string
+                                    type: array
+                                  numberOfExceptions:
+                                    description: The number of exceptions Adaptive Security Engine recommends.
+                                    type: integer
+                                  selector:
+                                    description: Identifies the part of the request to exclude. See [Selector type values](https://techdocs.akamai.com/application-security/reference/exception-selector-values) for available values.
+                                    enum:
+                                    - REQUEST_HEADERS
+                                    - ARGS
+                                    - JSON_PAIRS
+                                    - XML_PAIRS
+                                    - REQUEST_COOKIES
+                                    - REQUEST_HEADERS_NAMES
+                                    - REQUEST_COOKIES_NAMES
+                                    - ARGS_NAMES
+                                    - JSON_NAMES
+                                    - REQUEST_PROTOCOL
+                                    - REQUEST_URI
+                                    - REQUEST_METHOD
+                                    - REQUEST_FILENAME
+                                    - QUERY_STRING
+                                    - REQUEST_PATH_SEGMENT
+                                    - FILES_NAMES
+                                    - REQUEST_BODY
+                                    - REQBODY_PROCESSOR_ERROR
+                                    - VALUES
+                                    type: string
+                                  type:
+                                    description: See [Selector type values](https://techdocs.akamai.com/application-security/reference/recommendation-selector-values) for available values.
+                                    enum:
+                                    - GENERIC
+                                    - SPECIFIC
+                                    - WILDCARD
+                                    - EXACT
+                                    - AAG_SPECIFIC
+                                    - ENHANCED_GENERIC
+                                    - ENHANCED_SPECIFIC
+                                    - ENHANCED_EXACT
+                                    - ENHANCED_VALUES
+                                    type: string
+                                  wildcard:
+                                    description: Whether the provided value is a wildcard.
+                                    type: boolean
+                                required:
+                                - enhanced
+                                type: object
+                              selectorId:
+                                description: The unique identifier for the selector referenced in the recommendation.
+                                type: integer
+                            type: object
+                          type: array
+                        ruleSetType:
+                          description: Identifies the recommendation type. This value populates only when the query type is `ALL`. Use `ACTIVE` for active rule sets. Use `EVALUATION` for evaluation rule sets.
+                          enum:
+                          - ACTIVE
+                          - EVALUATION
+                          type: string
+                      type: object
+                    type: array
+                type: object
+                x-akamai:
+                  file-path: schemas/rule-recommendations.yaml
+          description: Successfully returned recommendations.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to recommendations in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Recommendations not found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List tuning recommendations for a rule
+      tags:
+      - 'WAF rules: Tuning recommendations'
+      x-akamai:
+        labels:
+        - Adaptive Security Engine
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

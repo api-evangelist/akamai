@@ -1,0 +1,522 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens WAF rules: Update mode API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Manage the mode used with your WAF rules. Your mode you set
+
+    determines how your rule sets are updated.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Manage the mode used with your WAF rules. Your mode you set
+
+    determines how your rule sets are updated.'
+  name: 'WAF rules: Update mode'
+paths:
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/mode:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-mode.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/mode
+    get:
+      description: __All products__ When using Web Application Firewall in your security policy, this mode conveys how you're planning to keep the rules up to date, either `KRS` for manual updates or `AAG` for automatic updates. This operation returns which mode your rules are currently set to.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-policy-mode
+      operationId: get-policy-mode
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                current: KRS 1.0 (Apr 20, 2020)
+                mode: KRS
+              schema:
+                additionalProperties: false
+                description: The GET Response JSON for the security policy mode.
+                properties:
+                  current:
+                    description: The current rule set version and the ISO 8601 date the rule set version was introduced. This date acts like a version number.
+                    type: string
+                  eval:
+                    description: Whether the evaluation mode is `enabled` or `disabled`.
+                    enum:
+                    - enabled
+                    - disabled
+                    type: string
+                  evaluating:
+                    description: The evaluation rule set version and the ISO 8601 date the evaluation starts.
+                    type: string
+                  expires:
+                    description: The ISO 8601 time stamp when the evaluation is expiring. This value only appears when `eval` is set to `enabled`.
+                    format: date-time
+                    type: string
+                  mode:
+                    description: The security policy mode. Use `KRS` to update manually, or `AAG` to update automatically. For Adaptive Security Engine rule sets, use `ASE_AUTO` for automatic updates to the ASE evaluation rules, or `ASE_MANUAL` to manually retrieve current evaluation rules. When not specified, the mode uses default settings. For a KRS 1.0 policy, that means using the KRS 1.0 rule set.
+                    enum:
+                    - KRS
+                    - AAG
+                    - ASE_AUTO
+                    - ASE_MANUAL
+                    type: string
+                required:
+                - mode
+                type: object
+                x-akamai:
+                  file-path: schemas/mode-get-200.yaml
+          description: Successfully retrieved the current mode.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Get the current mode
+      tags:
+      - 'WAF rules: Update mode'
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__, __Adaptive Security Engine__ The mode you set determines how your rule sets are updated. Use `KRS` mode to update the rule sets manually, or `AAG` to have them update automatically. If you're using Adaptive Security Engine, use `ASE_AUTO` to update the rules automatically, or `ASE_MANUAL` to update them yourself.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-policy-mode
+      operationId: put-policy-mode
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              mode: KRS
+            schema:
+              additionalProperties: false
+              description: The PUT Request JSON for setting the security policy mode.
+              properties:
+                mode:
+                  description: The security policy rule update mode. Use `KRS` to update rules manually, or `AAG` to update rules automatically. For Adaptive Security Engine (ASE), use `ASE_AUTO` for automatic updates or `ASE_MANUAL` to manually get current rules. When switching from one mode to another, any rule actions you have migrate to the new mode. For example, your rule actions for `ASE_AUTO` become the rule actions for `ASE_MANUAL` when you switch from auto to manual modes, and vice versa. Rule actions for `ASE_AUTO` are currently in beta. Contact your account team to access this option.
+                  enum:
+                  - KRS
+                  - AAG
+                  - ASE_AUTO
+                  - ASE_MANUAL
+                  type: string
+              required:
+              - mode
+              type: object
+              x-akamai:
+                file-path: schemas/mode-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                current: KRS 1.0 (Apr 20, 2020)
+                mode: KRS
+              schema:
+                additionalProperties: false
+                description: The PUT Response JSON for setting the security policy mode.
+                properties:
+                  current:
+                    description: The rule set version and the latest version date.
+                    type: string
+                  mode:
+                    description: The security policy rule update mode. Use `KRS` to update rules manually, or `AAG` to update rules automatically. For Adaptive Security Engine (ASE), use `ASE_AUTO` for automatic updates or `ASE_MANUAL` to manually get current rules.
+                    enum:
+                    - KRS
+                    - AAG
+                    - ASE_AUTO
+                    - ASE_MANUAL
+                    type: string
+                required:
+                - mode
+                type: object
+                x-akamai:
+                  file-path: schemas/mode-put-200.yaml
+          description: Successfully set the security policy mode.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have permission to write to this resource.'
+          x-akamai:
+            file-path: errors/403-client-write-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Modify the mode
+      tags:
+      - 'WAF rules: Update mode'
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+        - Adaptive Security Engine
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

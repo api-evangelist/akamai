@@ -1,0 +1,2357 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Reporting groups API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Reporting groups
+paths:
+  /reporting-groups:
+    x-akamai:
+      file-path: paths/reporting-groups.yaml
+      path-for-file: /reporting-groups
+    post:
+      description: Creates a reporting group. Make sure the reporting group's name is unique within an account. The `location` header in the response provides a relative path to the created reporting group.
+      operationId: post-reporting-groups
+      summary: Create a reporting group
+      tags:
+      - Reporting groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/post-reporting-groups
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              reportingGroupName: Region XYZ
+              accessGroup:
+                contractId: K-0N7RAK71
+                groupId: 15225
+              contracts:
+              - contractId: C-0N7RAC71
+                cpcodes:
+                - cpcodeId: 1234567
+                  cpcodeName: Digital Company CP Code
+                - cpcodeId: 1234567
+                  cpcodeName: Internet Company CP Code
+            schema:
+              additionalProperties: false
+              description: Provides the request members that you can specify when creating a reporting group.
+              type: object
+              required:
+              - reportingGroupName
+              - contracts
+              - accessGroup
+              properties:
+                accessGroup:
+                  additionalProperties: false
+                  description: A group that controls access to specific CP codes.
+                  type: object
+                  required:
+                  - contractId
+                  - groupId
+                  properties:
+                    contractId:
+                      description: 'Identifies the contract assigned to the access control group. Get and store this ID from your account using the [Contracts API](https://techdocs.akamai.com/contract-api/reference/get-contract-ids).
+
+
+                        **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                      minLength: 1
+                      type: string
+                    groupId:
+                      description: 'Identifies the access control group. Reporting groups may belong to many groups. If that happens, this member''s value is `null`.
+
+
+                        **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                      minimum: 0
+                      nullable: true
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/access-group.yaml
+                contracts:
+                  description: A collection of contracts and CP codes assigned to the reporting group.
+                  minItems: 0
+                  type: array
+                  items:
+                    additionalProperties: false
+                    description: Specifies details of a single contract and collection of CP codes assigned to the reporting group.
+                    type: object
+                    required:
+                    - contractId
+                    - cpcodes
+                    properties:
+                      contractId:
+                        description: 'Identifies the contract assigned to the reporting group.
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minLength: 1
+                        readOnly: true
+                        type: string
+                      cpcodes:
+                        description: A collection of CP codes assigned to the reporting group.
+                        minItems: 0
+                        type: array
+                        items:
+                          additionalProperties: false
+                          description: Specifies details of a single CP code.
+                          type: object
+                          required:
+                          - cpcodeId
+                          properties:
+                            cpcodeId:
+                              description: 'Identifies a CP code.
+
+
+                                **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                              minimum: 0
+                              type: integer
+                            cpcodeName:
+                              description: The descriptive label for the CP code.
+                              minLength: 1
+                              type: string
+                  x-akamai:
+                    file-path: schemas/contracts-array.yaml
+                reportingGroupName:
+                  description: The descriptive label for the reporting group.
+                  example: '{{reportingGroupName}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/reporting-group-post.yaml
+      responses:
+        '201':
+          description: Provides details of a newly created reporting group.
+          content:
+            application/json:
+              example:
+                reportingGroupName: Region XYZ
+                accessGroup:
+                  contractId: K-0N7RAK7
+                  groupId: 15225
+                contracts:
+                - contractId: K-0N7RAK71
+                  cpcodes:
+                  - cpcodeId: 1234567
+                    cpcodeName: Digital Company CP Code
+                  - cpcodeId: 1234567
+                    cpcodeName: Internet Company CP Code
+              schema:
+                additionalProperties: false
+                description: On GET, provides detailed information about a specific reporting group. On PUR, provides the request members that you can specify when updating a reporting group. When updating a reporting group, you should only modify a reporting group's name and assigned CP codes. Modifying other members results in an 400 error response and causes the request to fail.
+                type: object
+                required:
+                - reportingGroupId
+                - reportingGroupName
+                - contracts
+                - accessGroup
+                properties:
+                  accessGroup:
+                    additionalProperties: false
+                    description: A group that controls access to specific CP codes.
+                    readOnly: true
+                    type: object
+                    required:
+                    - contractId
+                    - groupId
+                    properties:
+                      contractId:
+                        description: 'Identifies the contract assigned to the access control group. Get and store this ID from your account using the [Contracts API](https://techdocs.akamai.com/contract-api/reference/get-contract-ids).
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minLength: 1
+                        type: string
+                      groupId:
+                        description: 'Identifies the access control group. Reporting groups may belong to many groups. If that happens, this member''s value is `null`.
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minimum: 0
+                        nullable: true
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/access-group.yaml
+                  contracts:
+                    description: A collection of contracts and CP codes assigned to the reporting group.
+                    minItems: 0
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Specifies details of a single contract and collection of CP codes assigned to the reporting group.
+                      type: object
+                      required:
+                      - contractId
+                      - cpcodes
+                      properties:
+                        contractId:
+                          description: 'Identifies the contract assigned to the reporting group.
+
+
+                            **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        cpcodes:
+                          description: A collection of CP codes assigned to the reporting group.
+                          minItems: 0
+                          type: array
+                          items:
+                            additionalProperties: false
+                            description: Specifies details of a single CP code.
+                            type: object
+                            required:
+                            - cpcodeId
+                            properties:
+                              cpcodeId:
+                                description: 'Identifies a CP code.
+
+
+                                  **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                                minimum: 0
+                                type: integer
+                              cpcodeName:
+                                description: The descriptive label for the CP code.
+                                minLength: 1
+                                type: string
+                    x-akamai:
+                      file-path: schemas/contracts-array.yaml
+                  reportingGroupId:
+                    description: Identifies the reporting group.
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                  reportingGroupName:
+                    description: The descriptive label for the reporting group.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/reporting-group-200.yaml
+          headers:
+            Location:
+              description: The relative path to the created reporting group.
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/Location.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+        '415':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: Lists detailed information about reporting groups available for your account and contract.
+      operationId: get-reporting-groups
+      summary: List reporting groups
+      tags:
+      - Reporting groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/get-reporting-groups
+      responses:
+        '200':
+          description: Lists details of reporting groups available for a specified account and contract.
+          content:
+            application/json:
+              example:
+                groups:
+                - reportingGroupId: 101010
+                  reportingGroupName: Region XYZ
+                  accessGroup:
+                    contractId: K-0N7RAK7
+                    groupId: 15225
+                  contracts:
+                  - contractId: K-0N7RAK71
+                    cpcodes:
+                    - cpcodeId: 1234567
+                      cpcodeName: Digital Company CP Code
+                - reportingGroupId: 101011
+                  reportingGroupName: Region gLobal XYZ
+                  accessGroup:
+                    contractId: C-0N7RAC71
+                    groupId: 15225
+                  contracts:
+                  - contractId: K-0N7RAK71
+                    cpcodes:
+                    - cpcodeId: 1234567
+                      cpcodeName: Internet Company CP Code
+                    - cpcodeId: 1234567
+                      cpcodeName: High Street Company CP Code
+              schema:
+                additionalProperties: false
+                description: Provides details about the reporting groups available for your contract.
+                type: object
+                required:
+                - groups
+                properties:
+                  groups:
+                    description: A set of reporting groups available for your contract.
+                    minItems: 0
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: On GET, provides detailed information about a specific reporting group. On PUR, provides the request members that you can specify when updating a reporting group. When updating a reporting group, you should only modify a reporting group's name and assigned CP codes. Modifying other members results in an 400 error response and causes the request to fail.
+                      type: object
+                      required:
+                      - reportingGroupId
+                      - reportingGroupName
+                      - contracts
+                      - accessGroup
+                      properties:
+                        accessGroup:
+                          additionalProperties: false
+                          description: A group that controls access to specific CP codes.
+                          readOnly: true
+                          type: object
+                          required:
+                          - contractId
+                          - groupId
+                          properties:
+                            contractId:
+                              description: 'Identifies the contract assigned to the access control group. Get and store this ID from your account using the [Contracts API](https://techdocs.akamai.com/contract-api/reference/get-contract-ids).
+
+
+                                **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                              minLength: 1
+                              type: string
+                            groupId:
+                              description: 'Identifies the access control group. Reporting groups may belong to many groups. If that happens, this member''s value is `null`.
+
+
+                                **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                              minimum: 0
+                              nullable: true
+                              type: integer
+                          x-akamai:
+                            file-path: schemas/access-group.yaml
+                        contracts:
+                          description: A collection of contracts and CP codes assigned to the reporting group.
+                          minItems: 0
+                          type: array
+                          items:
+                            additionalProperties: false
+                            description: Specifies details of a single contract and collection of CP codes assigned to the reporting group.
+                            type: object
+                            required:
+                            - contractId
+                            - cpcodes
+                            properties:
+                              contractId:
+                                description: 'Identifies the contract assigned to the reporting group.
+
+
+                                  **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                                minLength: 1
+                                readOnly: true
+                                type: string
+                              cpcodes:
+                                description: A collection of CP codes assigned to the reporting group.
+                                minItems: 0
+                                type: array
+                                items:
+                                  additionalProperties: false
+                                  description: Specifies details of a single CP code.
+                                  type: object
+                                  required:
+                                  - cpcodeId
+                                  properties:
+                                    cpcodeId:
+                                      description: 'Identifies a CP code.
+
+
+                                        **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                                      minimum: 0
+                                      type: integer
+                                    cpcodeName:
+                                      description: The descriptive label for the CP code.
+                                      minLength: 1
+                                      type: string
+                          x-akamai:
+                            file-path: schemas/contracts-array.yaml
+                        reportingGroupId:
+                          description: Identifies the reporting group.
+                          minimum: 0
+                          readOnly: true
+                          type: integer
+                        reportingGroupName:
+                          description: The descriptive label for the reporting group.
+                          minLength: 1
+                          type: string
+                      x-akamai:
+                        file-path: schemas/reporting-group-200.yaml
+                x-akamai:
+                  file-path: schemas/reporting-groups-200.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: Identifies the contract to filter data by. Include this optional parameter to narrow down the results to a specific contract only.
+        example: '{{contractId}}'
+        in: query
+        name: contractId
+        schema:
+          example: 1Q004
+          type: string
+        x-akamai:
+          file-path: parameters/contractId-query.yaml
+      - description: Identifies the access group to filter data by. Include this optional parameter to narrow down the results to a specific access group only.
+        example: '{{groupId}}'
+        in: query
+        name: groupId
+        schema:
+          example: '9760'
+          type: string
+        x-akamai:
+          file-path: parameters/groupId-query.yaml
+      - description: The name of the reporting group to filter data by. Include this optional parameter to narrow down the results to a specific reporting group name only.
+        example: '{{reportingGroupName}}'
+        in: query
+        name: reportingGroupName
+        schema:
+          example: Region XYZ
+          type: string
+        x-akamai:
+          file-path: parameters/reportingGroupName-query.yaml
+      - description: Identifies the CP code to filter data by. Include this optional parameter to narrow down the results to a specific CP code only.
+        example: '{{cpcodeId}}'
+        in: query
+        name: cpcodeId
+        schema:
+          example: '12345'
+          type: string
+        x-akamai:
+          file-path: parameters/cpcodeId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /reporting-groups/{reportingGroupId}:
+    x-akamai:
+      file-path: paths/reporting-group.yaml
+      path-for-file: /reporting-groups/{reportingGroupId}
+    parameters:
+    - description: The identifier for the reporting group.
+      example: '{{reportingGroupId}}'
+      in: path
+      name: reportingGroupId
+      required: true
+      schema:
+        example: 101010
+        type: integer
+      x-akamai:
+        file-path: parameters/reportingGroupId-path.yaml
+    get:
+      description: Get detailed information about a specific reporting group. The details include the reporting group name and the access control group that it belongs to. This operations also lists the contracts and CP codes assigned to the reporting group.
+      operationId: get-reporting-group
+      summary: Get a reporting group
+      tags:
+      - Reporting groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/get-reporting-group
+      responses:
+        '200':
+          description: Provides details of a specified reporting group.
+          content:
+            application/json:
+              example:
+                reportingGroupId: 101010
+                reportingGroupName: Region XYZ
+                accessGroup:
+                  contractId: K-0N7RAK71
+                  groupId: 15225
+                contracts:
+                - contractId: C-0N7RAC7
+                  cpcodes:
+                  - cpcodeId: 1234567
+                    cpcodeName: Digital Company CP Code
+                  - cpcodeId: 1234567
+                    cpcodeName: Internet Company CP Code
+              schema:
+                additionalProperties: false
+                description: On GET, provides detailed information about a specific reporting group. On PUR, provides the request members that you can specify when updating a reporting group. When updating a reporting group, you should only modify a reporting group's name and assigned CP codes. Modifying other members results in an 400 error response and causes the request to fail.
+                type: object
+                required:
+                - reportingGroupId
+                - reportingGroupName
+                - contracts
+                - accessGroup
+                properties:
+                  accessGroup:
+                    additionalProperties: false
+                    description: A group that controls access to specific CP codes.
+                    readOnly: true
+                    type: object
+                    required:
+                    - contractId
+                    - groupId
+                    properties:
+                      contractId:
+                        description: 'Identifies the contract assigned to the access control group. Get and store this ID from your account using the [Contracts API](https://techdocs.akamai.com/contract-api/reference/get-contract-ids).
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minLength: 1
+                        type: string
+                      groupId:
+                        description: 'Identifies the access control group. Reporting groups may belong to many groups. If that happens, this member''s value is `null`.
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minimum: 0
+                        nullable: true
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/access-group.yaml
+                  contracts:
+                    description: A collection of contracts and CP codes assigned to the reporting group.
+                    minItems: 0
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Specifies details of a single contract and collection of CP codes assigned to the reporting group.
+                      type: object
+                      required:
+                      - contractId
+                      - cpcodes
+                      properties:
+                        contractId:
+                          description: 'Identifies the contract assigned to the reporting group.
+
+
+                            **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        cpcodes:
+                          description: A collection of CP codes assigned to the reporting group.
+                          minItems: 0
+                          type: array
+                          items:
+                            additionalProperties: false
+                            description: Specifies details of a single CP code.
+                            type: object
+                            required:
+                            - cpcodeId
+                            properties:
+                              cpcodeId:
+                                description: 'Identifies a CP code.
+
+
+                                  **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                                minimum: 0
+                                type: integer
+                              cpcodeName:
+                                description: The descriptive label for the CP code.
+                                minLength: 1
+                                type: string
+                    x-akamai:
+                      file-path: schemas/contracts-array.yaml
+                  reportingGroupId:
+                    description: Identifies the reporting group.
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                  reportingGroupName:
+                    description: The descriptive label for the reporting group.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/reporting-group-200.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Modifies a specific reporting group. You should only modify a reporting group's name and assigned CP codes.
+      operationId: put-reporting-group
+      summary: Update a reporting group
+      tags:
+      - Reporting groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/put-reporting-group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              description: Region XYZ
+              reportingGroupId: 101010
+              reportingGroupName: Region XYZ
+              contracts:
+              - contractId: C-0N7RAC71
+                cpcodes:
+                - cpcodeId: 1234567
+                  cpcodeName: Digital Company CP Code
+                - cpcodeId: 1234567
+                  cpcodeName: Internet Company CP Code
+            schema:
+              additionalProperties: false
+              description: On GET, provides detailed information about a specific reporting group. On PUR, provides the request members that you can specify when updating a reporting group. When updating a reporting group, you should only modify a reporting group's name and assigned CP codes. Modifying other members results in an 400 error response and causes the request to fail.
+              type: object
+              required:
+              - reportingGroupId
+              - reportingGroupName
+              - contracts
+              - accessGroup
+              properties:
+                accessGroup:
+                  additionalProperties: false
+                  description: A group that controls access to specific CP codes.
+                  readOnly: true
+                  type: object
+                  required:
+                  - contractId
+                  - groupId
+                  properties:
+                    contractId:
+                      description: 'Identifies the contract assigned to the access control group. Get and store this ID from your account using the [Contracts API](https://techdocs.akamai.com/contract-api/reference/get-contract-ids).
+
+
+                        **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                      minLength: 1
+                      type: string
+                    groupId:
+                      description: 'Identifies the access control group. Reporting groups may belong to many groups. If that happens, this member''s value is `null`.
+
+
+                        **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                      minimum: 0
+                      nullable: true
+                      type: integer
+                  x-akamai:
+                    file-path: schemas/access-group.yaml
+                contracts:
+                  description: A collection of contracts and CP codes assigned to the reporting group.
+                  minItems: 0
+                  type: array
+                  items:
+                    additionalProperties: false
+                    description: Specifies details of a single contract and collection of CP codes assigned to the reporting group.
+                    type: object
+                    required:
+                    - contractId
+                    - cpcodes
+                    properties:
+                      contractId:
+                        description: 'Identifies the contract assigned to the reporting group.
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minLength: 1
+                        readOnly: true
+                        type: string
+                      cpcodes:
+                        description: A collection of CP codes assigned to the reporting group.
+                        minItems: 0
+                        type: array
+                        items:
+                          additionalProperties: false
+                          description: Specifies details of a single CP code.
+                          type: object
+                          required:
+                          - cpcodeId
+                          properties:
+                            cpcodeId:
+                              description: 'Identifies a CP code.
+
+
+                                **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                              minimum: 0
+                              type: integer
+                            cpcodeName:
+                              description: The descriptive label for the CP code.
+                              minLength: 1
+                              type: string
+                  x-akamai:
+                    file-path: schemas/contracts-array.yaml
+                reportingGroupId:
+                  description: Identifies the reporting group.
+                  example: '{{reportingGroupId}}'
+                  minimum: 0
+                  readOnly: true
+                  type: integer
+                reportingGroupName:
+                  description: The descriptive label for the reporting group.
+                  example: '{{reportingGroupName}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/reporting-group-200.yaml
+      responses:
+        '200':
+          description: Provides details of a modified reporting group.
+          content:
+            application/json:
+              example:
+                reportingGroupId: 101010
+                reportingGroupName: Region XYZ
+                accessGroup:
+                  contractId: K-0N7RAK7
+                  groupId: 15225
+                contracts:
+                - contractId: C-0N7RAC7
+                  cpcodes:
+                  - cpcodeId: 1234567
+                    cpcodeName: Digital Company CP Code
+                  - cpcodeId: 1234567
+                    cpcodeName: Internet Company CP Code
+              schema:
+                additionalProperties: false
+                description: On GET, provides detailed information about a specific reporting group. On PUR, provides the request members that you can specify when updating a reporting group. When updating a reporting group, you should only modify a reporting group's name and assigned CP codes. Modifying other members results in an 400 error response and causes the request to fail.
+                type: object
+                required:
+                - reportingGroupId
+                - reportingGroupName
+                - contracts
+                - accessGroup
+                properties:
+                  accessGroup:
+                    additionalProperties: false
+                    description: A group that controls access to specific CP codes.
+                    readOnly: true
+                    type: object
+                    required:
+                    - contractId
+                    - groupId
+                    properties:
+                      contractId:
+                        description: 'Identifies the contract assigned to the access control group. Get and store this ID from your account using the [Contracts API](https://techdocs.akamai.com/contract-api/reference/get-contract-ids).
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minLength: 1
+                        type: string
+                      groupId:
+                        description: 'Identifies the access control group. Reporting groups may belong to many groups. If that happens, this member''s value is `null`.
+
+
+                          **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                        minimum: 0
+                        nullable: true
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/access-group.yaml
+                  contracts:
+                    description: A collection of contracts and CP codes assigned to the reporting group.
+                    minItems: 0
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Specifies details of a single contract and collection of CP codes assigned to the reporting group.
+                      type: object
+                      required:
+                      - contractId
+                      - cpcodes
+                      properties:
+                        contractId:
+                          description: 'Identifies the contract assigned to the reporting group.
+
+
+                            **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        cpcodes:
+                          description: A collection of CP codes assigned to the reporting group.
+                          minItems: 0
+                          type: array
+                          items:
+                            additionalProperties: false
+                            description: Specifies details of a single CP code.
+                            type: object
+                            required:
+                            - cpcodeId
+                            properties:
+                              cpcodeId:
+                                description: 'Identifies a CP code.
+
+
+                                  **Note**: See [ID prefixes](https://techdocs.akamai.com/cp-codes/reference/id-prefixes) for guidance on comparing this value with data from PAPI.'
+                                minimum: 0
+                                type: integer
+                              cpcodeName:
+                                description: The descriptive label for the CP code.
+                                minLength: 1
+                                type: string
+                    x-akamai:
+                      file-path: schemas/contracts-array.yaml
+                  reportingGroupId:
+                    description: Identifies the reporting group.
+                    minimum: 0
+                    readOnly: true
+                    type: integer
+                  reportingGroupName:
+                    description: The descriptive label for the reporting group.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/reporting-group-200.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+        '415':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    delete:
+      description: Deletes a specific reporting group.
+      operationId: delete-reporting-group
+      summary: Delete a reporting group
+      tags:
+      - Reporting groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/delete-reporting-group
+      responses:
+        '201':
+          description: Reporting group deleted successfully.
+          content:
+            '*/*': {}
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

@@ -1,0 +1,2826 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Onboarding: Creation and settings API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage onboardings and their settings.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage onboardings and their settings.
+  name: 'Onboarding: Creation and settings'
+paths:
+  /onboardings:
+    x-akamai:
+      file-path: paths/onboardings.yaml
+      path-info: /onboardings
+    post:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Create a new onboarding. To start, you'll need a valid set of hostnames that either need delivery settings, an Akamai-owned certificate from the Certificate Provisioning System (CPS), and security protections, or have delivery settings complete and only need security protections. However, you can include only one type of these hostnames per onboarding, not both. If you have both kinds of hostnames, those that need delivery settings, a CPS certificate, and security protections, and those that only need security protections, you'll need to create two onboarding objects. The response object is your newly created onboarding.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-onboarding
+      operationId: post-onboarding
+      parameters:
+      - description: This creates an onboarding with a new CPS certificate and security protections. If your contract limits how many certificates you create, the API responds with an error.
+        in: query
+        name: createNewResourcesOnly
+        required: false
+        schema:
+          default: false
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/create-new-resources-only-path.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              contractId: C-0N7RAC7
+              groupId: 12345
+              hostnames:
+              - www.example.com
+              - www.test.example.org
+            schema:
+              additionalProperties: false
+              description: Describes the parameters you need to pass to create a new onboarding object.
+              properties:
+                contractId:
+                  description: A unique identifier for a contract. Run [List contracts and groups](https://techdocs.akamai.com/application-security/docs/get-contracts-groups) to get the `contractId` if you don't have one already.
+                  type: string
+                groupId:
+                  description: A unique identifier for a group.
+                  format: int32
+                  type: integer
+                hostnames:
+                  description: List of hostnames you are setting up with Akamai services.
+                  items:
+                    type: string
+                  maxItems: 100
+                  minItems: 1
+                  type: array
+              required:
+              - contractId
+              - groupId
+              - hostnames
+              type: object
+              x-akamai:
+                file-path: schemas/onboarding-post.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                accountId: A-CCT7890
+                contractId: C-0N7RAC7
+                createdBy: jsmith
+                createdDate: '2024-05-02T22:08:50Z'
+                currentStep: 2
+                groupId: 54321
+                hostnames:
+                - www.example.com
+                - test.example.org
+                modifiedBy: asingh
+                modifiedDate: '2024-07-02T22:08:50Z'
+                nextSteps:
+                - stepDescription: Activate the onboarding
+                  stepLink: /appsec/v1/onboardings/101/activate
+                  stepName: activate-onboarding
+                onboardingId: 101
+                onboardingLink: /appsec/v1/onboardings/101
+                onboardingStatus: CREATED
+                product: AAP
+                settings:
+                  certificate:
+                    adminContact:
+                      email: adminContact@nomail-akamai.com
+                      firstName: AdminUser
+                      lastName: User
+                      phone: '+9180460018'
+                    certificateType: CUSTOM_EXISTING
+                    commonName: www.at.konaqa.com
+                    enrollmentId: 94723
+                    enrollmentLink: /cps/v2/enrollments/94723
+                  delivery:
+                    origins:
+                    - hostname: www.example.com
+                      origin: origin-ea0ac1-www.example.com
+                    - hostname: www.www.test.example.org
+                      origin: origin-8eeeba-test.example.org
+                  security:
+                    cloneVersion: 25
+                    configId: 243359
+                    configLink: /appsec/v1/configs/12345
+                    configName: sec-config
+                    configType: EXISTING
+                    evalRequired: true
+                    policyId: PLCY_12344
+                    policyLink: /appsec/v1/configs/12345/versions/25/security-policies/PLCY_12345
+                    policyName: sec-policy
+                    policyType: EXISTING
+                    protections:
+                      applyApplicationLayerControls: true
+                      applyBotmanControls: false
+                      applyNetworkLayerControls: true
+                      applyRateControls: true
+                      applyReputationControls: true
+                      applySlowPostControls: true
+                  settingsLink: /appsec/v1/onboardings/101/settings
+                totalSteps: 6
+              schema:
+                additionalProperties: false
+                description: Describes the settings for onboarding hostnames with delivery and security settings.
+                properties:
+                  accountId:
+                    description: A unique identifier for your account.
+                    minLength: 1
+                    type: string
+                  activations:
+                    description: Lists the activation information for your onboarding.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        activationId:
+                          description: A unique identifier for your activation.
+                          type: integer
+                        activationLink:
+                          description: The URL to call for information about your activation.
+                          format: uri
+                          type: string
+                        activationStatus:
+                          description: Whether the activation is `PENDING`, has `FAILED`, or is `ACTIVE`.
+                          enum:
+                          - PENDING
+                          - ACTIVE
+                          - FAILED
+                          minLength: 1
+                          type: string
+                        completedDate:
+                          description: The date the onboarding completed activating.
+                          format: date-time
+                          type: string
+                        createdDate:
+                          description: __Read-only__ The date the onboarding is activated.
+                          format: date-time
+                          readOnly: true
+                          type: string
+                        network:
+                          description: Whether the activation is for the `STAGING` or `PRODUCTION` networks. Note that activating on staging is required before you activate on production. You can activate one environment at a time, not both.
+                          enum:
+                          - STAGING
+                          - PRODUCTION
+                          minLength: 1
+                          type: string
+                      required:
+                      - activationId
+                      - activationStatus
+                      - network
+                      - createdDate
+                      - completedDate
+                      - activationLink
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                  contractId:
+                    description: A unique identifier for a contract.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the onboarding.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  createdDate:
+                    description: The date the onboarding is created.
+                    format: date-time
+                    type: string
+                  currentStep:
+                    description: The step you are working on in your onboarding process.
+                    type: number
+                  groupId:
+                    description: A unique identifier for a group.
+                    type: integer
+                  hostnames:
+                    description: Hostnames you're configuring for service on our platform.
+                    items:
+                      type: string
+                    type: array
+                  modifiedBy:
+                    description: __Read-only__ The most recent user to make changes to the onboarding.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  modifiedDate:
+                    description: __Read-only__ The date the onboarding was changed.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  nextSteps:
+                    description: The step you begin once you complete your `currentStep`.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        stepDescription:
+                          description: Information about the step.
+                          minLength: 1
+                          type: string
+                        stepLink:
+                          description: The URL to that step.
+                          format: uri
+                          type: string
+                        stepName:
+                          description: The name of the step.
+                          minLength: 1
+                          type: string
+                      required:
+                      - stepName
+                      - stepDescription
+                      - stepLink
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                  onboardingId:
+                    description: A unique identifier for the onboarding object.
+                    type: integer
+                  onboardingLink:
+                    description: The URL to the next operation in the onboarding workflow.
+                    format: uri
+                    type: string
+                  onboardingStatus:
+                    description: 'The onboarding state of your hostnames and settings.
+
+
+                      <details>
+
+                      <summary>
+
+                      Show details on supported values
+
+                      </summary>
+
+                      <ul>
+
+                      <li><code>CREATED</code>. Your onboarding object now exists but is not active on any networks.</li>
+
+                      <li><code>DOM_VALIDATION_COMPLETE</code>. You validated domain ownership successfully.</li>
+
+                      <li><code>STAGING_ACTIVE</code>. Your hostnames and settings are active on the staging network.</li>
+
+                      <li><code>STAGING_ACTIVATION_FAILED</code>. The activation could not complete on the staging network. The error messages returned for this call detail the specific error.</li>
+
+                      <li><code>STAGING_ACTIVATION_PENDING</code>. Activation on the staging network is in progress.</li>
+
+                      <li><code>PRODUCTION_ACTIVE</code>. Your hostnames and settings are active on the production network.</li>
+
+                      <li><code>PRODUCTION_ACTIVATION_PENDING</code>. Activation on the production network is in progress. This can take about 20 minutes.</li>
+
+                      <li><code>PRODUCTION_ACTIVATION_FAILED</code>. The activation could not complete on the production network. The error messages returned for this call detail the specific error.</li>
+
+                      <li><code>VALIDATION_PENDING</code>. Your site is ready to validate. You''ll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.</li>
+
+                      <li><code>VALIDATION_COMPLETE</code>. You validated your site successfully.</li>
+
+                      <li><code>CNAME_TO_AKAMAI_PENDING</code>. You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.</li>
+
+                      <li><code>COMPLETE</code>. Your web content is live on the Akamai network and you are serving traffic.</li>
+
+                      </ul>
+
+                      </details>'
+                    enum:
+                    - CREATED
+                    - DOM_VALIDATION_COMPLETE
+                    - STAGING_ACTIVE
+                    - STAGING_ACTIVATION_FAILED
+                    - STAGING_ACTIVATION_PENDING
+                    - PRODUCTION_ACTIVE
+                    - PRODUCTION_ACTIVATION_PENDING
+                    - PRODUCTION_ACTIVATION_FAILED
+                    - VALIDATION_PENDING
+                    - VALIDATION_COMPLETE
+                    - CNAME_TO_AKAMAI_PENDING
+                    - COMPLETE
+                    example: VALIDATION_PENDING
+                    type: string
+                    x-akamai:
+                      enum-descriptions:
+                        CNAME_TO_AKAMAI_PENDING: You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.
+                        COMPLETE: Your web content is live on the Akamai network and you are serving traffic.
+                        CREATED: Your onboarding object now exists but is not active on any networks.
+                        DOM_VALIDATION_COMPLETE: You validated domain ownership successfully.
+                        PRODUCTION_ACTIVATION_FAILED: The activation could not complete on the production network. The error messages returned for this call detail the specific error.
+                        PRODUCTION_ACTIVATION_PENDING: Activation on the production network is in progress. This can take about 20 minutes.
+                        PRODUCTION_ACTIVE: Your hostnames and settings are active on the production network.
+                        STAGING_ACTIVATION_FAILED: The activation could not complete on the staging network. The error messages returned for this call detail the specific error.
+                        STAGING_ACTIVATION_PENDING: Activation on the staging network is in progress.
+                        STAGING_ACTIVE: Your hostnames and settings are active on the staging network.
+                        VALIDATION_COMPLETE: You validated your site successfully.
+                        VALIDATION_PENDING: Your site is ready to validate. You'll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.
+                      file-path: schemas/onboarding-status.yaml
+                  product:
+                    description: The product your hostnames are using to serve content to your users.
+                    minLength: 1
+                    type: string
+                  settings:
+                    additionalProperties: false
+                    description: The delivery, certificate, and security settings you need for your site to serve traffic on the Akamai network.
+                    properties:
+                      certificate:
+                        additionalProperties: false
+                        description: The certificate settings to secure your site.
+                        properties:
+                          adminContact:
+                            additionalProperties: false
+                            description: Contact information for the certificate administrator that you want to use as a contact at your company.
+                            properties:
+                              email:
+                                description: Your contact's email address.
+                                minLength: 1
+                                type: string
+                              firstName:
+                                description: Your contact's given name.
+                                minLength: 1
+                                type: string
+                              lastName:
+                                description: Your contact's family name.
+                                minLength: 1
+                                type: string
+                              phone:
+                                description: Your contact's the phone number.
+                                minLength: 1
+                                type: string
+                            required:
+                            - firstName
+                            - lastName
+                            - phone
+                            - email
+                            type: object
+                          certificateType:
+                            description: A value of `DEFAULT` creates new secure-by-default certificate. A value of `CUSTOM_EXISTING` means the certificate already exists on your account. If you want to create a new certificate, choose `CUSTOM_NEW`. Note that your certificate is created when you activate your onboarding. Your account may have limits for how many certificates you can create. If, for example, your account is limited to five certificates and your account already has five, then you won't be able to create a new one.
+                            enum:
+                            - DEFAULT
+                            - CUSTOM_EXISTING
+                            - CUSTOM_NEW
+                            minLength: 1
+                            type: string
+                          commonName:
+                            description: The domain name to use for the certificate, also known as the common name.
+                            minLength: 1
+                            type: string
+                          enrollmentId:
+                            description: A unique identifier for an enrollment in the Certificate Provisioning System (CPS).
+                            type: integer
+                          enrollmentLink:
+                            description: The URL to call the enrollment. Note this URL is for the [Certificate Provisioning System (CPS) API](https://techdocs.akamai.com/cps/reference/api).
+                            format: uri
+                            type: string
+                        required:
+                        - certificateType
+                        - adminContact
+                        type: object
+                      delivery:
+                        additionalProperties: false
+                        description: The delivery settings for your site traffic.
+                        properties:
+                          origins:
+                            description: List of hostnames and proposed origin hostnames. If you choose not to use an origin hostname suggested to you, you can edit it to the value you want with a request to [Update onboarding settings](https://techdocs.akamai.com/application-security/reference/put-onboarding-settings).
+                            items:
+                              additionalProperties: false
+                              properties:
+                                hostname:
+                                  description: The hostname for your site. You can add up to 100 hostnames.
+                                  minLength: 1
+                                  type: string
+                                origin:
+                                  description: The origin server hostname.
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - hostname
+                              - origin
+                              type: object
+                            minItems: 1
+                            type: array
+                            uniqueItems: true
+                        required:
+                        - origins
+                        type: object
+                      security:
+                        additionalProperties: false
+                        description: The security settings for your site.
+                        properties:
+                          cloneVersion:
+                            description: The configuration version that is cloned to make a new configuration for onboarding.
+                            type: integer
+                          configId:
+                            description: The identifier for the existing configuration.
+                            type: integer
+                          configLink:
+                            description: The URL to make a call for the specific configuration. For example, [Get a configuration](https://techdocs.akamai.com/application-security/docs/get-config).
+                            format: uri
+                            type: string
+                          configName:
+                            description: The name of configuration.
+                            minLength: 1
+                            type: string
+                          configType:
+                            description: Specifies whether the security configuration is `NEW`, or you're using an `EXISTING` one. Note than when you use an existing configuration, the onboarding process creates a new version of the configuration from _the version that is currently active_ on the production network. If no version is active on production, the clone will be the most recent version of the configuration. For example, if you have version 14 active on production out of 23 versions, version 14 is the version that is cloned when you create a new onboarding. If there is no active version on production and there are 23 versions of the configuration, it is version 23 that's cloned.
+                            enum:
+                            - NEW
+                            - EXISTING
+                            minLength: 1
+                            type: string
+                          evalRequired:
+                            description: If `TRUE`, adds the hostnames to evaluation mode for the policy. This applies to AAP only.
+                            type: boolean
+                          policyId:
+                            description: If `securityPolicy` is `EXISTING`, lists the unique identifier for the policy.
+                            minLength: 1
+                            type: string
+                          policyLink:
+                            description: The URL to make a call for the specific policy. For example, [Update a policy](https://techdocs.akamai.com/application-security/docs/put-policy).
+                            format: uri
+                            type: string
+                          policyName:
+                            description: The name of the security policy.
+                            minLength: 1
+                            type: string
+                          policyType:
+                            description: 'Specifies whether the security policy is `NEW`, or you''re using an `EXISTING` one. Note that you can only edit policy settings if `"policyType": "NEW"` because editing existing, active policies could disrupt service to your site.'
+                            enum:
+                            - NEW
+                            - EXISTING
+                            minLength: 1
+                            type: string
+                          protections:
+                            additionalProperties: false
+                            description: The set of protections in the security policy.
+                            properties:
+                              applyApplicationLayerControls:
+                                description: When enabled, your security policy applies the Web Application Firewall controls to your traffic.
+                                type: boolean
+                              applyBotmanControls:
+                                description: When enabled, your security policy applies Bot Manager controls to your traffic.
+                                type: boolean
+                              applyNetworkLayerControls:
+                                description: When enabled, your security policy applies the network layer control settings to your traffic.
+                                type: boolean
+                              applyRateControls:
+                                description: When enabled, your security policy applies the rate control settings to your traffic. Rate controls monitor and flag traffic too fast to be from a human.
+                                type: boolean
+                              applyReputationControls:
+                                description: 'When enabled, your security policy applies the reputation profile settings to your traffic. Reputation profile analyses IP addresses based on their prior interactions with Akamai customers, then alerts on or blocks potentially malicious IP addresses from issuing requests.
+
+                                  Applicable for ASM accounts.'
+                                type: boolean
+                              applySlowPostControls:
+                                description: When enabled, your security policy applies slow POST controls to your traffic.
+                                type: boolean
+                            required:
+                            - applyApplicationLayerControls
+                            - applyBotmanControls
+                            - applyNetworkLayerControls
+                            - applyRateControls
+                            - applySlowPostControls
+                            type: object
+                        required:
+                        - configType
+                        - policyType
+                        - protections
+                        type: object
+                      settingsLink:
+                        description: The URL to call to manage onboarding settings after you finishing the initial creation.
+                        format: uri
+                        type: string
+                    required:
+                    - delivery
+                    - certificate
+                    - security
+                    - settingsLink
+                    type: object
+                  totalSteps:
+                    description: 'How many steps it takes to complete the onboarding from start to finish. There are 6 steps.
+
+
+                      * 1 - CREATED
+
+                      * 2 - STAGING_ACTIVATION
+
+                      * 3 - PRODUCTION_ACTIVATION
+
+                      * 4 - ORIGIN_VALIDATION
+
+                      * 5 - CERTIFICATE_VALIDATION
+
+                      * 6 - CNAME_VALIDATION'
+                    type: number
+                required:
+                - onboardingId
+                - onboardingLink
+                - accountId
+                - contractId
+                - groupId
+                - product
+                - hostnames
+                - onboardingStatus
+                - settings
+                - currentStep
+                - totalSteps
+                - nextSteps
+                - createdBy
+                - createdDate
+                - modifiedBy
+                - modifiedDate
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-post-200.yaml
+          description: Successfully created an onboarding object.
+          headers:
+            Location:
+              description: A URL to access the newly created resource.
+              example: /malware-policies/post-malware-policies
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/location.yaml
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have create Self Serviceability onboarding.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Create an onboarding
+      tags:
+      - 'Onboarding: Creation and settings'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+    get:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Lists onboardings. You can filter results by hostname or onboarding status.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboardings
+      operationId: get-onboardings
+      parameters:
+      - description: Lists onboardings for a specific status.
+        explode: false
+        in: query
+        name: onboardingStatuses
+        required: false
+        schema:
+          example:
+          - VALIDATION_PENDING
+          - COMPLETE
+          items:
+            description: 'The onboarding state of your hostnames and settings.
+
+
+              <details>
+
+              <summary>
+
+              Show details on supported values
+
+              </summary>
+
+              <ul>
+
+              <li><code>CREATED</code>. Your onboarding object now exists but is not active on any networks.</li>
+
+              <li><code>DOM_VALIDATION_COMPLETE</code>. You validated domain ownership successfully.</li>
+
+              <li><code>STAGING_ACTIVE</code>. Your hostnames and settings are active on the staging network.</li>
+
+              <li><code>STAGING_ACTIVATION_FAILED</code>. The activation could not complete on the staging network. The error messages returned for this call detail the specific error.</li>
+
+              <li><code>STAGING_ACTIVATION_PENDING</code>. Activation on the staging network is in progress.</li>
+
+              <li><code>PRODUCTION_ACTIVE</code>. Your hostnames and settings are active on the production network.</li>
+
+              <li><code>PRODUCTION_ACTIVATION_PENDING</code>. Activation on the production network is in progress. This can take about 20 minutes.</li>
+
+              <li><code>PRODUCTION_ACTIVATION_FAILED</code>. The activation could not complete on the production network. The error messages returned for this call detail the specific error.</li>
+
+              <li><code>VALIDATION_PENDING</code>. Your site is ready to validate. You''ll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.</li>
+
+              <li><code>VALIDATION_COMPLETE</code>. You validated your site successfully.</li>
+
+              <li><code>CNAME_TO_AKAMAI_PENDING</code>. You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.</li>
+
+              <li><code>COMPLETE</code>. Your web content is live on the Akamai network and you are serving traffic.</li>
+
+              </ul>
+
+              </details>'
+            enum:
+            - CREATED
+            - DOM_VALIDATION_COMPLETE
+            - STAGING_ACTIVE
+            - STAGING_ACTIVATION_FAILED
+            - STAGING_ACTIVATION_PENDING
+            - PRODUCTION_ACTIVE
+            - PRODUCTION_ACTIVATION_PENDING
+            - PRODUCTION_ACTIVATION_FAILED
+            - VALIDATION_PENDING
+            - VALIDATION_COMPLETE
+            - CNAME_TO_AKAMAI_PENDING
+            - COMPLETE
+            example: VALIDATION_PENDING
+            type: string
+            x-akamai:
+              enum-descriptions:
+                CNAME_TO_AKAMAI_PENDING: You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.
+                COMPLETE: Your web content is live on the Akamai network and you are serving traffic.
+                CREATED: Your onboarding object now exists but is not active on any networks.
+                DOM_VALIDATION_COMPLETE: You validated domain ownership successfully.
+                PRODUCTION_ACTIVATION_FAILED: The activation could not complete on the production network. The error messages returned for this call detail the specific error.
+                PRODUCTION_ACTIVATION_PENDING: Activation on the production network is in progress. This can take about 20 minutes.
+                PRODUCTION_ACTIVE: Your hostnames and settings are active on the production network.
+                STAGING_ACTIVATION_FAILED: The activation could not complete on the staging network. The error messages returned for this call detail the specific error.
+                STAGING_ACTIVATION_PENDING: Activation on the staging network is in progress.
+                STAGING_ACTIVE: Your hostnames and settings are active on the staging network.
+                VALIDATION_COMPLETE: You validated your site successfully.
+                VALIDATION_PENDING: Your site is ready to validate. You'll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.
+              file-path: schemas/onboarding-status.yaml
+          minItems: 1
+          type: array
+        x-akamai:
+          file-path: parameters/onboarding-status.yaml
+      - description: Returns onboardings containing the specified hostnames.
+        explode: false
+        in: query
+        name: hostnames
+        required: false
+        schema:
+          items:
+            example: test.hostname1.com,test.hostname2.com
+            type: string
+          minItems: 1
+          type: array
+        x-akamai:
+          file-path: parameters/hostnames.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                onboardings:
+                - createdBy: jdupont
+                  createdTime: '2024-05-07T22:08:50Z'
+                  hostnames:
+                  - www.example.com
+                  modifiedBy: asingh
+                  modifiedTime: '2024-07-09T15:03:29Z'
+                  onboardingId: 101
+                  onboardingLink: /appsec/v1/onboardings/101
+                  onboardingStatus: VALIDATION_PENDING
+                - createdBy: jsmith
+                  createdTime: '2024-05-03T22:08:51Z'
+                  hostnames:
+                  - www.example.net
+                  - test.example.net
+                  modifiedBy: jsmith
+                  modifiedTime: '2024-07-05T12:34:21Z'
+                  onboardingId: 102
+                  onboardingLink: /appsec/v1/onboardings/102
+                  onboardingStatus: CREATED
+              schema:
+                additionalProperties: false
+                description: Lists reduced details for all onboarding objects.
+                properties:
+                  onboardings:
+                    description: Lists onboarding objects on your account.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        createdBy:
+                          description: __Read-only__ The user who created the onboarding.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        createdTime:
+                          description: __Read-only__ The time the onboarding was created.
+                          readOnly: true
+                          type: string
+                        hostnames:
+                          description: A list of hostnames you are configuring for service on our platform.
+                          items:
+                            type: string
+                          type: array
+                        modifiedBy:
+                          description: __Read-only__ The most recent user to make changes to the onboarding.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        modifiedTime:
+                          description: __Read-only__ The date the onboarding was changed.
+                          readOnly: true
+                          type: string
+                        onboardingId:
+                          description: A unique identifier for an onboarding.
+                          type: integer
+                        onboardingLink:
+                          description: The URL to call when you want to access this onboarding at a later time.
+                          minLength: 1
+                          type: string
+                        onboardingStatus:
+                          description: 'The onboarding state of your hostnames and settings.
+
+
+                            <details>
+
+                            <summary>
+
+                            Show details on supported values
+
+                            </summary>
+
+                            <ul>
+
+                            <li><code>CREATED</code>. Your onboarding object now exists but is not active on any networks.</li>
+
+                            <li><code>DOM_VALIDATION_COMPLETE</code>. You validated domain ownership successfully.</li>
+
+                            <li><code>STAGING_ACTIVE</code>. Your hostnames and settings are active on the staging network.</li>
+
+                            <li><code>STAGING_ACTIVATION_FAILED</code>. The activation could not complete on the staging network. The error messages returned for this call detail the specific error.</li>
+
+                            <li><code>STAGING_ACTIVATION_PENDING</code>. Activation on the staging network is in progress.</li>
+
+                            <li><code>PRODUCTION_ACTIVE</code>. Your hostnames and settings are active on the production network.</li>
+
+                            <li><code>PRODUCTION_ACTIVATION_PENDING</code>. Activation on the production network is in progress. This can take about 20 minutes.</li>
+
+                            <li><code>PRODUCTION_ACTIVATION_FAILED</code>. The activation could not complete on the production network. The error messages returned for this call detail the specific error.</li>
+
+                            <li><code>VALIDATION_PENDING</code>. Your site is ready to validate. You''ll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.</li>
+
+                            <li><code>VALIDATION_COMPLETE</code>. You validated your site successfully.</li>
+
+                            <li><code>CNAME_TO_AKAMAI_PENDING</code>. You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.</li>
+
+                            <li><code>COMPLETE</code>. Your web content is live on the Akamai network and you are serving traffic.</li>
+
+                            </ul>
+
+                            </details>'
+                          enum:
+                          - CREATED
+                          - DOM_VALIDATION_COMPLETE
+                          - STAGING_ACTIVE
+                          - STAGING_ACTIVATION_FAILED
+                          - STAGING_ACTIVATION_PENDING
+                          - PRODUCTION_ACTIVE
+                          - PRODUCTION_ACTIVATION_PENDING
+                          - PRODUCTION_ACTIVATION_FAILED
+                          - VALIDATION_PENDING
+                          - VALIDATION_COMPLETE
+                          - CNAME_TO_AKAMAI_PENDING
+                          - COMPLETE
+                          example: VALIDATION_PENDING
+                          type: string
+                          x-akamai:
+                            enum-descriptions:
+                              CNAME_TO_AKAMAI_PENDING: You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.
+                              COMPLETE: Your web content is live on the Akamai network and you are serving traffic.
+                              CREATED: Your onboarding object now exists but is not active on any networks.
+                              DOM_VALIDATION_COMPLETE: You validated domain ownership successfully.
+                              PRODUCTION_ACTIVATION_FAILED: The activation could not complete on the production network. The error messages returned for this call detail the specific error.
+                              PRODUCTION_ACTIVATION_PENDING: Activation on the production network is in progress. This can take about 20 minutes.
+                              PRODUCTION_ACTIVE: Your hostnames and settings are active on the production network.
+                              STAGING_ACTIVATION_FAILED: The activation could not complete on the staging network. The error messages returned for this call detail the specific error.
+                              STAGING_ACTIVATION_PENDING: Activation on the staging network is in progress.
+                              STAGING_ACTIVE: Your hostnames and settings are active on the staging network.
+                              VALIDATION_COMPLETE: You validated your site successfully.
+                              VALIDATION_PENDING: Your site is ready to validate. You'll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.
+                            file-path: schemas/onboarding-status.yaml
+                      required:
+                      - onboardingId
+                      - onboardingLink
+                      - onboardingStatus
+                      - createdBy
+                      - createdTime
+                      - modifiedBy
+                      - modifiedTime
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                required:
+                - onboardings
+                type: object
+                x-akamai:
+                  file-path: schemas/onboardings-get.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List onboardings
+      tags:
+      - 'Onboarding: Creation and settings'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+  /onboardings/{onboardingId}:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding.yaml
+      path-info: /onboardings/{onboardingId}
+    get:
+      description: '__App & API Protector__, __App & API Protector with the Advanced Security module__ Get an onboarding''s details. Once you''ve completed all steps in the onboarding process, run this call again to verify `onboardingStatus: "COMPLETE"`.'
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding
+      operationId: get-onboarding
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                accountId: A-CCT1234
+                activations:
+                - activationId: 105
+                  activationLink: /appsec/v1/onboardings/101/activations/105
+                  activationStatus: ACTIVE
+                  completedDate: '2024-05-03T12:34:21Z'
+                  createdDate: '2024-05-03T10:38:21Z'
+                  network: STAGING
+                - activationId: 106
+                  activationLink: /appsec/v1/onboardings/101/activations/106
+                  activationStatus: ACTIVE
+                  completedDate: '2024-05-04T12:34:21Z'
+                  createdDate: '2024-05-04T10:38:21Z'
+                  network: PRODUCTION
+                contractId: C-0N7RAC7
+                createdBy: hgildong
+                createdDate: '2024-05-02T22:08:50Z'
+                currentStep: 3
+                groupId: 54321
+                hostnames:
+                - www.example.com
+                - www.example.net
+                modifiedBy: jsmith
+                modifiedDate: '2024-05-04T12:34:21Z'
+                nextSteps:
+                - stepDescription: Validate the certificate challenge
+                  stepLink: /appsec/v1/onboardings/101/certificate-validation
+                  stepName: certificate-validation
+                - stepDescription: Validate that the origin is live
+                  stepLink: /appsec/v1/onboardings/101/origin-validation
+                  stepName: origin-validation
+                onboardingId: 101
+                onboardingLink: /appsec/v1/onboardings/101
+                onboardingStatus: CREATED
+                product: ASM
+                settings:
+                  certificate:
+                    adminContact:
+                      email: adminContact@nomail-akamai.com
+                      firstName: AdminUser
+                      lastName: User
+                      phone: '+9180460018'
+                    certificateType: CUSTOM_EXISTING
+                    commonName: www.at.konaqa.com
+                    enrollmentId: 94723
+                    enrollmentLink: /cps/v2/enrollments/94723
+                  delivery:
+                    origins:
+                    - hostname: www.example.com
+                      origin: origin-ea0ac1-www.example.com
+                    - hostname: www.example.net
+                      origin: origin-8eeeba-www.example.net
+                  security:
+                    cloneVersion: 25
+                    configId: 243359
+                    configLink: /appsec/v1/configs/12345
+                    configName: sec-config
+                    configType: EXISTING
+                    evalRequired: true
+                    policyId: PLCY_12344
+                    policyLink: /appsec/v1/configs/12345/versions/25/security-policies/PLCY_12345
+                    policyName: sec-policy
+                    policyType: EXISTING
+                    protections:
+                      applyApplicationLayerControls: true
+                      applyBotmanControls: false
+                      applyNetworkLayerControls: true
+                      applyRateControls: true
+                      applyReputationControls: true
+                      applySlowPostControls: true
+                  settingsLink: /appsec/v1/onboardings/101/settings
+                totalSteps: 5
+              schema:
+                additionalProperties: false
+                description: Describes the details of an onboarding object.
+                properties:
+                  accountId:
+                    description: a unique identifier for an account.
+                    minLength: 1
+                    type: string
+                  activations:
+                    description: Lists the activation information for your onboarding.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        activationId:
+                          description: A unique identifier for your activation.
+                          type: integer
+                        activationLink:
+                          description: The URL to call for information about your activation.
+                          format: uri
+                          type: string
+                        activationStatus:
+                          description: Whether the activation is `PENDING`, has `FAILED`, or is `ACTIVE`.
+                          enum:
+                          - PENDING
+                          - ACTIVE
+                          - FAILED
+                          minLength: 1
+                          type: string
+                        completedDate:
+                          description: The date the onboarding completed activating.
+                          format: date-time
+                          type: string
+                        createdDate:
+                          description: __Read-only__ The date the onboarding is activated.
+                          format: date-time
+                          readOnly: true
+                          type: string
+                        network:
+                          description: Whether the activation is for the `STAGING` or `PRODUCTION` networks. Note that activating on staging is required before you activate on production. You can activate one environment at a time, not both.
+                          enum:
+                          - STAGING
+                          - PRODUCTION
+                          minLength: 1
+                          type: string
+                      required:
+                      - activationId
+                      - activationStatus
+                      - network
+                      - createdDate
+                      - completedDate
+                      - activationLink
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                  contractId:
+                    description: a unique identifier for your contract.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the onboarding.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  createdDate:
+                    description: The date the onboarding is created.
+                    format: date-time
+                    type: string
+                  currentStep:
+                    description: The step you are working on in your onboarding process.
+                    type: number
+                  groupId:
+                    description: A unique identifier for a group.
+                    type: integer
+                  hostnames:
+                    description: A list of hostnames you are configuring for service on our platform.
+                    items:
+                      type: string
+                    type: array
+                  modifiedBy:
+                    description: __Read-only__ The most recent user to make changes to the onboarding.
+                    minLength: 1
+                    readOnly: true
+                    type: string
+                  modifiedDate:
+                    description: __Read-only__ The date the onboarding was changed.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  nextSteps:
+                    description: The step you begin once you complete your `currentStep`.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        stepDescription:
+                          description: Information about the step.
+                          minLength: 1
+                          type: string
+                        stepLink:
+                          description: The URL to that step.
+                          format: uri
+                          type: string
+                        stepName:
+                          description: The name of the step.
+                          minLength: 1
+                          type: string
+                      required:
+                      - stepName
+                      - stepDescription
+                      - stepLink
+                      type: object
+                    minItems: 1
+                    type: array
+                    uniqueItems: true
+                  onboardingId:
+                    description: A unique identifier for an onboarding.
+                    type: integer
+                  onboardingLink:
+                    description: The URL to call when you want to access this onboarding at a later time.
+                    format: uri
+                    type: string
+                  onboardingStatus:
+                    description: 'The onboarding state of your hostnames and settings.
+
+
+                      <details>
+
+                      <summary>
+
+                      Show details on supported values
+
+                      </summary>
+
+                      <ul>
+
+                      <li><code>CREATED</code>. Your onboarding object now exists but is not active on any networks.</li>
+
+                      <li><code>DOM_VALIDATION_COMPLETE</code>. You validated domain ownership successfully.</li>
+
+                      <li><code>STAGING_ACTIVE</code>. Your hostnames and settings are active on the staging network.</li>
+
+                      <li><code>STAGING_ACTIVATION_FAILED</code>. The activation could not complete on the staging network. The error messages returned for this call detail the specific error.</li>
+
+                      <li><code>STAGING_ACTIVATION_PENDING</code>. Activation on the staging network is in progress.</li>
+
+                      <li><code>PRODUCTION_ACTIVE</code>. Your hostnames and settings are active on the production network.</li>
+
+                      <li><code>PRODUCTION_ACTIVATION_PENDING</code>. Activation on the production network is in progress. This can take about 20 minutes.</li>
+
+                      <li><code>PRODUCTION_ACTIVATION_FAILED</code>. The activation could not complete on the production network. The error messages returned for this call detail the specific error.</li>
+
+                      <li><code>VALIDATION_PENDING</code>. Your site is ready to validate. You''ll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.</li>
+
+                      <li><code>VALIDATION_COMPLETE</code>. You validated your site successfully.</li>
+
+                      <li><code>CNAME_TO_AKAMAI_PENDING</code>. You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.</li>
+
+                      <li><code>COMPLETE</code>. Your web content is live on the Akamai network and you are serving traffic.</li>
+
+                      </ul>
+
+                      </details>'
+                    enum:
+                    - CREATED
+                    - DOM_VALIDATION_COMPLETE
+                    - STAGING_ACTIVE
+                    - STAGING_ACTIVATION_FAILED
+                    - STAGING_ACTIVATION_PENDING
+                    - PRODUCTION_ACTIVE
+                    - PRODUCTION_ACTIVATION_PENDING
+                    - PRODUCTION_ACTIVATION_FAILED
+                    - VALIDATION_PENDING
+                    - VALIDATION_COMPLETE
+                    - CNAME_TO_AKAMAI_PENDING
+                    - COMPLETE
+                    example: VALIDATION_PENDING
+                    type: string
+                    x-akamai:
+                      enum-descriptions:
+                        CNAME_TO_AKAMAI_PENDING: You are ready to CNAME to Akamai, or one of your CNAMEs failed and you need to correct the record.
+                        COMPLETE: Your web content is live on the Akamai network and you are serving traffic.
+                        CREATED: Your onboarding object now exists but is not active on any networks.
+                        DOM_VALIDATION_COMPLETE: You validated domain ownership successfully.
+                        PRODUCTION_ACTIVATION_FAILED: The activation could not complete on the production network. The error messages returned for this call detail the specific error.
+                        PRODUCTION_ACTIVATION_PENDING: Activation on the production network is in progress. This can take about 20 minutes.
+                        PRODUCTION_ACTIVE: Your hostnames and settings are active on the production network.
+                        STAGING_ACTIVATION_FAILED: The activation could not complete on the staging network. The error messages returned for this call detail the specific error.
+                        STAGING_ACTIVATION_PENDING: Activation on the staging network is in progress.
+                        STAGING_ACTIVE: Your hostnames and settings are active on the staging network.
+                        VALIDATION_COMPLETE: You validated your site successfully.
+                        VALIDATION_PENDING: Your site is ready to validate. You'll need to prove you own your site by performing a URL redirect, using an HTTP token, or a DNS token.
+                      file-path: schemas/onboarding-status.yaml
+                  product:
+                    description: The product your hostnames are using to serve content to your users.
+                    minLength: 1
+                    type: string
+                  settings:
+                    additionalProperties: false
+                    description: The delivery, certificate, and security settings you need for your site to serve traffic on the Akamai network.
+                    properties:
+                      certificate:
+                        additionalProperties: false
+                        description: The certificate settings to secure your site.
+                        properties:
+                          adminContact:
+                            additionalProperties: false
+                            description: SContact information for the certificate administrator that you want to use as a contact at your company.
+                            properties:
+                              email:
+                                description: Your contact's email address.
+                                minLength: 1
+                                type: string
+                              firstName:
+                                description: Your contact's given name.
+                                minLength: 1
+                                type: string
+                              lastName:
+                                description: Your contact's family name.
+                                minLength: 1
+                                type: string
+                              phone:
+                                description: Your contact's the phone number.
+                                minLength: 1
+                                type: string
+                            required:
+                            - firstName
+                            - lastName
+                            - phone
+                            - email
+                            type: object
+                          certificateType:
+                            description: A value of `DEFAULT` creates a new secure-by-default certificate. A value of `CUSTOM_EXISTING` means the certificate already exists on your account. If you want to create a new certificate, choose `CUSTOM_NEW`. Note that your certificate is created when you activate your onboarding. Your account may have limits for how many certificates you can create. If, for example, your account is limited to five certificates and your account already has five, then you won't be able to create a new one.
+                            enum:
+                            - DEFAULT
+                            - CUSTOM_EXISTING
+                            - CUSTOM_NEW
+                            minLength: 1
+                            type: string
+                          commonName:
+                            description: The domain name to use for the certificate, also known as the common name.
+                            minLength: 1
+                            type: string
+                          enrollmentId:
+                            description: A unique identifier for an enrollment in the Certificate Provisioning System (CPS).
+                            type: integer
+                          enrollmentLink:
+                            description: The URL to call the enrollment. Note this URL is for the [Certificate Provisioning System (CPS) API](https://techdocs.akamai.com/cps/reference/api).
+                            format: uri
+                            type: string
+                        required:
+                        - certificateType
+                        - adminContact
+                        type: object
+                      delivery:
+                        additionalProperties: false
+                        description: The delivery settings for your site traffic.
+                        properties:
+                          origins:
+                            description: List of hostnames and proposed origin hostnames. If you choose not to use an origin hostname suggested to you, you can edit it to the value you want with a request to [Update onboarding settings](https://techdocs.akamai.com/application-security/reference/put-onboarding-settings).
+                            items:
+                              additionalProperties: false
+                              properties:
+                                hostname:
+                                  description: The hostname for your site. You can add up to 100 hostnames.
+                                  minLength: 1
+                                  type: string
+                                origin:
+                                  description: The origin server hostname.
+                                  minLength: 1
+                                  type: string
+                              required:
+                              - hostname
+                              - origin
+                              type: object
+                            minItems: 1
+                            type: array
+                            uniqueItems: true
+                        required:
+                        - origins
+                        type: object
+                      security:
+                        additionalProperties: false
+                        description: The security settings for your site.
+                        properties:
+                          cloneVersion:
+                            description: The configuration version that is cloned to make a new configuration for onboarding.
+                            type: integer
+                          configId:
+                            description: The identifier for the existing configuration.
+                            type: integer
+                          configLink:
+                            description: The URL to make a call for the specific configuration. For example, [Get a configuration](https://techdocs.akamai.com/application-security/docs/get-config).
+                            format: uri
+                            type: string
+                          configName:
+                            description: The name of configuration.
+                            minLength: 1
+                            type: string
+                          configType:
+                            description: Specifies whether the security configuration is `NEW`, or you're using an `EXISTING` one. Note than when you use an existing configuration, the onboarding process creates a new version of the configuration from _the version that is currently active_ on the production network. If no version is active on production, the clone will be the most recent version of the configuration. For example, if you have version 14 active on production out of 23 versions, version 14 is the version that is cloned when you create a new onboarding. If there is no active version on production and there are 23 versions of the configuration, it is version 23 that's cloned.
+                            enum:
+                            - NEW
+                            - EXISTING
+                            minLength: 1
+                            type: string
+                          evalRequired:
+                            description: If `TRUE`, adds the hostnames to evaluation mode for the policy. This applies to AAP only.
+                            type: boolean
+                          policyId:
+                            description: If `securityPolicy` is `EXISTING`, lists the unique identifier for the policy.
+                            minLength: 1
+                            type: string
+                          policyLink:
+                            description: The URL to make a call for the specific policy. For example, [Update a policy](https://techdocs.akamai.com/application-security/docs/put-policy).
+                            format: uri
+                            type: string
+                          policyName:
+                            description: The name of the security policy.
+                            minLength: 1
+                            type: string
+                          policyType:
+                            description: 'Specifies whether the security policy is `NEW`, or you''re using an `EXISTING` one. Note that you can only edit policy settings if `"policyType": "NEW"` because editing existing, active policies could disrupt service to your site.'
+                            enum:
+                            - NEW
+                            - EXISTING
+                            minLength: 1
+                            type: string
+                          protections:
+                            additionalProperties: false
+                            description: The set of protections in the security policy.
+                            properties:
+                              applyApplicationLayerControls:
+                                description: When enabled, your security policy applies the Web Application Firewall controls to your traffic.
+                                type: boolean
+                              applyBotmanControls:
+                                description: When enabled, your security policy applies Bot Manager controls to your traffic.
+                                type: boolean
+                              applyNetworkLayerControls:
+                                description: When enabled, your security policy applies the network layer control settings to your traffic.
+                                type: boolean
+                              applyRateControls:
+                                description: When enabled, your security policy applies the rate control settings to your traffic. Rate controls monitor and flag traffic too fast to be from a human.
+                                type: boolean
+                              applyReputationControls:
+                                description: 'When enabled, your security policy applies the reputation profile settings to your traffic. Reputation profile analyses IP addresses based on their prior interactions with Akamai customers, then alerts on or blocks potentially malicious IP addresses from issuing requests.
+
+                                  Applicable for ASM accounts.'
+                                type: boolean
+                              applySlowPostControls:
+                                description: When enabled, your security policy applies slow POST controls to your traffic.
+                                type: boolean
+                            required:
+                            - applyApplicationLayerControls
+                            - applyBotmanControls
+                            - applyNetworkLayerControls
+                            - applyRateControls
+                            - applySlowPostControls
+                            type: object
+                        required:
+                        - configType
+                        - policyType
+                        - protections
+                        type: object
+                      settingsLink:
+                        description: The URL to call to manage onboarding settings after you finishing the initial creation.
+                        format: uri
+                        type: string
+                    required:
+                    - delivery
+                    - certificate
+                    - security
+                    - settingsLink
+                    type: object
+                  totalSteps:
+                    description: 'How many steps it takes to complete the onboarding from start to finish. There are 6 steps.
+
+
+                      * 1 - CREATED
+
+                      * 2 - STAGING_ACTIVATION
+
+                      * 3 - PRODUCTION_ACTIVATION
+
+                      * 4 - ORIGIN_VALIDATION
+
+                      * 5 - CERTIFICATE_VALIDATION
+
+                      * 6 - CNAME_VALIDATION'
+                    type: number
+                required:
+                - onboardingId
+                - onboardingLink
+                - accountId
+                - contractId
+                - groupId
+                - product
+                - hostnames
+                - onboardingStatus
+                - settings
+                - currentStep
+                - totalSteps
+                - nextSteps
+                - createdBy
+                - createdDate
+                - modifiedBy
+                - modifiedDate
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-get.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Onboarding wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get an onboarding
+      tags:
+      - 'Onboarding: Creation and settings'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+    delete:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Delete a specific onboarding. You can't delete an onboarding that has an activation in progress. To delete an onboarding that's activating, wait for the activation to complete, then run this operation.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-onboarding
+      operationId: delete-onboarding
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successfully deleted the onboarding.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). This onboarding object is activating on a network and not editable.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to this onboarding object.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Onboarding object wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Delete an onboarding
+      tags:
+      - 'Onboarding: Creation and settings'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+  /onboardings/{onboardingId}/settings:
+    parameters:
+    - description: A unique identifier for an onboarding.
+      in: path
+      name: onboardingId
+      required: true
+      schema:
+        example: 101
+        type: integer
+      x-akamai:
+        file-path: parameters/onboarding-id-path.yaml
+    x-akamai:
+      file-path: paths/onboarding-settings.yaml
+      path-info: /onboardings/{onboardingId}/settings
+    get:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Gets the settings for a specific onboarding.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-onboarding-settings
+      operationId: get-onboarding-settings
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                certificate:
+                  adminContact:
+                    email: adminContact@nomail-akamai.com
+                    firstName: AdminUser
+                    lastName: User
+                    phone: '+919090909090'
+                  certificateType: CUSTOM_EXISTING
+                  commonName: www.commonName.com
+                  enrollmentId: 87902
+                  enrollmentLink: /cps/v2/enrollments/87902
+                delivery:
+                  origins:
+                  - hostname: www.example.com
+                    origin: origin-ea0ac1-.www.example.com
+                  - hostname: www.example.net
+                    origin: origin-8eeeba-.www.example.net
+                onboardingLink: /appsec/v1/onboardings/101
+                security:
+                  cloneVersion: 25
+                  configId: 24335
+                  configLink: /appsec/v1/configs/24335
+                  configName: sec-config
+                  configType: EXISTING
+                  evalRequired: true
+                  policyId: 000Q_475674
+                  policyLink: /appsec/v1/configs/243359/versions/25/security-policies/000Q_475674
+                  policyName: sec-policy
+                  policyType: EXISTING
+                  protections:
+                    applyApplicationLayerControls: true
+                    applyBotmanControls: false
+                    applyNetworkLayerControls: true
+                    applyRateControls: true
+                    applyReputationControls: true
+                    applySlowPostControls: true
+                settingsLink: /appsec/v1/onboardings/101/settings
+              schema:
+                additionalProperties: false
+                description: Describes the delivery, certificate, and security settings for onboarding.
+                properties:
+                  certificate:
+                    additionalProperties: false
+                    description: The certificate settings to secure your site.
+                    properties:
+                      adminContact:
+                        additionalProperties: false
+                        description: Contact information for the certificate administrator that you want to use as a contact at your company.
+                        properties:
+                          email:
+                            description: Your contact's email address.
+                            minLength: 1
+                            type: string
+                          firstName:
+                            description: Your contact's given name.
+                            minLength: 1
+                            type: string
+                          lastName:
+                            description: Your contact's family name.
+                            minLength: 1
+                            type: string
+                          phone:
+                            description: Your contact's the phone number.
+                            minLength: 1
+                            type: string
+                        required:
+                        - firstName
+                        - lastName
+                        - phone
+                        - email
+                        type: object
+                      certificateType:
+                        description: A value of `DEFAULT` creates a new secure-by-default certificate. A value of `CUSTOM_EXISTING` means the certificate already exists on your account. If you want to create a new certificate, choose `CUSTOM_NEW`. Note that your certificate is created when you activate your onboarding. Your account may have limits for how many certificates you can create. If, for example, your account is limited to five certificates and your account already has five, then you won't be able to create a new one.
+                        enum:
+                        - DEFAULT
+                        - CUSTOM_EXISTING
+                        - CUSTOM_NEW
+                        minLength: 1
+                        type: string
+                      commonName:
+                        description: The domain name to use for the certificate, also known as the common name.
+                        minLength: 1
+                        type: string
+                      enrollmentId:
+                        description: A unique identifier for an enrollment in the Certificate Provisioning System (CPS).
+                        type: integer
+                      enrollmentLink:
+                        description: The URL to call the enrollment. Note this URL is for the [Certificate Provisioning System (CPS) API](https://techdocs.akamai.com/cps/reference/api).
+                        format: uri
+                        type: string
+                    required:
+                    - certificateType
+                    - adminContact
+                    type: object
+                  delivery:
+                    additionalProperties: false
+                    description: The delivery settings for your site traffic.
+                    properties:
+                      origins:
+                        description: List of hostnames and proposed origin hostnames. If you choose not to use an origin hostname suggested to you, you can edit it to the value you want with a request to [Update onboarding settings](https://techdocs.akamai.com/application-security/reference/put-onboarding-settings).
+                        items:
+                          additionalProperties: false
+                          properties:
+                            hostname:
+                              description: The hostname for your site. You can add up to 100 hostnames.
+                              minLength: 1
+                              type: string
+                            origin:
+                              description: The origin server hostname.
+                              minLength: 1
+                              type: string
+                          required:
+                          - hostname
+                          - origin
+                          type: object
+                        minItems: 1
+                        type: array
+                        uniqueItems: true
+                    required:
+                    - origins
+                    type: object
+                  onboardingLink:
+                    description: The URL to call when you want to access this onboarding at a later time.
+                    format: uri
+                    type: string
+                  security:
+                    additionalProperties: false
+                    description: The security settings for your site.
+                    properties:
+                      cloneVersion:
+                        description: The configuration version that is cloned to make a new configuration for onboarding.
+                        type: integer
+                      configId:
+                        description: The identifier for the existing configuration.
+                        type: integer
+                      configLink:
+                        description: The URL to make a call for the specific configuration. For example, [Get a configuration](https://techdocs.akamai.com/application-security/docs/get-config).
+                        format: uri
+                        type: string
+                      configName:
+                        description: The name of configuration.
+                        minLength: 1
+                        type: string
+                      configType:
+                        description: Specifies whether the security configuration is `NEW`, or you're using an `EXISTING` one. Note than when you use an existing configuration, the onboarding process creates a new version of the configuration from _the version that is currently active_ on the production network. If no version is active on production, the clone will be the most recent version of the configuration. For example, if you have version 14 active on production out of 23 versions, version 14 is the version that is cloned when you create a new onboarding. If there is no active version on production and there are 23 versions of the configuration, it is version 23 that's cloned.
+                        enum:
+                        - NEW
+                        - EXISTING
+                        minLength: 1
+                        type: string
+                      evalRequired:
+                        description: If `TRUE`, adds the hostnames to evaluation mode for the policy. This applies to AAP only.
+                        type: boolean
+                      policyId:
+                        description: If `securityPolicy` is `EXISTING`, lists the unique identifier for the policy.
+                        minLength: 1
+                        type: string
+                      policyLink:
+                        description: The URL to make a call for the specific policy. For example, the URL in [Update a policy](https://techdocs.akamai.com/application-security/docs/put-policy).
+                        format: uri
+                        type: string
+                      policyName:
+                        description: The name of the security policy.
+                        minLength: 1
+                        type: string
+                      policyType:
+                        description: 'Specifies whether the security policy is `NEW`, or you''re using an `EXISTING` one. Note that you can only edit policy settings if `"policyType": "NEW"` because editing existing, active policies could disrupt service to your site.'
+                        enum:
+                        - NEW
+                        - EXISTING
+                        minLength: 1
+                        type: string
+                      protections:
+                        additionalProperties: false
+                        description: The set of protections in the security policy.
+                        properties:
+                          applyApplicationLayerControls:
+                            description: When enabled, your security policy applies the Web Application Firewall controls to your traffic.
+                            type: boolean
+                          applyBotmanControls:
+                            description: When enabled, your security policy applies Bot Manager controls to your traffic.
+                            type: boolean
+                          applyNetworkLayerControls:
+                            description: When enabled, your security policy applies the network layer control settings to your traffic.
+                            type: boolean
+                          applyRateControls:
+                            description: When enabled, your security policy applies the rate control settings to your traffic. Rate controls monitor and flag traffic too fast to be from a human.
+                            type: boolean
+                          applyReputationControls:
+                            description: 'When enabled, your security policy applies the reputation profile settings to your traffic. Reputation profile analyses IP addresses based on their prior interactions with Akamai customers, then alerts on or blocks potentially malicious IP addresses from issuing requests.
+
+                              Applicable for ASM accounts.'
+                            type: boolean
+                          applySlowPostControls:
+                            description: When enabled, your security policy applies slow POST controls to your traffic.
+                            type: boolean
+                        required:
+                        - applyApplicationLayerControls
+                        - applyBotmanControls
+                        - applyNetworkLayerControls
+                        - applyRateControls
+                        - applySlowPostControls
+                        type: object
+                    required:
+                    - configType
+                    - policyType
+                    - protections
+                    type: object
+                  settingsLink:
+                    description: The URL to call to manage onboarding settings after you finishing the initial creation.
+                    format: uri
+                    type: string
+                required:
+                - delivery
+                - certificate
+                - security
+                - settingsLink
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-settings.yaml
+          description: Successfully returned onboarding settings.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation..'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Onboarding Id wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get onboarding settings
+      tags:
+      - 'Onboarding: Creation and settings'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+    put:
+      description: __App & API Protector__, __App & API Protector with the Advanced Security module__ Update the settings in an onboarding. You can't update settings for an onboarding object that has already activated on staging or production. You can, however, change settings for an onboarding that has not been activated.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-onboarding-settings
+      operationId: put-onboarding-settings
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              certificate:
+                adminContact:
+                  email: adminContact@nomail-akamai.com
+                  firstName: AdminUser
+                  lastName: User
+                  phone: '+919090909090'
+                certificateType: CUSTOM_EXISTING
+                commonName: www.commonName.com
+                enrollmentId: 87902
+                enrollmentLink: /cps/v2/enrollments/87902
+              delivery:
+                origins:
+                - hostname: www.example.com
+                  origin: origin-ea0ac1-.www.example.com
+                - hostname: www.example.net
+                  origin: origin-8eeeba-.www.example.net
+              onboardingLink: /appsec/v1/onboardings/101
+              security:
+                cloneVersion: 25
+                configId: 24335
+                configLink: /appsec/v1/configs/24335
+                configName: sec-config
+                configType: EXISTING
+                evalRequired: true
+                policyId: 000Q_475674
+                policyLink: /appsec/v1/configs/243359/versions/25/security-policies/000Q_475674
+                policyName: sec-policy
+                policyType: EXISTING
+                protections:
+                  applyApplicationLayerControls: true
+                  applyBotmanControls: false
+                  applyNetworkLayerControls: true
+                  applyRateControls: true
+                  applyReputationControls: true
+                  applySlowPostControls: true
+              settingsLink: /appsec/v1/onboardings/101/settings
+            schema:
+              additionalProperties: false
+              description: Describes the delivery, certificate, and security settings for onboarding.
+              properties:
+                certificate:
+                  additionalProperties: false
+                  description: The certificate settings to secure your site.
+                  properties:
+                    adminContact:
+                      additionalProperties: false
+                      description: Contact information for the certificate administrator that you want to use as a contact at your company.
+                      properties:
+                        email:
+                          description: Your contact's email address.
+                          minLength: 1
+                          type: string
+                        firstName:
+                          description: Your contact's given name.
+                          minLength: 1
+                          type: string
+                        lastName:
+                          description: Your contact's family name.
+                          minLength: 1
+                          type: string
+                        phone:
+                          description: Your contact's the phone number.
+                          minLength: 1
+                          type: string
+                      required:
+                      - firstName
+                      - lastName
+                      - phone
+                      - email
+                      type: object
+                    certificateType:
+                      description: A value of `DEFAULT` creates a new secure-by-default certificate. A value of `CUSTOM_EXISTING` means the certificate already exists in your account. If you want to create a new certificate, choose `CUSTOM_NEW`. Note that your certificate will be created when you activate your onboarding. Your account may have limits on how many certificates you can create. For example, if your account is limited to five certificates and you already have five, you won't be able to create a new one.
+                      enum:
+                      - DEFAULT
+                      - CUSTOM_EXISTING
+                      - CUSTOM_NEW
+                      minLength: 1
+                      type: string
+                    commonName:
+                      description: The domain name to use for the certificate, also known as the common name.
+                      minLength: 1
+                      type: string
+                    enrollmentId:
+                      description: A unique identifier for an enrollment in the Certificate Provisioning System (CPS).
+                      type: integer
+                    enrollmentLink:
+                      description: The URL to call the enrollment. Note this URL is for the [Certificate Provisioning System (CPS) API](https://techdocs.akamai.com/cps/reference/api).
+                      format: uri
+                      type: string
+                  required:
+                  - certificateType
+                  - adminContact
+                  type: object
+                delivery:
+                  additionalProperties: false
+                  description: The delivery settings for your site traffic.
+                  properties:
+                    origins:
+                      description: List of hostnames and proposed origin hostnames. If you choose not to use an origin hostname suggested to you, you can edit it to the value you want with a request to [Update onboarding settings](https://techdocs.akamai.com/application-security/reference/put-onboarding-settings).
+                      items:
+                        additionalProperties: false
+                        properties:
+                          hostname:
+                            description: The hostname for your site. You can add up to 100 hostnames.
+                            minLength: 1
+                            type: string
+                          origin:
+                            description: The origin server hostname.
+                            minLength: 1
+                            type: string
+                        required:
+                        - hostname
+                        - origin
+                        type: object
+                      minItems: 1
+                      type: array
+                      uniqueItems: true
+                  required:
+                  - origins
+                  type: object
+                onboardingLink:
+                  description: The URL to call when you want to access this onboarding at a later time.
+                  format: uri
+                  type: string
+                security:
+                  additionalProperties: false
+                  description: The security settings for your site.
+                  properties:
+                    cloneVersion:
+                      description: The configuration version that is cloned to make a new configuration for onboarding.
+                      type: integer
+                    configId:
+                      description: The identifier for the existing configuration.
+                      type: integer
+                    configLink:
+                      description: The URL to make a call for the specific configuration. For example, [Get a configuration](https://techdocs.akamai.com/application-security/docs/get-config).
+                      format: uri
+                      type: string
+                    configName:
+                      description: The name of configuration.
+                      minLength: 1
+                      type: string
+                    configType:
+                      description: Specifies whether the security configuration is `NEW`, or you're using an `EXISTING` one. Note than when you use an existing configuration, the onboarding process creates a new version of the configuration from _the version that is currently active_ on the production network. If no version is active on production, the clone will be the most recent version of the configuration. For example, if you have version 14 active on production out of 23 versions, version 14 is the version that is cloned when you create a new onboarding. If there is no active version on production and there are 23 versions of the configuration, it is version 23 that's cloned.
+                      enum:
+                      - NEW
+                      - EXISTING
+                      minLength: 1
+                      type: string
+                    evalRequired:
+                      description: If `TRUE`, adds the hostnames to evaluation mode for the policy. This applies to AAP only.
+                      type: boolean
+                    policyId:
+                      description: If `securityPolicy` is `EXISTING`, lists the unique identifier for the policy.
+                      minLength: 1
+                      type: string
+                    policyLink:
+                      description: The URL to make a call for the specific policy. For example, the URL in [Update a policy](https://techdocs.akamai.com/application-security/docs/put-policy).
+                      format: uri
+                      type: string
+                    policyName:
+                      description: The name of the security policy.
+                      minLength: 1
+                      type: string
+                    policyType:
+                      description: 'Specifies whether the security policy is `NEW`, or you''re using an `EXISTING` one. Note that you can only edit policy settings if `"policyType": "NEW"` because editing existing, active policies could disrupt service to your site.'
+                      enum:
+                      - NEW
+                      - EXISTING
+                      minLength: 1
+                      type: string
+                    protections:
+                      additionalProperties: false
+                      description: The set of protections in the security policy.
+                      properties:
+                        applyApplicationLayerControls:
+                          description: When enabled, your security policy applies the Web Application Firewall controls to your traffic.
+                          type: boolean
+                        applyBotmanControls:
+                          description: When enabled, your security policy applies Bot Manager controls to your traffic.
+                          type: boolean
+                        applyNetworkLayerControls:
+                          description: When enabled, your security policy applies the network layer control settings to your traffic.
+                          type: boolean
+                        applyRateControls:
+                          description: When enabled, your security policy applies the rate control settings to your traffic. Rate controls monitor and flag traffic too fast to be from a human.
+                          type: boolean
+                        applyReputationControls:
+                          description: 'When enabled, your security policy applies the reputation profile settings to your traffic. Reputation profile analyses IP addresses based on their prior interactions with Akamai customers, then alerts on or blocks potentially malicious IP addresses from issuing requests.
+
+                            Applicable for ASM accounts.'
+                          type: boolean
+                        applySlowPostControls:
+                          description: When enabled, your security policy applies slow POST controls to your traffic.
+                          type: boolean
+                      required:
+                      - applyApplicationLayerControls
+                      - applyBotmanControls
+                      - applyNetworkLayerControls
+                      - applyRateControls
+                      - applySlowPostControls
+                      type: object
+                  required:
+                  - configType
+                  - policyType
+                  - protections
+                  type: object
+                settingsLink:
+                  description: The URL to call to manage onboarding settings after you finishing the initial creation.
+                  format: uri
+                  type: string
+              required:
+              - delivery
+              - certificate
+              - security
+              - settingsLink
+              - onboardingLink
+              type: object
+              x-akamai:
+                file-path: schemas/onboarding-settings-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                certificate:
+                  adminContact:
+                    email: adminContact@nomail-akamai.com
+                    firstName: AdminUser
+                    lastName: User
+                    phone: '+919090909090'
+                  certificateType: CUSTOM_EXISTING
+                  commonName: www.commonName.com
+                  enrollmentId: 87902
+                  enrollmentLink: /cps/v2/enrollments/87902
+                delivery:
+                  origins:
+                  - hostname: www.example.com
+                    origin: origin-ea0ac1-.www.example.com
+                  - hostname: www.example.net
+                    origin: origin-8eeeba-.www.example.net
+                onboardingLink: /appsec/v1/onboardings/101
+                security:
+                  cloneVersion: 25
+                  configId: 24335
+                  configLink: /appsec/v1/configs/24335
+                  configName: sec-config
+                  configType: EXISTING
+                  evalRequired: true
+                  policyId: 000Q_475674
+                  policyLink: /appsec/v1/configs/243359/versions/25/security-policies/000Q_475674
+                  policyName: sec-policy
+                  policyType: EXISTING
+                  protections:
+                    applyApplicationLayerControls: true
+                    applyBotmanControls: false
+                    applyNetworkLayerControls: true
+                    applyRateControls: true
+                    applyReputationControls: true
+                    applySlowPostControls: true
+                settingsLink: /appsec/v1/onboardings/101/settings
+              schema:
+                additionalProperties: false
+                description: Describes the delivery, certificate, and security settings for onboarding.
+                properties:
+                  certificate:
+                    additionalProperties: false
+                    description: The certificate settings to secure your site.
+                    properties:
+                      adminContact:
+                        additionalProperties: false
+                        description: Contact information for the certificate administrator that you want to use as a contact at your company.
+                        properties:
+                          email:
+                            description: Your contact's email address.
+                            minLength: 1
+                            type: string
+                          firstName:
+                            description: Your contact's given name.
+                            minLength: 1
+                            type: string
+                          lastName:
+                            description: Your contact's family name.
+                            minLength: 1
+                            type: string
+                          phone:
+                            description: Your contact's the phone number.
+                            minLength: 1
+                            type: string
+                        required:
+                        - firstName
+                        - lastName
+                        - phone
+                        - email
+                        type: object
+                      certificateType:
+                        description: A value of `DEFAULT` creates a new secure-by-default certificate. A value of `CUSTOM_EXISTING` means the certificate already exists on your account. If you want to create a new certificate, choose `CUSTOM_NEW`. Note that your certificate is created when you activate your onboarding. Your account may have limits for how many certificates you can create. If, for example, your account is limited to five certificates and your account already has five, then you won't be able to create a new one.
+                        enum:
+                        - DEFAULT
+                        - CUSTOM_EXISTING
+                        - CUSTOM_NEW
+                        minLength: 1
+                        type: string
+                      commonName:
+                        description: The domain name to use for the certificate, also known as the common name.
+                        minLength: 1
+                        type: string
+                      enrollmentId:
+                        description: A unique identifier for an enrollment in the Certificate Provisioning System (CPS).
+                        type: integer
+                      enrollmentLink:
+                        description: The URL to call the enrollment. Note this URL is for the [Certificate Provisioning System (CPS) API](https://techdocs.akamai.com/cps/reference/api).
+                        format: uri
+                        type: string
+                    required:
+                    - certificateType
+                    - adminContact
+                    type: object
+                  delivery:
+                    additionalProperties: false
+                    description: The delivery settings for your site traffic.
+                    properties:
+                      origins:
+                        description: List of hostnames and proposed origin hostnames. If you choose not to use an origin hostname suggested to you, you can edit it to the value you want with a request to [Update onboarding settings](https://techdocs.akamai.com/application-security/reference/put-onboarding-settings).
+                        items:
+                          additionalProperties: false
+                          properties:
+                            hostname:
+                              description: The hostname for your site. You can add up to 100 hostnames.
+                              minLength: 1
+                              type: string
+                            origin:
+                              description: The origin server hostname.
+                              minLength: 1
+                              type: string
+                          required:
+                          - hostname
+                          - origin
+                          type: object
+                        minItems: 1
+                        type: array
+                        uniqueItems: true
+                    required:
+                    - origins
+                    type: object
+                  onboardingLink:
+                    description: The URL to call when you want to access this onboarding at a later time.
+                    format: uri
+                    type: string
+                  security:
+                    additionalProperties: false
+                    description: The security settings for your site.
+                    properties:
+                      cloneVersion:
+                        description: The configuration version that is cloned to make a new configuration for onboarding.
+                        type: integer
+                      configId:
+                        description: The identifier for the existing configuration.
+                        type: integer
+                      configLink:
+                        description: The URL to make a call for the specific configuration. For example, [Get a configuration](https://techdocs.akamai.com/application-security/docs/get-config).
+                        format: uri
+                        type: string
+                      configName:
+                        description: The name of configuration.
+                        minLength: 1
+                        type: string
+                      configType:
+                        description: Specifies whether the security configuration is `NEW`, or you're using an `EXISTING` one. Note than when you use an existing configuration, the onboarding process creates a new version of the configuration from _the version that is currently active_ on the production network. If no version is active on production, the clone will be the most recent version of the configuration. For example, if you have version 14 active on production out of 23 versions, version 14 is the version that is cloned when you create a new onboarding. If there is no active version on production and there are 23 versions of the configuration, it is version 23 that's cloned.
+                        enum:
+                        - NEW
+                        - EXISTING
+                        minLength: 1
+                        type: string
+                      evalRequired:
+                        description: If `TRUE`, adds the hostnames to evaluation mode for the policy. This applies to AAP only.
+                        type: boolean
+                      policyId:
+                        description: If `securityPolicy` is `EXISTING`, lists the unique identifier for the policy.
+                        minLength: 1
+                        type: string
+                      policyLink:
+                        description: The URL to make a call for the specific policy. For example, the URL in [Update a policy](https://techdocs.akamai.com/application-security/docs/put-policy).
+                        format: uri
+                        type: string
+                      policyName:
+                        description: The name of the security policy.
+                        minLength: 1
+                        type: string
+                      policyType:
+                        description: 'Specifies whether the security policy is `NEW`, or you''re using an `EXISTING` one. Note that you can only edit policy settings if `"policyType": "NEW"` because editing existing, active policies could disrupt service to your site.'
+                        enum:
+                        - NEW
+                        - EXISTING
+                        minLength: 1
+                        type: string
+                      protections:
+                        additionalProperties: false
+                        description: The set of protections in the security policy.
+                        properties:
+                          applyApplicationLayerControls:
+                            description: When enabled, your security policy applies the Web Application Firewall controls to your traffic.
+                            type: boolean
+                          applyBotmanControls:
+                            description: When enabled, your security policy applies Bot Manager controls to your traffic.
+                            type: boolean
+                          applyNetworkLayerControls:
+                            description: When enabled, your security policy applies the network layer control settings to your traffic.
+                            type: boolean
+                          applyRateControls:
+                            description: When enabled, your security policy applies the rate control settings to your traffic. Rate controls monitor and flag traffic too fast to be from a human.
+                            type: boolean
+                          applyReputationControls:
+                            description: 'When enabled, your security policy applies the reputation profile settings to your traffic. Reputation profile analyses IP addresses based on their prior interactions with Akamai customers, then alerts on or blocks potentially malicious IP addresses from issuing requests.
+
+                              Applicable for ASM accounts.'
+                            type: boolean
+                          applySlowPostControls:
+                            description: When enabled, your security policy applies slow POST controls to your traffic.
+                            type: boolean
+                        required:
+                        - applyApplicationLayerControls
+                        - applyBotmanControls
+                        - applyNetworkLayerControls
+                        - applyRateControls
+                        - applySlowPostControls
+                        type: object
+                    required:
+                    - configType
+                    - policyType
+                    - protections
+                    type: object
+                  settingsLink:
+                    description: The URL to call to manage onboarding settings after you finishing the initial creation.
+                    format: uri
+                    type: string
+                required:
+                - delivery
+                - certificate
+                - security
+                - settingsLink
+                - onboardingLink
+                type: object
+                x-akamai:
+                  file-path: schemas/onboarding-settings.yaml
+          description: Successfully updated the onboarding settings.
+        '400':
+          content:
+            application/problem+json:
+              examples:
+                settings-data-errors:
+                  summary: Settings data errors
+                  value:
+                    $ref: ../examples/400-onboarding-settings-data-errors.json
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Invalid onboarding settings. See the `fieldErrors` and other fields provided in the response for more information.'
+          x-akamai:
+            file-path: errors/400-onboarding-settings.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You aren''t authorized to run this operation..'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The onboarding object wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '422':
+          content:
+            application/problem+json:
+              example:
+                detail: Settings cannot be updated after activation.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 422
+                title: Unprocessable request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/UNPROCESSABLE-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Unprocessable content](https://techdocs.akamai.com/application-security/reference/422). Onboarding settings can''t be updated after activation.'
+          x-akamai:
+            file-path: errors/422-onboarding-settings.yaml
+      summary: Modify onboarding settings
+      tags:
+      - 'Onboarding: Creation and settings'
+      x-akamai:
+        labels:
+        - App & API Protector
+        - App & API Protector with the Advanced Security module
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

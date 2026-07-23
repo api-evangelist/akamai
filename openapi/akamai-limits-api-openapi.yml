@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Limits API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Limits
+paths:
+  /limits:
+    get:
+      description: View the various limits EdgeWorkers imposes on the number of activations, EdgeWorkers IDs, and versions you can deploy.
+      operationId: get-limits
+      summary: Akamai List Limits
+      tags:
+      - Limits
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-limits
+      responses:
+        '200':
+          description: Describes a list of Limits.
+          content:
+            application/json:
+              example:
+                limits:
+                - limitId: ew-id-per-account-limit
+                  limitName: Maximum number of EdgeWorker IDs per account
+                  limitValue: 200
+                - limitId: version-per-ew-id-limit
+                  limitName: Maximum number of versions per EdgeWorker ID
+                  limitValue: 1000
+                - limitId: activation-per-network-per-minute-limit
+                  limitName: Maximum number of activations each minute on a network per account
+                  limitValue: 20
+                - limitId: activation-per-day-limit
+                  limitName: Maximum number of activations each day per account
+                  limitValue: 500
+              schema:
+                additionalProperties: false
+                description: A list of limits that apply to your account.
+                type: object
+                required:
+                - limits
+                properties:
+                  limits:
+                    description: List of limits.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: An object that includes the ID, name, and value of a limit.
+                      type: object
+                      required:
+                      - limitId
+                      - limitName
+                      - limitValue
+                      properties:
+                        limitId:
+                          description: Unique identifier of the limit.
+                          minLength: 1
+                          type: string
+                        limitName:
+                          description: Name of the limit.
+                          minLength: 1
+                          type: string
+                        limitValue:
+                          description: Value of the limit.
+                          minimum: 0
+                          type: integer
+                      x-akamai:
+                        file-path: schemas/limit-get-200.yaml
+                x-akamai:
+                  file-path: schemas/limits-get-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

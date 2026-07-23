@@ -1,0 +1,2530 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens General configuration settings API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage security configurations and their versions.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage security configurations and their versions.
+  name: General configuration settings
+paths:
+  /configs:
+    x-akamai:
+      file-path: paths/configs.yaml
+      path-info: /configs
+    post:
+      description: __All products__ Create a new WAP or KSD security configuration. KSD security configurations start out empty, and WAP configurations are created with preset values. The contract you pass in the request body determines which product you use.  You can edit the default settings included in the WAP configuration, but you'll need to run additional operations in this API to select specific protections for KSD. Your KSD configuration needs match targets and protection settings before you activate.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-config
+      operationId: post-config
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              contractId: C-0N7RAC7
+              description: description1
+              groupId: 32145
+              hostnames:
+              - new.example.com
+              - www.example.com
+              name: newapitest
+            schema:
+              additionalProperties: false
+              description: Specifies the details of a security config.
+              properties:
+                configId:
+                  description: Uniquely identifies the security configuration.
+                  type: integer
+                contractId:
+                  description: Contract ID.
+                  type: string
+                createFrom:
+                  additionalProperties: false
+                  description: Contains details about a source configuration and version for cloning a new security configuration.
+                  properties:
+                    configId:
+                      description: Uniquely identifies the security configuration.
+                      type: integer
+                    version:
+                      description: The configuration version to clone from.
+                      type: integer
+                  required:
+                  - configId
+                  - version
+                  type: object
+                description:
+                  description: Describes the security configuration.
+                  type: string
+                groupId:
+                  description: Group ID.
+                  type: integer
+                hostnames:
+                  description: List of hostnames to be added to the configuration.
+                  items:
+                    type: string
+                  type: array
+                name:
+                  description: The name you assigned to the security configuration.
+                  type: string
+                version:
+                  description: The configuration version of the security configuration.
+                  type: integer
+              required:
+              - name
+              - description
+              - hostnames
+              type: object
+              x-akamai:
+                file-path: schemas/config-post.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                configId: 71710
+                description: description1
+                hostnames:
+                - www.abc.com
+                - www.xyz.com
+                name: newapitest
+                version: 1
+              schema:
+                additionalProperties: false
+                description: Specifies the details of a security config.
+                properties:
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    type: integer
+                  contractId:
+                    description: Contract ID.
+                    type: string
+                  createFrom:
+                    additionalProperties: false
+                    description: Contains details about a source configuration and version for cloning a new security configuration.
+                    properties:
+                      configId:
+                        description: Uniquely identifies the security configuration.
+                        type: integer
+                      version:
+                        description: The configuration version to clone from.
+                        type: integer
+                    required:
+                    - configId
+                    - version
+                    type: object
+                  description:
+                    description: Describes the security configuration.
+                    type: string
+                  groupId:
+                    description: Group ID.
+                    type: integer
+                  hostnames:
+                    description: List of hostnames to be added to the configuration.
+                    items:
+                      type: string
+                    type: array
+                  name:
+                    description: The name you assigned to the security configuration.
+                    type: string
+                  version:
+                    description: The configuration version of the security configuration.
+                    type: integer
+                required:
+                - name
+                - description
+                - hostnames
+                type: object
+                x-akamai:
+                  file-path: schemas/config-post.yaml
+          description: Successfully created a security configuration.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have create access for security configurations.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Create a configuration
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+    get:
+      description: __All products__ Lists available security configurations.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-configs
+      operationId: get-configs
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                configurations:
+                - description: (user notes)
+                  id: 22330
+                  latestVersion: 5
+                  name: CaroTestTransition2Versioning
+                - id: 7180
+                  latestVersion: 9
+                  name: Corporate Sites WAF
+                  productionHostnames:
+                  - example.com
+                  - www.example.net
+                  - m.example.com
+                  productionVersion: 1
+                  stagingVersion: 2
+              schema:
+                additionalProperties: false
+                description: Specifies the details of a security config.
+                properties:
+                  configurations:
+                    description: A list of security configurations.
+                    items:
+                      additionalProperties: false
+                      description: Contains details about a security configuration.
+                      properties:
+                        description:
+                          description: __Read-only__ Describes the security configuration.
+                          readOnly: true
+                          type: string
+                        id:
+                          description: __Read-only__ Uniquely identifies the security configuration.
+                          readOnly: true
+                          type: integer
+                        latestVersion:
+                          description: __Read-only__ The latest version of the security configuration.
+                          readOnly: true
+                          type: integer
+                        name:
+                          description: __Read-only__ The security configuration name.
+                          readOnly: true
+                          type: string
+                        productionHostnames:
+                          description: __Read-only__ The list of hostnames protected by this security configuration in the production network.
+                          items:
+                            type: string
+                          readOnly: true
+                          type: array
+                        productionVersion:
+                          description: __Read-only__ The latest security configuration version active in the production network.
+                          readOnly: true
+                          type: integer
+                        stagingVersion:
+                          description: __Read-only__ The latest security configuration version active in the staging network.
+                          readOnly: true
+                          type: integer
+                      required:
+                      - id
+                      - latestVersion
+                      - name
+                      type: object
+                      x-akamai:
+                        file-path: schemas/config-get.yaml
+                    type: array
+                required:
+                - configurations
+                type: object
+                x-akamai:
+                  file-path: schemas/configs-get.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List configurations
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    x-akamai:
+      file-path: paths/config.yaml
+      path-info: /configs/{configId}
+    get:
+      description: __All products__ Retrieves the configuration details.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-config
+      operationId: get-config
+      parameters:
+      - description: If `true`, include the list of hostnames protected by this security configuration in the production network.  If `false`, exclude the list of hostnames protected by this security configuration in the production network.
+        in: query
+        name: includeHostnames
+        required: false
+        schema:
+          default: false
+          example: false
+          type: boolean
+        x-akamai:
+          file-path: parameters/include-hostnames-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                id: 7180
+                latestVersion: 9
+                name: Corporate Sites WAF
+                productionHostnames:
+                - example.com
+                - www.example.net
+                - m.example.com
+                productionVersion: 1
+                stagingVersion: 2
+              schema:
+                additionalProperties: false
+                description: Contains details about a security configuration.
+                properties:
+                  description:
+                    description: __Read-only__ Describes the security configuration.
+                    readOnly: true
+                    type: string
+                  id:
+                    description: __Read-only__ Uniquely identifies the security configuration.
+                    readOnly: true
+                    type: integer
+                  latestVersion:
+                    description: __Read-only__ The latest version of the security configuration.
+                    readOnly: true
+                    type: integer
+                  name:
+                    description: __Read-only__ The security configuration name.
+                    readOnly: true
+                    type: string
+                  productionHostnames:
+                    description: __Read-only__ The list of hostnames protected by this security configuration in the production network.
+                    items:
+                      type: string
+                    readOnly: true
+                    type: array
+                  productionVersion:
+                    description: __Read-only__ The latest security configuration version active in the production network.
+                    readOnly: true
+                    type: integer
+                  stagingVersion:
+                    description: __Read-only__ The latest security configuration version active in the staging network.
+                    readOnly: true
+                    type: integer
+                required:
+                - id
+                - latestVersion
+                - name
+                type: object
+                x-akamai:
+                  file-path: schemas/config-get.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get a security configuration
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Update the name of your security configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-config
+      operationId: put-config
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              description: description1
+              name: newapitest
+            schema:
+              additionalProperties: false
+              description: Contains details of a security configuration.
+              properties:
+                description:
+                  description: Describes the security configuration.
+                  type: string
+                name:
+                  description: The name you assigned to the security configuration.
+                  type: string
+              required:
+              - name
+              type: object
+              x-akamai:
+                file-path: schemas/config-rename.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                description: description1
+                name: newapitest
+              schema:
+                additionalProperties: false
+                description: Contains details of a security configuration.
+                properties:
+                  description:
+                    description: Describes the security configuration.
+                    type: string
+                  name:
+                    description: The name you assigned to the security configuration.
+                    type: string
+                required:
+                - name
+                type: object
+                x-akamai:
+                  file-path: schemas/config-rename.yaml
+          description: Successfully renamed the security configuration.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Rename a security configuration
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+    delete:
+      description: __All products__ Deletes the specified security configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-config
+      operationId: delete-config
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successfully deleted the security configuration.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Security configuration is active in a network and not editable.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Delete a configuration
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    x-akamai:
+      file-path: paths/config-versions.yaml
+      path-info: /configs/{configId}/versions
+    post:
+      description: __All products__ Creates a new version of the specified security configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-config-versions
+      operationId: post-config-versions
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              createFromVersion: 1
+              ruleUpdate: false
+            schema:
+              additionalProperties: false
+              description: Specifies the settings for a new clone of a security configuration.
+              properties:
+                createFromVersion:
+                  description: The configuration version to clone from.
+                  type: integer
+                ruleUpdate:
+                  description: Specifies whether the application rules should be migrated to the latest version.
+                  type: boolean
+              required:
+              - createFromVersion
+              - ruleUpdate
+              type: object
+              x-akamai:
+                file-path: schemas/config-clone-post.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                basedOn: 1
+                configId: 48579
+                configName: TestConfig
+                createDate: '2013-10-07T17:58:52Z'
+                createdBy: hgildong
+                production:
+                  status: Active
+                  time: '2014-07-08T07:40:00Z'
+                staging:
+                  status: Inactive
+                version: 2
+                versionNotes: Membership Benefits
+              schema:
+                additionalProperties: false
+                description: Contains configuration version details.
+                properties:
+                  basedOn:
+                    description: __Read-only__ The version from which you cloned this version.
+                    readOnly: true
+                    type: integer
+                  configId:
+                    description: __Read-only__ Uniquely identifies the security configuration.
+                    readOnly: true
+                    type: integer
+                  configName:
+                    description: The security configuration name.
+                    type: string
+                  createDate:
+                    description: __Read-only__ The date when you created the configuration version.
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the configuration version.
+                    readOnly: true
+                    type: string
+                  production:
+                    additionalProperties: false
+                    description: __Read-only__ The activation status of the configuration version in the production network.
+                    properties:
+                      action:
+                        description: The action taken on the configuration version. Either `ACTIVATE` or `DEACTIVATE`.
+                        enum:
+                        - ACTIVATE
+                        - DEACTIVATE
+                        type: string
+                      status:
+                        description: The activation status, either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.
+                        enum:
+                        - Pending
+                        - Active
+                        - Inactive
+                        - Deactivated
+                        - Failed
+                        type: string
+                      time:
+                        description: The activation time.
+                        type: string
+                    readOnly: true
+                    required:
+                    - status
+                    type: object
+                  staging:
+                    additionalProperties: false
+                    description: __Read-only__ The activation status of the configuration version in the staging network.
+                    properties:
+                      action:
+                        description: The action taken on the configuration version. Either `ACTIVATE` or `DEACTIVATE`.
+                        enum:
+                        - ACTIVATE
+                        - DEACTIVATE
+                        type: string
+                      status:
+                        description: The activation status, either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.
+                        enum:
+                        - Pending
+                        - Active
+                        - Inactive
+                        - Deactivated
+                        - Failed
+                        type: string
+                      time:
+                        description: The ISO 8601 time stamp indicating the activation time.
+                        type: string
+                    readOnly: true
+                    required:
+                    - status
+                    type: object
+                  version:
+                    description: __Read-only__ The security configuration version.
+                    readOnly: true
+                    type: integer
+                  versionNotes:
+                    description: The notes you entered for the configuration version.
+                    type: string
+                required:
+                - configId
+                - configName
+                - version
+                - staging
+                - production
+                type: object
+                x-akamai:
+                  file-path: schemas/waf-config-version.yaml
+          description: Successfully cloned Configuration Version.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+        '412':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is in use and cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 412
+                title: Precondition Failed
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/PRECONDITION-FAILED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Precondition failed](https://techdocs.akamai.com/application-security/reference/412).'
+          x-akamai:
+            file-path: errors/412.yaml
+      summary: Clone a configuration version
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+    get:
+      description: __All products__ Lists available versions for the specified security configuration, with results optionally paginated.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-config-versions
+      operationId: get-config-versions
+      parameters:
+      - description: The index of the result page. If the value is `-1`, then pagination is ignored.  The default value is `1`.
+        in: query
+        name: page
+        schema:
+          default: 1
+          example: 2
+          type: integer
+        x-akamai:
+          file-path: parameters/page-query.yaml
+      - description: The number of items on each result page. The default value is `25`.
+        in: query
+        name: pageSize
+        schema:
+          default: 25
+          example: 10
+          type: integer
+        x-akamai:
+          file-path: parameters/page-size-query.yaml
+      - description: When `true`, the results contain detailed information on versions. With the default `false`, the results contain summary information on versions.
+        in: query
+        name: detail
+        schema:
+          default: false
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/detail-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                configId: 48579
+                configName: TestConfig
+                lastCreatedVersion: 9
+                page: 1
+                pageSize: 3
+                productionActiveVersion: 9
+                productionExpediteRequestId: 6951
+                stagingActiveVersion: 8
+                stagingExpediteRequestId: 5861
+                totalSize: 3
+                versionList:
+                - basedOn: 8
+                  createDate: '2013-10-07T17:58:52Z'
+                  createdBy: jperez
+                  production:
+                    status: Active
+                    time: '2014-07-08T07:40:00Z'
+                  staging:
+                    status: Inactive
+                  version: 9
+                  versionNotes: Membership Benefits
+                - basedOn: 7
+                  createDate: '2013-10-07T17:41:52Z'
+                  createdBy: hgildong
+                  production:
+                    status: Inactive
+                  staging:
+                    status: Active
+                    time: '2014-07-08T07:40:00Z'
+                  version: 8
+                  versionNotes: Membership Benefits
+                - createDate: '2013-08-07T17:41:52Z'
+                  createdBy: alfulani
+                  production:
+                    status: Inactive
+                  staging:
+                    status: Inactive
+                  version: 7
+                  versionNotes: Membership Benefits
+              schema:
+                additionalProperties: false
+                description: Contains details about a security configuration's versions.
+                properties:
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    type: integer
+                  configName:
+                    description: The name you assigned to the security configuration.
+                    type: string
+                  lastCreatedVersion:
+                    description: The version number of the security configuration that you created most recently.
+                    type: integer
+                  page:
+                    description: The current page number.
+                    type: integer
+                  pageSize:
+                    description: Represents the number of items per page.
+                    type: integer
+                  productionActiveVersion:
+                    description: The version number of the security configuration that is currently active on the production network.
+                    type: integer
+                  productionExpediteRequestId:
+                    description: Uniquely identifies the expedite activation request of the configuration version on the production network.
+                    type: integer
+                  stagingActiveVersion:
+                    description: The version number of the security configuration that is currently active on the staging network.
+                    type: integer
+                  stagingExpediteRequestId:
+                    description: Uniquely identifies the expedite activation request of the configuration version on the staging network.
+                    type: integer
+                  totalSize:
+                    description: The total number of configuration versions.
+                    type: integer
+                  versionList:
+                    description: The security configuration's versions.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        basedOn:
+                          description: The version from which you cloned this version.
+                          type: integer
+                        createDate:
+                          description: The date when you created the configuration version.
+                          type: string
+                        createdBy:
+                          description: The user who created the configuration version.
+                          type: string
+                        production:
+                          additionalProperties: false
+                          description: Contains details about the version's activation in the production network.
+                          properties:
+                            action:
+                              description: The action taken on the configuration version, either `ACTIVATE` or `DEACTIVATE`.
+                              enum:
+                              - ACTIVATE
+                              - DEACTIVATE
+                              type: string
+                            status:
+                              description: The activation status of the configuration version. Either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.
+                              enum:
+                              - Pending
+                              - Active
+                              - Inactive
+                              - Deactivated
+                              - Failed
+                              type: string
+                            time:
+                              description: The activation time.
+                              type: string
+                          required:
+                          - status
+                          type: object
+                        staging:
+                          additionalProperties: false
+                          description: Contains details about the version's activation in the staging network.
+                          properties:
+                            action:
+                              description: The action taken on the configuration version, either `ACTIVATE` or `DEACTIVATE`.
+                              enum:
+                              - ACTIVATE
+                              - DEACTIVATE
+                              type: string
+                            status:
+                              description: The activation status of the configuration version. Either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.
+                              enum:
+                              - Pending
+                              - Active
+                              - Inactive
+                              - Deactivated
+                              - Failed
+                              type: string
+                            time:
+                              description: The activation time.
+                              type: string
+                          required:
+                          - status
+                          type: object
+                        version:
+                          description: The security configuration's version.
+                          type: integer
+                        versionNotes:
+                          description: The notes you entered for the configuration version.
+                          type: string
+                      required:
+                      - production
+                      - staging
+                      - version
+                      type: object
+                    type: array
+                required:
+                - configId
+                - configName
+                - lastCreatedVersion
+                - page
+                - pageSize
+                - totalSize
+                type: object
+                x-akamai:
+                  file-path: schemas/waf-config-versions.yaml
+          description: Successfully retrieved resource.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List configuration versions
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-version.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}
+    get:
+      description: __All products__ Returns basic details about a configuration version. To get a more extensive object with detailed information about a version's security policies, rate policies, rules, and other additional settings, run the [Export a configuration version](https://techdocs.akamai.com/application-security/reference/get-export-config-version) operation.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-version-number
+      operationId: get-version-number
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                basedOn: 1
+                configId: 48579
+                configName: TestConfig
+                createDate: '2013-10-07T17:58:52Z'
+                createdBy: hgildong
+                production:
+                  status: Active
+                  time: '2014-07-08T07:40:00Z'
+                staging:
+                  status: Inactive
+                version: 2
+                versionNotes: Membership Benefits
+              schema:
+                additionalProperties: false
+                description: Contains configuration version details.
+                properties:
+                  basedOn:
+                    description: __Read-only__ The version from which you cloned this version.
+                    readOnly: true
+                    type: integer
+                  configId:
+                    description: __Read-only__ Uniquely identifies the security configuration.
+                    readOnly: true
+                    type: integer
+                  configName:
+                    description: The security configuration name.
+                    type: string
+                  createDate:
+                    description: __Read-only__ The date when you created the configuration version.
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The user who created the configuration version.
+                    readOnly: true
+                    type: string
+                  production:
+                    additionalProperties: false
+                    description: __Read-only__ The activation status of the configuration version in the production network.
+                    properties:
+                      action:
+                        description: The action taken on the configuration version. Either `ACTIVATE` or `DEACTIVATE`.
+                        enum:
+                        - ACTIVATE
+                        - DEACTIVATE
+                        type: string
+                      status:
+                        description: The activation status, either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.
+                        enum:
+                        - Pending
+                        - Active
+                        - Inactive
+                        - Deactivated
+                        - Failed
+                        type: string
+                      time:
+                        description: The activation time.
+                        type: string
+                    readOnly: true
+                    required:
+                    - status
+                    type: object
+                  staging:
+                    additionalProperties: false
+                    description: __Read-only__ The activation status of the configuration version in the staging network.
+                    properties:
+                      action:
+                        description: The action taken on the configuration version. Either `ACTIVATE` or `DEACTIVATE`.
+                        enum:
+                        - ACTIVATE
+                        - DEACTIVATE
+                        type: string
+                      status:
+                        description: The activation status, either `Pending`, `Active`, `Inactive`, `Deactivated`, or `Failed`.
+                        enum:
+                        - Pending
+                        - Active
+                        - Inactive
+                        - Deactivated
+                        - Failed
+                        type: string
+                      time:
+                        description: The ISO 8601 time stamp indicating the activation time.
+                        type: string
+                    readOnly: true
+                    required:
+                    - status
+                    type: object
+                  version:
+                    description: __Read-only__ The security configuration version.
+                    readOnly: true
+                    type: integer
+                  versionNotes:
+                    description: The notes you entered for the configuration version.
+                    type: string
+                required:
+                - configId
+                - configName
+                - version
+                - staging
+                - production
+                type: object
+                x-akamai:
+                  file-path: schemas/waf-config-version.yaml
+          description: Successfully retrieved resource.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get configuration version details
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+    delete:
+      description: __All products__ Delete the specified configuration version. You can't delete a version that's actively in use.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-version-number
+      operationId: delete-version-number
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successfully deleted the configuration version.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to this security configuration.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Delete a configuration version
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/version-notes:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-version-notes.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/version-notes
+    get:
+      description: __All products__ Get the most recent version notes for a configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-version-notes
+      operationId: get-version-notes
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                notes: This is the version notes.
+              schema:
+                additionalProperties: false
+                description: The GET Response for Version Notes.
+                properties:
+                  notes:
+                    description: The version notes.
+                    type: string
+                type: object
+                x-akamai:
+                  file-path: schemas/version-notes-get-200.yaml
+          description: Successfully retrieved the version notes.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Get the version notes
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Update the most recent version notes for a configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-version-notes
+      operationId: put-version-notes
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              notes: This is a version note.
+            schema:
+              additionalProperties: false
+              description: Specifies the setting for a version note update request.
+              properties:
+                notes:
+                  description: The version notes.
+                  type: string
+              type: object
+              x-akamai:
+                file-path: schemas/version-notes-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                notes: This is the version notes.
+              schema:
+                additionalProperties: false
+                description: The PUT Response for Version Notes.
+                properties:
+                  notes:
+                    description: The version notes.
+                    type: string
+                type: object
+                x-akamai:
+                  file-path: schemas/version-notes-put-200.yaml
+          description: Successfully updated the version notes.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have permission to write to this resource.'
+          x-akamai:
+            file-path: errors/403-client-write-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Modify version notes
+      tags:
+      - General configuration settings
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

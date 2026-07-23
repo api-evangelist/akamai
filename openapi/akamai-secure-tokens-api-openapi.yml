@@ -1,0 +1,230 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Secure tokens API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Secure tokens
+paths:
+  /secure-token:
+    post:
+      description: Generate a JWT authentication token to [enable enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enable-enhanced-debug-headers) for EdgeWorkers.
+      operationId: post-secure-token
+      summary: Akamai Create a Secure Token
+      tags:
+      - Secure tokens
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-secure-token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              expiry: 30
+              hostname: www.example.com
+              propertyId: '123456789'
+              hostnames:
+              - www.hostname1.com
+              - www.hostname2.com
+            schema:
+              additionalProperties: false
+              minProperties: 1
+              type: object
+              properties:
+                expiry:
+                  default: 480
+                  description: Number of minutes before the authentication token expires, from 1 to 720 minutes, or 12 hours. The default is `480` for 8 hours.
+                  example: '{{expiry}}'
+                  maximum: 720
+                  minimum: 1
+                  type: integer
+                hostname:
+                  description: __Deprecated__ Use  the  `hostnames` parameter instead. Hostname for a property. To create an authentication token, provide either the `hostname`, or the `propertyId`, but not both.
+                  example: '{{hostname}}'
+                  minLength: 1
+                  type: string
+                  x-akamai:
+                    status: DEPRECATED
+                hostnames:
+                  description: List of hostnames for a property. To create an authentication token, provide either the list of `hostnames`, or the `propertyId`, but not both. Specify `/*` to generate an authentication token valid for all hosts.
+                  minItems: 1
+                  type: array
+                  items:
+                    type: string
+                propertyId:
+                  description: Unique identifier for a property. To create an authentication token, provide either the `propertyId` or the `hostname`, but not both.
+                  example: '{{propertyId}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/secure-token-post.yaml
+      responses:
+        '201':
+          description: A generated JWT authentication token, for use with enhanced debug headers for EdgeWorkers. See [Enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enhanced-debug-header-details).
+          content:
+            application/json:
+              example:
+                akamaiEwTrace: eyJ0eXAiOiJKV1Qi ... iu1XOS9eJOl-54Yw
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - akamaiEwTrace
+                properties:
+                  akamaiEwTrace:
+                    description: The JWT authentication token, for use with enhanced debug headers for EdgeWorkers.
+                    type: string
+                x-akamai:
+                  file-path: schemas/secure-token-200.yaml
+        '400':
+          description: A specified hostname does not exist in the property.
+          content:
+            application/problem+json:
+              example:
+                detail: 'Host name provided does not exist in the property '
+                errorCode: EW4807
+                instance: f6d70100-9214-45d8-8a22-3974bb40db1f
+                status: 400
+                title: Bad Request
+                type: /edgeworkers/error-types/invalid-host-name
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code associated with the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /secure-token/{propertyId}:
+    parameters:
+    - description: Unique identifier for a property.
+      example: '{{propertyId}}'
+      in: path
+      name: propertyId
+      required: true
+      schema:
+        example: '123456789'
+        type: string
+      x-akamai:
+        file-path: parameters/propertyId-path.yaml
+    get:
+      description: __Deprecated__ Use the [Create a secure token](https://techdocs.akamai.com/edgeworkers/reference/post-secure-token) operation instead. This returns a generated authentication token, for use with enhanced debug headers for EdgeWorkers.
+      operationId: get-secure-token
+      summary: Akamai Get a Secure Token
+      tags:
+      - Secure tokens
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-secure-token
+      responses:
+        '200':
+          description: A generated authentication token, for use with enhanced debug headers for EdgeWorkers. See [Enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enhanced-debug-header-details).
+          content:
+            application/json:
+              example:
+                akamaiEwTrace: eyJ0eXAiOiJKV1Qi ... iu1XOS9eJOl-54Yw
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - akamaiEwTrace
+                properties:
+                  akamaiEwTrace:
+                    description: The JWT authentication token, for use with enhanced debug headers for EdgeWorkers.
+                    type: string
+                x-akamai:
+                  file-path: schemas/secure-token-200.yaml
+      x-akamai:
+        status: DEPRECATED
+      parameters:
+      - description: Path prefix of the response pages to debug. This value can be a pattern that matches multiple pages, and is explicitly part of the final token. The default is `/*`. If you specify an `acl`, don't specify a `url`.
+        example: '{{acl}}'
+        in: query
+        name: acl
+        schema:
+          default: /*
+          example: /*
+          type: string
+        x-akamai:
+          file-path: parameters/acl-query.yaml
+      - description: Exact path of the response pages to debug. This value is not explicitly part of the final token, but is used as a salt in the HMAC computation. If you specify a `url`, don't specify an `acl`.
+        example: '{{url}}'
+        in: query
+        name: url
+        schema:
+          example: /path/to/page.html
+          format: uri
+          type: string
+        x-akamai:
+          file-path: parameters/url-query.yaml
+      - description: Number of minutes before the authentication token expires, from a minute to an hour. The default is 15.
+        example: '{{expiry}}'
+        in: query
+        name: expiry
+        schema:
+          default: 15
+          example: 5
+          maximum: 60
+          minimum: 1
+          type: integer
+        x-akamai:
+          file-path: parameters/expiry-query.yaml
+      - description: __Enum__ The network on which to use this authentication token, either `STAGING` or `PRODUCTION`. If not specified, the token is created for the network where the last property version activation occurred.
+        example: '{{network}}'
+        in: query
+        name: network
+        schema:
+          example: STAGING
+          type: string
+          enum:
+          - STAGING
+          - PRODUCTION
+        x-akamai:
+          file-path: parameters/network-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

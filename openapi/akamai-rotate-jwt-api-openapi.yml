@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Rotate JWT API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Rotate JWT
+paths:
+  /sandboxes/{sandboxId}/rotateJWT:
+    parameters:
+    - description: Unique identifier for the sandbox.
+      example: '{{sandboxId}}'
+      in: path
+      name: sandboxId
+      required: true
+      schema:
+        example: 2956607f-854e-11e8-898a-0242ac110002
+        type: string
+      x-akamai:
+        file-path: parameters/sandboxId-path.yaml
+    post:
+      description: Generate a new `jwtToken` (JSON Web Token) for the specified sandbox instance. Use this to prevent access to a particular sandbox by developers who had the previous JWT.
+      operationId: post-sandbox-rotate-jwt
+      summary: Rotate the JWT
+      tags:
+      - Rotate JWT
+      externalDocs:
+        description: See documentation for this operation in Akamai's Sandbox API
+        url: https://techdocs.akamai.com/sandbox/reference/post-sandbox-rotate-jwt
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            application/json:
+              example:
+                jwtToken: eyJ0eXAiOiJKV1QiLC...NwpuL1f8z9U6Se3p_uYa_sgfWzw
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - jwtToken
+                properties:
+                  jwtToken:
+                    description: Generates a new JSON Web Token for the specified sandbox instance.
+                    type: string
+                x-akamai:
+                  file-path: schemas/rotate-jwt-response.yaml
+      parameters:
+      - description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account.
+        example: '{{access}}'
+        in: query
+        name: access
+        schema:
+          default: USER
+          example: ACCOUNT
+          type: string
+          enum:
+          - USER
+          - ACCOUNT
+        x-akamai:
+          file-path: parameters/accessParam-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

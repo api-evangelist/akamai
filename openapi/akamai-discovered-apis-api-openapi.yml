@@ -1,0 +1,708 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Discovered APIs API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Get information about APIs discovered in your traffic that are
+
+    new or not yet protected under API protections.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Get information about APIs discovered in your traffic that are
+
+    new or not yet protected under API protections.'
+  name: Discovered APIs
+paths:
+  /api-discovery:
+    x-akamai:
+      file-path: paths/api-discovery.yaml
+      path-info: /api-discovery
+    get:
+      description: __All products__ List APIs discovered in your traffic that are new or not yet protected under API protections. An API is considered new if it isn't registered, and appears in the discovered APIs list if it's had at least 1000 requests over the last 30 days and at least one 2xx response.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-api-list
+      operationId: get-api-list
+      parameters:
+      - description: If `true`, includes all discovered APIs including ones you have hidden. By default, `false` returns only the visible APIs.
+        in: query
+        name: includeHidden
+        schema:
+          default: false
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/hidden-query.yaml
+      - description: Filter results by hostname or basepath. You can also match on substrings.
+        in: query
+        name: search
+        schema:
+          example: www.example.com
+          type: string
+        x-akamai:
+          file-path: parameters/api-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                apis:
+                - basePath: /api/v2
+                  encodedBasePath: L2FwaS92Mg
+                  encodedHost: Y2RuLnh5ei5jb20
+                  host: cdn.xyz.com
+                  lastModified: '2021-08-24'
+                  type: API
+                  visibility: VISIBLE
+                - basePath: /api/v3
+                  encodedBasePath: L2FwaS92Mg
+                  encodedHost: Y2RuLnh5ei5jb20
+                  host: host.xyz.com
+                  lastModified: '2021-08-29'
+                  type: RESOURCE
+                  visibility: VISIBLE
+              schema:
+                additionalProperties: false
+                description: Contains details about APIs discovered by analyzing your existing traffic.
+                properties:
+                  apis:
+                    description: A list of APIs that have been discovered but are not yet protected by API Protections.
+                    items:
+                      additionalProperties: false
+                      description: Contains detected API details.
+                      properties:
+                        basePath:
+                          description: The base path where the API serves content.
+                          type: string
+                        encodedBasePath:
+                          description: The base64 encoded value of the basepath.
+                          type: string
+                        encodedHost:
+                          description: The base64 encoded value of the hostname.
+                          type: string
+                        host:
+                          description: The hostname where the API resides.
+                          type: string
+                        lastModified:
+                          description: Indicates the date when API Discovery last detected traffic on this API.
+                          format: date
+                          type: string
+                        type:
+                          description: This identifies whether it's a new `API` or a new `RESOURCE` on an existing endpoint definition.
+                          enum:
+                          - API
+                          - RESOURCE
+                          type: string
+                        visibility:
+                          description: The visibility status, either `VISIBLE` or `HIDDEN`.
+                          enum:
+                          - VISIBLE
+                          - HIDDEN
+                          type: string
+                      required:
+                      - host
+                      - basePath
+                      - encodedHost
+                      - encodedBasePath
+                      - type
+                      - visibility
+                      - lastModified
+                      type: object
+                      x-akamai:
+                        file-path: schemas/api-discovery.yaml
+                    type: array
+                required:
+                - apis
+                x-akamai:
+                  file-path: schemas/api-discovered-list.yaml
+          description: Successfully retrieved APIs.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: List discovered APIs
+      tags:
+      - Discovered APIs
+      x-akamai:
+        labels:
+        - All products
+  /api-discovery/host/{hostname}/basepath/{basePath}:
+    parameters:
+    - description: The base64-encoded value of the hostname.
+      in: path
+      name: hostname
+      required: true
+      schema:
+        example: d3d3LmV4YW1wbGUuY29t
+        type: string
+      x-akamai:
+        file-path: parameters/hostname-path.yaml
+    - description: The base64-encoded value of the base path.
+      in: path
+      name: basePath
+      required: true
+      schema:
+        example: L2FwaS92MQ==
+        type: string
+      x-akamai:
+        file-path: parameters/basepath-path.yaml
+    x-akamai:
+      file-path: paths/api-discovery-base-path.yaml
+      path-info: /api-discovery/host/{hostname}/basepath/{basePath}
+    get:
+      description: __All products__ Returns details about an API discovered in account traffic. It is identified based on hostname and basepath.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-api-details
+      operationId: get-api-details
+      parameters:
+      - description: If `true`, includes all discovered APIs including ones you have hidden. By default, `false` returns only the visible APIs.
+        in: query
+        name: includeHidden
+        schema:
+          default: false
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/hidden-query.yaml
+      - description: Filter results by name, description, or ID. You can match on substrings.
+        in: query
+        name: search
+        schema:
+          example: SQL Injection
+          type: string
+        x-akamai:
+          file-path: parameters/search-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                apiEndpointIds:
+                - 320110
+                basePath: /routing/checkout/init
+                discoveryType: RESOURCE
+                enrichment:
+                  options: 0
+                  browsers: 1715
+                  clientErrors: 0
+                  clientReputation: 0
+                  dateFirstSeen: '2021-11-30'
+                  dateLastModified: '2021-11-30'
+                  dateLastSeen: '2021-12-29'
+                  deletes: 0
+                  dosAttackers: 0
+                  formats:
+                  - JSON
+                  gets: 0
+                  hostSamples:
+                  - example.com
+                  mobiles: 810
+                  paths:
+                  - options: 0
+                    deletes: 0
+                    gets: 0
+                    posts: 1715
+                    puts: 0
+                    samples:
+                    - ''
+                    template: ''
+                  posts: 1715
+                  puts: 0
+                  redirects: 0
+                  requests: 1715
+                  requestsBadReputation: 0
+                  requestsLastDay: 57
+                  scanningTools: 0
+                  serverErrors: 0
+                  successes: 1715
+                  totalErrors: 0
+                  trend: DOWN
+                  webAttackers: 0
+                  webScrapers: 0
+                host: example.com
+                visibility: VISIBLE
+              schema:
+                additionalProperties: false
+                description: Describes properties for APIs discovered on your account.
+                properties:
+                  apiEndpointIds:
+                    description: The unique identifiers for APIs you're matching. This is available only for the `RESOURCE` discovery type.
+                    items:
+                      type: integer
+                    type: array
+                  basePath:
+                    description: The base path where the API serves content.
+                    type: string
+                  discoveryType:
+                    description: Use `API` when you create a new API. Use `RESOURCE` to add a new resource to an existing API.
+                    enum:
+                    - API
+                    - RESOURCE
+                    type: string
+                  enrichment:
+                    additionalProperties: false
+                    description: Summarizes the discovered API metrics.
+                    properties:
+                      options:
+                        description: The number of detected OPTION requests the API received.
+                        type: integer
+                      browsers:
+                        description: The number of detected requests the API received through a browser.
+                        type: integer
+                      clientErrors:
+                        description: The number of detected client error responses (4xx status codes) the API returned.
+                        type: integer
+                      clientReputation:
+                        description: The percentage of clients with bad reputations.
+                        maximum: 100
+                        minimum: 0
+                        type: number
+                      dateFirstSeen:
+                        description: When the API was first detected in the Akamai network.
+                        type: string
+                      dateLastModified:
+                        description: When the API was last updated.
+                        type: string
+                      dateLastSeen:
+                        description: When the API last served traffic in the Akamai network.
+                        type: string
+                      deletes:
+                        description: The number of detected DELETE requests the API received.
+                        type: integer
+                      dosAttackers:
+                        description: The percentage of detected DoS attackers among the clients with bad reputation.
+                        maximum: 100
+                        minimum: 0
+                        type: number
+                      formats:
+                        description: Data formats the API returns.
+                        items:
+                          type: string
+                        type: array
+                      gets:
+                        description: The number of detected GET requests the API received.
+                        type: integer
+                      hostSamples:
+                        description: The set of sample hostnames if a hostname includes a wildcard. For non-wildcard hostnames, this shows the hostname.
+                        items:
+                          type: string
+                        type: array
+                      mobiles:
+                        description: The number of detected requests the API received through a mobile device.
+                        type: integer
+                      newlyDiscovered:
+                        description: Indicates whether this is a newly discovered API or and API not yet included in your API protections.
+                        type: boolean
+                      paths:
+                        description: The resource paths detected for resources that include wildcards.
+                        items:
+                          additionalProperties: false
+                          properties:
+                            options:
+                              description: The number of detected OPTIONS requests the API received.
+                              type: integer
+                            deletes:
+                              description: The number of detected DELETE requests the API received.
+                              type: integer
+                            gets:
+                              description: The number of detected GET requests the API received.
+                              type: integer
+                            posts:
+                              description: The number of detected POST requests the API received.
+                              type: integer
+                            puts:
+                              description: The number of detected PUT requests the API received.
+                              type: integer
+                            samples:
+                              description: Sample resource paths detected for resources that include wildcards. For non-wildcards, this shows the full path.
+                              items:
+                                type: string
+                              type: array
+                            template:
+                              description: The templatized paths for resources that include a wildcard.
+                              type: string
+                        type: array
+                      posts:
+                        description: The number of detected POST requests the API received.
+                        type: integer
+                      puts:
+                        description: The number of detected PUT requests the API received.
+                        type: integer
+                      redirects:
+                        description: The number of detected redirect responses (3xx status codes) the API returned.
+                        type: integer
+                      requests:
+                        description: The number of detected requests sent to the API.
+                        type: integer
+                      requestsBadReputation:
+                        description: The percentage of detected requests sent to the API by clients with the reputation score greater than five.
+                        maximum: 100
+                        minimum: 0
+                        type: number
+                      requestsLastDay:
+                        description: The number of detected requests sent to the API during the previous day.
+                        type: integer
+                      scanningTools:
+                        description: The percentage of detected scanners among the clients with bad reputations.
+                        maximum: 100
+                        minimum: 0
+                        type: number
+                      serverErrors:
+                        description: The number of detected server error responses (5xx status codes) the API returned.
+                        type: integer
+                      successes:
+                        description: The number of detected success responses (2xx status codes) the API returned.
+                        type: integer
+                      totalDailyRequests:
+                        description: The number of detected requests in the last 30 days.
+                        items:
+                          additionalProperties: false
+                          properties:
+                            date:
+                              description: The number of detected requests on each day.
+                              type: integer
+                          type: object
+                        type: array
+                      totalErrors:
+                        description: The number of detected error responses.
+                        type: integer
+                      trend:
+                        description: The trend of the current day's detected requests versus the average number of detected requests in the last 30 days, either `UP` or `DOWN`.
+                        enum:
+                        - UP
+                        - DOWN
+                        type: string
+                      webAttackers:
+                        description: The percentage of detected web attackers among the clients with bad reputations.
+                        maximum: 100
+                        minimum: 0
+                        type: number
+                      webScrapers:
+                        description: The percentage of detected web scrapers among the clients with bad reputations.
+                        maximum: 100
+                        minimum: 0
+                        type: number
+                    type: object
+                  host:
+                    description: The hostname where the API resides. If you haven't configured the hostname in Property Manager, you won't be able to register the API that uses the hostname.
+                    type: string
+                  visibility:
+                    description: When `HIDDEN`, the API is omitted from future responses for the person who runs this operation. When `VISIBLE`, the API is included in those responses. This operation is per-user. APIs you hide under your credentials still appear unhidden for other users making the same call under their credentials.
+                    enum:
+                    - HIDDEN
+                    - VISIBLE
+                    type: string
+                type: object
+                x-akamai:
+                  file-path: schemas/api-discovery-details-200.yaml
+          description: Successfully retrieved the details.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Get a discovered API
+      tags:
+      - Discovered APIs
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

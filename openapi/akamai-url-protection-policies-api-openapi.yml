@@ -1,0 +1,2561 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens URL protection policies API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage your URL protection policies.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage your URL protection policies.
+  name: URL protection policies
+paths:
+  /configs/{configId}/versions/{versionNumber}/url-protections:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/url-protections.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/url-protections
+    post:
+      description: __All products__ Creates a new URL protection policy for a specific configuration version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-url-protection-policies
+      operationId: post-url-protection-policies
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              bypassCondition:
+                atomicConditions:
+                - className: NetworkListCondition
+                  value:
+                  - 12345_10CLIENTLIST
+                  - '54321_123'
+                - className: RequestHeaderCondition
+                  name:
+                  - my-custom-header
+                  value:
+                  - my-custom-value
+              categories:
+              - type: BOTS
+              - type: CLOUD_PROVIDERS
+              - type: PROXIES
+              - type: TOR_EXIT_NODES
+              - type: PLATFORM_DDOS_INTELLIGENCE
+              - listIds:
+                - 12345_10CLIENTLIST
+                - '54321_123'
+                positiveMatch: true
+                type: CLIENT_LIST
+              description: URL Protection
+              hostnamePaths:
+              - hostname: api.demo.com
+                paths:
+                - /login
+                - /checkout
+                - /history
+              intelligentLoadShedding: true
+              name: Transaction site protection
+              protectionType: MULTIPLE
+              rateThreshold: 195
+              sheddingThresholdHitsPerSec: 150
+            schema:
+              additionalProperties: false
+              description: Contains details about a URL protection policy.
+              properties:
+                apiDefinitions:
+                  description: The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      apiDefinitionId:
+                        description: Uniquely identifies each API endpoint.
+                        format: int64
+                        type: integer
+                      definedResources:
+                        description: When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.
+                        type: boolean
+                      resourceIds:
+                        description: The unique identifiers of the endpoint's resources.
+                        items:
+                          format: int64
+                          type: integer
+                        type: array
+                      undefinedResources:
+                        description: When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.
+                        type: boolean
+                    required:
+                    - apiDefinitionId
+                    type: object
+                  type: array
+                bypassCondition:
+                  additionalProperties: false
+                  description: Exempts specific clients from being processed by the URL protection policy.
+                  properties:
+                    atomicConditions:
+                      description: Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.
+                      items:
+                        oneOf:
+                        - additionalProperties: false
+                          description: Collects data needed for condition matches on request headers.
+                          properties:
+                            className:
+                              description: Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.
+                              enum:
+                              - RequestHeaderCondition
+                              type: string
+                            name:
+                              description: Use `name` to check whether the specified header exists.
+                              items:
+                                minLength: 1
+                                type: string
+                              minItems: 1
+                              type: array
+                              uniqueItems: true
+                            nameWildcard:
+                              description: Whether to interpret `?` and `*` as wildcards in the specified `name`.
+                              type: boolean
+                            positiveMatch:
+                              description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                              readOnly: true
+                              type: boolean
+                            value:
+                              description: A list of unique header values. Use both `value` and `name` to check whether the requesting client’s header matches the specified headers.
+                              items:
+                                minLength: 1
+                                type: string
+                              nullable: true
+                              type: array
+                              uniqueItems: true
+                            valueCase:
+                              description: Whether to consider case when matching header values, `true` for case-sensitive matches.
+                              type: boolean
+                            valueWildcard:
+                              description: Whether to interpret `?` and `*` as wildcards in the specified `value`.
+                              type: boolean
+                          required:
+                          - className
+                          - name
+                          title: RequestHeaderCondition
+                          type: object
+                          x-akamai:
+                            file-path: schemas/url-protection-bypass-request-header-condition.yaml
+                        - additionalProperties: false
+                          description: Collects data needed for condition matches on client lists and network lists.
+                          properties:
+                            checkIps:
+                              description: __Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.
+                              enum:
+                              - connecting
+                              readOnly: true
+                              type: string
+                            className:
+                              description: Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.
+                              enum:
+                              - NetworkListCondition
+                              type: string
+                            positiveMatch:
+                              description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                              readOnly: true
+                              type: boolean
+                            value:
+                              description: Identifies the client list or network list.
+                              items:
+                                minLength: 1
+                                type: string
+                              nullable: true
+                              type: array
+                              uniqueItems: true
+                          required:
+                          - className
+                          - value
+                          title: NetworkListCondition
+                          type: object
+                          x-akamai:
+                            file-path: schemas/url-protection-bypass-client-list-condition.yaml
+                      minItems: 1
+                      type: array
+                  type: object
+                categories:
+                  description: The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.
+                  items:
+                    oneOf:
+                    - additionalProperties: false
+                      description: Specify one or more load shedding categories for the URL protection policy.
+                      properties:
+                        type:
+                          description: Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.
+                          enum:
+                          - BOTS
+                          - CLIENT_REPUTATIONS
+                          - CLOUD_PROVIDERS
+                          - PROXIES
+                          - TOR_EXIT_NODES
+                          - PLATFORM_DDOS_INTELLIGENCE
+                          type: string
+                      required:
+                      - type
+                      title: Client list category
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-category.yaml
+                    - additionalProperties: false
+                      description: Defines a `CLIENT_LIST` load shedding category for a URL protection policy.
+                      properties:
+                        listIds:
+                          description: A list of client list identifiers to match on.
+                          items:
+                            type: string
+                          type: array
+                        positiveMatch:
+                          description: Whether the selected client lists match.
+                          type: boolean
+                        type:
+                          description: Specify `CLIENT_LIST` to match on a client list.
+                          enum:
+                          - CLIENT_LIST
+                          type: string
+                      required:
+                      - type
+                      title: Other categories
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-client-list-category.yaml
+                  type: array
+                configId:
+                  description: Uniquely identifies the security configuration.
+                  format: int64
+                  type: integer
+                configVersion:
+                  description: The security configuration version.
+                  type: integer
+                createDate:
+                  description: __Read-only__ The timestamp when you created the URL protection policy.
+                  format: date-time
+                  readOnly: true
+                  type: string
+                createdBy:
+                  description: __Read-only__ The username of the person who created the URL protection policy.
+                  readOnly: true
+                  type: string
+                description:
+                  description: A description of the rate policy.
+                  type: string
+                hostnamePaths:
+                  description: The hostname and path combinations to match on.
+                  items:
+                    additionalProperties: false
+                    description: The hostname and path combinations to match on.
+                    properties:
+                      hostname:
+                        description: The hostnames you choose to match on.
+                        type: string
+                      paths:
+                        description: The list of paths to match on.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - hostname
+                    - paths
+                    type: object
+                    x-akamai:
+                      file-path: schemas/url-protection-policy-hostpath.yaml
+                  minItems: 1
+                  type: array
+                intelligentLoadShedding:
+                  description: Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.
+                  type: boolean
+                name:
+                  description: The rate policy's unique name.
+                  type: string
+                policyId:
+                  description: __Read-only__ Uniquely identifies the URL protection policy.
+                  format: int64
+                  readOnly: true
+                  type: integer
+                protectionType:
+                  description: If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.
+                  enum:
+                  - SINGLE
+                  - MULTIPLE
+                  type: string
+                rateThreshold:
+                  description: The allowed hits per second during any five-second interval.
+                  type: integer
+                sheddingThresholdHitsPerSec:
+                  description: Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.
+                  type: integer
+                updateDate:
+                  description: __Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.
+                  format: date-time
+                  readOnly: true
+                  type: string
+                updatedBy:
+                  description: __Read-only__ Username who last updated the URL protection policy.
+                  readOnly: true
+                  type: string
+                used:
+                  description: __Read-only__ Whether you're currently using the URL protection policy.
+                  readOnly: true
+                  type: boolean
+              required:
+              - intelligentLoadShedding
+              - rateThreshold
+              - name
+              type: object
+              x-akamai:
+                file-path: schemas/url-protection-policy.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                bypassCondition:
+                  atomicConditions:
+                  - checkIps: connecting
+                    className: NetworkListCondition
+                    positiveMatch: true
+                    value:
+                    - 12345_10CLIENTLIST
+                    - '54321_123'
+                  - className: RequestHeaderCondition
+                    name:
+                    - my-custom-header
+                    nameWildcard: false
+                    positiveMatch: true
+                    value:
+                    - my-custom-value
+                    valueCase: false
+                    valueWildcard: false
+                categories:
+                - type: BOTS
+                - listIds:
+                  - 12345_10CLIENTLIST
+                  - '54321_123'
+                  positiveMatch: true
+                  type: CLIENT_LIST
+                - listIds:
+                  - 16656_CPISERVERS
+                  positiveMatch: true
+                  type: CLIENT_LIST
+                - type: CLOUD_PROVIDERS
+                - type: PROXIES
+                - type: TOR_EXIT_NODES
+                - type: PLATFORM_DDOS_INTELLIGENCE
+                configId: 43007
+                configVersion: 40
+                createDate: '2023-04-14T18:58:53Z'
+                createdBy: jsmith
+                description: URL Protection
+                hostnamePaths:
+                - hostname: custom.com
+                  paths:
+                  - /asd
+                  - /my-test-path
+                intelligentLoadShedding: true
+                name: URL Protection
+                policyId: 681
+                protectionType: MULTIPLE
+                rateThreshold: 195
+                sheddingThresholdHitsPerSec: 150
+                updateDate: '2023-04-26T02:42:28Z'
+                updatedBy: jperez
+                used: true
+              schema:
+                additionalProperties: false
+                description: Contains details about a URL protection policy.
+                properties:
+                  apiDefinitions:
+                    description: The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        apiDefinitionId:
+                          description: Uniquely identifies each API endpoint.
+                          format: int64
+                          type: integer
+                        definedResources:
+                          description: When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.
+                          type: boolean
+                        resourceIds:
+                          description: The unique identifiers of the endpoint's resources.
+                          items:
+                            format: int64
+                            type: integer
+                          type: array
+                        undefinedResources:
+                          description: When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.
+                          type: boolean
+                      required:
+                      - apiDefinitionId
+                      type: object
+                    type: array
+                  bypassCondition:
+                    additionalProperties: false
+                    description: Exempts specific clients from being processed by the URL protection policy.
+                    properties:
+                      atomicConditions:
+                        description: Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.
+                        items:
+                          oneOf:
+                          - additionalProperties: false
+                            description: Collects data needed for condition matches on request headers.
+                            properties:
+                              className:
+                                description: Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.
+                                enum:
+                                - RequestHeaderCondition
+                                type: string
+                              name:
+                                description: Use `name` to check whether the specified header exists.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                minItems: 1
+                                type: array
+                                uniqueItems: true
+                              nameWildcard:
+                                description: Whether to interpret `?` and `*` as wildcards in the specified `name`.
+                                type: boolean
+                              positiveMatch:
+                                description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                readOnly: true
+                                type: boolean
+                              value:
+                                description: A list of unique header values. Use both `value` and `name` to check whether the requesting client’s header matches the specified headers.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                nullable: true
+                                type: array
+                                uniqueItems: true
+                              valueCase:
+                                description: Whether to consider case when matching header values, `true` for case-sensitive matches.
+                                type: boolean
+                              valueWildcard:
+                                description: Whether to interpret `?` and `*` as wildcards in the specified `value`.
+                                type: boolean
+                            required:
+                            - className
+                            - name
+                            title: RequestHeaderCondition
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-bypass-request-header-condition.yaml
+                          - additionalProperties: false
+                            description: Collects data needed for condition matches on client lists and network lists.
+                            properties:
+                              checkIps:
+                                description: __Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.
+                                enum:
+                                - connecting
+                                readOnly: true
+                                type: string
+                              className:
+                                description: Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.
+                                enum:
+                                - NetworkListCondition
+                                type: string
+                              positiveMatch:
+                                description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                readOnly: true
+                                type: boolean
+                              value:
+                                description: Identifies the client list or network list.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                nullable: true
+                                type: array
+                                uniqueItems: true
+                            required:
+                            - className
+                            - value
+                            title: NetworkListCondition
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-bypass-client-list-condition.yaml
+                        minItems: 1
+                        type: array
+                    type: object
+                  categories:
+                    description: The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.
+                    items:
+                      oneOf:
+                      - additionalProperties: false
+                        description: Specify one or more load shedding categories for the URL protection policy.
+                        properties:
+                          type:
+                            description: Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.
+                            enum:
+                            - BOTS
+                            - CLIENT_REPUTATIONS
+                            - CLOUD_PROVIDERS
+                            - PROXIES
+                            - TOR_EXIT_NODES
+                            - PLATFORM_DDOS_INTELLIGENCE
+                            type: string
+                        required:
+                        - type
+                        title: Client list category
+                        type: object
+                        x-akamai:
+                          file-path: schemas/url-protection-category.yaml
+                      - additionalProperties: false
+                        description: Defines a `CLIENT_LIST` load shedding category for a URL protection policy.
+                        properties:
+                          listIds:
+                            description: A list of client list identifiers to match on.
+                            items:
+                              type: string
+                            type: array
+                          positiveMatch:
+                            description: Whether the selected client lists match.
+                            type: boolean
+                          type:
+                            description: Specify `CLIENT_LIST` to match on a client list.
+                            enum:
+                            - CLIENT_LIST
+                            type: string
+                        required:
+                        - type
+                        title: Other categories
+                        type: object
+                        x-akamai:
+                          file-path: schemas/url-protection-client-list-category.yaml
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    format: int64
+                    type: integer
+                  configVersion:
+                    description: The security configuration version.
+                    type: integer
+                  createDate:
+                    description: __Read-only__ The timestamp when you created the URL protection policy.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The username of the person who created the URL protection policy.
+                    readOnly: true
+                    type: string
+                  description:
+                    description: A description of the rate policy.
+                    type: string
+                  hostnamePaths:
+                    description: The hostname and path combinations to match on.
+                    items:
+                      additionalProperties: false
+                      description: The hostname and path combinations to match on.
+                      properties:
+                        hostname:
+                          description: The hostnames you choose to match on.
+                          type: string
+                        paths:
+                          description: The list of paths to match on.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - hostname
+                      - paths
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-policy-hostpath.yaml
+                    minItems: 1
+                    type: array
+                  intelligentLoadShedding:
+                    description: Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.
+                    type: boolean
+                  name:
+                    description: The rate policy's unique name.
+                    type: string
+                  policyId:
+                    description: __Read-only__ Uniquely identifies the URL protection policy.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                  protectionType:
+                    description: If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.
+                    enum:
+                    - SINGLE
+                    - MULTIPLE
+                    type: string
+                  rateThreshold:
+                    description: The allowed hits per second during any five-second interval.
+                    type: integer
+                  sheddingThresholdHitsPerSec:
+                    description: Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.
+                    type: integer
+                  updateDate:
+                    description: __Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  updatedBy:
+                    description: __Read-only__ Username who last updated the URL protection policy.
+                    readOnly: true
+                    type: string
+                  used:
+                    description: __Read-only__ Whether you're currently using the URL protection policy.
+                    readOnly: true
+                    type: boolean
+                required:
+                - intelligentLoadShedding
+                - rateThreshold
+                - name
+                type: object
+                x-akamai:
+                  file-path: schemas/url-protection-policy.yaml
+          description: Successfully created a URL protection policy.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to URL protection policies in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Create a URL protection policy
+      tags:
+      - URL protection policies
+      x-akamai:
+        labels:
+        - All products
+    get:
+      description: __All products__ Returns all URL protection policies for a specific security configuration version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-url-protection-policies
+      operationId: get-url-protection-policies
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                urlProtectionPolicies:
+                - categories:
+                  - type: BOTS
+                  - listIds:
+                    - 12345_IPCLIENTLISTFEB09
+                    positiveMatch: true
+                    type: CLIENT_LIST
+                  - type: CLOUD_PROVIDERS
+                  - type: PROXIES
+                  - type: TOR_EXIT_NODES
+                  - type: PLATFORM_DDOS_INTELLIGENCE
+                  configId: 43007
+                  configVersion: 40
+                  createDate: '2023-04-26T03:02:43Z'
+                  createdBy: mrossi
+                  description: protect APIs
+                  hostnamePaths:
+                  - hostname: api.custom.com
+                    paths:
+                    - /payments
+                  - hostname: staging.api.custom.com
+                    paths:
+                    - /inventory
+                    - /payments
+                  intelligentLoadShedding: true
+                  name: Second URL Protection Policy
+                  policyId: 745
+                  protectionType: MULTIPLE
+                  rateThreshold: 1100
+                  sheddingThresholdHitsPerSec: 880
+                  updateDate: '2023-04-26T03:02:43Z'
+                  updatedBy: jkowalski
+                  used: false
+                - categories:
+                  - type: BOTS
+                  - listIds:
+                    - 16656_CPISERVERS
+                    positiveMatch: true
+                    type: CLIENT_LIST
+                  - type: CLOUD_PROVIDERS
+                  - type: PROXIES
+                  - type: TOR_EXIT_NODES
+                  - type: PLATFORM_DDOS_INTELLIGENCE
+                  configId: 43007
+                  configVersion: 40
+                  createDate: '2023-04-14T18:58:53Z'
+                  createdBy: szhang
+                  description: URL Protection
+                  hostnamePaths:
+                  - hostname: custom.com
+                    paths:
+                    - /Hamza-path
+                    - /asd
+                    - /my-test-path
+                  intelligentLoadShedding: true
+                  name: Transaction site protection
+                  policyId: 681
+                  protectionType: MULTIPLE
+                  rateThreshold: 195
+                  sheddingThresholdHitsPerSec: 150
+                  updateDate: '2023-04-26T02:42:28Z'
+                  updatedBy: afero
+                  used: true
+              schema:
+                additionalProperties: false
+                description: Contains details about URL protection policies.
+                properties:
+                  urlProtectionPolicies:
+                    description: A list of URL protection policies in the configuration version.
+                    items:
+                      additionalProperties: false
+                      description: Contains details about a URL protection policy.
+                      properties:
+                        apiDefinitions:
+                          description: The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.
+                          items:
+                            additionalProperties: false
+                            properties:
+                              apiDefinitionId:
+                                description: Uniquely identifies each API endpoint.
+                                format: int64
+                                type: integer
+                              definedResources:
+                                description: When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.
+                                type: boolean
+                              resourceIds:
+                                description: The unique identifiers of the endpoint's resources.
+                                items:
+                                  format: int64
+                                  type: integer
+                                type: array
+                              undefinedResources:
+                                description: When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.
+                                type: boolean
+                            required:
+                            - apiDefinitionId
+                            type: object
+                          type: array
+                        bypassCondition:
+                          additionalProperties: false
+                          description: Exempts specific clients from being processed by the URL protection policy.
+                          properties:
+                            atomicConditions:
+                              description: Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.
+                              items:
+                                oneOf:
+                                - additionalProperties: false
+                                  description: Collects data needed for condition matches on request headers.
+                                  properties:
+                                    className:
+                                      description: Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.
+                                      enum:
+                                      - RequestHeaderCondition
+                                      type: string
+                                    name:
+                                      description: Use `name` to check whether the specified header exists.
+                                      items:
+                                        minLength: 1
+                                        type: string
+                                      minItems: 1
+                                      type: array
+                                      uniqueItems: true
+                                    nameWildcard:
+                                      description: Whether to interpret `?` and `*` as wildcards in the specified `name`.
+                                      type: boolean
+                                    positiveMatch:
+                                      description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                      readOnly: true
+                                      type: boolean
+                                    value:
+                                      description: A list of unique header values. Use both `value` and `name` to check whether the requesting client’s header matches the specified headers.
+                                      items:
+                                        minLength: 1
+                                        type: string
+                                      nullable: true
+                                      type: array
+                                      uniqueItems: true
+                                    valueCase:
+                                      description: Whether to consider case when matching header values, `true` for case-sensitive matches.
+                                      type: boolean
+                                    valueWildcard:
+                                      description: Whether to interpret `?` and `*` as wildcards in the specified `value`.
+                                      type: boolean
+                                  required:
+                                  - className
+                                  - name
+                                  title: RequestHeaderCondition
+                                  type: object
+                                  x-akamai:
+                                    file-path: schemas/url-protection-bypass-request-header-condition.yaml
+                                - additionalProperties: false
+                                  description: Collects data needed for condition matches on client lists and network lists.
+                                  properties:
+                                    checkIps:
+                                      description: __Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.
+                                      enum:
+                                      - connecting
+                                      readOnly: true
+                                      type: string
+                                    className:
+                                      description: Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.
+                                      enum:
+                                      - NetworkListCondition
+                                      type: string
+                                    positiveMatch:
+                                      description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                      readOnly: true
+                                      type: boolean
+                                    value:
+                                      description: Identifies the client list or network list.
+                                      items:
+                                        minLength: 1
+                                        type: string
+                                      nullable: true
+                                      type: array
+                                      uniqueItems: true
+                                  required:
+                                  - className
+                                  - value
+                                  title: NetworkListCondition
+                                  type: object
+                                  x-akamai:
+                                    file-path: schemas/url-protection-bypass-client-list-condition.yaml
+                              minItems: 1
+                              type: array
+                          type: object
+                        categories:
+                          description: The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.
+                          items:
+                            oneOf:
+                            - additionalProperties: false
+                              description: Specify one or more load shedding categories for the URL protection policy.
+                              properties:
+                                type:
+                                  description: Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.
+                                  enum:
+                                  - BOTS
+                                  - CLIENT_REPUTATIONS
+                                  - CLOUD_PROVIDERS
+                                  - PROXIES
+                                  - TOR_EXIT_NODES
+                                  - PLATFORM_DDOS_INTELLIGENCE
+                                  type: string
+                              required:
+                              - type
+                              title: Client list category
+                              type: object
+                              x-akamai:
+                                file-path: schemas/url-protection-category.yaml
+                            - additionalProperties: false
+                              description: Defines a `CLIENT_LIST` load shedding category for a URL protection policy.
+                              properties:
+                                listIds:
+                                  description: A list of client list identifiers to match on.
+                                  items:
+                                    type: string
+                                  type: array
+                                positiveMatch:
+                                  description: Whether the selected client lists match.
+                                  type: boolean
+                                type:
+                                  description: Specify `CLIENT_LIST` to match on a client list.
+                                  enum:
+                                  - CLIENT_LIST
+                                  type: string
+                              required:
+                              - type
+                              title: Other categories
+                              type: object
+                              x-akamai:
+                                file-path: schemas/url-protection-client-list-category.yaml
+                          type: array
+                        configId:
+                          description: Uniquely identifies the security configuration.
+                          format: int64
+                          type: integer
+                        configVersion:
+                          description: The security configuration version.
+                          type: integer
+                        createDate:
+                          description: __Read-only__ The timestamp when you created the URL protection policy.
+                          format: date-time
+                          readOnly: true
+                          type: string
+                        createdBy:
+                          description: __Read-only__ The username of the person who created the URL protection policy.
+                          readOnly: true
+                          type: string
+                        description:
+                          description: A description of the rate policy.
+                          type: string
+                        hostnamePaths:
+                          description: The hostname and path combinations to match on.
+                          items:
+                            additionalProperties: false
+                            description: The hostname and path combinations to match on.
+                            properties:
+                              hostname:
+                                description: The hostnames you choose to match on.
+                                type: string
+                              paths:
+                                description: The list of paths to match on.
+                                items:
+                                  type: string
+                                type: array
+                            required:
+                            - hostname
+                            - paths
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-policy-hostpath.yaml
+                          minItems: 1
+                          type: array
+                        intelligentLoadShedding:
+                          description: Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.
+                          type: boolean
+                        name:
+                          description: The rate policy's unique name.
+                          type: string
+                        policyId:
+                          description: __Read-only__ Uniquely identifies the URL protection policy.
+                          format: int64
+                          readOnly: true
+                          type: integer
+                        protectionType:
+                          description: If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.
+                          enum:
+                          - SINGLE
+                          - MULTIPLE
+                          type: string
+                        rateThreshold:
+                          description: The allowed hits per second during any five-second interval.
+                          type: integer
+                        sheddingThresholdHitsPerSec:
+                          description: Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.
+                          type: integer
+                        updateDate:
+                          description: __Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.
+                          format: date-time
+                          readOnly: true
+                          type: string
+                        updatedBy:
+                          description: __Read-only__ Username who last updated the URL protection policy.
+                          readOnly: true
+                          type: string
+                        used:
+                          description: __Read-only__ Whether you're currently using the URL protection policy.
+                          readOnly: true
+                          type: boolean
+                      required:
+                      - intelligentLoadShedding
+                      - rateThreshold
+                      - name
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-policy.yaml
+                    type: array
+                required:
+                - urlProtectionPolicies
+                type: object
+                x-akamai:
+                  file-path: schemas/url-protection-policies.yaml
+          description: Successfully returned the URL protection policies.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the URL protection policies in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List URL protection policies
+      tags:
+      - URL protection policies
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/url-protections/{urlProtectionPolicyId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for each URL protection policy.
+      in: path
+      name: urlProtectionPolicyId
+      required: true
+      schema:
+        example: 112231
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/url-protection-policy-id-path.yaml
+    x-akamai:
+      file-path: paths/url-protection.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/url-protections/{urlProtectionPolicyId}
+    get:
+      description: __All products__ Returns the specified URL protection policy.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-url-protection-policy
+      operationId: get-url-protection-policy
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                bypassCondition:
+                  atomicConditions:
+                  - checkIps: connecting
+                    className: NetworkListCondition
+                    positiveMatch: true
+                    value:
+                    - 12345_10CLIENTLIST
+                    - '54321_123'
+                  - className: RequestHeaderCondition
+                    name:
+                    - my-custom-header
+                    nameWildcard: false
+                    positiveMatch: true
+                    value:
+                    - my-custom-value
+                    valueCase: false
+                    valueWildcard: false
+                categories:
+                - type: BOTS
+                - listIds:
+                  - 12345_10CLIENTLIST
+                  - '54321_123'
+                  positiveMatch: true
+                  type: CLIENT_LIST
+                - listIds:
+                  - 16656_CPISERVERS
+                  positiveMatch: true
+                  type: CLIENT_LIST
+                - type: CLOUD_PROVIDERS
+                - type: PROXIES
+                - type: TOR_EXIT_NODES
+                - type: PLATFORM_DDOS_INTELLIGENCE
+                configId: 43007
+                configVersion: 40
+                createDate: '2023-04-14T18:58:53Z'
+                createdBy: jsmith
+                description: URL Protection
+                hostnamePaths:
+                - hostname: custom.com
+                  paths:
+                  - /asd
+                  - /my-test-path
+                intelligentLoadShedding: true
+                name: URL Protection
+                policyId: 681
+                protectionType: MULTIPLE
+                rateThreshold: 195
+                sheddingThresholdHitsPerSec: 150
+                updateDate: '2023-04-26T02:42:28Z'
+                updatedBy: jperez
+                used: true
+              schema:
+                additionalProperties: false
+                description: Contains details about a URL protection policy.
+                properties:
+                  apiDefinitions:
+                    description: The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        apiDefinitionId:
+                          description: Uniquely identifies each API endpoint.
+                          format: int64
+                          type: integer
+                        definedResources:
+                          description: When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.
+                          type: boolean
+                        resourceIds:
+                          description: The unique identifiers of the endpoint's resources.
+                          items:
+                            format: int64
+                            type: integer
+                          type: array
+                        undefinedResources:
+                          description: When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.
+                          type: boolean
+                      required:
+                      - apiDefinitionId
+                      type: object
+                    type: array
+                  bypassCondition:
+                    additionalProperties: false
+                    description: Exempts specific clients from being processed by the URL protection policy.
+                    properties:
+                      atomicConditions:
+                        description: Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.
+                        items:
+                          oneOf:
+                          - additionalProperties: false
+                            description: Collects data needed for condition matches on request headers.
+                            properties:
+                              className:
+                                description: Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.
+                                enum:
+                                - RequestHeaderCondition
+                                type: string
+                              name:
+                                description: Use `name` to check whether the specified header exists.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                minItems: 1
+                                type: array
+                                uniqueItems: true
+                              nameWildcard:
+                                description: Whether to interpret `?` and `*` as wildcards in the specified `name`.
+                                type: boolean
+                              positiveMatch:
+                                description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                readOnly: true
+                                type: boolean
+                              value:
+                                description: A list of unique header values. Use both `value` and `name` to check whether the requesting client’s header matches the specified headers.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                nullable: true
+                                type: array
+                                uniqueItems: true
+                              valueCase:
+                                description: Whether to consider case when matching header values, `true` for case-sensitive matches.
+                                type: boolean
+                              valueWildcard:
+                                description: Whether to interpret `?` and `*` as wildcards in the specified `value`.
+                                type: boolean
+                            required:
+                            - className
+                            - name
+                            title: RequestHeaderCondition
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-bypass-request-header-condition.yaml
+                          - additionalProperties: false
+                            description: Collects data needed for condition matches on client lists and network lists.
+                            properties:
+                              checkIps:
+                                description: __Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.
+                                enum:
+                                - connecting
+                                readOnly: true
+                                type: string
+                              className:
+                                description: Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.
+                                enum:
+                                - NetworkListCondition
+                                type: string
+                              positiveMatch:
+                                description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                readOnly: true
+                                type: boolean
+                              value:
+                                description: Identifies the client list or network list.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                nullable: true
+                                type: array
+                                uniqueItems: true
+                            required:
+                            - className
+                            - value
+                            title: NetworkListCondition
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-bypass-client-list-condition.yaml
+                        minItems: 1
+                        type: array
+                    type: object
+                  categories:
+                    description: The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.
+                    items:
+                      oneOf:
+                      - additionalProperties: false
+                        description: Specify one or more load shedding categories for the URL protection policy.
+                        properties:
+                          type:
+                            description: Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.
+                            enum:
+                            - BOTS
+                            - CLIENT_REPUTATIONS
+                            - CLOUD_PROVIDERS
+                            - PROXIES
+                            - TOR_EXIT_NODES
+                            - PLATFORM_DDOS_INTELLIGENCE
+                            type: string
+                        required:
+                        - type
+                        title: Client list category
+                        type: object
+                        x-akamai:
+                          file-path: schemas/url-protection-category.yaml
+                      - additionalProperties: false
+                        description: Defines a `CLIENT_LIST` load shedding category for a URL protection policy.
+                        properties:
+                          listIds:
+                            description: A list of client list identifiers to match on.
+                            items:
+                              type: string
+                            type: array
+                          positiveMatch:
+                            description: Whether the selected client lists match.
+                            type: boolean
+                          type:
+                            description: Specify `CLIENT_LIST` to match on a client list.
+                            enum:
+                            - CLIENT_LIST
+                            type: string
+                        required:
+                        - type
+                        title: Other categories
+                        type: object
+                        x-akamai:
+                          file-path: schemas/url-protection-client-list-category.yaml
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    format: int64
+                    type: integer
+                  configVersion:
+                    description: The security configuration version.
+                    type: integer
+                  createDate:
+                    description: __Read-only__ The timestamp when you created the URL protection policy.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The username of the person who created the URL protection policy.
+                    readOnly: true
+                    type: string
+                  description:
+                    description: A description of the rate policy.
+                    type: string
+                  hostnamePaths:
+                    description: The hostname and path combinations to match on.
+                    items:
+                      additionalProperties: false
+                      description: The hostname and path combinations to match on.
+                      properties:
+                        hostname:
+                          description: The hostnames you choose to match on.
+                          type: string
+                        paths:
+                          description: The list of paths to match on.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - hostname
+                      - paths
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-policy-hostpath.yaml
+                    minItems: 1
+                    type: array
+                  intelligentLoadShedding:
+                    description: Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.
+                    type: boolean
+                  name:
+                    description: The rate policy's unique name.
+                    type: string
+                  policyId:
+                    description: __Read-only__ Uniquely identifies the URL protection policy.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                  protectionType:
+                    description: If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.
+                    enum:
+                    - SINGLE
+                    - MULTIPLE
+                    type: string
+                  rateThreshold:
+                    description: The allowed hits per second during any five-second interval.
+                    type: integer
+                  sheddingThresholdHitsPerSec:
+                    description: Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.
+                    type: integer
+                  updateDate:
+                    description: __Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  updatedBy:
+                    description: __Read-only__ Username who last updated the URL protection policy.
+                    readOnly: true
+                    type: string
+                  used:
+                    description: __Read-only__ Whether you're currently using the URL protection policy.
+                    readOnly: true
+                    type: boolean
+                required:
+                - intelligentLoadShedding
+                - rateThreshold
+                - name
+                type: object
+                x-akamai:
+                  file-path: schemas/url-protection-policy.yaml
+          description: Successfully returned the URL protection policy.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the URL protection policy in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or URL protection policy wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get a URL protection policy
+      tags:
+      - URL protection policies
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Updates the specified URL protection policy.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-url-protection-policy
+      operationId: put-url-protection-policy
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              bypassCondition:
+                atomicConditions:
+                - className: NetworkListCondition
+                  value:
+                  - 12345_10CLIENTLIST
+                  - '54321_123'
+                - className: RequestHeaderCondition
+                  name:
+                  - my-custom-header
+                  value:
+                  - my-custom-value
+              categories:
+              - type: BOTS
+              - type: CLIENT_REPUTATIONS
+              - type: CLOUD_PROVIDERS
+              - type: PROXIES
+              - type: TOR_EXIT_NODES
+              - type: PLATFORM_DDOS_INTELLIGENCE
+              - listIds:
+                - 81658_CLIENTLIST
+                - '56789_1234'
+                positiveMatch: true
+                type: CLIENT_LIST
+              description: URL Protection
+              hostnamePaths:
+              - hostname: api.demo.com
+                paths:
+                - /login
+                - /checkout
+                - /history
+              intelligentLoadShedding: true
+              name: Transaction site protection
+              protectionType: MULTIPLE
+              rateThreshold: 195
+              sheddingThresholdHitsPerSec: 150
+            schema:
+              additionalProperties: false
+              description: Contains details about a URL protection policy.
+              properties:
+                apiDefinitions:
+                  description: The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      apiDefinitionId:
+                        description: Uniquely identifies each API endpoint.
+                        format: int64
+                        type: integer
+                      definedResources:
+                        description: When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.
+                        type: boolean
+                      resourceIds:
+                        description: The unique identifiers of the endpoint's resources.
+                        items:
+                          format: int64
+                          type: integer
+                        type: array
+                      undefinedResources:
+                        description: When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.
+                        type: boolean
+                    required:
+                    - apiDefinitionId
+                    type: object
+                  type: array
+                bypassCondition:
+                  additionalProperties: false
+                  description: Exempts specific clients from being processed by the URL protection policy.
+                  properties:
+                    atomicConditions:
+                      description: Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.
+                      items:
+                        oneOf:
+                        - additionalProperties: false
+                          description: Collects data needed for condition matches on request headers.
+                          properties:
+                            className:
+                              description: Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.
+                              enum:
+                              - RequestHeaderCondition
+                              type: string
+                            name:
+                              description: Use `name` to check whether the specified header exists.
+                              items:
+                                minLength: 1
+                                type: string
+                              minItems: 1
+                              type: array
+                              uniqueItems: true
+                            nameWildcard:
+                              description: Whether to interpret `?` and `*` as wildcards in the specified `name`.
+                              type: boolean
+                            positiveMatch:
+                              description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                              readOnly: true
+                              type: boolean
+                            value:
+                              description: A list of unique header values. Use both `value` and `name` to check whether the requesting client’s header matches the specified headers.
+                              items:
+                                minLength: 1
+                                type: string
+                              nullable: true
+                              type: array
+                              uniqueItems: true
+                            valueCase:
+                              description: Whether to consider case when matching header values, `true` for case-sensitive matches.
+                              type: boolean
+                            valueWildcard:
+                              description: Whether to interpret `?` and `*` as wildcards in the specified `value`.
+                              type: boolean
+                          required:
+                          - className
+                          - name
+                          title: RequestHeaderCondition
+                          type: object
+                          x-akamai:
+                            file-path: schemas/url-protection-bypass-request-header-condition.yaml
+                        - additionalProperties: false
+                          description: Collects data needed for condition matches on client lists and network lists.
+                          properties:
+                            checkIps:
+                              description: __Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.
+                              enum:
+                              - connecting
+                              readOnly: true
+                              type: string
+                            className:
+                              description: Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.
+                              enum:
+                              - NetworkListCondition
+                              type: string
+                            positiveMatch:
+                              description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                              readOnly: true
+                              type: boolean
+                            value:
+                              description: Identifies the client list or network list.
+                              items:
+                                minLength: 1
+                                type: string
+                              nullable: true
+                              type: array
+                              uniqueItems: true
+                          required:
+                          - className
+                          - value
+                          title: NetworkListCondition
+                          type: object
+                          x-akamai:
+                            file-path: schemas/url-protection-bypass-client-list-condition.yaml
+                      minItems: 1
+                      type: array
+                  type: object
+                categories:
+                  description: The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.
+                  items:
+                    oneOf:
+                    - additionalProperties: false
+                      description: Specify one or more load shedding categories for the URL protection policy.
+                      properties:
+                        type:
+                          description: Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.
+                          enum:
+                          - BOTS
+                          - CLIENT_REPUTATIONS
+                          - CLOUD_PROVIDERS
+                          - PROXIES
+                          - TOR_EXIT_NODES
+                          - PLATFORM_DDOS_INTELLIGENCE
+                          type: string
+                      required:
+                      - type
+                      title: Client list category
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-category.yaml
+                    - additionalProperties: false
+                      description: Defines a `CLIENT_LIST` load shedding category for a URL protection policy.
+                      properties:
+                        listIds:
+                          description: A list of client list identifiers to match on.
+                          items:
+                            type: string
+                          type: array
+                        positiveMatch:
+                          description: Whether the selected client lists match.
+                          type: boolean
+                        type:
+                          description: Specify `CLIENT_LIST` to match on a client list.
+                          enum:
+                          - CLIENT_LIST
+                          type: string
+                      required:
+                      - type
+                      title: Other categories
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-client-list-category.yaml
+                  type: array
+                configId:
+                  description: Uniquely identifies the security configuration.
+                  format: int64
+                  type: integer
+                configVersion:
+                  description: The security configuration version.
+                  type: integer
+                createDate:
+                  description: __Read-only__ The timestamp when you created the URL protection policy.
+                  format: date-time
+                  readOnly: true
+                  type: string
+                createdBy:
+                  description: __Read-only__ The username of the person who created the URL protection policy.
+                  readOnly: true
+                  type: string
+                description:
+                  description: A description of the rate policy.
+                  type: string
+                hostnamePaths:
+                  description: The hostname and path combinations to match on.
+                  items:
+                    additionalProperties: false
+                    description: The hostname and path combinations to match on.
+                    properties:
+                      hostname:
+                        description: The hostnames you choose to match on.
+                        type: string
+                      paths:
+                        description: The list of paths to match on.
+                        items:
+                          type: string
+                        type: array
+                    required:
+                    - hostname
+                    - paths
+                    type: object
+                    x-akamai:
+                      file-path: schemas/url-protection-policy-hostpath.yaml
+                  minItems: 1
+                  type: array
+                intelligentLoadShedding:
+                  description: Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.
+                  type: boolean
+                name:
+                  description: The rate policy's unique name.
+                  type: string
+                policyId:
+                  description: __Read-only__ Uniquely identifies the URL protection policy.
+                  format: int64
+                  readOnly: true
+                  type: integer
+                protectionType:
+                  description: If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.
+                  enum:
+                  - SINGLE
+                  - MULTIPLE
+                  type: string
+                rateThreshold:
+                  description: The allowed hits per second during any five-second interval.
+                  type: integer
+                sheddingThresholdHitsPerSec:
+                  description: Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.
+                  type: integer
+                updateDate:
+                  description: __Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.
+                  format: date-time
+                  readOnly: true
+                  type: string
+                updatedBy:
+                  description: __Read-only__ Username who last updated the URL protection policy.
+                  readOnly: true
+                  type: string
+                used:
+                  description: __Read-only__ Whether you're currently using the URL protection policy.
+                  readOnly: true
+                  type: boolean
+              required:
+              - intelligentLoadShedding
+              - rateThreshold
+              - name
+              type: object
+              x-akamai:
+                file-path: schemas/url-protection-policy.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                bypassCondition:
+                  atomicConditions:
+                  - checkIps: connecting
+                    className: NetworkListCondition
+                    positiveMatch: true
+                    value:
+                    - 12345_10CLIENTLIST
+                    - '54321_123'
+                  - className: RequestHeaderCondition
+                    name:
+                    - my-custom-header
+                    nameWildcard: false
+                    positiveMatch: true
+                    value:
+                    - my-custom-value
+                    valueCase: false
+                    valueWildcard: false
+                categories:
+                - type: BOTS
+                - listIds:
+                  - 12345_10CLIENTLIST
+                  - '54321_123'
+                  positiveMatch: true
+                  type: CLIENT_LIST
+                - listIds:
+                  - 16656_CPISERVERS
+                  positiveMatch: true
+                  type: CLIENT_LIST
+                - type: CLOUD_PROVIDERS
+                - type: PROXIES
+                - type: TOR_EXIT_NODES
+                - type: PLATFORM_DDOS_INTELLIGENCE
+                configId: 43007
+                configVersion: 40
+                createDate: '2023-04-14T18:58:53Z'
+                createdBy: jsmith
+                description: URL Protection
+                hostnamePaths:
+                - hostname: custom.com
+                  paths:
+                  - /asd
+                  - /my-test-path
+                intelligentLoadShedding: true
+                name: URL Protection
+                policyId: 681
+                protectionType: MULTIPLE
+                rateThreshold: 195
+                sheddingThresholdHitsPerSec: 150
+                updateDate: '2023-04-26T02:42:28Z'
+                updatedBy: jperez
+                used: true
+              schema:
+                additionalProperties: false
+                description: Contains details about a URL protection policy.
+                properties:
+                  apiDefinitions:
+                    description: The API endpoints to match on in incoming requests. This only applies to the `api` `matchType`.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        apiDefinitionId:
+                          description: Uniquely identifies each API endpoint.
+                          format: int64
+                          type: integer
+                        definedResources:
+                          description: When `true`, match on any resource explicitly added to your API definition without including a `resourceId`. When `false`, you'll need to pass a `resourceId`.
+                          type: boolean
+                        resourceIds:
+                          description: The unique identifiers of the endpoint's resources.
+                          items:
+                            format: int64
+                            type: integer
+                          type: array
+                        undefinedResources:
+                          description: When `true`, match on any resource you have not explicitly added to your API definition without including a `resourceId`.  When `false`, you'll need to pass a `resourceId`.
+                          type: boolean
+                      required:
+                      - apiDefinitionId
+                      type: object
+                    type: array
+                  bypassCondition:
+                    additionalProperties: false
+                    description: Exempts specific clients from being processed by the URL protection policy.
+                    properties:
+                      atomicConditions:
+                        description: Specify one or more types of conditions to match on. You can match on client lists, request headers, or both.
+                        items:
+                          oneOf:
+                          - additionalProperties: false
+                            description: Collects data needed for condition matches on request headers.
+                            properties:
+                              className:
+                                description: Choose `RequestHeaderCondition` to match a header from the requesting client to the specified header.
+                                enum:
+                                - RequestHeaderCondition
+                                type: string
+                              name:
+                                description: Use `name` to check whether the specified header exists.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                minItems: 1
+                                type: array
+                                uniqueItems: true
+                              nameWildcard:
+                                description: Whether to interpret `?` and `*` as wildcards in the specified `name`.
+                                type: boolean
+                              positiveMatch:
+                                description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                readOnly: true
+                                type: boolean
+                              value:
+                                description: A list of unique header values. Use both `value` and `name` to check whether the requesting client’s header matches the specified headers.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                nullable: true
+                                type: array
+                                uniqueItems: true
+                              valueCase:
+                                description: Whether to consider case when matching header values, `true` for case-sensitive matches.
+                                type: boolean
+                              valueWildcard:
+                                description: Whether to interpret `?` and `*` as wildcards in the specified `value`.
+                                type: boolean
+                            required:
+                            - className
+                            - name
+                            title: RequestHeaderCondition
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-bypass-request-header-condition.yaml
+                          - additionalProperties: false
+                            description: Collects data needed for condition matches on client lists and network lists.
+                            properties:
+                              checkIps:
+                                description: __Read-only__ Whether the connecting IP or both the connecting IP and `X-Forwarded-For` (XFF) header match on the client list or network list. URL protection bypass supports `connecting` only.
+                                enum:
+                                - connecting
+                                readOnly: true
+                                type: string
+                              className:
+                                description: Choose `NetworkListCondition` to match the requesting client's identifier, like IP, GEO, ASN or TLS Fingerprint, against the specified client list or network list.
+                                enum:
+                                - NetworkListCondition
+                                type: string
+                              positiveMatch:
+                                description: __Read-only__ Whether the condition triggers on a match or lack of match.
+                                readOnly: true
+                                type: boolean
+                              value:
+                                description: Identifies the client list or network list.
+                                items:
+                                  minLength: 1
+                                  type: string
+                                nullable: true
+                                type: array
+                                uniqueItems: true
+                            required:
+                            - className
+                            - value
+                            title: NetworkListCondition
+                            type: object
+                            x-akamai:
+                              file-path: schemas/url-protection-bypass-client-list-condition.yaml
+                        minItems: 1
+                        type: array
+                    type: object
+                  categories:
+                    description: The traffic categories to perform load shedding on when the origin traffic rate exceeds the load shedding threshold. If `intelligentLoadShedding` is set to `true`, specify one or more categories.
+                    items:
+                      oneOf:
+                      - additionalProperties: false
+                        description: Specify one or more load shedding categories for the URL protection policy.
+                        properties:
+                          type:
+                            description: Specify the type of traffic to shed first before reaching the requests per second (RPS) limit. `BOTS` includes bots from Akamai's existing list of known bots. `CLIENT_REPUTATIONS` includes traffic from clients with a bad client reputation score. `CLOUD_PROVIDERS` includes traffic from providers like AWS, Microsoft Azure, and Google Cloud. `PROXIES` includes proxy traffic as determined by IPQualityScore (IPQS) and Akamai EdgeScape. `TOR_EXIT_NODES` includes traffic defined in Akamai's existing network list of nodes. `PLATFORM_DDOS_INTELLIGENCE` includes traffic detected by Akamai's DDOS Intelligence platform.
+                            enum:
+                            - BOTS
+                            - CLIENT_REPUTATIONS
+                            - CLOUD_PROVIDERS
+                            - PROXIES
+                            - TOR_EXIT_NODES
+                            - PLATFORM_DDOS_INTELLIGENCE
+                            type: string
+                        required:
+                        - type
+                        title: Client list category
+                        type: object
+                        x-akamai:
+                          file-path: schemas/url-protection-category.yaml
+                      - additionalProperties: false
+                        description: Defines a `CLIENT_LIST` load shedding category for a URL protection policy.
+                        properties:
+                          listIds:
+                            description: A list of client list identifiers to match on.
+                            items:
+                              type: string
+                            type: array
+                          positiveMatch:
+                            description: Whether the selected client lists match.
+                            type: boolean
+                          type:
+                            description: Specify `CLIENT_LIST` to match on a client list.
+                            enum:
+                            - CLIENT_LIST
+                            type: string
+                        required:
+                        - type
+                        title: Other categories
+                        type: object
+                        x-akamai:
+                          file-path: schemas/url-protection-client-list-category.yaml
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    format: int64
+                    type: integer
+                  configVersion:
+                    description: The security configuration version.
+                    type: integer
+                  createDate:
+                    description: __Read-only__ The timestamp when you created the URL protection policy.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  createdBy:
+                    description: __Read-only__ The username of the person who created the URL protection policy.
+                    readOnly: true
+                    type: string
+                  description:
+                    description: A description of the rate policy.
+                    type: string
+                  hostnamePaths:
+                    description: The hostname and path combinations to match on.
+                    items:
+                      additionalProperties: false
+                      description: The hostname and path combinations to match on.
+                      properties:
+                        hostname:
+                          description: The hostnames you choose to match on.
+                          type: string
+                        paths:
+                          description: The list of paths to match on.
+                          items:
+                            type: string
+                          type: array
+                      required:
+                      - hostname
+                      - paths
+                      type: object
+                      x-akamai:
+                        file-path: schemas/url-protection-policy-hostpath.yaml
+                    minItems: 1
+                    type: array
+                  intelligentLoadShedding:
+                    description: Enable or disable intelligent load shedding. If enabled, traffic that matches the load shedding categories is eligible for shedding if the origin rate exceeds the load shedding threshold.
+                    type: boolean
+                  name:
+                    description: The rate policy's unique name.
+                    type: string
+                  policyId:
+                    description: __Read-only__ Uniquely identifies the URL protection policy.
+                    format: int64
+                    readOnly: true
+                    type: integer
+                  protectionType:
+                    description: If matching on `hostnamePaths`, specify `SINGLE` to match on a hostname and path, or `MULTIPLE` to match on hostname and path combinations.
+                    enum:
+                    - SINGLE
+                    - MULTIPLE
+                    type: string
+                  rateThreshold:
+                    description: The allowed hits per second during any five-second interval.
+                    type: integer
+                  sheddingThresholdHitsPerSec:
+                    description: Specify the threshold value, in hits per second, after which traffic can be shed. The `sheddingThresholdHitsPerSec` value must be between 25%-90% of the `rateThreshold` value. If you enabled `intelligentLoadShedding`, this value is required.
+                    type: integer
+                  updateDate:
+                    description: __Read-only__ The ISO 8601 timestamp when you last updated the URL protection policy.
+                    format: date-time
+                    readOnly: true
+                    type: string
+                  updatedBy:
+                    description: __Read-only__ Username who last updated the URL protection policy.
+                    readOnly: true
+                    type: string
+                  used:
+                    description: __Read-only__ Whether you're currently using the URL protection policy.
+                    readOnly: true
+                    type: boolean
+                required:
+                - intelligentLoadShedding
+                - rateThreshold
+                - name
+                type: object
+                x-akamai:
+                  file-path: schemas/url-protection-policy.yaml
+          description: Successfully updated URL protection policy.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to URL protection policy in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or URL protection policy wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify a URL protection policy
+      tags:
+      - URL protection policies
+      x-akamai:
+        labels:
+        - All products
+    delete:
+      description: __All products__ Deletes the specified URL protection policy. You can't delete a URL protection policy that's actively in use. To delete an active URL protection policy, either activate an older configuration version or create a new version without the policy in place.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-url-protection-policy
+      operationId: delete-url-protection-policy
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successfully deleted the URL protection policy.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the URL protection policy in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or URL protection policy wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Remove a URL protection policy
+      tags:
+      - URL protection policies
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

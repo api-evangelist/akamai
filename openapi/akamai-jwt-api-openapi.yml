@@ -1,0 +1,1266 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens JWT API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: JWT
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/jwt:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the JWT validation settings configured for an endpoint version and its assigned resources.
+      operationId: get-jwt-settings
+      summary: Get JWT settings
+      tags:
+      - JWT
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-jwt-settings
+      responses:
+        '200':
+          description: The response shows the current JWT validation settings.
+          content:
+            application/json:
+              example:
+                enabled: true
+                resources:
+                  '2926712':
+                    enabled: true
+                    inheritsFromEndpoint: true
+                    notes: A book item within the bookstore API.
+                    path: /book/{bookId}
+                    methods:
+                    - POST
+                    - GET
+                  '2935128':
+                    enabled: true
+                    inheritsFromEndpoint: true
+                    notes: A registered bookstore user.
+                    path: /user/{userId}
+                    methods:
+                    - POST
+                    - GET
+                    - PUT
+                  '2935139':
+                    enabled: true
+                    inheritsFromEndpoint: true
+                    notes: A magazine item within the bookstore API.
+                    path: /magazine/{magazineId}
+                    methods:
+                    - GET
+                settings:
+                  clockSkew: 10
+                  location: HEADER
+                  paramName: Authorization
+                  validation:
+                    rsaPublicKeyB: null
+                    rsaPublicKeyA:
+                      content: '-----BEGIN PUBLIC KEY-----
+
+                        MIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN
+
+                        80jxZCxfweelZKvYT9Qdms/1SJv
+
+                        rQIDAQAB
+
+                        -----END PUBLIC KEY-----'
+                      name: publicKey
+                    claims:
+                    - name: aud
+                      required: false
+                      type: ARRAY
+                      validate: false
+                      value: []
+                    - name: iss
+                      required: false
+                      type: STRING
+                      validate: true
+                      value: Akamai
+                    - name: sub
+                      required: false
+                      type: REGEX
+                      validate: true
+                      value: ^[a-zA-Z0-9_]*$
+                    - name: exp
+                      required: false
+                      type: TIMESTAMP
+                      validate: true
+                      value: null
+                    - name: nbf
+                      required: false
+                      type: TIMESTAMP
+                      validate: true
+                      value: null
+                    - name: dept
+                      required: false
+                      type: STRING
+                      validate: true
+                      value: IT
+                    - name: roles
+                      required: false
+                      type: ARRAY
+                      validate: true
+                      value:
+                      - admin
+                      - premium_user
+                      - regular_user
+              schema:
+                additionalProperties: false
+                description: Contains information about JSON web token (JWT) validation settings configured for an endpoint. JWT is an open standard (RFC 7519) that defines a compact and self-contained method for securely transmitting JSON-encoded information between parties. It's often used for authentication purposes. You can configure JWT validation settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - settings
+                properties:
+                  enabled:
+                    description: Whether you enabled JWT validation for the endpoint.
+                    type: boolean
+                  resources:
+                    description: Contains information about JWT validation settings for each resource assigned to an endpoint version. The resources are available through a map of `resourceId` keys.
+                    title: The map of resource ID to settings.
+                    type: object
+                    additionalProperties:
+                      additionalProperties: false
+                      description: Contains information about JWT settings configured for a resource.
+                      type: object
+                      required:
+                      - enabled
+                      properties:
+                        enabled:
+                          description: Whether you enabled JWT validation for the resource.
+                          type: boolean
+                        inheritsFromEndpoint:
+                          description: Whether the resource inherits the top-level JWT settings.
+                          readOnly: true
+                          type: boolean
+                        methods:
+                          description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                          readOnly: true
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - HEAD
+                            - DELETE
+                            - POST
+                            - GET
+                            - OPTIONS
+                            - PUT
+                            - PATCH
+                        notes:
+                          description: The description of the resource.
+                          nullable: true
+                          readOnly: true
+                          type: string
+                        path:
+                          description: The URL path relative to the hostnames on which the resource resides.
+                          readOnly: true
+                          type: string
+                    x-akamai:
+                      file-path: schemas/resources-jwt.yaml
+                  settings:
+                    additionalProperties: false
+                    description: Contains information about endpoint-level JWT settings.
+                    type: object
+                    required:
+                    - location
+                    - paramName
+                    - clockSkew
+                    - validation
+                    properties:
+                      clockSkew:
+                        description: The allowed time difference in seconds between the server and client clocks when validating the `exp` and `nbf` JWT claims. The recommended value is 10.
+                        type: integer
+                      location:
+                        default: HEADER
+                        description: The location of the JWT in incoming requests, either `HEADER` for a request header, `COOKIE`, or `QUERY` for a query parameter.
+                        type: string
+                        enum:
+                        - HEADER
+                        - COOKIE
+                        - QUERY
+                      paramName:
+                        description: The name of the header, cookie, or query parameter that you specified for the JWT location.
+                        type: string
+                      validation:
+                        additionalProperties: false
+                        description: Contains information about the JWT validation details, such as RSA public keys and JWT claims.
+                        type: object
+                        required:
+                        - rsaPublicKeyA
+                        properties:
+                          claims:
+                            description: The collection of custom and reserved JWT claims that API Gateway validates in incoming requests. Reserved claims are predefined (as per [RFC 7519](https://tools.ietf.org/html/rfc7519)) and serve as a starting point for your JWT claim configuration. Custom claims refer to both private and public claims and you can define them at will. To prevent claim name collisions, you can register public claims at the [IANA JSON Web Token Claims registry](https://www.iana.org/assignments/jwt/jwt.xhtml) or give them collision-resistant names, such as universally unique identifiers (UUIDs) or object identifiers (OIDs). Private claims usually contain information specific to your organization, such as internal user ID. They're different from public claims as they're not registered at the [IANA JSON Web Token Claims registry](https://www.iana.org/assignments/jwt/jwt.xhtml), and you should use them with care.
+                            nullable: true
+                            type: array
+                            items:
+                              additionalProperties: false
+                              nullable: true
+                              type: object
+                              required:
+                              - type
+                              - required
+                              - validate
+                              properties:
+                                name:
+                                  description: 'The name of the JWT claim. For reserved claims, it can either be `aud` to identify the audience for the JWT, `iss` to identify the issuer of the JWT claim, `sub` to identify the subject of the JWT, `exp` to identify the expiration time on or after which the token isn''t accepted for processing, or `nbf` to identify the time before which the token isn''t accepted for processing. For custom claims, you can use all alphanumeric characters and these characters: `[-_]`. The value isn''t case-sensitive for reserved claims and case-sensitive for custom claims. For example, if you enter `AUD` for a value, the system automatically converts it to `aud`, but `scope` and `SCOPE` represent two different values.'
+                                  type: string
+                                required:
+                                  description: Whether the JWT claim needs to be present in incoming requests.
+                                  type: boolean
+                                type:
+                                  description: The data type of the JWT claim's value, either `ARRAY`, `STRING`, `INTEGER`, `BOOLEAN`, or `REGEX` if it's a regular expression.
+                                  type: string
+                                  enum:
+                                  - ARRAY
+                                  - STRING
+                                  - REGEX
+                                  - INTEGER
+                                  - BOOLEAN
+                                validate:
+                                  description: Whether to validate the value of the JWT claim at the edge.
+                                  type: boolean
+                                value:
+                                  oneOf:
+                                  - nullable: true
+                                    title: Array
+                                    type: array
+                                    items:
+                                      oneOf:
+                                      - title: Array of strings
+                                        type: string
+                                      - title: Array of numbers
+                                        type: number
+                                  - nullable: true
+                                    title: String
+                                    type: string
+                                  - nullable: true
+                                    title: Boolean
+                                    type: boolean
+                                  - nullable: true
+                                    title: Number
+                                    type: number
+                          jwks:
+                            additionalProperties: false
+                            description: Contains information about a JSON web key set to load public keys from. Specify this object only if the corresponding `method` member is `JWKS`.
+                            nullable: true
+                            type: object
+                            properties:
+                              certChain:
+                                additionalProperties: false
+                                description: Contains information about a PEM file with the certificate to use for validation of hostnames included in the `hosts` member.
+                                nullable: true
+                                type: object
+                                required:
+                                - name
+                                - content
+                                properties:
+                                  content:
+                                    description: The contents of the PEM file that contains the certificate.
+                                    type: string
+                                  name:
+                                    description: The name of the PEM file that contains the certificate.
+                                    type: string
+                              hosts:
+                                description: The list of hostnames that store JSON web key sets. You need to sign each hostname digitally with the certificate chain described in the corresponding `certChain` field.
+                                type: array
+                                items:
+                                  type: string
+                              jwksSetUrl:
+                                description: URL that refers to a resource for a set of JSON-encoded public keys.
+                                format: uri
+                                type: string
+                              publicKeyMaxAge:
+                                additionalProperties: false
+                                description: Contains information about the maximum duration to keep a public key in a cache.
+                                nullable: true
+                                type: object
+                                required:
+                                - duration
+                                - unit
+                                properties:
+                                  duration:
+                                    description: The maximum duration of content caching in the selected unit of time.
+                                    type: integer
+                                  unit:
+                                    description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                                    type: string
+                                    enum:
+                                    - SECONDS
+                                    - MINUTES
+                                    - HOURS
+                                    - DAYS
+                                x-akamai:
+                                  file-path: schemas/durationDto.yaml
+                          method:
+                            default: INLINE_PUBLIC_KEY
+                            description: The method of delivering RSA public keys for JWT validation. Either `INLINE_PUBLIC_KEY` for periodical manual uploads of public keys, or `JWKS` for a dynamic upload of public keys from specific JWKS URIs.
+                            nullable: true
+                            type: string
+                            enum:
+                            - INLINE_PUBLIC_KEY
+                            - JWKS
+                          rsaPublicKeyA:
+                            additionalProperties: false
+                            description: Contains information about the primary RSA public key that you use for JWT validation. The value is `null` if the corresponding `method` member is `JWKS`.
+                            type: object
+                            required:
+                            - name
+                            - content
+                            properties:
+                              content:
+                                description: The content of the file containing the primary RSA key.
+                                type: string
+                              name:
+                                description: The name of the file containing the primary RSA key.
+                                type: string
+                          rsaPublicKeyB:
+                            additionalProperties: false
+                            description: Contains information about the backup RSA public key for use during key rotations.
+                            nullable: true
+                            type: object
+                            required:
+                            - name
+                            - content
+                            properties:
+                              content:
+                                description: The content of the file containing the backup RSA key.
+                                type: string
+                              name:
+                                description: The name of the file containing the backup RSA key.
+                                type: string
+                          signingAlgorithm:
+                            description: Algorithm used to sign tokens issued for your application or API. A signature is part of a JSON Web Token (JWT) and is used to verify that the sender of the token is who it says it is and to ensure that the message wasn't changed along the way.
+                            nullable: true
+                            type: string
+                            enum:
+                            - RS256
+                            - RS384
+                            - ES256
+                            - ES384
+                x-akamai:
+                  file-path: schemas/jwtDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the JWT validation settings configured for an endpoint version and its assigned resources.
+      operationId: put-jwt-settings
+      summary: Edit JWT settings
+      tags:
+      - JWT
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-jwt-settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              enabled: true
+              resources:
+                '2926712':
+                  enabled: true
+                '2935128':
+                  enabled: true
+                '2935139':
+                  enabled: true
+              settings:
+                clockSkew: 10
+                location: HEADER
+                paramName: Authorization
+                validation:
+                  rsaPublicKeyB: null
+                  rsaPublicKeyA:
+                    content: '-----BEGIN PUBLIC KEY-----
+
+                      MIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN
+
+                      80jxZCxfweelZKvYT9Qdms/1SJv
+
+                      rQIDAQAB
+
+                      -----END PUBLIC KEY-----'
+                    name: publicKey
+                  claims:
+                  - name: aud
+                    required: false
+                    type: ARRAY
+                    validate: false
+                    value: []
+                  - name: iss
+                    required: false
+                    type: STRING
+                    validate: true
+                    value: Akamai
+                  - name: sub
+                    required: false
+                    type: REGEX
+                    validate: true
+                    value: ^[a-zA-Z0-9_]*$
+                  - name: exp
+                    required: false
+                    type: TIMESTAMP
+                    validate: true
+                    value: null
+                  - name: nbf
+                    required: false
+                    type: TIMESTAMP
+                    validate: true
+                    value: null
+                  - name: dept
+                    required: false
+                    type: STRING
+                    validate: true
+                    value: IT
+                  - name: roles
+                    required: false
+                    type: ARRAY
+                    validate: true
+                    value:
+                    - admin
+                    - premium_user
+                    - regular_user
+            schema:
+              additionalProperties: false
+              description: Contains information about JSON web token (JWT) validation settings configured for an endpoint. JWT is an open standard (RFC 7519) that defines a compact and self-contained method for securely transmitting JSON-encoded information between parties. It's often used for authentication purposes. You can configure JWT validation settings if the API Gateway product is in your contract.
+              type: object
+              required:
+              - enabled
+              - settings
+              properties:
+                enabled:
+                  description: Whether you enabled JWT validation for the endpoint.
+                  example: '{{enabled}}'
+                  type: boolean
+                resources:
+                  description: Contains information about JWT validation settings for each resource assigned to an endpoint version. The resources are available through a map of `resourceId` keys.
+                  title: The map of resource ID to settings.
+                  type: object
+                  additionalProperties:
+                    additionalProperties: false
+                    description: Contains information about JWT settings configured for a resource.
+                    type: object
+                    required:
+                    - enabled
+                    properties:
+                      enabled:
+                        description: Whether you enabled JWT validation for the resource.
+                        type: boolean
+                      inheritsFromEndpoint:
+                        description: Whether the resource inherits the top-level JWT settings.
+                        readOnly: true
+                        type: boolean
+                      methods:
+                        description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                        readOnly: true
+                        type: array
+                        items:
+                          type: string
+                          enum:
+                          - HEAD
+                          - DELETE
+                          - POST
+                          - GET
+                          - OPTIONS
+                          - PUT
+                          - PATCH
+                      notes:
+                        description: The description of the resource.
+                        nullable: true
+                        readOnly: true
+                        type: string
+                      path:
+                        description: The URL path relative to the hostnames on which the resource resides.
+                        readOnly: true
+                        type: string
+                  x-akamai:
+                    file-path: schemas/resources-jwt.yaml
+                settings:
+                  additionalProperties: false
+                  description: Contains information about endpoint-level JWT settings.
+                  type: object
+                  required:
+                  - location
+                  - paramName
+                  - clockSkew
+                  - validation
+                  properties:
+                    clockSkew:
+                      description: The allowed time difference in seconds between the server and client clocks when validating the `exp` and `nbf` JWT claims. The recommended value is 10.
+                      type: integer
+                    location:
+                      default: HEADER
+                      description: The location of the JWT in incoming requests, either `HEADER` for a request header, `COOKIE`, or `QUERY` for a query parameter.
+                      type: string
+                      enum:
+                      - HEADER
+                      - COOKIE
+                      - QUERY
+                    paramName:
+                      description: The name of the header, cookie, or query parameter that you specified for the JWT location.
+                      type: string
+                    validation:
+                      additionalProperties: false
+                      description: Contains information about the JWT validation details, such as RSA public keys and JWT claims.
+                      type: object
+                      required:
+                      - rsaPublicKeyA
+                      properties:
+                        claims:
+                          description: The collection of custom and reserved JWT claims that API Gateway validates in incoming requests. Reserved claims are predefined (as per [RFC 7519](https://tools.ietf.org/html/rfc7519)) and serve as a starting point for your JWT claim configuration. Custom claims refer to both private and public claims and you can define them at will. To prevent claim name collisions, you can register public claims at the [IANA JSON Web Token Claims registry](https://www.iana.org/assignments/jwt/jwt.xhtml) or give them collision-resistant names, such as universally unique identifiers (UUIDs) or object identifiers (OIDs). Private claims usually contain information specific to your organization, such as internal user ID. They're different from public claims as they're not registered at the [IANA JSON Web Token Claims registry](https://www.iana.org/assignments/jwt/jwt.xhtml), and you should use them with care.
+                          nullable: true
+                          type: array
+                          items:
+                            additionalProperties: false
+                            nullable: true
+                            type: object
+                            required:
+                            - type
+                            - required
+                            - validate
+                            properties:
+                              name:
+                                description: 'The name of the JWT claim. For reserved claims, it can either be `aud` to identify the audience for the JWT, `iss` to identify the issuer of the JWT claim, `sub` to identify the subject of the JWT, `exp` to identify the expiration time on or after which the token isn''t accepted for processing, or `nbf` to identify the time before which the token isn''t accepted for processing. For custom claims, you can use all alphanumeric characters and these characters: `[-_]`. The value isn''t case-sensitive for reserved claims and case-sensitive for custom claims. For example, if you enter `AUD` for a value, the system automatically converts it to `aud`, but `scope` and `SCOPE` represent two different values.'
+                                type: string
+                              required:
+                                description: Whether the JWT claim needs to be present in incoming requests.
+                                type: boolean
+                              type:
+                                description: The data type of the JWT claim's value, either `ARRAY`, `STRING`, `INTEGER`, `BOOLEAN`, or `REGEX` if it's a regular expression.
+                                type: string
+                                enum:
+                                - ARRAY
+                                - STRING
+                                - REGEX
+                                - INTEGER
+                                - BOOLEAN
+                              validate:
+                                description: Whether to validate the value of the JWT claim at the edge.
+                                type: boolean
+                              value:
+                                oneOf:
+                                - nullable: true
+                                  title: Array
+                                  type: array
+                                  items:
+                                    oneOf:
+                                    - title: Array of strings
+                                      type: string
+                                    - title: Array of numbers
+                                      type: number
+                                - nullable: true
+                                  title: String
+                                  type: string
+                                - nullable: true
+                                  title: Boolean
+                                  type: boolean
+                                - nullable: true
+                                  title: Number
+                                  type: number
+                        jwks:
+                          additionalProperties: false
+                          description: Contains information about a JSON web key set to load public keys from. Specify this object only if the corresponding `method` member is `JWKS`.
+                          nullable: true
+                          type: object
+                          properties:
+                            certChain:
+                              additionalProperties: false
+                              description: Contains information about a PEM file with the certificate to use for validation of hostnames included in the `hosts` member.
+                              nullable: true
+                              type: object
+                              required:
+                              - name
+                              - content
+                              properties:
+                                content:
+                                  description: The contents of the PEM file that contains the certificate.
+                                  type: string
+                                name:
+                                  description: The name of the PEM file that contains the certificate.
+                                  type: string
+                            hosts:
+                              description: The list of hostnames that store JSON web key sets. You need to sign each hostname digitally with the certificate chain described in the corresponding `certChain` field.
+                              type: array
+                              items:
+                                type: string
+                            jwksSetUrl:
+                              description: URL that refers to a resource for a set of JSON-encoded public keys.
+                              format: uri
+                              type: string
+                            publicKeyMaxAge:
+                              additionalProperties: false
+                              description: Contains information about the maximum duration to keep a public key in a cache.
+                              nullable: true
+                              type: object
+                              required:
+                              - duration
+                              - unit
+                              properties:
+                                duration:
+                                  description: The maximum duration of content caching in the selected unit of time.
+                                  type: integer
+                                unit:
+                                  description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                                  type: string
+                                  enum:
+                                  - SECONDS
+                                  - MINUTES
+                                  - HOURS
+                                  - DAYS
+                              x-akamai:
+                                file-path: schemas/durationDto.yaml
+                        method:
+                          default: INLINE_PUBLIC_KEY
+                          description: The method of delivering RSA public keys for JWT validation. Either `INLINE_PUBLIC_KEY` for periodical manual uploads of public keys, or `JWKS` for a dynamic upload of public keys from specific JWKS URIs.
+                          nullable: true
+                          type: string
+                          enum:
+                          - INLINE_PUBLIC_KEY
+                          - JWKS
+                        rsaPublicKeyA:
+                          additionalProperties: false
+                          description: Contains information about the primary RSA public key that you use for JWT validation. The value is `null` if the corresponding `method` member is `JWKS`.
+                          type: object
+                          required:
+                          - name
+                          - content
+                          properties:
+                            content:
+                              description: The content of the file containing the primary RSA key.
+                              type: string
+                            name:
+                              description: The name of the file containing the primary RSA key.
+                              type: string
+                        rsaPublicKeyB:
+                          additionalProperties: false
+                          description: Contains information about the backup RSA public key for use during key rotations.
+                          nullable: true
+                          type: object
+                          required:
+                          - name
+                          - content
+                          properties:
+                            content:
+                              description: The content of the file containing the backup RSA key.
+                              type: string
+                            name:
+                              description: The name of the file containing the backup RSA key.
+                              type: string
+                        signingAlgorithm:
+                          description: Algorithm used to sign tokens issued for your application or API. A signature is part of a JSON Web Token (JWT) and is used to verify that the sender of the token is who it says it is and to ensure that the message wasn't changed along the way.
+                          nullable: true
+                          type: string
+                          enum:
+                          - RS256
+                          - RS384
+                          - ES256
+                          - ES384
+              x-akamai:
+                file-path: schemas/jwtDto.yaml
+      responses:
+        '200':
+          description: The response reflects your updated JWT validation settings.
+          content:
+            application/json:
+              example:
+                enabled: true
+                resources:
+                  '2926712':
+                    enabled: true
+                    inheritsFromEndpoint: true
+                    notes: A book item within the bookstore API.
+                    path: /book/{bookId}
+                    methods:
+                    - POST
+                    - GET
+                  '2935128':
+                    enabled: true
+                    inheritsFromEndpoint: true
+                    notes: A registered bookstore user.
+                    path: /user/{userId}
+                    methods:
+                    - POST
+                    - GET
+                    - PUT
+                  '2935139':
+                    enabled: true
+                    inheritsFromEndpoint: true
+                    notes: A magazine item within the bookstore API.
+                    path: /magazine/{magazineId}
+                    methods:
+                    - GET
+                settings:
+                  clockSkew: 10
+                  location: HEADER
+                  paramName: Authorization
+                  validation:
+                    rsaPublicKeyB: null
+                    rsaPublicKeyA:
+                      content: '-----BEGIN PUBLIC KEY-----
+
+                        MIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN
+
+                        80jxZCxfweelZKvYT9Qdms/1SJv
+
+                        rQIDAQAB
+
+                        -----END PUBLIC KEY-----'
+                      name: publicKey
+                    claims:
+                    - name: aud
+                      required: false
+                      type: ARRAY
+                      validate: false
+                      value: []
+                    - name: iss
+                      required: false
+                      type: STRING
+                      validate: true
+                      value: Akamai
+                    - name: sub
+                      required: false
+                      type: REGEX
+                      validate: true
+                      value: ^[a-zA-Z0-9_]*$
+                    - name: exp
+                      required: false
+                      type: TIMESTAMP
+                      validate: true
+                      value: null
+                    - name: nbf
+                      required: false
+                      type: TIMESTAMP
+                      validate: true
+                      value: null
+                    - name: dept
+                      required: false
+                      type: STRING
+                      validate: true
+                      value: IT
+                    - name: roles
+                      required: false
+                      type: ARRAY
+                      validate: true
+                      value:
+                      - admin
+                      - premium_user
+                      - regular_user
+              schema:
+                additionalProperties: false
+                description: Contains information about JSON web token (JWT) validation settings configured for an endpoint. JWT is an open standard (RFC 7519) that defines a compact and self-contained method for securely transmitting JSON-encoded information between parties. It's often used for authentication purposes. You can configure JWT validation settings if the API Gateway product is in your contract.
+                type: object
+                required:
+                - enabled
+                - settings
+                properties:
+                  enabled:
+                    description: Whether you enabled JWT validation for the endpoint.
+                    type: boolean
+                  resources:
+                    description: Contains information about JWT validation settings for each resource assigned to an endpoint version. The resources are available through a map of `resourceId` keys.
+                    title: The map of resource ID to settings.
+                    type: object
+                    additionalProperties:
+                      additionalProperties: false
+                      description: Contains information about JWT settings configured for a resource.
+                      type: object
+                      required:
+                      - enabled
+                      properties:
+                        enabled:
+                          description: Whether you enabled JWT validation for the resource.
+                          type: boolean
+                        inheritsFromEndpoint:
+                          description: Whether the resource inherits the top-level JWT settings.
+                          readOnly: true
+                          type: boolean
+                        methods:
+                          description: The methods assigned to the resource, either `POST`, `GET`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`, or `PATCH`.
+                          readOnly: true
+                          type: array
+                          items:
+                            type: string
+                            enum:
+                            - HEAD
+                            - DELETE
+                            - POST
+                            - GET
+                            - OPTIONS
+                            - PUT
+                            - PATCH
+                        notes:
+                          description: The description of the resource.
+                          nullable: true
+                          readOnly: true
+                          type: string
+                        path:
+                          description: The URL path relative to the hostnames on which the resource resides.
+                          readOnly: true
+                          type: string
+                    x-akamai:
+                      file-path: schemas/resources-jwt.yaml
+                  settings:
+                    additionalProperties: false
+                    description: Contains information about endpoint-level JWT settings.
+                    type: object
+                    required:
+                    - location
+                    - paramName
+                    - clockSkew
+                    - validation
+                    properties:
+                      clockSkew:
+                        description: The allowed time difference in seconds between the server and client clocks when validating the `exp` and `nbf` JWT claims. The recommended value is 10.
+                        type: integer
+                      location:
+                        default: HEADER
+                        description: The location of the JWT in incoming requests, either `HEADER` for a request header, `COOKIE`, or `QUERY` for a query parameter.
+                        type: string
+                        enum:
+                        - HEADER
+                        - COOKIE
+                        - QUERY
+                      paramName:
+                        description: The name of the header, cookie, or query parameter that you specified for the JWT location.
+                        type: string
+                      validation:
+                        additionalProperties: false
+                        description: Contains information about the JWT validation details, such as RSA public keys and JWT claims.
+                        type: object
+                        required:
+                        - rsaPublicKeyA
+                        properties:
+                          claims:
+                            description: The collection of custom and reserved JWT claims that API Gateway validates in incoming requests. Reserved claims are predefined (as per [RFC 7519](https://tools.ietf.org/html/rfc7519)) and serve as a starting point for your JWT claim configuration. Custom claims refer to both private and public claims and you can define them at will. To prevent claim name collisions, you can register public claims at the [IANA JSON Web Token Claims registry](https://www.iana.org/assignments/jwt/jwt.xhtml) or give them collision-resistant names, such as universally unique identifiers (UUIDs) or object identifiers (OIDs). Private claims usually contain information specific to your organization, such as internal user ID. They're different from public claims as they're not registered at the [IANA JSON Web Token Claims registry](https://www.iana.org/assignments/jwt/jwt.xhtml), and you should use them with care.
+                            nullable: true
+                            type: array
+                            items:
+                              additionalProperties: false
+                              nullable: true
+                              type: object
+                              required:
+                              - type
+                              - required
+                              - validate
+                              properties:
+                                name:
+                                  description: 'The name of the JWT claim. For reserved claims, it can either be `aud` to identify the audience for the JWT, `iss` to identify the issuer of the JWT claim, `sub` to identify the subject of the JWT, `exp` to identify the expiration time on or after which the token isn''t accepted for processing, or `nbf` to identify the time before which the token isn''t accepted for processing. For custom claims, you can use all alphanumeric characters and these characters: `[-_]`. The value isn''t case-sensitive for reserved claims and case-sensitive for custom claims. For example, if you enter `AUD` for a value, the system automatically converts it to `aud`, but `scope` and `SCOPE` represent two different values.'
+                                  type: string
+                                required:
+                                  description: Whether the JWT claim needs to be present in incoming requests.
+                                  type: boolean
+                                type:
+                                  description: The data type of the JWT claim's value, either `ARRAY`, `STRING`, `INTEGER`, `BOOLEAN`, or `REGEX` if it's a regular expression.
+                                  type: string
+                                  enum:
+                                  - ARRAY
+                                  - STRING
+                                  - REGEX
+                                  - INTEGER
+                                  - BOOLEAN
+                                validate:
+                                  description: Whether to validate the value of the JWT claim at the edge.
+                                  type: boolean
+                                value:
+                                  oneOf:
+                                  - nullable: true
+                                    title: Array
+                                    type: array
+                                    items:
+                                      oneOf:
+                                      - title: Array of strings
+                                        type: string
+                                      - title: Array of numbers
+                                        type: number
+                                  - nullable: true
+                                    title: String
+                                    type: string
+                                  - nullable: true
+                                    title: Boolean
+                                    type: boolean
+                                  - nullable: true
+                                    title: Number
+                                    type: number
+                          jwks:
+                            additionalProperties: false
+                            description: Contains information about a JSON web key set to load public keys from. Specify this object only if the corresponding `method` member is `JWKS`.
+                            nullable: true
+                            type: object
+                            properties:
+                              certChain:
+                                additionalProperties: false
+                                description: Contains information about a PEM file with the certificate to use for validation of hostnames included in the `hosts` member.
+                                nullable: true
+                                type: object
+                                required:
+                                - name
+                                - content
+                                properties:
+                                  content:
+                                    description: The contents of the PEM file that contains the certificate.
+                                    type: string
+                                  name:
+                                    description: The name of the PEM file that contains the certificate.
+                                    type: string
+                              hosts:
+                                description: The list of hostnames that store JSON web key sets. You need to sign each hostname digitally with the certificate chain described in the corresponding `certChain` field.
+                                type: array
+                                items:
+                                  type: string
+                              jwksSetUrl:
+                                description: URL that refers to a resource for a set of JSON-encoded public keys.
+                                format: uri
+                                type: string
+                              publicKeyMaxAge:
+                                additionalProperties: false
+                                description: Contains information about the maximum duration to keep a public key in a cache.
+                                nullable: true
+                                type: object
+                                required:
+                                - duration
+                                - unit
+                                properties:
+                                  duration:
+                                    description: The maximum duration of content caching in the selected unit of time.
+                                    type: integer
+                                  unit:
+                                    description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                                    type: string
+                                    enum:
+                                    - SECONDS
+                                    - MINUTES
+                                    - HOURS
+                                    - DAYS
+                                x-akamai:
+                                  file-path: schemas/durationDto.yaml
+                          method:
+                            default: INLINE_PUBLIC_KEY
+                            description: The method of delivering RSA public keys for JWT validation. Either `INLINE_PUBLIC_KEY` for periodical manual uploads of public keys, or `JWKS` for a dynamic upload of public keys from specific JWKS URIs.
+                            nullable: true
+                            type: string
+                            enum:
+                            - INLINE_PUBLIC_KEY
+                            - JWKS
+                          rsaPublicKeyA:
+                            additionalProperties: false
+                            description: Contains information about the primary RSA public key that you use for JWT validation. The value is `null` if the corresponding `method` member is `JWKS`.
+                            type: object
+                            required:
+                            - name
+                            - content
+                            properties:
+                              content:
+                                description: The content of the file containing the primary RSA key.
+                                type: string
+                              name:
+                                description: The name of the file containing the primary RSA key.
+                                type: string
+                          rsaPublicKeyB:
+                            additionalProperties: false
+                            description: Contains information about the backup RSA public key for use during key rotations.
+                            nullable: true
+                            type: object
+                            required:
+                            - name
+                            - content
+                            properties:
+                              content:
+                                description: The content of the file containing the backup RSA key.
+                                type: string
+                              name:
+                                description: The name of the file containing the backup RSA key.
+                                type: string
+                          signingAlgorithm:
+                            description: Algorithm used to sign tokens issued for your application or API. A signature is part of a JSON Web Token (JWT) and is used to verify that the sender of the token is who it says it is and to ensure that the message wasn't changed along the way.
+                            nullable: true
+                            type: string
+                            enum:
+                            - RS256
+                            - RS384
+                            - ES256
+                            - ES384
+                x-akamai:
+                  file-path: schemas/jwtDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

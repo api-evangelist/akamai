@@ -1,0 +1,3783 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Match targets API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Manage your match targets, which define which security policy
+
+    applies to an API, hostname, or path.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Manage your match targets, which define which security policy
+
+    applies to an API, hostname, or path.'
+  name: Match targets
+paths:
+  /configs/{configId}/versions/{versionNumber}/hostname-coverage/match-targets:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-hostname-coverage-match-targets.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/hostname-coverage/match-targets
+    get:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ List the API and website match targets that protect a hostname.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-coverage-match-targets
+      operationId: get-coverage-match-targets
+      parameters:
+      - description: Get results by hostname.
+        in: query
+        name: hostname
+        schema:
+          example: www.example.com
+          type: string
+        x-akamai:
+          file-path: parameters/search-hostname.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                matchTargets:
+                  apiTargets: []
+                  websiteTargets:
+                  - bypassNetworkLists:
+                    - id: 1410_BYPASSWAFLIST
+                      name: shawn - BypassWAFList
+                    configId: 75498
+                    configVersion: 428
+                    defaultFile: NO_MATCH
+                    effectiveSecurityControls:
+                      applyApiConstraints: false
+                      applyApplicationLayerControls: true
+                      applyBotmanControls: true
+                      applyNetworkLayerControls: true
+                      applyRateControls: true
+                      applyReputationControls: true
+                      applySlowPostControls: true
+                    fileExtensions: []
+                    filePaths:
+                    - /content/tealeaf
+                    hostnames:
+                    - www.example.com
+                    - m.example.com
+                    - m.new.example.com
+                    - safety.example.com
+                    - static.example.net
+                    - failover3.example.com
+                    - static.example.com
+                    - images.example.com
+                    - failover5.example.com
+                    - espanol.example.com
+                    isNegativeFileExtensionMatch: false
+                    isNegativePathMatch: false
+                    securityPolicy:
+                      policyId: GRD_4186
+                    sequence: 3
+                    targetId: 2555705
+                    type: website
+              schema:
+                additionalProperties: false
+                description: Contains the hostname coverage API and website match targets defined in the security configuration version.
+                properties:
+                  matchTargets:
+                    additionalProperties: false
+                    description: Contains the API and website match targets defined in the security configuration version.
+                    properties:
+                      apiTargets:
+                        description: The list of `api` match targets.
+                        items:
+                          additionalProperties: false
+                          description: Contains details about a hostname coverage match target.
+                          properties:
+                            apis:
+                              description: The list of API endpoint identifiers and names. This applies only for `api` match targets.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the API endpoint.
+                                    type: integer
+                                  name:
+                                    description: The API endpoint name.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            bypassNetworkLists:
+                              description: The network lists' identifiers and names in the match target.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the network list.
+                                    type: string
+                                  name:
+                                    description: The name you assigned to the network list.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            configId:
+                              description: Uniquely identifies the security configuration.
+                              type: integer
+                            configVersion:
+                              description: The security configuration version.
+                              type: integer
+                            defaultFile:
+                              default: NO_MATCH
+                              description: Describes the rule to match on paths. Either `NO_MATCH` not to match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash. The default value is `NO_MATCH`.
+                              enum:
+                              - NO_MATCH
+                              - BASE_MATCH
+                              - RECURSIVE_MATCH
+                              type: string
+                            effectiveSecurityControls:
+                              additionalProperties: false
+                              description: __Read-only__ The security controls to apply. For a security control to be effectively turned on, you must enable it in both the match target and the security policy.
+                              properties:
+                                applyApiConstraints:
+                                  description: Whether you enabled API constraints.
+                                  type: boolean
+                                applyApplicationLayerControls:
+                                  description: Whether you enabled application layer controls.
+                                  type: boolean
+                                applyBotmanControls:
+                                  description: Whether you enabled Bot Manager controls.
+                                  type: boolean
+                                applyNetworkLayerControls:
+                                  description: Whether you enabled network layer controls.
+                                  type: boolean
+                                applyRateControls:
+                                  description: Whether you enabled rate controls.
+                                  type: boolean
+                                applyReputationControls:
+                                  description: Whether you enabled reputation controls.
+                                  type: boolean
+                                applySlowPostControls:
+                                  description: Whether you enabled slow post controls.
+                                  type: boolean
+                              readOnly: true
+                              required:
+                              - applyApplicationLayerControls
+                              - applyNetworkLayerControls
+                              - applyRateControls
+                              - applyReputationControls
+                              - applyBotmanControls
+                              - applyApiConstraints
+                              - applySlowPostControls
+                              type: object
+                              x-akamai:
+                                file-path: schemas/security-controls.yaml
+                            fileExtensions:
+                              description: The list of file extensions to apply the match target to.
+                              items:
+                                type: string
+                              type: array
+                            filePaths:
+                              description: The list of file paths to apply the match target to.
+                              items:
+                                type: string
+                              type: array
+                            hostnames:
+                              description: The list of hostnames to protect.
+                              items:
+                                type: string
+                              type: array
+                            isNegativeFileExtensionMatch:
+                              description: Whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                              type: boolean
+                            isNegativePathMatch:
+                              description: Whether the match target applies when a match is found in the specified `filePaths` or when a match isn't found.
+                              type: boolean
+                            securityPolicy:
+                              additionalProperties: false
+                              description: The security policy associated with the match target.
+                              properties:
+                                policyId:
+                                  description: Uniquely identifies the security policy.
+                                  type: string
+                              required:
+                              - policyId
+                              type: object
+                            sequence:
+                              description: The match target's position in the sequence of match targets.
+                              type: integer
+                            targetId:
+                              description: Uniquely identifies the match target.
+                              type: integer
+                            type:
+                              description: The type of match target. Either `website` or `api`.
+                              enum:
+                              - website
+                              - api
+                              type: string
+                            validations:
+                              additionalProperties: false
+                              description: __Read-only__ Contains details about warnings, errors, or notices determined by a validation of this resource.
+                              properties:
+                                errors:
+                                  description: The list of errors.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                notices:
+                                  description: The list of notices.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                warnings:
+                                  description: The list of warnings.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                              readOnly: true
+                              required:
+                              - notices
+                              - errors
+                              - warnings
+                              type: object
+                              x-akamai:
+                                file-path: schemas/validations.yaml
+                          required:
+                          - type
+                          - securityPolicy
+                          type: object
+                          x-akamai:
+                            file-path: schemas/hostname-coverage-match-target.yaml
+                        type: array
+                      websiteTargets:
+                        description: The list of `website` match targets.
+                        items:
+                          additionalProperties: false
+                          description: Contains details about a hostname coverage match target.
+                          properties:
+                            apis:
+                              description: The list of API endpoint identifiers and names. This applies only for `api` match targets.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the API endpoint.
+                                    type: integer
+                                  name:
+                                    description: The API endpoint name.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            bypassNetworkLists:
+                              description: The network lists' identifiers and names in the match target.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the network list.
+                                    type: string
+                                  name:
+                                    description: The name you assigned to the network list.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            configId:
+                              description: Uniquely identifies the security configuration.
+                              type: integer
+                            configVersion:
+                              description: The security configuration version.
+                              type: integer
+                            defaultFile:
+                              default: NO_MATCH
+                              description: Describes the rule to match on paths. Either `NO_MATCH` not to match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash. The default value is `NO_MATCH`.
+                              enum:
+                              - NO_MATCH
+                              - BASE_MATCH
+                              - RECURSIVE_MATCH
+                              type: string
+                            effectiveSecurityControls:
+                              additionalProperties: false
+                              description: __Read-only__ The security controls to apply. For a security control to be effectively turned on, you must enable it in both the match target and the security policy.
+                              properties:
+                                applyApiConstraints:
+                                  description: Whether you enabled API constraints.
+                                  type: boolean
+                                applyApplicationLayerControls:
+                                  description: Whether you enabled application layer controls.
+                                  type: boolean
+                                applyBotmanControls:
+                                  description: Whether you enabled Bot Manager controls.
+                                  type: boolean
+                                applyNetworkLayerControls:
+                                  description: Whether you enabled network layer controls.
+                                  type: boolean
+                                applyRateControls:
+                                  description: Whether you enabled rate controls.
+                                  type: boolean
+                                applyReputationControls:
+                                  description: Whether you enabled reputation controls.
+                                  type: boolean
+                                applySlowPostControls:
+                                  description: Whether you enabled slow post controls.
+                                  type: boolean
+                              readOnly: true
+                              required:
+                              - applyApplicationLayerControls
+                              - applyNetworkLayerControls
+                              - applyRateControls
+                              - applyReputationControls
+                              - applyBotmanControls
+                              - applyApiConstraints
+                              - applySlowPostControls
+                              type: object
+                              x-akamai:
+                                file-path: schemas/security-controls.yaml
+                            fileExtensions:
+                              description: The list of file extensions to apply the match target to.
+                              items:
+                                type: string
+                              type: array
+                            filePaths:
+                              description: The list of file paths to apply the match target to.
+                              items:
+                                type: string
+                              type: array
+                            hostnames:
+                              description: The list of hostnames to protect.
+                              items:
+                                type: string
+                              type: array
+                            isNegativeFileExtensionMatch:
+                              description: Whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                              type: boolean
+                            isNegativePathMatch:
+                              description: Whether the match target applies when a match is found in the specified `filePaths` or when a match isn't found.
+                              type: boolean
+                            securityPolicy:
+                              additionalProperties: false
+                              description: The security policy associated with the match target.
+                              properties:
+                                policyId:
+                                  description: Uniquely identifies the security policy.
+                                  type: string
+                              required:
+                              - policyId
+                              type: object
+                            sequence:
+                              description: The match target's position in the sequence of match targets.
+                              type: integer
+                            targetId:
+                              description: Uniquely identifies the match target.
+                              type: integer
+                            type:
+                              description: The type of match target. Either `website` or `api`.
+                              enum:
+                              - website
+                              - api
+                              type: string
+                            validations:
+                              additionalProperties: false
+                              description: __Read-only__ Contains details about warnings, errors, or notices determined by a validation of this resource.
+                              properties:
+                                errors:
+                                  description: The list of errors.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                notices:
+                                  description: The list of notices.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                warnings:
+                                  description: The list of warnings.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                              readOnly: true
+                              required:
+                              - notices
+                              - errors
+                              - warnings
+                              type: object
+                              x-akamai:
+                                file-path: schemas/validations.yaml
+                          required:
+                          - type
+                          - securityPolicy
+                          type: object
+                          x-akamai:
+                            file-path: schemas/hostname-coverage-match-target.yaml
+                        type: array
+                    required:
+                    - apiTargets
+                    - websiteTargets
+                    type: object
+                required:
+                - matchTargets
+                type: object
+                x-akamai:
+                  file-path: schemas/hostname-coverage-match-target-get-200.yaml
+          description: Successfully retrieved the hostname coverage match targets.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: Get the hostname coverage match targets
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+  /configs/{configId}/versions/{versionNumber}/match-targets:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-match-targets.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/match-targets
+    post:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ Creates a new Match Target in the specified Configuration Version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-match-targets
+      operationId: post-match-targets
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              bypassNetworkLists:
+              - id: 888518_ACDDCKERS
+              - id: 1304427_AAXXBBLIST
+              defaultFile: NO_MATCH
+              fileExtensions:
+              - wmls
+              - jpeg
+              - pws
+              - carb
+              - pdf
+              - js
+              - hdml
+              - cct
+              - swf
+              - pct
+              filePaths:
+              - /sssi/*
+              - /cache/aaabbc*
+              - /price_toy/*
+              hostnames:
+              - example.com
+              - www.example.net
+              - m.example.com
+              isNegativeFileExtensionMatch: true
+              isNegativePathMatch: false
+              securityPolicy:
+                policyId: fwsf_32432
+              type: website
+            schema:
+              additionalProperties: false
+              description: Contains information about a match target.
+              properties:
+                apis:
+                  description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      id:
+                        description: Uniquely identifies the API endpoint.
+                        type: integer
+                      name:
+                        description: The API endpoint name.
+                        type: string
+                    required:
+                    - id
+                    type: object
+                  type: array
+                bypassNetworkLists:
+                  description: The list of network list identifiers and names.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      id:
+                        description: Uniquely identifies the network list.
+                        type: string
+                      name:
+                        description: The name of the network list.
+                        type: string
+                    required:
+                    - id
+                    type: object
+                  type: array
+                configId:
+                  description: Uniquely identifies the security configuration.
+                  type: integer
+                configVersion:
+                  description: The version of security configuration.
+                  type: integer
+                defaultFile:
+                  default: NO_MATCH
+                  description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                  enum:
+                  - NO_MATCH
+                  - BASE_MATCH
+                  - RECURSIVE_MATCH
+                  type: string
+                effectiveSecurityControls:
+                  additionalProperties: false
+                  description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                  properties:
+                    applyApiConstraints:
+                      description: Whether you enabled API constraints.
+                      type: boolean
+                    applyApplicationLayerControls:
+                      description: Whether you enabled application layer controls.
+                      type: boolean
+                    applyBotmanControls:
+                      description: Whether you enabled Bot Manager controls.
+                      type: boolean
+                    applyNetworkLayerControls:
+                      description: Whether you enabled network layer controls.
+                      type: boolean
+                    applyRateControls:
+                      description: Whether you enabled rate controls.
+                      type: boolean
+                    applyReputationControls:
+                      description: Whether you enabled reputation controls.
+                      type: boolean
+                    applySlowPostControls:
+                      description: Whether you enabled slow post controls.
+                      type: boolean
+                  readOnly: true
+                  required:
+                  - applyApplicationLayerControls
+                  - applyNetworkLayerControls
+                  - applyRateControls
+                  - applyReputationControls
+                  - applyBotmanControls
+                  - applyApiConstraints
+                  - applySlowPostControls
+                  type: object
+                  x-akamai:
+                    file-path: schemas/security-controls.yaml
+                fileExtensions:
+                  description: Contains a list of file extensions.
+                  items:
+                    description: The file extensions used in the path match.
+                    type: string
+                  type: array
+                filePaths:
+                  description: Contains a list of file paths.
+                  items:
+                    description: The path used in the path match.
+                    type: string
+                  type: array
+                hostnames:
+                  description: Contains a list of hostnames to protect.
+                  items:
+                    description: The hostnames to match the request on.
+                    type: string
+                  type: array
+                isNegativeFileExtensionMatch:
+                  description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                  type: boolean
+                isNegativePathMatch:
+                  description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                  type: boolean
+                securityPolicy:
+                  additionalProperties: false
+                  description: The security policy associated with the match target.
+                  properties:
+                    policyId:
+                      description: Uniquely identifies the security policy.
+                      type: string
+                  required:
+                  - policyId
+                  type: object
+                sequence:
+                  description: The position in the sequence of match targets.
+                  type: integer
+                targetId:
+                  description: Uniquely identifies the match target.
+                  type: integer
+                type:
+                  description: Describes the type of match target, either `website` or `api`.
+                  enum:
+                  - website
+                  - api
+                  type: string
+                validations:
+                  additionalProperties: false
+                  description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                  properties:
+                    errors:
+                      description: The list of errors.
+                      items:
+                        additionalProperties: false
+                        description: Contains feedback on validation.
+                        properties:
+                          detail:
+                            description: The explanation of the error message.
+                            type: string
+                          fieldName:
+                            description: The name of the field causing the validation problem.
+                            type: string
+                          jsonReference:
+                            description: The JSON reference to the field in the resource.
+                            type: string
+                          title:
+                            description: The title for the error.
+                            example: Not Found
+                            type: string
+                          type:
+                            description: The URL for the error type.
+                            example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                            type: string
+                        required:
+                        - title
+                        - type
+                        type: object
+                        x-akamai:
+                          file-path: schemas/validation.yaml
+                      type: array
+                    notices:
+                      description: The list of notices.
+                      items:
+                        additionalProperties: false
+                        description: Contains feedback on validation.
+                        properties:
+                          detail:
+                            description: The explanation of the error message.
+                            type: string
+                          fieldName:
+                            description: The name of the field causing the validation problem.
+                            type: string
+                          jsonReference:
+                            description: The JSON reference to the field in the resource.
+                            type: string
+                          title:
+                            description: The title for the error.
+                            example: Not Found
+                            type: string
+                          type:
+                            description: The URL for the error type.
+                            example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                            type: string
+                        required:
+                        - title
+                        - type
+                        type: object
+                        x-akamai:
+                          file-path: schemas/validation.yaml
+                      type: array
+                    warnings:
+                      description: The list of warnings.
+                      items:
+                        additionalProperties: false
+                        description: Contains feedback on validation.
+                        properties:
+                          detail:
+                            description: The explanation of the error message.
+                            type: string
+                          fieldName:
+                            description: The name of the field causing the validation problem.
+                            type: string
+                          jsonReference:
+                            description: The JSON reference to the field in the resource.
+                            type: string
+                          title:
+                            description: The title for the error.
+                            example: Not Found
+                            type: string
+                          type:
+                            description: The URL for the error type.
+                            example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                            type: string
+                        required:
+                        - title
+                        - type
+                        type: object
+                        x-akamai:
+                          file-path: schemas/validation.yaml
+                      type: array
+                  readOnly: true
+                  required:
+                  - notices
+                  - errors
+                  - warnings
+                  type: object
+                  x-akamai:
+                    file-path: schemas/validations.yaml
+              required:
+              - type
+              - securityPolicy
+              type: object
+              x-akamai:
+                file-path: schemas/match-target.yaml
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                bypassNetworkLists:
+                - id: 888518_ACDDCKERS
+                  name: Test network list 1
+                - id: 1304427_AAXXBBLIST
+                  name: Test network list 2
+                configId: 77653
+                configVersion: 25
+                defaultFile: NO_MATCH
+                effectiveSecurityControls:
+                  applyApiConstraints: false
+                  applyApplicationLayerControls: true
+                  applyBotmanControls: false
+                  applyNetworkLayerControls: false
+                  applyRateControls: true
+                  applyReputationControls: false
+                  applySlowPostControls: false
+                fileExtensions:
+                - wmls
+                - jpeg
+                - pws
+                - carb
+                - pdf
+                - js
+                - hdml
+                - cct
+                - swf
+                - pct
+                filePaths:
+                - /sssi/*
+                - /cache/aaabbc*
+                - /price_toy/*
+                hostnames:
+                - example.com
+                - www.example.net
+                - m.example.com
+                isNegativeFileExtensionMatch: true
+                isNegativePathMatch: false
+                securityPolicy:
+                  policyId: fwsf_32432
+                sequence: 1
+                targetId: 112231
+                type: website
+              schema:
+                additionalProperties: false
+                description: Contains information about a match target.
+                properties:
+                  apis:
+                    description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: Uniquely identifies the API endpoint.
+                          type: integer
+                        name:
+                          description: The API endpoint name.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
+                  bypassNetworkLists:
+                    description: The list of network list identifiers and names.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: Uniquely identifies the network list.
+                          type: string
+                        name:
+                          description: The name of the network list.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    type: integer
+                  configVersion:
+                    description: The version of security configuration.
+                    type: integer
+                  defaultFile:
+                    default: NO_MATCH
+                    description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                    enum:
+                    - NO_MATCH
+                    - BASE_MATCH
+                    - RECURSIVE_MATCH
+                    type: string
+                  effectiveSecurityControls:
+                    additionalProperties: false
+                    description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                    properties:
+                      applyApiConstraints:
+                        description: Whether you enabled API constraints.
+                        type: boolean
+                      applyApplicationLayerControls:
+                        description: Whether you enabled application layer controls.
+                        type: boolean
+                      applyBotmanControls:
+                        description: Whether you enabled Bot Manager controls.
+                        type: boolean
+                      applyNetworkLayerControls:
+                        description: Whether you enabled network layer controls.
+                        type: boolean
+                      applyRateControls:
+                        description: Whether you enabled rate controls.
+                        type: boolean
+                      applyReputationControls:
+                        description: Whether you enabled reputation controls.
+                        type: boolean
+                      applySlowPostControls:
+                        description: Whether you enabled slow post controls.
+                        type: boolean
+                    readOnly: true
+                    required:
+                    - applyApplicationLayerControls
+                    - applyNetworkLayerControls
+                    - applyRateControls
+                    - applyReputationControls
+                    - applyBotmanControls
+                    - applyApiConstraints
+                    - applySlowPostControls
+                    type: object
+                    x-akamai:
+                      file-path: schemas/security-controls.yaml
+                  fileExtensions:
+                    description: Contains a list of file extensions.
+                    items:
+                      description: The file extensions used in the path match.
+                      type: string
+                    type: array
+                  filePaths:
+                    description: Contains a list of file paths.
+                    items:
+                      description: The path used in the path match.
+                      type: string
+                    type: array
+                  hostnames:
+                    description: Contains a list of hostnames to protect.
+                    items:
+                      description: The hostnames to match the request on.
+                      type: string
+                    type: array
+                  isNegativeFileExtensionMatch:
+                    description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                    type: boolean
+                  isNegativePathMatch:
+                    description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                    type: boolean
+                  securityPolicy:
+                    additionalProperties: false
+                    description: The security policy associated with the match target.
+                    properties:
+                      policyId:
+                        description: Uniquely identifies the security policy.
+                        type: string
+                    required:
+                    - policyId
+                    type: object
+                  sequence:
+                    description: The position in the sequence of match targets.
+                    type: integer
+                  targetId:
+                    description: Uniquely identifies the match target.
+                    type: integer
+                  type:
+                    description: Describes the type of match target, either `website` or `api`.
+                    enum:
+                    - website
+                    - api
+                    type: string
+                  validations:
+                    additionalProperties: false
+                    description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                    properties:
+                      errors:
+                        description: The list of errors.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      notices:
+                        description: The list of notices.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      warnings:
+                        description: The list of warnings.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                    readOnly: true
+                    required:
+                    - notices
+                    - errors
+                    - warnings
+                    type: object
+                    x-akamai:
+                      file-path: schemas/validations.yaml
+                required:
+                - type
+                - securityPolicy
+                type: object
+                x-akamai:
+                  file-path: schemas/match-target.yaml
+          description: Successfully created a  match target.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to match targets in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Create a match target
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+    get:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ Returns match targets defined in the specified security configuration version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-match-targets
+      operationId: get-match-targets
+      parameters:
+      - description: Specifies the security policy to filter match targets.
+        in: query
+        name: policyId
+        schema:
+          example: abc_123456
+          type: string
+        x-akamai:
+          file-path: parameters/policy-id-query.yaml
+      - description: Specify whether to return the object name in the payload, true` by default.
+        in: query
+        name: includeChildObjectName
+        schema:
+          default: true
+          example: false
+          type: boolean
+        x-akamai:
+          file-path: parameters/include-child-object-name-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                matchTargets:
+                  apiTargets:
+                  - apis:
+                    - id: 1111
+                      name: API Endpoint 1
+                    - id: 2222
+                      name: API Endpoint 2
+                    bypassNetworkLists:
+                    - id: 522825_CCCBYPASSLIST
+                      name: Example network list 11
+                    - id: 1622566_XXAABYPASSL
+                      name: Example network list 12
+                    configId: 77653
+                    configVersion: 25
+                    effectiveSecurityControls:
+                      applyApiConstraints: true
+                      applyApplicationLayerControls: true
+                      applyBotmanControls: false
+                      applyNetworkLayerControls: true
+                      applyRateControls: true
+                      applyReputationControls: true
+                      applySlowPostControls: false
+                    securityPolicy:
+                      policyId: ancv_1234
+                    sequence: 3
+                    targetId: 1222208
+                    type: api
+                  websiteTargets:
+                  - bypassNetworkLists:
+                    - id: 222825_AAABYPASSLIST
+                      name: Example network list 21
+                    - id: 2622566_YYAABYPASSL
+                      name: Example network list 22
+                    configId: 77653
+                    configVersion: 25
+                    defaultFile: NO_MATCH
+                    effectiveSecurityControls:
+                      applyApiConstraints: false
+                      applyApplicationLayerControls: true
+                      applyBotmanControls: true
+                      applyNetworkLayerControls: true
+                      applyRateControls: true
+                      applyReputationControls: true
+                      applySlowPostControls: false
+                    fileExtensions:
+                    - html
+                    filePaths:
+                    - /*
+                    hostnames: []
+                    isNegativeFileExtensionMatch: false
+                    isNegativePathMatch: false
+                    securityPolicy:
+                      policyId: ancv_1234
+                    sequence: 1
+                    targetId: 1221059
+                    type: website
+                  - bypassNetworkLists: []
+                    configId: 77653
+                    configVersion: 25
+                    defaultFile: NO_MATCH
+                    effectiveSecurityControls:
+                      applyApiConstraints: false
+                      applyApplicationLayerControls: true
+                      applyBotmanControls: true
+                      applyNetworkLayerControls: false
+                      applyRateControls: true
+                      applyReputationControls: true
+                      applySlowPostControls: false
+                    fileExtensions: []
+                    filePaths:
+                    - /path
+                    hostnames:
+                    - example.com
+                    - www.example.net
+                    - m.example.com
+                    isNegativeFileExtensionMatch: false
+                    isNegativePathMatch: false
+                    securityPolicy:
+                      policyId: ancv_1234
+                    sequence: 2
+                    targetId: 1222207
+                    type: website
+              schema:
+                additionalProperties: false
+                description: Describes match target settings.
+                properties:
+                  matchTargets:
+                    additionalProperties: false
+                    description: Match target settings.
+                    properties:
+                      apiTargets:
+                        description: The `api` match targets.
+                        items:
+                          additionalProperties: false
+                          description: Contains information about a match target.
+                          properties:
+                            apis:
+                              description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the API endpoint.
+                                    type: integer
+                                  name:
+                                    description: The API endpoint name.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            bypassNetworkLists:
+                              description: The list of network list identifiers and names.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the network list.
+                                    type: string
+                                  name:
+                                    description: The name of the network list.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            configId:
+                              description: Uniquely identifies the security configuration.
+                              type: integer
+                            configVersion:
+                              description: The version of security configuration.
+                              type: integer
+                            defaultFile:
+                              default: NO_MATCH
+                              description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                              enum:
+                              - NO_MATCH
+                              - BASE_MATCH
+                              - RECURSIVE_MATCH
+                              type: string
+                            effectiveSecurityControls:
+                              additionalProperties: false
+                              description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                              properties:
+                                applyApiConstraints:
+                                  description: Whether you enabled API constraints.
+                                  type: boolean
+                                applyApplicationLayerControls:
+                                  description: Whether you enabled application layer controls.
+                                  type: boolean
+                                applyBotmanControls:
+                                  description: Whether you enabled Bot Manager controls.
+                                  type: boolean
+                                applyNetworkLayerControls:
+                                  description: Whether you enabled network layer controls.
+                                  type: boolean
+                                applyRateControls:
+                                  description: Whether you enabled rate controls.
+                                  type: boolean
+                                applyReputationControls:
+                                  description: Whether you enabled reputation controls.
+                                  type: boolean
+                                applySlowPostControls:
+                                  description: Whether you enabled slow post controls.
+                                  type: boolean
+                              readOnly: true
+                              required:
+                              - applyApplicationLayerControls
+                              - applyNetworkLayerControls
+                              - applyRateControls
+                              - applyReputationControls
+                              - applyBotmanControls
+                              - applyApiConstraints
+                              - applySlowPostControls
+                              type: object
+                              x-akamai:
+                                file-path: schemas/security-controls.yaml
+                            fileExtensions:
+                              description: Contains a list of file extensions.
+                              items:
+                                description: The file extensions used in the path match.
+                                type: string
+                              type: array
+                            filePaths:
+                              description: Contains a list of file paths.
+                              items:
+                                description: The path used in the path match.
+                                type: string
+                              type: array
+                            hostnames:
+                              description: Contains a list of hostnames to protect.
+                              items:
+                                description: The hostnames to match the request on.
+                                type: string
+                              type: array
+                            isNegativeFileExtensionMatch:
+                              description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                              type: boolean
+                            isNegativePathMatch:
+                              description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                              type: boolean
+                            securityPolicy:
+                              additionalProperties: false
+                              description: The security policy associated with the match target.
+                              properties:
+                                policyId:
+                                  description: Uniquely identifies the security policy.
+                                  type: string
+                              required:
+                              - policyId
+                              type: object
+                            sequence:
+                              description: The position in the sequence of match targets.
+                              type: integer
+                            targetId:
+                              description: Uniquely identifies the match target.
+                              type: integer
+                            type:
+                              description: Describes the type of match target, either `website` or `api`.
+                              enum:
+                              - website
+                              - api
+                              type: string
+                            validations:
+                              additionalProperties: false
+                              description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                              properties:
+                                errors:
+                                  description: The list of errors.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                notices:
+                                  description: The list of notices.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                warnings:
+                                  description: The list of warnings.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                              readOnly: true
+                              required:
+                              - notices
+                              - errors
+                              - warnings
+                              type: object
+                              x-akamai:
+                                file-path: schemas/validations.yaml
+                          required:
+                          - type
+                          - securityPolicy
+                          type: object
+                          x-akamai:
+                            file-path: schemas/match-target.yaml
+                        type: array
+                      websiteTargets:
+                        description: The `website` match targets.
+                        items:
+                          additionalProperties: false
+                          description: Contains information about a match target.
+                          properties:
+                            apis:
+                              description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the API endpoint.
+                                    type: integer
+                                  name:
+                                    description: The API endpoint name.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            bypassNetworkLists:
+                              description: The list of network list identifiers and names.
+                              items:
+                                additionalProperties: false
+                                properties:
+                                  id:
+                                    description: Uniquely identifies the network list.
+                                    type: string
+                                  name:
+                                    description: The name of the network list.
+                                    type: string
+                                required:
+                                - id
+                                type: object
+                              type: array
+                            configId:
+                              description: Uniquely identifies the security configuration.
+                              type: integer
+                            configVersion:
+                              description: The version of security configuration.
+                              type: integer
+                            defaultFile:
+                              default: NO_MATCH
+                              description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                              enum:
+                              - NO_MATCH
+                              - BASE_MATCH
+                              - RECURSIVE_MATCH
+                              type: string
+                            effectiveSecurityControls:
+                              additionalProperties: false
+                              description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                              properties:
+                                applyApiConstraints:
+                                  description: Whether you enabled API constraints.
+                                  type: boolean
+                                applyApplicationLayerControls:
+                                  description: Whether you enabled application layer controls.
+                                  type: boolean
+                                applyBotmanControls:
+                                  description: Whether you enabled Bot Manager controls.
+                                  type: boolean
+                                applyNetworkLayerControls:
+                                  description: Whether you enabled network layer controls.
+                                  type: boolean
+                                applyRateControls:
+                                  description: Whether you enabled rate controls.
+                                  type: boolean
+                                applyReputationControls:
+                                  description: Whether you enabled reputation controls.
+                                  type: boolean
+                                applySlowPostControls:
+                                  description: Whether you enabled slow post controls.
+                                  type: boolean
+                              readOnly: true
+                              required:
+                              - applyApplicationLayerControls
+                              - applyNetworkLayerControls
+                              - applyRateControls
+                              - applyReputationControls
+                              - applyBotmanControls
+                              - applyApiConstraints
+                              - applySlowPostControls
+                              type: object
+                              x-akamai:
+                                file-path: schemas/security-controls.yaml
+                            fileExtensions:
+                              description: Contains a list of file extensions.
+                              items:
+                                description: The file extensions used in the path match.
+                                type: string
+                              type: array
+                            filePaths:
+                              description: Contains a list of file paths.
+                              items:
+                                description: The path used in the path match.
+                                type: string
+                              type: array
+                            hostnames:
+                              description: Contains a list of hostnames to protect.
+                              items:
+                                description: The hostnames to match the request on.
+                                type: string
+                              type: array
+                            isNegativeFileExtensionMatch:
+                              description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                              type: boolean
+                            isNegativePathMatch:
+                              description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                              type: boolean
+                            securityPolicy:
+                              additionalProperties: false
+                              description: The security policy associated with the match target.
+                              properties:
+                                policyId:
+                                  description: Uniquely identifies the security policy.
+                                  type: string
+                              required:
+                              - policyId
+                              type: object
+                            sequence:
+                              description: The position in the sequence of match targets.
+                              type: integer
+                            targetId:
+                              description: Uniquely identifies the match target.
+                              type: integer
+                            type:
+                              description: Describes the type of match target, either `website` or `api`.
+                              enum:
+                              - website
+                              - api
+                              type: string
+                            validations:
+                              additionalProperties: false
+                              description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                              properties:
+                                errors:
+                                  description: The list of errors.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                notices:
+                                  description: The list of notices.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                                warnings:
+                                  description: The list of warnings.
+                                  items:
+                                    additionalProperties: false
+                                    description: Contains feedback on validation.
+                                    properties:
+                                      detail:
+                                        description: The explanation of the error message.
+                                        type: string
+                                      fieldName:
+                                        description: The name of the field causing the validation problem.
+                                        type: string
+                                      jsonReference:
+                                        description: The JSON reference to the field in the resource.
+                                        type: string
+                                      title:
+                                        description: The title for the error.
+                                        example: Not Found
+                                        type: string
+                                      type:
+                                        description: The URL for the error type.
+                                        example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                                        type: string
+                                    required:
+                                    - title
+                                    - type
+                                    type: object
+                                    x-akamai:
+                                      file-path: schemas/validation.yaml
+                                  type: array
+                              readOnly: true
+                              required:
+                              - notices
+                              - errors
+                              - warnings
+                              type: object
+                              x-akamai:
+                                file-path: schemas/validations.yaml
+                          required:
+                          - type
+                          - securityPolicy
+                          type: object
+                          x-akamai:
+                            file-path: schemas/match-target.yaml
+                        type: array
+                    required:
+                    - apiTargets
+                    - websiteTargets
+                    type: object
+                required:
+                - matchTargets
+                type: object
+                x-akamai:
+                  file-path: schemas/match-targets.yaml
+          description: Successfully returned match targets.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to match targets in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List match targets
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+  /configs/{configId}/versions/{versionNumber}/match-targets/sequence:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-match-targets-sequence.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/match-targets/sequence
+    put:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ Updates the sequence of Match Targets in a configuration version. The `website` and `api` match targets' sequence requires updates from separate requests by passing the `type` attribute in the JSON request.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-match-targets-sequence
+      operationId: put-match-targets-sequence
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              targetSequence:
+              - sequence: 1
+                targetId: 1217289
+              - sequence: 2
+                targetId: 1217339
+              type: WEBSITE
+            schema:
+              additionalProperties: false
+              description: Contains match target settings and a list of objects containing match targets with their assigned sequence number.
+              properties:
+                targetSequence:
+                  description: Contains the ID and sequence of a match target.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      sequence:
+                        description: The position in the sequence of match targets.
+                        type: integer
+                      targetId:
+                        description: Uniquely identifies the match target.
+                        type: integer
+                    required:
+                    - sequence
+                    - targetId
+                    type: object
+                  type: array
+                type:
+                  description: Describes the type of match target, either `WEBSITE` or `API`.
+                  enum:
+                  - WEBSITE
+                  - API
+                  type: string
+              required:
+              - type
+              - targetSequence
+              type: object
+              x-akamai:
+                file-path: schemas/match-targets-sequence.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                targetSequence:
+                - sequence: 1
+                  targetId: 1217289
+                - sequence: 2
+                  targetId: 1217339
+                type: WEBSITE
+              schema:
+                additionalProperties: false
+                description: Contains match target settings and a list of objects containing match targets with their assigned sequence number.
+                properties:
+                  targetSequence:
+                    description: Contains the ID and sequence of a match target.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        sequence:
+                          description: The position in the sequence of match targets.
+                          type: integer
+                        targetId:
+                          description: Uniquely identifies the match target.
+                          type: integer
+                      required:
+                      - sequence
+                      - targetId
+                      type: object
+                    type: array
+                  type:
+                    description: Describes the type of match target, either `WEBSITE` or `API`.
+                    enum:
+                    - WEBSITE
+                    - API
+                    type: string
+                required:
+                - type
+                - targetSequence
+                type: object
+                x-akamai:
+                  file-path: schemas/match-targets-sequence.yaml
+          description: Successfully updated match target sequence.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to match targets in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify match target order
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+  /configs/{configId}/versions/{versionNumber}/match-targets/{targetId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for each match target.
+      in: path
+      name: targetId
+      required: true
+      schema:
+        example: 112231
+        type: integer
+      x-akamai:
+        file-path: parameters/target-id-path.yaml
+    x-akamai:
+      file-path: paths/config-match-target.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/match-targets/{targetId}
+    get:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ Returns the specified match target.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-match-target
+      operationId: get-match-target
+      parameters:
+      - description: Specify whether to return the object name in the payload, true` by default.
+        in: query
+        name: includeChildObjectName
+        schema:
+          default: true
+          example: false
+          type: boolean
+        x-akamai:
+          file-path: parameters/include-child-object-name-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                bypassNetworkLists:
+                - id: 888518_ACDDCKERS
+                  name: Test network list 1
+                - id: 1304427_AAXXBBLIST
+                  name: Test network list 2
+                configId: 77653
+                configVersion: 25
+                defaultFile: NO_MATCH
+                effectiveSecurityControls:
+                  applyApiConstraints: false
+                  applyApplicationLayerControls: true
+                  applyBotmanControls: false
+                  applyNetworkLayerControls: false
+                  applyRateControls: true
+                  applyReputationControls: false
+                  applySlowPostControls: false
+                fileExtensions:
+                - wmls
+                - jpeg
+                - pws
+                - carb
+                - pdf
+                - js
+                - hdml
+                - cct
+                - swf
+                - pct
+                filePaths:
+                - /sssi/*
+                - /cache/aaabbc*
+                - /price_toy/*
+                hostnames:
+                - example.com
+                - www.example.net
+                - m.example.com
+                isNegativeFileExtensionMatch: true
+                isNegativePathMatch: false
+                securityPolicy:
+                  policyId: fwsf_32432
+                sequence: 1
+                targetId: 112231
+                type: website
+              schema:
+                additionalProperties: false
+                description: Contains information about a match target.
+                properties:
+                  apis:
+                    description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: Uniquely identifies the API endpoint.
+                          type: integer
+                        name:
+                          description: The API endpoint name.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
+                  bypassNetworkLists:
+                    description: The list of network list identifiers and names.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: Uniquely identifies the network list.
+                          type: string
+                        name:
+                          description: The name of the network list.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    type: integer
+                  configVersion:
+                    description: The version of security configuration.
+                    type: integer
+                  defaultFile:
+                    default: NO_MATCH
+                    description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                    enum:
+                    - NO_MATCH
+                    - BASE_MATCH
+                    - RECURSIVE_MATCH
+                    type: string
+                  effectiveSecurityControls:
+                    additionalProperties: false
+                    description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                    properties:
+                      applyApiConstraints:
+                        description: Whether you enabled API constraints.
+                        type: boolean
+                      applyApplicationLayerControls:
+                        description: Whether you enabled application layer controls.
+                        type: boolean
+                      applyBotmanControls:
+                        description: Whether you enabled Bot Manager controls.
+                        type: boolean
+                      applyNetworkLayerControls:
+                        description: Whether you enabled network layer controls.
+                        type: boolean
+                      applyRateControls:
+                        description: Whether you enabled rate controls.
+                        type: boolean
+                      applyReputationControls:
+                        description: Whether you enabled reputation controls.
+                        type: boolean
+                      applySlowPostControls:
+                        description: Whether you enabled slow post controls.
+                        type: boolean
+                    readOnly: true
+                    required:
+                    - applyApplicationLayerControls
+                    - applyNetworkLayerControls
+                    - applyRateControls
+                    - applyReputationControls
+                    - applyBotmanControls
+                    - applyApiConstraints
+                    - applySlowPostControls
+                    type: object
+                    x-akamai:
+                      file-path: schemas/security-controls.yaml
+                  fileExtensions:
+                    description: Contains a list of file extensions.
+                    items:
+                      description: The file extensions used in the path match.
+                      type: string
+                    type: array
+                  filePaths:
+                    description: Contains a list of file paths.
+                    items:
+                      description: The path used in the path match.
+                      type: string
+                    type: array
+                  hostnames:
+                    description: Contains a list of hostnames to protect.
+                    items:
+                      description: The hostnames to match the request on.
+                      type: string
+                    type: array
+                  isNegativeFileExtensionMatch:
+                    description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                    type: boolean
+                  isNegativePathMatch:
+                    description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                    type: boolean
+                  securityPolicy:
+                    additionalProperties: false
+                    description: The security policy associated with the match target.
+                    properties:
+                      policyId:
+                        description: Uniquely identifies the security policy.
+                        type: string
+                    required:
+                    - policyId
+                    type: object
+                  sequence:
+                    description: The position in the sequence of match targets.
+                    type: integer
+                  targetId:
+                    description: Uniquely identifies the match target.
+                    type: integer
+                  type:
+                    description: Describes the type of match target, either `website` or `api`.
+                    enum:
+                    - website
+                    - api
+                    type: string
+                  validations:
+                    additionalProperties: false
+                    description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                    properties:
+                      errors:
+                        description: The list of errors.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      notices:
+                        description: The list of notices.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      warnings:
+                        description: The list of warnings.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                    readOnly: true
+                    required:
+                    - notices
+                    - errors
+                    - warnings
+                    type: object
+                    x-akamai:
+                      file-path: schemas/validations.yaml
+                required:
+                - type
+                - securityPolicy
+                type: object
+                x-akamai:
+                  file-path: schemas/match-target.yaml
+          description: Successfully returned match target.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to match targets in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or match target wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get a match target
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+    put:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ Updates details about the specified match target.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-match-target
+      operationId: put-match-target
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              bypassNetworkLists:
+              - id: 888518_ACDDCKERS
+              - id: 1304427_AAXXBBLIST
+              defaultFile: NO_MATCH
+              fileExtensions:
+              - wmls
+              - jpeg
+              - pws
+              - carb
+              - pdf
+              - js
+              - hdml
+              - cct
+              - swf
+              - pct
+              filePaths:
+              - /sssi/*
+              - /cache/aaabbc*
+              - /price_toy/*
+              hostnames:
+              - example.com
+              - www.example.net
+              - m.example.com
+              isNegativeFileExtensionMatch: true
+              isNegativePathMatch: false
+              securityPolicy:
+                policyId: fwsf_32432
+              targetId: 112231
+              type: website
+            schema:
+              additionalProperties: false
+              description: Contains information about a match target.
+              properties:
+                apis:
+                  description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      id:
+                        description: Uniquely identifies the API endpoint.
+                        type: integer
+                      name:
+                        description: The API endpoint name.
+                        type: string
+                    required:
+                    - id
+                    type: object
+                  type: array
+                bypassNetworkLists:
+                  description: The list of network list identifiers and names.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      id:
+                        description: Uniquely identifies the network list.
+                        type: string
+                      name:
+                        description: The name of the network list.
+                        type: string
+                    required:
+                    - id
+                    type: object
+                  type: array
+                configId:
+                  description: Uniquely identifies the security configuration.
+                  type: integer
+                configVersion:
+                  description: The version of security configuration.
+                  type: integer
+                defaultFile:
+                  default: NO_MATCH
+                  description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                  enum:
+                  - NO_MATCH
+                  - BASE_MATCH
+                  - RECURSIVE_MATCH
+                  type: string
+                effectiveSecurityControls:
+                  additionalProperties: false
+                  description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                  properties:
+                    applyApiConstraints:
+                      description: Whether you enabled API constraints.
+                      type: boolean
+                    applyApplicationLayerControls:
+                      description: Whether you enabled application layer controls.
+                      type: boolean
+                    applyBotmanControls:
+                      description: Whether you enabled Bot Manager controls.
+                      type: boolean
+                    applyNetworkLayerControls:
+                      description: Whether you enabled network layer controls.
+                      type: boolean
+                    applyRateControls:
+                      description: Whether you enabled rate controls.
+                      type: boolean
+                    applyReputationControls:
+                      description: Whether you enabled reputation controls.
+                      type: boolean
+                    applySlowPostControls:
+                      description: Whether you enabled slow post controls.
+                      type: boolean
+                  readOnly: true
+                  required:
+                  - applyApplicationLayerControls
+                  - applyNetworkLayerControls
+                  - applyRateControls
+                  - applyReputationControls
+                  - applyBotmanControls
+                  - applyApiConstraints
+                  - applySlowPostControls
+                  type: object
+                  x-akamai:
+                    file-path: schemas/security-controls.yaml
+                fileExtensions:
+                  description: Contains a list of file extensions.
+                  items:
+                    description: The file extensions used in the path match.
+                    type: string
+                  type: array
+                filePaths:
+                  description: Contains a list of file paths.
+                  items:
+                    description: The path used in the path match.
+                    type: string
+                  type: array
+                hostnames:
+                  description: Contains a list of hostnames to protect.
+                  items:
+                    description: The hostnames to match the request on.
+                    type: string
+                  type: array
+                isNegativeFileExtensionMatch:
+                  description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                  type: boolean
+                isNegativePathMatch:
+                  description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                  type: boolean
+                securityPolicy:
+                  additionalProperties: false
+                  description: The security policy associated with the match target.
+                  properties:
+                    policyId:
+                      description: Uniquely identifies the security policy.
+                      type: string
+                  required:
+                  - policyId
+                  type: object
+                sequence:
+                  description: The position in the sequence of match targets.
+                  type: integer
+                targetId:
+                  description: Uniquely identifies the match target.
+                  type: integer
+                type:
+                  description: Describes the type of match target, either `website` or `api`.
+                  enum:
+                  - website
+                  - api
+                  type: string
+                validations:
+                  additionalProperties: false
+                  description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                  properties:
+                    errors:
+                      description: The list of errors.
+                      items:
+                        additionalProperties: false
+                        description: Contains feedback on validation.
+                        properties:
+                          detail:
+                            description: The explanation of the error message.
+                            type: string
+                          fieldName:
+                            description: The name of the field causing the validation problem.
+                            type: string
+                          jsonReference:
+                            description: The JSON reference to the field in the resource.
+                            type: string
+                          title:
+                            description: The title for the error.
+                            example: Not Found
+                            type: string
+                          type:
+                            description: The URL for the error type.
+                            example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                            type: string
+                        required:
+                        - title
+                        - type
+                        type: object
+                        x-akamai:
+                          file-path: schemas/validation.yaml
+                      type: array
+                    notices:
+                      description: The list of notices.
+                      items:
+                        additionalProperties: false
+                        description: Contains feedback on validation.
+                        properties:
+                          detail:
+                            description: The explanation of the error message.
+                            type: string
+                          fieldName:
+                            description: The name of the field causing the validation problem.
+                            type: string
+                          jsonReference:
+                            description: The JSON reference to the field in the resource.
+                            type: string
+                          title:
+                            description: The title for the error.
+                            example: Not Found
+                            type: string
+                          type:
+                            description: The URL for the error type.
+                            example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                            type: string
+                        required:
+                        - title
+                        - type
+                        type: object
+                        x-akamai:
+                          file-path: schemas/validation.yaml
+                      type: array
+                    warnings:
+                      description: The list of warnings.
+                      items:
+                        additionalProperties: false
+                        description: Contains feedback on validation.
+                        properties:
+                          detail:
+                            description: The explanation of the error message.
+                            type: string
+                          fieldName:
+                            description: The name of the field causing the validation problem.
+                            type: string
+                          jsonReference:
+                            description: The JSON reference to the field in the resource.
+                            type: string
+                          title:
+                            description: The title for the error.
+                            example: Not Found
+                            type: string
+                          type:
+                            description: The URL for the error type.
+                            example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                            type: string
+                        required:
+                        - title
+                        - type
+                        type: object
+                        x-akamai:
+                          file-path: schemas/validation.yaml
+                      type: array
+                  readOnly: true
+                  required:
+                  - notices
+                  - errors
+                  - warnings
+                  type: object
+                  x-akamai:
+                    file-path: schemas/validations.yaml
+              required:
+              - type
+              - securityPolicy
+              type: object
+              x-akamai:
+                file-path: schemas/match-target.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                bypassNetworkLists:
+                - id: 888518_ACDDCKERS
+                  name: Test network list 1
+                - id: 1304427_AAXXBBLIST
+                  name: Test network list 2
+                configId: 77653
+                configVersion: 25
+                defaultFile: NO_MATCH
+                effectiveSecurityControls:
+                  applyApiConstraints: false
+                  applyApplicationLayerControls: true
+                  applyBotmanControls: false
+                  applyNetworkLayerControls: false
+                  applyRateControls: true
+                  applyReputationControls: false
+                  applySlowPostControls: false
+                fileExtensions:
+                - wmls
+                - jpeg
+                - pws
+                - carb
+                - pdf
+                - js
+                - hdml
+                - cct
+                - swf
+                - pct
+                filePaths:
+                - /sssi/*
+                - /cache/aaabbc*
+                - /price_toy/*
+                hostnames:
+                - example.com
+                - www.example.net
+                - m.example.com
+                isNegativeFileExtensionMatch: true
+                isNegativePathMatch: false
+                securityPolicy:
+                  policyId: fwsf_32432
+                sequence: 1
+                targetId: 112231
+                type: website
+              schema:
+                additionalProperties: false
+                description: Contains information about a match target.
+                properties:
+                  apis:
+                    description: Contains a list of objects containing an API endpoint ID and name. This field applies only to API match targets.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: Uniquely identifies the API endpoint.
+                          type: integer
+                        name:
+                          description: The API endpoint name.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
+                  bypassNetworkLists:
+                    description: The list of network list identifiers and names.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: Uniquely identifies the network list.
+                          type: string
+                        name:
+                          description: The name of the network list.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    type: integer
+                  configVersion:
+                    description: The version of security configuration.
+                    type: integer
+                  defaultFile:
+                    default: NO_MATCH
+                    description: Describes the rule to match on paths. Either `NO_MATCH` to not match on the default file, `BASE_MATCH` to match only requests for top-level hostnames ending in a trailing slash, or `RECURSIVE_MATCH` to match all requests for paths that end in a trailing slash.
+                    enum:
+                    - NO_MATCH
+                    - BASE_MATCH
+                    - RECURSIVE_MATCH
+                    type: string
+                  effectiveSecurityControls:
+                    additionalProperties: false
+                    description: __Read-only__ Defines the security controls to apply. For a security control to be effectively turned on, it has to be enabled in both the match target and the security policy.
+                    properties:
+                      applyApiConstraints:
+                        description: Whether you enabled API constraints.
+                        type: boolean
+                      applyApplicationLayerControls:
+                        description: Whether you enabled application layer controls.
+                        type: boolean
+                      applyBotmanControls:
+                        description: Whether you enabled Bot Manager controls.
+                        type: boolean
+                      applyNetworkLayerControls:
+                        description: Whether you enabled network layer controls.
+                        type: boolean
+                      applyRateControls:
+                        description: Whether you enabled rate controls.
+                        type: boolean
+                      applyReputationControls:
+                        description: Whether you enabled reputation controls.
+                        type: boolean
+                      applySlowPostControls:
+                        description: Whether you enabled slow post controls.
+                        type: boolean
+                    readOnly: true
+                    required:
+                    - applyApplicationLayerControls
+                    - applyNetworkLayerControls
+                    - applyRateControls
+                    - applyReputationControls
+                    - applyBotmanControls
+                    - applyApiConstraints
+                    - applySlowPostControls
+                    type: object
+                    x-akamai:
+                      file-path: schemas/security-controls.yaml
+                  fileExtensions:
+                    description: Contains a list of file extensions.
+                    items:
+                      description: The file extensions used in the path match.
+                      type: string
+                    type: array
+                  filePaths:
+                    description: Contains a list of file paths.
+                    items:
+                      description: The path used in the path match.
+                      type: string
+                    type: array
+                  hostnames:
+                    description: Contains a list of hostnames to protect.
+                    items:
+                      description: The hostnames to match the request on.
+                      type: string
+                    type: array
+                  isNegativeFileExtensionMatch:
+                    description: Describes whether the match target applies when a match is found in the specified `fileExtensions` or when a match isn't found.
+                    type: boolean
+                  isNegativePathMatch:
+                    description: Describes whether the match target applies when a match is found in the specified paths or when a match isn't found.
+                    type: boolean
+                  securityPolicy:
+                    additionalProperties: false
+                    description: The security policy associated with the match target.
+                    properties:
+                      policyId:
+                        description: Uniquely identifies the security policy.
+                        type: string
+                    required:
+                    - policyId
+                    type: object
+                  sequence:
+                    description: The position in the sequence of match targets.
+                    type: integer
+                  targetId:
+                    description: Uniquely identifies the match target.
+                    type: integer
+                  type:
+                    description: Describes the type of match target, either `website` or `api`.
+                    enum:
+                    - website
+                    - api
+                    type: string
+                  validations:
+                    additionalProperties: false
+                    description: __Read-only__ Describes warnings, errors, or notices determined by a validation of this resource.
+                    properties:
+                      errors:
+                        description: The list of errors.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      notices:
+                        description: The list of notices.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      warnings:
+                        description: The list of warnings.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                    readOnly: true
+                    required:
+                    - notices
+                    - errors
+                    - warnings
+                    type: object
+                    x-akamai:
+                      file-path: schemas/validations.yaml
+                required:
+                - type
+                - securityPolicy
+                type: object
+                x-akamai:
+                  file-path: schemas/match-target.yaml
+          description: Successfully updated match target.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to match targets in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or match target wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify a match target
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+    delete:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ Deletes the specified match target.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-match-target
+      operationId: delete-match-target
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successfully deleted the match target.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to match targets in this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or match target wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Remove a match target
+      tags:
+      - Match targets
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

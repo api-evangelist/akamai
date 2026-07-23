@@ -1,0 +1,500 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Rate policy actions API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: 'Manage rate policy actions, which are the actions each policy
+
+    takes when conditions are met.'
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: 'Manage rate policy actions, which are the actions each policy
+
+    takes when conditions are met.'
+  name: Rate policy actions
+paths:
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/rate-policies:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-rate-policies.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/rate-policies
+    get:
+      description: __All products__ Returns a list of all rate policies currently in use with the actions each policy takes when conditions are met.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-rate-policies-actions
+      operationId: get-rate-policies-actions
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                ratePolicyActions:
+                - id: 102718
+                  ipv4Action: alert
+                  ipv6Action: none
+                - id: 102719
+                  ipv4Action: deny
+                  ipv6Action: deny
+                - id: 102720
+                  ipv4Action: alert
+                  ipv6Action: deny
+              schema:
+                additionalProperties: false
+                description: Contains details about rate policy actions.
+                properties:
+                  ratePolicyActions:
+                    description: Contains settings for rate policy actions.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        id:
+                          description: __Read-only__ Uniquely identifies each rate policy.
+                          readOnly: true
+                          type: integer
+                        ipv4Action:
+                          description: The IPv4 action to assign to this rate policy. For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. For `WAF` policies, choose `alert`, `deny`, `challenge_{id}`, or `none`. Or use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the rate policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/application-security/reference/post-challenge-action) for `POST`, `GET`, `PUT`, and `DELETE` operation details.
+                          minLength: 1
+                          oneOf:
+                          - enum:
+                            - alert
+                            - deny
+                            - none
+                            - monitor
+                            - tarpit
+                            - delay
+                            - slow
+                            title: Predefined actions
+                          - pattern: ^(cond_action|deny_custom|serve_alt|challenge)_[0-9]+$
+                            title: Custom actions
+                          type: string
+                        ipv6Action:
+                          description: The IPv6 action to assign to this rate policy. For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. For `WAF` policies, choose `alert`, `deny`, `challenge_{id}`, or `none`. Or use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the rate policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/application-security/reference/post-challenge-action) for `POST`, `GET`, `PUT`, and `DELETE` operation details.
+                          minLength: 1
+                          oneOf:
+                          - enum:
+                            - alert
+                            - deny
+                            - none
+                            - monitor
+                            - tarpit
+                            - delay
+                            - slow
+                            title: Predefined actions
+                          - pattern: ^(cond_action|deny_custom|serve_alt|challenge)_[0-9]+$
+                            title: Custom actions
+                          type: string
+                      required:
+                      - id
+                      - ipv4Action
+                      - ipv6Action
+                      type: object
+                    type: array
+                required:
+                - ratePolicyActions
+                type: object
+                x-akamai:
+                  file-path: schemas/rate-policy-actions.yaml
+          description: All the used rate policies for this configuration.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or policy wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List rate policy actions
+      tags:
+      - Rate policy actions
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/rate-policies/{ratePolicyId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    - description: A unique identifier for each rate policy.
+      in: path
+      name: ratePolicyId
+      required: true
+      schema:
+        example: 112231
+        type: integer
+      x-akamai:
+        file-path: parameters/rate-policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-rate-policy.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/rate-policies/{ratePolicyId}
+    put:
+      description: __All products__ Updates the actions in a rate policy.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-rate-policy-action
+      operationId: put-rate-policy-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              ipv4Action: alert
+              ipv6Action: alert
+            schema:
+              additionalProperties: false
+              description: Contains details about a rate policy action.
+              properties:
+                ipv4Action:
+                  description: The IPv4 action to assign to this rate policy. For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. For `WAF` policies, choose `alert`, `deny`, `challenge_{id}`, or `none`. Or use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the rate policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/application-security/reference/post-challenge-action) for `POST`, `GET`, `PUT`, and `DELETE` operation details.
+                  minLength: 1
+                  oneOf:
+                  - enum:
+                    - alert
+                    - deny
+                    - none
+                    - monitor
+                    - tarpit
+                    - delay
+                    - slow
+                    title: Predefined actions
+                  - pattern: ^(cond_action|deny_custom|serve_alt|challenge)_[0-9]+$
+                    title: Custom actions
+                  type: string
+                ipv6Action:
+                  description: 'The IPv6 action to assign to this rate policy. For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. For `WAF` policies, choose `alert`, `deny`, `challenge_{id}`, or `none`. Or use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the rate policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/application-security/reference/post-challenge-action) for `POST`, `GET`, `PUT`, and `DELETE` operation details. '
+                  minLength: 1
+                  oneOf:
+                  - enum:
+                    - alert
+                    - deny
+                    - none
+                    - monitor
+                    - tarpit
+                    - delay
+                    - slow
+                    title: Predefined actions
+                  - pattern: ^(cond_action|deny_custom|serve_alt|challenge)_[0-9]+$
+                    title: Custom actions
+                  type: string
+              required:
+              - ipv4Action
+              - ipv6Action
+              type: object
+              x-akamai:
+                file-path: schemas/rate-policy-action-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                ipv4Action: alert
+                ipv6Action: alert
+              schema:
+                additionalProperties: false
+                description: Contains details about a rate policy action.
+                properties:
+                  ipv4Action:
+                    description: The IPv4 action to assign to this rate policy. For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. For `WAF` policies, choose `alert`, `deny`, `challenge_{id}`, or `none`. Or use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the rate policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/application-security/reference/post-challenge-action) for `POST`, `GET`, `PUT`, and `DELETE` operation details.
+                    minLength: 1
+                    oneOf:
+                    - enum:
+                      - alert
+                      - deny
+                      - none
+                      - monitor
+                      - tarpit
+                      - delay
+                      - slow
+                      title: Predefined actions
+                    - pattern: ^(cond_action|deny_custom|serve_alt|challenge)_[0-9]+$
+                      title: Custom actions
+                    type: string
+                  ipv6Action:
+                    description: 'The IPv6 action to assign to this rate policy. For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. For `WAF` policies, choose `alert`, `deny`, `challenge_{id}`, or `none`. Or use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the rate policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/application-security/reference/post-challenge-action) for `POST`, `GET`, `PUT`, and `DELETE` operation details. '
+                    minLength: 1
+                    oneOf:
+                    - enum:
+                      - alert
+                      - deny
+                      - none
+                      - monitor
+                      - tarpit
+                      - delay
+                      - slow
+                      title: Predefined actions
+                    - pattern: ^(cond_action|deny_custom|serve_alt|challenge)_[0-9]+$
+                      title: Custom actions
+                    type: string
+                required:
+                - ipv4Action
+                - ipv6Action
+                type: object
+                x-akamai:
+                  file-path: schemas/rate-policy-action-put.yaml
+          description: Updated action.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The config doesn''t exist or you don''t have access to it.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify a rate policy action
+      tags:
+      - Rate policy actions
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

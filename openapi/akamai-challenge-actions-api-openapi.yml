@@ -1,0 +1,1557 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Challenge actions API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Challenge actions
+paths:
+  /configs/{configId}/versions/{versionNumber}/response-actions/challenge-actions:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/challenge-actions.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/response-actions/challenge-actions
+    post:
+      description: Create a new challenge action. Use this action type to insert a challenge, like a CAPTCHA, into the user workflow. You can also apply your own branding to the action to match your website. See [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for more details.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-challenge-action
+      operationId: post-challenge-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              actionName: new challenge 4
+              allowFullCpuUtilization: true
+              challengeIntervalInSeconds: 723
+              challengeType: AKAMAI_WEB_CRYPTO
+              cryptoChallengeDurationInSeconds: 100
+              customBrandingUrl: /abcd.html
+            schema:
+              additionalProperties: false
+              properties:
+                actionId:
+                  description: __Read-only__ Identifies the action.
+                  readOnly: true
+                  type: string
+                actionName:
+                  description: The action's unique name.
+                  maxLength: 100
+                  minLength: 1
+                  type: string
+                allowFullCpuUtilization:
+                  description: Set to `true` to let the client use 100 percent CPU to resolve the challenge. If more humans than bots see this challenge, set to `false`.
+                  nullable: true
+                  type: boolean
+                challengeIntervalInSeconds:
+                  description: Time between challenges. Set according to how long users interact with the resource you're protecting. A short period interrupts users more often.
+                  maximum: 7200
+                  minimum: 1
+                  type: integer
+                challengeType:
+                  description: Specify the type of challenge. Choose `GOOGLE_RECAPTCHA` to make users solve a CAPTCHA puzzle. You can also choose `AKAMAI_WEB_CRYPTO` or `AKAMAI_MOBILE_CRYPTO` to make web requesting clients or mobile requesting clients solve a proof-of-work cryptographic challenge.
+                  enum:
+                  - GOOGLE_RECAPTCHA
+                  - AKAMAI_WEB_CRYPTO
+                  - AKAMAI_MOBILE_CRYPTO
+                  type: string
+                cryptoChallengeDurationInSeconds:
+                  description: Specify how many seconds the client machine should spend on the challenge. The longer the duration, the more difficult the challenge.
+                  maximum: 120
+                  nullable: true
+                  type: integer
+                customBrandingLegacyCssUrl:
+                  description: The CSS page containing your custom spinner. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                customBrandingLegacyMessageUrl:
+                  description: The web page containing the static HTML snippet with your custom message. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                customBrandingUrl:
+                  description: The web page containing the static HTML snippet with your custom logo. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                description:
+                  description: An optional description of the action.
+                  maxLength: 250
+                  minLength: 1
+                  nullable: true
+                  type: string
+                googleReCaptchaSecretKey:
+                  description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA secret key. The secret key authorizes communication between your site and the reCAPTCHA server.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                googleReCaptchaSiteKey:
+                  description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA site key. The site key invokes the reCAPTCHA service on your site or application.
+                  minLength: 1
+                  nullable: true
+                  type: string
+              required:
+              - actionName
+              - challengeType
+              - challengeIntervalInSeconds
+              type: object
+              x-akamai:
+                file-path: schemas/challenge-action.yaml
+      responses:
+        '201':
+          content:
+            application/json:
+              example:
+                actionId: challenge_108949
+                actionName: new challenge 4
+                allowFullCpuUtilization: true
+                challengeIntervalInSeconds: 723
+                challengeType: AKAMAI_WEB_CRYPTO
+                cryptoChallengeDurationInSeconds: 100
+                customBrandingUrl: /abcd.html
+              schema:
+                additionalProperties: false
+                properties:
+                  actionId:
+                    description: __Read-only__ Identifies the action.
+                    readOnly: true
+                    type: string
+                  actionName:
+                    description: The action's unique name.
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  allowFullCpuUtilization:
+                    description: Set to `true` to let the client use 100 percent CPU to resolve the challenge. If more humans than bots see this challenge, set to `false`.
+                    nullable: true
+                    type: boolean
+                  challengeIntervalInSeconds:
+                    description: Time between challenges. Set according to how long users interact with the resource you're protecting. A short period interrupts users more often.
+                    maximum: 7200
+                    minimum: 1
+                    type: integer
+                  challengeType:
+                    description: Specify the type of challenge. Choose `GOOGLE_RECAPTCHA` to make users solve a CAPTCHA puzzle. You can also choose `AKAMAI_WEB_CRYPTO` or `AKAMAI_MOBILE_CRYPTO` to make web requesting clients or mobile requesting clients solve a proof-of-work cryptographic challenge.
+                    enum:
+                    - GOOGLE_RECAPTCHA
+                    - AKAMAI_WEB_CRYPTO
+                    - AKAMAI_MOBILE_CRYPTO
+                    type: string
+                  cryptoChallengeDurationInSeconds:
+                    description: Specify how many seconds the client machine should spend on the challenge. The longer the duration, the more difficult the challenge.
+                    maximum: 120
+                    nullable: true
+                    type: integer
+                  customBrandingLegacyCssUrl:
+                    description: The CSS page containing your custom spinner. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  customBrandingLegacyMessageUrl:
+                    description: The web page containing the static HTML snippet with your custom message. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  customBrandingUrl:
+                    description: The web page containing the static HTML snippet with your custom logo. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  description:
+                    description: An optional description of the action.
+                    maxLength: 250
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  googleReCaptchaSecretKey:
+                    description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA secret key. The secret key authorizes communication between your site and the reCAPTCHA server.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  googleReCaptchaSiteKey:
+                    description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA site key. The site key invokes the reCAPTCHA service on your site or application.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                required:
+                - actionName
+                - challengeType
+                - challengeIntervalInSeconds
+                type: object
+                x-akamai:
+                  file-path: schemas/challenge-action.yaml
+          description: Successful response.
+          headers:
+            Location:
+              description: A URL to access the newly created resource.
+              example: /malware-policies/post-malware-policies
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/location.yaml
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: Validation failed
+                errors:
+                - detail: '#/actionName: is missing but it is required'
+                  member: '#/actionName'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                - detail: '#/defaultAction: is missing but it is required'
+                  member: '#/defaultAction'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/5fae03812da3853f
+                status: 400
+                title: Invalid Input Error
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The request body has invalid fields.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: You don't have permission to create this resource.
+      summary: Create a challenge action
+      tags:
+      - Challenge actions
+    get:
+      description: List all of your challenge actions along with their names, challenge types, and other summary information.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-challenge-actions
+      operationId: get-challenge-actions
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                challengeActions:
+                - actionId: challenge_12345
+                  actionName: new challenge 1
+                  challengeIntervalInSeconds: 300
+                  challengeType: AKAMAI_MOBILE_CRYPTO
+                  cryptoChallengeDurationInSeconds: 31
+                - actionId: challenge_67891
+                  actionName: new challenge 2
+                  allowFullCpuUtilization: false
+                  challengeIntervalInSeconds: 300
+                  challengeType: AKAMAI_WEB_CRYPTO
+                  cryptoChallengeDurationInSeconds: 30
+                  customBrandingUrl: /abcd.xyz
+                - actionId: challenge_101212
+                  actionName: new challenge 3
+                  challengeIntervalInSeconds: 723
+                  challengeType: AKAMAI_MOBILE_CRYPTO
+                  cryptoChallengeDurationInSeconds: 100
+                - actionId: challenge_131415
+                  actionName: new challenge 4
+                  allowFullCpuUtilization: true
+                  challengeIntervalInSeconds: 723
+                  challengeType: AKAMAI_WEB_CRYPTO
+                  cryptoChallengeDurationInSeconds: 100
+                  customBrandingUrl: /abcd.html
+                validation:
+                  errors: []
+                  notices: []
+                  warnings: []
+              schema:
+                additionalProperties: false
+                properties:
+                  challengeActions:
+                    description: __Read-only__ The list of challenge actions.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        actionId:
+                          description: __Read-only__ Identifies the action.
+                          readOnly: true
+                          type: string
+                        actionName:
+                          description: The action's unique name.
+                          maxLength: 100
+                          minLength: 1
+                          type: string
+                        allowFullCpuUtilization:
+                          description: Set to `true` to let the client use 100 percent CPU to resolve the challenge. If more humans than bots see this challenge, set to `false`.
+                          nullable: true
+                          type: boolean
+                        challengeIntervalInSeconds:
+                          description: Time between challenges. Set according to how long users interact with the resource you're protecting. A short period interrupts users more often.
+                          maximum: 7200
+                          minimum: 1
+                          type: integer
+                        challengeType:
+                          description: Specify the type of challenge. Choose `GOOGLE_RECAPTCHA` to make users solve a CAPTCHA puzzle. You can also choose `AKAMAI_WEB_CRYPTO` or `AKAMAI_MOBILE_CRYPTO` to make web requesting clients or mobile requesting clients solve a proof-of-work cryptographic challenge.
+                          enum:
+                          - GOOGLE_RECAPTCHA
+                          - AKAMAI_WEB_CRYPTO
+                          - AKAMAI_MOBILE_CRYPTO
+                          type: string
+                        cryptoChallengeDurationInSeconds:
+                          description: Specify how many seconds the client machine should spend on the challenge. The longer the duration, the more difficult the challenge.
+                          maximum: 120
+                          nullable: true
+                          type: integer
+                        customBrandingLegacyCssUrl:
+                          description: The CSS page containing your custom spinner. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                          minLength: 1
+                          nullable: true
+                          type: string
+                        customBrandingLegacyMessageUrl:
+                          description: The web page containing the static HTML snippet with your custom message. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                          minLength: 1
+                          nullable: true
+                          type: string
+                        customBrandingUrl:
+                          description: The web page containing the static HTML snippet with your custom logo. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                          minLength: 1
+                          nullable: true
+                          type: string
+                        description:
+                          description: An optional description of the action.
+                          maxLength: 250
+                          minLength: 1
+                          nullable: true
+                          type: string
+                        googleReCaptchaSecretKey:
+                          description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA secret key. The secret key authorizes communication between your site and the reCAPTCHA server.
+                          minLength: 1
+                          nullable: true
+                          type: string
+                        googleReCaptchaSiteKey:
+                          description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA site key. The site key invokes the reCAPTCHA service on your site or application.
+                          minLength: 1
+                          nullable: true
+                          type: string
+                      required:
+                      - actionName
+                      - challengeType
+                      - challengeIntervalInSeconds
+                      type: object
+                      x-akamai:
+                        file-path: schemas/challenge-action.yaml
+                    readOnly: true
+                    type: array
+                  validation:
+                    additionalProperties: false
+                    description: Contains warnings, errors, or notices determined by validating the match target.
+                    properties:
+                      errors:
+                        description: The list of errors.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      notices:
+                        description: The list of notices.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                      warnings:
+                        description: The list of warnings.
+                        items:
+                          additionalProperties: false
+                          description: Contains feedback on validation.
+                          properties:
+                            detail:
+                              description: The explanation of the error message.
+                              type: string
+                            fieldName:
+                              description: The name of the field causing the validation problem.
+                              type: string
+                            jsonReference:
+                              description: The JSON reference to the field in the resource.
+                              type: string
+                            title:
+                              description: The title for the error.
+                              example: Not Found
+                              type: string
+                            type:
+                              description: The URL for the error type.
+                              example: /appsec/problem-types/INCOMPATIBLE-FIELD
+                              type: string
+                          required:
+                          - title
+                          - type
+                          type: object
+                          x-akamai:
+                            file-path: schemas/validation.yaml
+                        type: array
+                    readOnly: true
+                    required:
+                    - notices
+                    - errors
+                    - warnings
+                    type: object
+                    x-akamai:
+                      file-path: schemas/validations.yaml
+                required:
+                - challengeActions
+                - validation
+                type: object
+                x-akamai:
+                  file-path: schemas/challenge-action-list.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: You don't have permission to access the resource.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The resource doesn't exist.
+      summary: List challenge actions
+      tags:
+      - Challenge actions
+  /configs/{configId}/versions/{versionNumber}/response-actions/challenge-actions/{actionId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: Identifies the action.
+      in: path
+      name: actionId
+      required: true
+      schema:
+        example: challenge_12345
+        type: string
+      x-akamai:
+        file-path: parameters/action-id.yaml
+    x-akamai:
+      file-path: paths/challenge-action.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/response-actions/challenge-actions/{actionId}
+    get:
+      description: View details about the specified challenge action.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-challenge-action
+      operationId: get-challenge-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                actionId: challenge_108949
+                actionName: new challenge 4
+                allowFullCpuUtilization: true
+                challengeIntervalInSeconds: 723
+                challengeType: AKAMAI_WEB_CRYPTO
+                cryptoChallengeDurationInSeconds: 100
+                customBrandingUrl: /abcd.html
+              schema:
+                additionalProperties: false
+                properties:
+                  actionId:
+                    description: __Read-only__ Identifies the action.
+                    readOnly: true
+                    type: string
+                  actionName:
+                    description: The action's unique name.
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  allowFullCpuUtilization:
+                    description: Set to `true` to let the client use 100 percent CPU to resolve the challenge. If more humans than bots see this challenge, set to `false`.
+                    nullable: true
+                    type: boolean
+                  challengeIntervalInSeconds:
+                    description: Time between challenges. Set according to how long users interact with the resource you're protecting. A short period interrupts users more often.
+                    maximum: 7200
+                    minimum: 1
+                    type: integer
+                  challengeType:
+                    description: Specify the type of challenge. Choose `GOOGLE_RECAPTCHA` to make users solve a CAPTCHA puzzle. You can also choose `AKAMAI_WEB_CRYPTO` or `AKAMAI_MOBILE_CRYPTO` to make web requesting clients or mobile requesting clients solve a proof-of-work cryptographic challenge.
+                    enum:
+                    - GOOGLE_RECAPTCHA
+                    - AKAMAI_WEB_CRYPTO
+                    - AKAMAI_MOBILE_CRYPTO
+                    type: string
+                  cryptoChallengeDurationInSeconds:
+                    description: Specify how many seconds the client machine should spend on the challenge. The longer the duration, the more difficult the challenge.
+                    maximum: 120
+                    nullable: true
+                    type: integer
+                  customBrandingLegacyCssUrl:
+                    description: The CSS page containing your custom spinner. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  customBrandingLegacyMessageUrl:
+                    description: The web page containing the static HTML snippet with your custom message. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  customBrandingUrl:
+                    description: The web page containing the static HTML snippet with your custom logo. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  description:
+                    description: An optional description of the action.
+                    maxLength: 250
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  googleReCaptchaSecretKey:
+                    description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA secret key. The secret key authorizes communication between your site and the reCAPTCHA server.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  googleReCaptchaSiteKey:
+                    description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA site key. The site key invokes the reCAPTCHA service on your site or application.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                required:
+                - actionName
+                - challengeType
+                - challengeIntervalInSeconds
+                type: object
+                x-akamai:
+                  file-path: schemas/challenge-action.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: You don't have permission to access the resource.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: Challenge action with id [challenge_108949] does not exist
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/e39338aca5b4962e
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The resource doesn't exist.
+      summary: Get a challenge action
+      tags:
+      - Challenge actions
+    put:
+      description: Edit the specified challenge action, such as the name, type of challenge, or branding.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-challenge-action
+      operationId: put-challenge-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              actionId: challenge_108949
+              actionName: new challenge 4
+              allowFullCpuUtilization: true
+              challengeIntervalInSeconds: 723
+              challengeType: AKAMAI_WEB_CRYPTO
+              cryptoChallengeDurationInSeconds: 100
+              customBrandingUrl: /abcd.html
+            schema:
+              additionalProperties: false
+              properties:
+                actionId:
+                  description: __Read-only__ Identifies the action.
+                  readOnly: true
+                  type: string
+                actionName:
+                  description: The action's unique name.
+                  maxLength: 100
+                  minLength: 1
+                  type: string
+                allowFullCpuUtilization:
+                  description: Set to `true` to let the client use 100 percent CPU to resolve the challenge. If more humans than bots see this challenge, set to `false`.
+                  nullable: true
+                  type: boolean
+                challengeIntervalInSeconds:
+                  description: Time between challenges. Set according to how long users interact with the resource you're protecting. A short period interrupts users more often.
+                  maximum: 7200
+                  minimum: 1
+                  type: integer
+                challengeType:
+                  description: Specify the type of challenge. Choose `GOOGLE_RECAPTCHA` to make users solve a CAPTCHA puzzle. You can also choose `AKAMAI_WEB_CRYPTO` or `AKAMAI_MOBILE_CRYPTO` to make web requesting clients or mobile requesting clients solve a proof-of-work cryptographic challenge.
+                  enum:
+                  - GOOGLE_RECAPTCHA
+                  - AKAMAI_WEB_CRYPTO
+                  - AKAMAI_MOBILE_CRYPTO
+                  type: string
+                cryptoChallengeDurationInSeconds:
+                  description: Specify how many seconds the client machine should spend on the challenge. The longer the duration, the more difficult the challenge.
+                  maximum: 120
+                  nullable: true
+                  type: integer
+                customBrandingLegacyCssUrl:
+                  description: The CSS page containing your custom spinner. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                customBrandingLegacyMessageUrl:
+                  description: The web page containing the static HTML snippet with your custom message. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                customBrandingUrl:
+                  description: The web page containing the static HTML snippet with your custom logo. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                description:
+                  description: An optional description of the action.
+                  maxLength: 250
+                  minLength: 1
+                  nullable: true
+                  type: string
+                googleReCaptchaSecretKey:
+                  description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA secret key. The secret key authorizes communication between your site and the reCAPTCHA server.
+                  minLength: 1
+                  nullable: true
+                  type: string
+                googleReCaptchaSiteKey:
+                  description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA site key. The site key invokes the reCAPTCHA service on your site or application.
+                  minLength: 1
+                  nullable: true
+                  type: string
+              required:
+              - actionName
+              - challengeType
+              - challengeIntervalInSeconds
+              type: object
+              x-akamai:
+                file-path: schemas/challenge-action.yaml
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                actionId: challenge_108949
+                actionName: new challenge 4
+                allowFullCpuUtilization: true
+                challengeIntervalInSeconds: 723
+                challengeType: AKAMAI_WEB_CRYPTO
+                cryptoChallengeDurationInSeconds: 100
+                customBrandingUrl: /abcd.html
+              schema:
+                additionalProperties: false
+                properties:
+                  actionId:
+                    description: __Read-only__ Identifies the action.
+                    readOnly: true
+                    type: string
+                  actionName:
+                    description: The action's unique name.
+                    maxLength: 100
+                    minLength: 1
+                    type: string
+                  allowFullCpuUtilization:
+                    description: Set to `true` to let the client use 100 percent CPU to resolve the challenge. If more humans than bots see this challenge, set to `false`.
+                    nullable: true
+                    type: boolean
+                  challengeIntervalInSeconds:
+                    description: Time between challenges. Set according to how long users interact with the resource you're protecting. A short period interrupts users more often.
+                    maximum: 7200
+                    minimum: 1
+                    type: integer
+                  challengeType:
+                    description: Specify the type of challenge. Choose `GOOGLE_RECAPTCHA` to make users solve a CAPTCHA puzzle. You can also choose `AKAMAI_WEB_CRYPTO` or `AKAMAI_MOBILE_CRYPTO` to make web requesting clients or mobile requesting clients solve a proof-of-work cryptographic challenge.
+                    enum:
+                    - GOOGLE_RECAPTCHA
+                    - AKAMAI_WEB_CRYPTO
+                    - AKAMAI_MOBILE_CRYPTO
+                    type: string
+                  cryptoChallengeDurationInSeconds:
+                    description: Specify how many seconds the client machine should spend on the challenge. The longer the duration, the more difficult the challenge.
+                    maximum: 120
+                    nullable: true
+                    type: integer
+                  customBrandingLegacyCssUrl:
+                    description: The CSS page containing your custom spinner. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  customBrandingLegacyMessageUrl:
+                    description: The web page containing the static HTML snippet with your custom message. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  customBrandingUrl:
+                    description: The web page containing the static HTML snippet with your custom logo. Specify the page's fully qualified URL or root-relative path, like `http://example.com/pages/sample.html` or `/pages/sample.html`.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  description:
+                    description: An optional description of the action.
+                    maxLength: 250
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  googleReCaptchaSecretKey:
+                    description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA secret key. The secret key authorizes communication between your site and the reCAPTCHA server.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                  googleReCaptchaSiteKey:
+                    description: If the `challengeType` is `GOOGLE_RECAPTCHA`, specify the Google reCAPTCHA site key. The site key invokes the reCAPTCHA service on your site or application.
+                    minLength: 1
+                    nullable: true
+                    type: string
+                required:
+                - actionName
+                - challengeType
+                - challengeIntervalInSeconds
+                type: object
+                x-akamai:
+                  file-path: schemas/challenge-action.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: Validation failed
+                errors:
+                - detail: '#/actionName: is missing but it is required'
+                  member: '#/actionName'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                - detail: '#/defaultAction: is missing but it is required'
+                  member: '#/defaultAction'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/5fae03812da3853f
+                status: 400
+                title: Invalid Input Error
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The request body has invalid fields.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: You don't have permission to access the resource.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: Challenge action with id [challenge_108949] does not exist
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/e39338aca5b4962e
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The requested challenge action was not found.
+      summary: Update a challenge action
+      tags:
+      - Challenge actions
+    delete:
+      description: Remove the specified challenge action.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-challenge-action
+      operationId: delete-challenge-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: You don't have permission to access the resource.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: Challenge action with id [challenge_108949] does not exist
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/e39338aca5b4962e
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The requested challenge action was not found.
+      summary: Delete a challenge action
+      tags:
+      - Challenge actions
+  /configs/{configId}/versions/{versionNumber}/response-actions/challenge-actions/{actionId}/google-recaptcha-secret-key:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: Identifies the action.
+      in: path
+      name: actionId
+      required: true
+      schema:
+        example: challenge_12345
+        type: string
+      x-akamai:
+        file-path: parameters/action-id.yaml
+    x-akamai:
+      file-path: paths/challenge-action-google-recaptcha.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/response-actions/challenge-actions/{actionId}/google-recaptcha-secret-key
+    put:
+      description: Specify a different Google reCAPTCHA secret key for a challenge action. The secret key authorizes communication between your site and the reCAPTCHA server.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-google-recaptcha-secret-key
+      operationId: put-google-recaptcha-secret-key
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              googleReCaptchaSecretKey: Z29yZ2xlABClY3JldCBrZXkgd2hpY2ggaXMgaW4gYmFzZTY0IGVuY3J5cHRlZCBmb3JtXYZ=
+            schema:
+              additionalProperties: false
+              properties:
+                googleReCaptchaSecretKey:
+                  description: The Google reCAPTCHA secret key.
+                  minLength: 1
+                  type: string
+              required:
+              - googleReCaptchaSecretKey
+              type: object
+              x-akamai:
+                file-path: schemas/google-recaptcha-secret-key.yaml
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                googleReCaptchaSecretKey: Z29yZ2xlABClY3JldCBrZXkgd2hpY2ggaXMgaW4gYmFzZTY0IGVuY3J5cHRlZCBmb3JtXYZ=
+              schema:
+                additionalProperties: false
+                properties:
+                  googleReCaptchaSecretKey:
+                    description: The Google reCAPTCHA secret key.
+                    minLength: 1
+                    type: string
+                required:
+                - googleReCaptchaSecretKey
+                type: object
+                x-akamai:
+                  file-path: schemas/google-recaptcha-secret-key.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: Validation failed
+                errors:
+                - detail: '#/allowFullCpuUtilization: must be null when challengeType is AKAMAI_MOBILE_CRYPTO'
+                  member: '#/allowFullCpuUtilization'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                - detail: '#/cryptoChallengeDurationInSeconds: must not be null/empty when challengeType is AKAMAI_MOBILE_CRYPTO'
+                  member: '#/cryptoChallengeDurationInSeconds'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                - detail: '#/customBrandingUrl: must be null when challengeType is AKAMAI_MOBILE_CRYPTO'
+                  member: '#/customBrandingUrl'
+                  title: Invalid Input Error
+                  type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/5fae03812da3853f
+                status: 400
+                title: Invalid Input Error
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/INVALID-INPUT-ERROR
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The request body has invalid fields.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: You don't have permission to access the resource.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: Challenge action with id [challenge_108949] does not exist
+                instance: https://problems.luna.akamaiapis.net/appsec-resource/error-instances/e39338aca5b4962e
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: The requested challenge action was not found.
+      summary: Update Google reCAPTCHA secret key
+      tags:
+      - Challenge actions
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

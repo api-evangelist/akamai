@@ -1,0 +1,1469 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Hostnames API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage the hostnames in your configuration settings.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage the hostnames in your configuration settings.
+  name: Hostnames
+paths:
+  /configs/{configId}/versions/{versionNumber}/hostname-coverage/overlapping:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-hostname-coverage-overlapping.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/hostname-coverage/overlapping
+    get:
+      description: __Kona Site Defender__, __App & API Protector with the Advanced Security module__ List the configuration versions that contain a hostname also included in the current configuration version.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-hostname-coverage-overlapping
+      operationId: get-hostname-coverage-overlapping
+      parameters:
+      - description: Get results by hostname.
+        in: query
+        name: hostname
+        schema:
+          example: www.example.com
+          type: string
+        x-akamai:
+          file-path: parameters/search-hostname.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                overLappingList:
+                - configId: 57415
+                  configName: Main Street Corporation  Mexico
+                  configVersion: 37
+                  contractId: C-0N7RAC7
+                  contractName: Main Street Corporation .-F-I5PAH1
+                  versionTags:
+                  - STAGING
+                - configId: 75498
+                  configName: Main Street Corporation  Inc
+                  configVersion: 1
+                  contractId: K-0N7RAK7
+                  contractName: Main Street Corporation .-F-I5PAH1
+                  versionTags:
+                  - STAGING
+                - configId: 42826
+                  configName: Main Street Corporation  Local
+                  configVersion: 3
+                  contractId: K-0N7RAK7
+                  contractName: 'Zoro-Main Street Corporation '
+                  versionTags:
+                  - LAST_CREATED
+              schema:
+                additionalProperties: false
+                description: Describes configurations that use the same hostname, causing overlapping coverage.
+                properties:
+                  overLappingList:
+                    description: The list of configurations that overlap coverage for the hostname.
+                    items:
+                      additionalProperties: false
+                      description: Contains details about an overlapping configuration.
+                      properties:
+                        configId:
+                          description: The configuration ID.
+                          type: integer
+                        configName:
+                          description: The configuration name.
+                          type: string
+                        configVersion:
+                          description: The configuration version.
+                          type: integer
+                        contractId:
+                          description: The contract ID.
+                          type: string
+                        contractName:
+                          description: The contract name.
+                          type: string
+                        versionTags:
+                          description: List of version tags, any combination of `STAGING` and `LAST_CREATED`.
+                          items:
+                            description: The version tag.
+                            enum:
+                            - STAGING
+                            - LAST_CREATED
+                            type: string
+                          type: array
+                      required:
+                      - configId
+                      - configName
+                      - configVersion
+                      type: object
+                      x-akamai:
+                        file-path: schemas/overlap-config.yaml
+                    type: array
+                required:
+                - overLappingList
+                type: object
+                x-akamai:
+                  file-path: schemas/hostname-coverage-overlapping-get-200.yaml
+          description: Successfully retrieved the hostname's overlapping version information.
+        '400':
+          content:
+            application/json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.'
+          x-akamai:
+            file-path: errors/400-client-read-errors.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn''t exist, doesn''t carry application layer controls, or no rule with this ID is available for use in this policy.'
+          x-akamai:
+            file-path: errors/404-client-read-errors.yaml
+        '500':
+          content:
+            application/problem+json:
+              example:
+                detail: Internal Server Error
+                instance: 12ab3c45-789d-01ef-2gh3-ijk4l56m78no
+                status: 500
+                title: Internal Server Error
+                type: internal_server_error
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.'
+          x-akamai:
+            file-path: errors/500-server-errors.yaml
+      summary: List hostname overlaps
+      tags:
+      - Hostnames
+      x-akamai:
+        labels:
+        - Kona Site Defender
+        - App & API Protector with the Advanced Security module
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/selected-hostnames:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-selected-hostnames.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/selected-hostnames
+    get:
+      description: __Web Application Protector__, __App & API Protector__ List the hostnames that the configuration version selects as candidates of protected hostnames, which you can use in match targets.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-selected-hostnames-per-policy
+      operationId: get-selected-hostnames-per-policy
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                hostnameList:
+                - hostname: '*.example.net'
+                - hostname: example.com
+                - hostname: m.example.com
+                mode: append
+              schema:
+                additionalProperties: false
+                description: Contains a list of selected hostnames for the specified configuration version.
+                properties:
+                  hostnameList:
+                    description: The list of hostnames for a configuration version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname on which to match the request.
+                          type: string
+                      required:
+                      - hostname
+                      type: object
+                    type: array
+                  mode:
+                    description: The type of update you want to make to the evaluation hostname list. Use `append` to add additional hostnames, `remove` to delete the hostnames from the list, or `replace` to replace the existing list with the hostnames you pass in your request.
+                    enum:
+                    - append
+                    - remove
+                    - replace
+                    type: string
+                required:
+                - hostnameList
+                type: object
+                x-akamai:
+                  file-path: schemas/hostnames.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List selected hostnames for a security policy
+      tags:
+      - Hostnames
+      x-akamai:
+        labels:
+        - Web Application Protector
+        - App & API Protector
+    put:
+      description: __Web Application Protector__, __App & API Protector__ Update the list of selected hostnames for a configuration. You can add an individual hostname to your selected hostnames list without passing the entire list plus the new hostname in this PUT object. Previously, you needed to pass every hostname in the PUT object or any hostnames not included would be deleted from the list.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-selected-hostnames-per-config
+      operationId: put-selected-hostnames-per-config
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              hostnameList:
+              - hostname: '*.example.net'
+              - hostname: example.com
+              - hostname: m.example.com
+              mode: append
+            schema:
+              additionalProperties: false
+              description: Contains a list of selected hostnames for the specified configuration version.
+              properties:
+                hostnameList:
+                  description: The list of hostnames for a configuration version.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      hostname:
+                        description: The hostname on which to match the request.
+                        type: string
+                    required:
+                    - hostname
+                    type: object
+                  type: array
+                mode:
+                  description: The type of update you want to make to the evaluation hostname list. Use `append` to add additional hostnames, `remove` to delete the hostnames from the list, or `replace` to replace the existing list with the hostnames you pass in your request.
+                  enum:
+                  - append
+                  - remove
+                  - replace
+                  type: string
+              required:
+              - hostnameList
+              type: object
+              x-akamai:
+                file-path: schemas/hostnames.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                hostnameList:
+                - hostname: '*.example.net'
+                - hostname: example.com
+                - hostname: m.example.com
+                mode: append
+              schema:
+                additionalProperties: false
+                description: Contains a list of selected hostnames for the specified configuration version.
+                properties:
+                  hostnameList:
+                    description: The list of hostnames for a configuration version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname on which to match the request.
+                          type: string
+                      required:
+                      - hostname
+                      type: object
+                    type: array
+                  mode:
+                    description: The type of update you want to make to the evaluation hostname list. Use `append` to add additional hostnames, `remove` to delete the hostnames from the list, or `replace` to replace the existing list with the hostnames you pass in your request.
+                    enum:
+                    - append
+                    - remove
+                    - replace
+                    type: string
+                required:
+                - hostnameList
+                type: object
+                x-akamai:
+                  file-path: schemas/hostnames.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Modify selected hostnames for a security policy
+      tags:
+      - Hostnames
+      x-akamai:
+        labels:
+        - Web Application Protector
+        - App & API Protector
+  /configs/{configId}/versions/{versionNumber}/selectable-hostnames:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-selectable-hostnames.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/selectable-hostnames
+    get:
+      description: __All products__ List the hostnames that a given configuration version has the ability to protect. Hostnames may show as error hosts when they aren't currently available. For example, when a contract expires.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-selectable-hostnames
+      operationId: get-selectable-hostnames
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                availableSet:
+                - activeInProduction: true
+                  activeInStaging: true
+                  arlInclusion: true
+                  configIdInProduction: 77653
+                  configNameInProduction: WAF Security File
+                  hostname: example.com
+                - activeInProduction: false
+                  activeInStaging: true
+                  arlInclusion: true
+                  configIdInProduction: 51074
+                  configNameInProduction: A PUBLIC CONFIG
+                  hostname: www.example.com
+                - activeInProduction: true
+                  activeInStaging: true
+                  arlInclusion: true
+                  configIdInProduction: 65473
+                  configNameInProduction: Other Security Configuration
+                  hostname: www.example-123.com
+                configId: 123
+                configVersion: 2
+                errorSet:
+                - hostname: '*.example.net'
+                  reason: property is not active in either production or staging
+                  reasonCode: 400
+                - hostname: test-example.net
+                  reason: You don't have access to this property
+                  reasonCode: 403
+                protectARLInclusionHost: true
+                selectedSet:
+                - activeInProduction: true
+                  activeInStaging: true
+                  arlInclusion: false
+                  configIdInProduction: 11887
+                  configNameInProduction: Rbac Test Config
+                  hostname: m.example.com
+                - activeInProduction: true
+                  activeInStaging: true
+                  arlInclusion: false
+                  configIdInProduction: null
+                  configNameInProduction: null
+                  hostname: m.example-123.com
+              schema:
+                additionalProperties: false
+                description: Contains the list of hostnames available for protection and its details.
+                properties:
+                  availableSet:
+                    description: The available hosts set for the current user.
+                    items:
+                      additionalProperties: false
+                      description: Contains details about the hostname and its status.
+                      properties:
+                        activeInProduction:
+                          description: Whether the hostname is active in the production network.
+                          type: boolean
+                        activeInStaging:
+                          description: Whether the hostname is active in the staging network.
+                          type: boolean
+                        arlInclusion:
+                          description: Whether the hostname is Akamai Resource Locator (ARL) included.
+                          type: boolean
+                        configIdInProduction:
+                          description: Uniquely identifies the configuration that protects the hostname.
+                          nullable: true
+                          type: integer
+                        configNameInProduction:
+                          description: The name of the configuration that protects the hostname.
+                          nullable: true
+                          type: string
+                        hostname:
+                          description: The hostname.
+                          type: string
+                      required:
+                      - hostname
+                      type: object
+                      x-akamai:
+                        file-path: schemas/hostname-object.yaml
+                    type: array
+                  configId:
+                    description: Uniquely identifies the security configuration.
+                    type: integer
+                  configVersion:
+                    description: The security configuration version.
+                    type: integer
+                  errorSet:
+                    description: The requested hosts aren't available in this configuration version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname that triggers an error.
+                          type: string
+                        reason:
+                          description: The reason why the hosts aren't protectable in this configuration version.
+                          type: string
+                        reasonCode:
+                          description: The error status code for the hostname.
+                          type: integer
+                      required:
+                      - reason
+                      - reasonCode
+                      - hostname
+                      type: object
+                    type: array
+                  protectARLInclusionHost:
+                    description: Whether the host defined in the ARL file has legacy WAF enabled in the configuration.
+                    type: boolean
+                  selectedSet:
+                    description: The selected set of hostnames in this configuration version.
+                    items:
+                      additionalProperties: false
+                      description: Contains details about the hostname and its status.
+                      properties:
+                        activeInProduction:
+                          description: Whether the hostname is active in the production network.
+                          type: boolean
+                        activeInStaging:
+                          description: Whether the hostname is active in the staging network.
+                          type: boolean
+                        arlInclusion:
+                          description: Whether the hostname is Akamai Resource Locator (ARL) included.
+                          type: boolean
+                        configIdInProduction:
+                          description: Uniquely identifies the configuration that protects the hostname.
+                          nullable: true
+                          type: integer
+                        configNameInProduction:
+                          description: The name of the configuration that protects the hostname.
+                          nullable: true
+                          type: string
+                        hostname:
+                          description: The hostname.
+                          type: string
+                      required:
+                      - hostname
+                      type: object
+                      x-akamai:
+                        file-path: schemas/hostname-object.yaml
+                    type: array
+                required:
+                - configId
+                - configVersion
+                - protectARLInclusionHost
+                type: object
+                x-akamai:
+                  file-path: schemas/host-info-in-config.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List selectable hostnames
+      tags:
+      - Hostnames
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/selected-hostnames:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-selected-hostnames.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/selected-hostnames
+    get:
+      description: __All products__ List the hostnames that the configuration version selects as candidates of protected hostnames, which you can use in match targets.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-selected-hostnames
+      operationId: get-selected-hostnames
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                hostnameList:
+                - hostname: '*.example.net'
+                - hostname: example.com
+                - hostname: m.example.com
+                mode: append
+              schema:
+                additionalProperties: false
+                description: Contains a list of selected hostnames for the specified configuration version.
+                properties:
+                  hostnameList:
+                    description: The list of hostnames for a configuration version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname on which to match the request.
+                          type: string
+                      required:
+                      - hostname
+                      type: object
+                    type: array
+                  mode:
+                    description: The type of update you want to make to the evaluation hostname list. Use `append` to add additional hostnames, `remove` to delete the hostnames from the list, or `replace` to replace the existing list with the hostnames you pass in your request.
+                    enum:
+                    - append
+                    - remove
+                    - replace
+                    type: string
+                required:
+                - hostnameList
+                type: object
+                x-akamai:
+                  file-path: schemas/hostnames.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List selected hostnames
+      tags:
+      - Hostnames
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Update the list of selected hostnames for a configuration version. Now you can add an individual hostname to your selected hostnames list without passing the entire list plus the new hostname in this PUT object. Previously, you needed to pass every hostname in the PUT object or any hostnames not included would be deleted from the list.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-selected-hostnames
+      operationId: put-selected-hostnames
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              hostnameList:
+              - hostname: '*.example.net'
+              - hostname: example.com
+              - hostname: m.example.com
+              mode: append
+            schema:
+              additionalProperties: false
+              description: Contains a list of selected hostnames for the specified configuration version.
+              properties:
+                hostnameList:
+                  description: The list of hostnames for a configuration version.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      hostname:
+                        description: The hostname on which to match the request.
+                        type: string
+                    required:
+                    - hostname
+                    type: object
+                  type: array
+                mode:
+                  description: The type of update you want to make to the evaluation hostname list. Use `append` to add additional hostnames, `remove` to delete the hostnames from the list, or `replace` to replace the existing list with the hostnames you pass in your request.
+                  enum:
+                  - append
+                  - remove
+                  - replace
+                  type: string
+              required:
+              - hostnameList
+              type: object
+              x-akamai:
+                file-path: schemas/hostnames.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                hostnameList:
+                - hostname: '*.example.net'
+                - hostname: example.com
+                - hostname: m.example.com
+                mode: append
+              schema:
+                additionalProperties: false
+                description: Contains a list of selected hostnames for the specified configuration version.
+                properties:
+                  hostnameList:
+                    description: The list of hostnames for a configuration version.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        hostname:
+                          description: The hostname on which to match the request.
+                          type: string
+                      required:
+                      - hostname
+                      type: object
+                    type: array
+                  mode:
+                    description: The type of update you want to make to the evaluation hostname list. Use `append` to add additional hostnames, `remove` to delete the hostnames from the list, or `replace` to replace the existing list with the hostnames you pass in your request.
+                    enum:
+                    - append
+                    - remove
+                    - replace
+                    type: string
+                required:
+                - hostnameList
+                type: object
+                x-akamai:
+                  file-path: schemas/hostnames.yaml
+          description: Successful response.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Modify selected hostnames
+      tags:
+      - Hostnames
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

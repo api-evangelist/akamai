@@ -1,0 +1,1431 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Personally identifiable information API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Personally identifiable information
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/piis:
+    parameters:
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: __Enum__ The status of an instance of personally identifiable information (PII) discovered on the network. See [PII status](https://techdocs.akamai.com/api-definitions/reference/personally-identifiable-information-status).
+      example: '{{status}}'
+      in: query
+      name: status
+      required: false
+      schema:
+        example: DISCOVERED
+        type: string
+        enum:
+        - DISCOVERED
+        - CONFIRMED
+        - DEFERRED
+      x-akamai:
+        file-path: parameters/piiStatus-query.yaml
+    get:
+      description: Returns all PII objects for an endpoint version. This includes parameters with PII already in your API definition as well as parameters with PII the network discovers on your behalf. You can return this information for both active and inactive endpoint versions. All operations for PII are per endpoint version. Run [Enable PII learning settings for a configuration](https://techdocs.akamai.com/application-security/reference/put-advanced-settings-pii-learning) to use this feature.
+      operationId: get-endpoint-version-piis
+      summary: List parameters with PII for an endpoint version
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-endpoint-version-piis
+      responses:
+        '200':
+          description: Successfully retrieved parameters with PII for this version.
+          content:
+            application/json:
+              example:
+                piis:
+                - contentType: json
+                  dateFirstSeen: '2021-12-16'
+                  id: 1
+                  lastAction: null
+                  location: body
+                  method: GET
+                  newPii: true
+                  parameterId: 1
+                  parameterName: email
+                  parameterPath: /person/email
+                  resourceName: Persons resource
+                  resourcePath: /bookstore/persons
+                  response: false
+                  status: DISCOVERED
+                  type: PERSONAL_EMAIL
+                  userCreated: false
+                  statusCodes: []
+                - contentType: json
+                  dateFirstSeen: '2021-12-10'
+                  id: 2
+                  location: body
+                  method: POST
+                  newPii: false
+                  parameterId: 2
+                  parameterName: email
+                  parameterPath: /person/email
+                  resourceName: Persons resource
+                  resourcePath: /bookstore/persons
+                  response: true
+                  status: CONFIRMED
+                  type: PERSONAL_EMAIL
+                  userCreated: false
+                  statusCodes: []
+                  lastAction:
+                    by: bookstore_admin
+                    date: '2021-12-16'
+              schema:
+                additionalProperties: false
+                description: Contains information about the personally identifiable information (PII) found or defined in an API endpoint version.
+                type: object
+                properties:
+                  piis:
+                    description: Collection of PII objects describing the kind of PII and where it appears in API payloads.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Describes a personally identifiable information (PII) object.
+                      type: object
+                      required:
+                      - type
+                      - parameterId
+                      properties:
+                        contentType:
+                          description: The content type of the payload in which PII exists. Currently `json`, `xml`, and `urlencoded` are supported.
+                          type: string
+                          enum:
+                          - json
+                          - xml
+                          - urlencoded
+                        dateFirstSeen:
+                          description: The date when PII is added to an API endpoint definition either by you or the network.
+                          format: date
+                          type: string
+                        id:
+                          description: The unique identifier for a PII object.
+                          type: integer
+                        lastAction:
+                          additionalProperties: false
+                          description: Describes the last action made by a user.
+                          nullable: true
+                          type: object
+                          properties:
+                            by:
+                              description: The username of the person who made the change.
+                              type: string
+                            date:
+                              description: The ISO 8601 timestamp the action was taken.
+                              format: date
+                              type: string
+                        location:
+                          description: The payload location where the parameter with PII exists, the `path`, `header`, `cookie`, `query`, or `body`.
+                          type: string
+                          enum:
+                          - path
+                          - header
+                          - cookie
+                          - query
+                          - body
+                        method:
+                          description: The HTTP method for the call in which PII exists.
+                          type: string
+                        newPii:
+                          description: Whether the PII is new. When PII is new and found by the network, it has a status of `discovered`.
+                          type: boolean
+                        parameterId:
+                          description: The unique identifier for the parameter that contains PII.
+                          nullable: true
+                          type: integer
+                        parameterName:
+                          description: The name of the parameter that contains PII.
+                          nullable: true
+                          type: string
+                        parameterPath:
+                          description: The parameter path where the PII exists. Each segment of the path is delineated by `/`.
+                          type: string
+                        resourceName:
+                          description: The name of the resource in which PII exists.
+                          nullable: true
+                          type: string
+                        resourcePath:
+                          description: The URL path in which PII exists.
+                          type: string
+                        response:
+                          description: Whether the PII is registered in the response. When `false`, the parameter is in the request.
+                          type: boolean
+                        status:
+                          description: Describes the status of the personally identifiable information (PII) found in a parameter. See [PII status](https://techdocs.akamai.com/api-definitions/reference/personally-identifiable-information-status).
+                          type: string
+                          enum:
+                          - DISCOVERED
+                          - CONFIRMED
+                          - DEFERRED
+                          - DECLINED
+                          x-akamai:
+                            file-path: schemas/piiStatus.yaml
+                        statusCodes:
+                          description: The collection of status codes in which PII exists. For a request the array is empty.
+                          type: array
+                          items:
+                            type: integer
+                        type:
+                          description: The classification of PII. Currently only `PERSONAL_EMAIL` and `CREDIT_OR_DEBIT_CARD_NUMBER` are supported.
+                          type: string
+                          enum:
+                          - PERSONAL_EMAIL
+                          - CREDIT_OR_DEBIT_CARD_NUMBER
+                          x-akamai:
+                            file-path: schemas/piiType.yaml
+                        userCreated:
+                          description: When `true`, PII is defined by a user. When `false`, the PII is discovered by the network.
+                          type: boolean
+                      x-akamai:
+                        file-path: schemas/piiDto.yaml
+                x-akamai:
+                  file-path: schemas/piiListDto.yaml
+        '403':
+          description: You don't have permission to access the API endpoint PII list.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/piis/parameters/{paramId}:
+    parameters:
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for a parameter.
+      example: '{{paramId}}'
+      in: path
+      name: paramId
+      required: true
+      schema:
+        example: 1355468
+        type: integer
+      x-akamai:
+        file-path: parameters/paramId-path.yaml
+    post:
+      description: Adds or updates PII in an API parameter. This is for you to add to or modify in your API definition yourself, rather than the network discovering the PII for you.
+      operationId: post-endpoint-version-piis-parameter
+      summary: Add or update a user-created PII instance
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/post-endpoint-version-piis-parameter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              types:
+              - PERSONAL_EMAIL
+            schema:
+              additionalProperties: false
+              description: The PII type. For now, either `PERSONAL_EMAIL` or `CREDIT_OR_DEBIT_CARD_NUMBER`.
+              type: object
+              properties:
+                types:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - PERSONAL_EMAIL
+                    - CREDIT_OR_DEBIT_CARD_NUMBER
+              x-akamai:
+                file-path: schemas/piiUpdateTypeDto.yaml
+      responses:
+        '204':
+          description: Successfully added or updated PII.
+          content:
+            '*/*': {}
+        '404':
+          description: Can't find the parameter ID.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/piis/settings:
+    parameters:
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    post:
+      description: Update the PII settings in an endpoint version. These settings are for a PII object per endpoint version, so if you have the same object in multiple endpoint versions, you'll need to run the operation for each version. n as well as parameters with PII the network discovers on your behalf. You can return this information for both active and inactive endpoint versions. All operations for PII are per endpoint version. Run [Enable PII learning settings for a configuration](https://techdocs.akamai.com/application-security/reference/put-advanced-settings-pii-learning) to use this feature.
+      operationId: post-endpoint-version-pii-settings
+      summary: Modify PII settings for an endpoint version
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/post-endpoint-version-pii-settings
+      requestBody:
+        content:
+          application/json:
+            example:
+              exclusions: []
+              constraints:
+                requestEnabled: true
+                responseEnabled: true
+                scope: API
+                resources: []
+                types:
+                  allTypes: true
+                  specific: []
+            schema:
+              additionalProperties: false
+              description: Describes the full PII object.
+              type: object
+              required:
+              - constraints
+              - exclusions
+              properties:
+                constraints:
+                  additionalProperties: false
+                  description: Describes how and where to look for personally identifiable information (PII) in your API payloads.
+                  type: object
+                  required:
+                  - scope
+                  - requestEnabled
+                  - responseEnabled
+                  - types
+                  - resources
+                  properties:
+                    requestEnabled:
+                      description: Whether the network looks for PII in the request payloads.
+                      type: boolean
+                    resources:
+                      type: array
+                      items:
+                        additionalProperties: false
+                        type: object
+                        required:
+                        - resourceId
+                        - allMethods
+                        - methods
+                        properties:
+                          allMethods:
+                            type: boolean
+                          methods:
+                            description: The methods you want the network to inspect. Currently, `get`, `put`, `post`, `delete`, `head`, `patch`, and `options` are supported.
+                            type: array
+                            items:
+                              type: string
+                              enum:
+                              - get
+                              - put
+                              - post
+                              - delete
+                              - head
+                              - patch
+                              - options
+                          resourceId:
+                            description: A unique identifier for a resource.
+                            type: integer
+                    responseEnabled:
+                      description: Whether the network looks for PII in the response payloads.
+                      type: boolean
+                    scope:
+                      description: The extent to which the network should inspect your API and enforce constraints you set. Use `NONE` to let all traffic though as if PII discovery is disabled. Use `API` to inspect and enforce constraints for every resource and method in your API. Use `RESOURCES_AND_METHODS` to inspect specific resources and methods within your API.
+                      type: string
+                      enum:
+                      - NONE
+                      - API
+                      - RESOURCES_AND_METHODS
+                    types:
+                      additionalProperties: false
+                      description: Use `allTypes` to identify all PII types in a parameter, or `specific` to identify individual PII types you choose. Currently, only email and credit or debit cards are supported.
+                      type: object
+                      required:
+                      - allTypes
+                      - specific
+                      properties:
+                        allTypes:
+                          type: boolean
+                        specific:
+                          description: The classification of PII. Currently only `PERSONAL_EMAIL` and `CREDIT_OR_DEBIT_CARD_NUMBER` are supported.
+                          type: string
+                          enum:
+                          - PERSONAL_EMAIL
+                          - CREDIT_OR_DEBIT_CARD_NUMBER
+                          x-akamai:
+                            file-path: schemas/piiType.yaml
+                  x-akamai:
+                    file-path: schemas/piiConstraintsDto.yaml
+                exclusions:
+                  description: List of parameters you want to excluded from inspecting and enforcing constraints.
+                  type: array
+                  items:
+                    additionalProperties: false
+                    description: Describes the properties necessary to exclude parameters from PII inspection.
+                    type: object
+                    required:
+                    - parameterId
+                    properties:
+                      exclusionId:
+                        description: A unique identifier for a an exclusion object.
+                        nullable: true
+                        type: integer
+                      parameterId:
+                        description: The unique identifier of the parameter you want to exclude.
+                        type: integer
+                    x-akamai:
+                      file-path: schemas/piiExclusionDto.yaml
+              x-akamai:
+                file-path: schemas/piiSettingsDto.yaml
+      responses:
+        '200':
+          description: Successfully updated the endpoint version.
+          content:
+            application/json:
+              examples:
+                allDisabled:
+                  value:
+                    exclusions: []
+                    constraints:
+                      requestEnabled: false
+                      responseEnabled: false
+                      scope: NONE
+                      resources: []
+                      types:
+                        allTypes: true
+                        specific: []
+                allEnabled:
+                  value:
+                    constraints:
+                      requestEnabled: true
+                      responseEnabled: true
+                      scope: API
+                      resources: []
+                      types:
+                        allTypes: true
+                        specific: []
+                    exclusions:
+                    - exclusionId: 1
+                      parameterId: 11
+                    - exclusionId: 2
+                      parameterId: 21
+                partiallyEnabled:
+                  value:
+                    exclusions: []
+                    constraints:
+                      requestEnabled: true
+                      responseEnabled: false
+                      scope: RESOURCES_AND_METHODS
+                      types:
+                        allTypes: false
+                        specific:
+                        - PERSONAL_EMAIL
+                      resources:
+                      - allMethods: false
+                        resourceId: 1
+                        methods:
+                        - post
+                        - patch
+              schema:
+                additionalProperties: false
+                description: Describes the full PII object.
+                type: object
+                required:
+                - constraints
+                - exclusions
+                properties:
+                  constraints:
+                    additionalProperties: false
+                    description: Describes how and where to look for personally identifiable information (PII) in your API payloads.
+                    type: object
+                    required:
+                    - scope
+                    - requestEnabled
+                    - responseEnabled
+                    - types
+                    - resources
+                    properties:
+                      requestEnabled:
+                        description: Whether the network looks for PII in the request payloads.
+                        type: boolean
+                      resources:
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - resourceId
+                          - allMethods
+                          - methods
+                          properties:
+                            allMethods:
+                              type: boolean
+                            methods:
+                              description: The methods you want the network to inspect. Currently, `get`, `put`, `post`, `delete`, `head`, `patch`, and `options` are supported.
+                              type: array
+                              items:
+                                type: string
+                                enum:
+                                - get
+                                - put
+                                - post
+                                - delete
+                                - head
+                                - patch
+                                - options
+                            resourceId:
+                              description: A unique identifier for a resource.
+                              type: integer
+                      responseEnabled:
+                        description: Whether the network looks for PII in the response payloads.
+                        type: boolean
+                      scope:
+                        description: The extent to which the network should inspect your API and enforce constraints you set. Use `NONE` to let all traffic though as if PII discovery is disabled. Use `API` to inspect and enforce constraints for every resource and method in your API. Use `RESOURCES_AND_METHODS` to inspect specific resources and methods within your API.
+                        type: string
+                        enum:
+                        - NONE
+                        - API
+                        - RESOURCES_AND_METHODS
+                      types:
+                        additionalProperties: false
+                        description: Use `allTypes` to identify all PII types in a parameter, or `specific` to identify individual PII types you choose. Currently, only email and credit or debit cards are supported.
+                        type: object
+                        required:
+                        - allTypes
+                        - specific
+                        properties:
+                          allTypes:
+                            type: boolean
+                          specific:
+                            description: The classification of PII. Currently only `PERSONAL_EMAIL` and `CREDIT_OR_DEBIT_CARD_NUMBER` are supported.
+                            type: string
+                            enum:
+                            - PERSONAL_EMAIL
+                            - CREDIT_OR_DEBIT_CARD_NUMBER
+                            x-akamai:
+                              file-path: schemas/piiType.yaml
+                    x-akamai:
+                      file-path: schemas/piiConstraintsDto.yaml
+                  exclusions:
+                    description: List of parameters you want to excluded from inspecting and enforcing constraints.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Describes the properties necessary to exclude parameters from PII inspection.
+                      type: object
+                      required:
+                      - parameterId
+                      properties:
+                        exclusionId:
+                          description: A unique identifier for a an exclusion object.
+                          nullable: true
+                          type: integer
+                        parameterId:
+                          description: The unique identifier of the parameter you want to exclude.
+                          type: integer
+                      x-akamai:
+                        file-path: schemas/piiExclusionDto.yaml
+                x-akamai:
+                  file-path: schemas/piiSettingsDto.yaml
+        '403':
+          description: You don't have permission to update PII settings.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: Returns the PII settings in an endpoint version, including the inspection scope and constraints, and how you want the network to handle PII.
+      operationId: get-endpoint-version-pii-settings
+      summary: List PII settings for an endpoint version
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-endpoint-version-pii-settings
+      responses:
+        '200':
+          description: Successfully fetched PII settings.
+          content:
+            application/json:
+              examples:
+                allDisabled:
+                  value:
+                    exclusions: []
+                    constraints:
+                      requestEnabled: false
+                      responseEnabled: false
+                      scope: NONE
+                      resources: []
+                      types:
+                        allTypes: true
+                        specific: []
+                allEnabled:
+                  value:
+                    constraints:
+                      requestEnabled: true
+                      responseEnabled: true
+                      scope: API
+                      resources: []
+                      types:
+                        allTypes: true
+                        specific: []
+                    exclusions:
+                    - exclusionId: 1
+                      parameterId: 11
+                    - exclusionId: 2
+                      parameterId: 21
+                partiallyEnabled:
+                  value:
+                    exclusions: []
+                    constraints:
+                      requestEnabled: true
+                      responseEnabled: false
+                      scope: RESOURCES_AND_METHODS
+                      types:
+                        allTypes: false
+                        specific:
+                        - PERSONAL_EMAIL
+                      resources:
+                      - allMethods: false
+                        resourceId: 1
+                        methods:
+                        - post
+                        - patch
+                securityConfig:
+                  value:
+                    constraints:
+                      requestEnabled: true
+                      responseEnabled: true
+                      scope: API
+                      resources: []
+                      types:
+                        allTypes: true
+                        specific: []
+                    securityConfig:
+                      action: ALERT
+                      configId: 1
+                      configVersion: 1
+                      policyId: p1_111
+                      policyName: Bookstore policy
+                    exclusions:
+                    - exclusionId: 1
+                      parameterId: 11
+                    - exclusionId: 2
+                      parameterId: 21
+              schema:
+                additionalProperties: false
+                description: Describes the full PII object.
+                type: object
+                required:
+                - constraints
+                - exclusions
+                properties:
+                  constraints:
+                    additionalProperties: false
+                    description: Describes how and where to look for personally identifiable information (PII) in your API payloads.
+                    type: object
+                    required:
+                    - scope
+                    - requestEnabled
+                    - responseEnabled
+                    - types
+                    - resources
+                    properties:
+                      requestEnabled:
+                        description: Whether the network looks for PII in the request payloads.
+                        type: boolean
+                      resources:
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          required:
+                          - resourceId
+                          - allMethods
+                          - methods
+                          properties:
+                            allMethods:
+                              type: boolean
+                            methods:
+                              description: The methods you want the network to inspect. Currently, `get`, `put`, `post`, `delete`, `head`, `patch`, and `options` are supported.
+                              type: array
+                              items:
+                                type: string
+                                enum:
+                                - get
+                                - put
+                                - post
+                                - delete
+                                - head
+                                - patch
+                                - options
+                            resourceId:
+                              description: A unique identifier for a resource.
+                              type: integer
+                      responseEnabled:
+                        description: Whether the network looks for PII in the response payloads.
+                        type: boolean
+                      scope:
+                        description: The extent to which the network should inspect your API and enforce constraints you set. Use `NONE` to let all traffic though as if PII discovery is disabled. Use `API` to inspect and enforce constraints for every resource and method in your API. Use `RESOURCES_AND_METHODS` to inspect specific resources and methods within your API.
+                        type: string
+                        enum:
+                        - NONE
+                        - API
+                        - RESOURCES_AND_METHODS
+                      types:
+                        additionalProperties: false
+                        description: Use `allTypes` to identify all PII types in a parameter, or `specific` to identify individual PII types you choose. Currently, only email and credit or debit cards are supported.
+                        type: object
+                        required:
+                        - allTypes
+                        - specific
+                        properties:
+                          allTypes:
+                            type: boolean
+                          specific:
+                            description: The classification of PII. Currently only `PERSONAL_EMAIL` and `CREDIT_OR_DEBIT_CARD_NUMBER` are supported.
+                            type: string
+                            enum:
+                            - PERSONAL_EMAIL
+                            - CREDIT_OR_DEBIT_CARD_NUMBER
+                            x-akamai:
+                              file-path: schemas/piiType.yaml
+                    x-akamai:
+                      file-path: schemas/piiConstraintsDto.yaml
+                  exclusions:
+                    description: List of parameters you want to excluded from inspecting and enforcing constraints.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Describes the properties necessary to exclude parameters from PII inspection.
+                      type: object
+                      required:
+                      - parameterId
+                      properties:
+                        exclusionId:
+                          description: A unique identifier for a an exclusion object.
+                          nullable: true
+                          type: integer
+                        parameterId:
+                          description: The unique identifier of the parameter you want to exclude.
+                          type: integer
+                      x-akamai:
+                        file-path: schemas/piiExclusionDto.yaml
+                x-akamai:
+                  file-path: schemas/piiSettingsDto.yaml
+        '403':
+          description: You don't have permission to get API endpoint PII settings.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/piis/status:
+    parameters:
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    post:
+      description: Update the PII status. This operation applies to PII found by the network and not PII you add to your API definition yourself.
+      operationId: post-endpoint-version-pii-status-from-register-form
+      summary: Modify PII status per endpoint version
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/post-endpoint-version-pii-status-from-register-form
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              description: Describes the status of personally identifiable information (PII) found by the network.
+              type: array
+              items:
+                additionalProperties: false
+                type: object
+                properties:
+                  id:
+                    description: The unique identifier for the parameter containing PII.
+                    type: string
+                  status:
+                    description: The status of PII found by the network. Either `DECLINED`, `DEFERRED`, or `CONFIRMED`. See [PII status](https://techdocs.akamai.com/api-definitions/reference/personally-identifiable-information-status) for more information.
+                    type: string
+                    enum:
+                    - DECLINED
+                    - DEFERRED
+                    - CONFIRMED
+              x-akamai:
+                file-path: schemas/piiUpdateStatusPerParamIdDto.yaml
+            example:
+            - id: 1209248
+              status: DECLINED
+      responses:
+        '204':
+          description: Successfully updated the PII status.
+          content:
+            '*/*': {}
+        '403':
+          description: You don't have permission to update PII status.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: The API endpoint is not found.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/piis/{piiId}:
+    parameters:
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the PII object.
+      example: '{{piiId}}'
+      in: path
+      name: piiId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/piiId-path.yaml
+    delete:
+      description: Removes a PII object from your API endpoint definition for the version you specify. If you want to delete the PII object from all the versions where it exists, you'll need to make this request for each version of the endpoint.
+      operationId: delete-endpoint-version-pii
+      summary: Delete PII in an endpoint version
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/delete-endpoint-version-pii
+      responses:
+        '204':
+          description: Successfully deleted the PII object from the endpoint version.
+          content:
+            '*/*': {}
+        '403':
+          description: You don't have permission to delete PII for this endpoint version.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/piis/{piiId}/status:
+    parameters:
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the PII object.
+      example: '{{piiId}}'
+      in: path
+      name: piiId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/piiId-path.yaml
+    patch:
+      description: Update the PII status. This operation applies to PII found by the network and not PII you add to your API definition yourself.
+      operationId: patch-endpoint-version-pii-status
+      summary: Patch PII status per endpoint version
+      tags:
+      - Personally identifiable information
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/patch-endpoint-version-pii-status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              status: CONFIRMED
+            schema:
+              additionalProperties: false
+              description: Describes the status of the personally identifiable information (PII) found in a parameter.
+              type: object
+              required:
+              - status
+              properties:
+                status:
+                  description: Describes the status of the personally identifiable information (PII) found in a parameter. See [PII status](https://techdocs.akamai.com/api-definitions/reference/personally-identifiable-information-status).
+                  example: '{{status}}'
+                  type: string
+                  enum:
+                  - DISCOVERED
+                  - CONFIRMED
+                  - DEFERRED
+                  - DECLINED
+                  x-akamai:
+                    file-path: schemas/piiStatus.yaml
+              x-akamai:
+                file-path: schemas/piiStatusDto.yaml
+      responses:
+        '200':
+          description: Successfully updated the PII status.
+          content:
+            application/json:
+              example:
+                contentType: json
+                dateFirstSeen: '2021-12-16'
+                id: 1
+                lastAction: null
+                location: body
+                method: GET
+                newPii: true
+                parameterId: 1
+                parameterName: email
+                parameterPath: /person/email
+                resourceName: Persons resource
+                resourcePath: /bookstore/persons
+                response: false
+                status: DISCOVERED
+                type: PERSONAL_EMAIL
+                userCreated: false
+                statusCodes: []
+              schema:
+                additionalProperties: false
+                description: Describes a personally identifiable information (PII) object.
+                type: object
+                required:
+                - type
+                - parameterId
+                properties:
+                  contentType:
+                    description: The content type of the payload in which PII exists. Currently `json`, `xml`, and `urlencoded` are supported.
+                    type: string
+                    enum:
+                    - json
+                    - xml
+                    - urlencoded
+                  dateFirstSeen:
+                    description: The date when PII is added to an API endpoint definition either by you or the network.
+                    format: date
+                    type: string
+                  id:
+                    description: The unique identifier for a PII object.
+                    type: integer
+                  lastAction:
+                    additionalProperties: false
+                    description: Describes the last action made by a user.
+                    nullable: true
+                    type: object
+                    properties:
+                      by:
+                        description: The username of the person who made the change.
+                        type: string
+                      date:
+                        description: The ISO 8601 timestamp the action was taken.
+                        format: date
+                        type: string
+                  location:
+                    description: The payload location where the parameter with PII exists, the `path`, `header`, `cookie`, `query`, or `body`.
+                    type: string
+                    enum:
+                    - path
+                    - header
+                    - cookie
+                    - query
+                    - body
+                  method:
+                    description: The HTTP method for the call in which PII exists.
+                    type: string
+                  newPii:
+                    description: Whether the PII is new. When PII is new and found by the network, it has a status of `discovered`.
+                    type: boolean
+                  parameterId:
+                    description: The unique identifier for the parameter that contains PII.
+                    nullable: true
+                    type: integer
+                  parameterName:
+                    description: The name of the parameter that contains PII.
+                    nullable: true
+                    type: string
+                  parameterPath:
+                    description: The parameter path where the PII exists. Each segment of the path is delineated by `/`.
+                    type: string
+                  resourceName:
+                    description: The name of the resource in which PII exists.
+                    nullable: true
+                    type: string
+                  resourcePath:
+                    description: The URL path in which PII exists.
+                    type: string
+                  response:
+                    description: Whether the PII is registered in the response. When `false`, the parameter is in the request.
+                    type: boolean
+                  status:
+                    description: Describes the status of the personally identifiable information (PII) found in a parameter. See [PII status](https://techdocs.akamai.com/api-definitions/reference/personally-identifiable-information-status).
+                    type: string
+                    enum:
+                    - DISCOVERED
+                    - CONFIRMED
+                    - DEFERRED
+                    - DECLINED
+                    x-akamai:
+                      file-path: schemas/piiStatus.yaml
+                  statusCodes:
+                    description: The collection of status codes in which PII exists. For a request the array is empty.
+                    type: array
+                    items:
+                      type: integer
+                  type:
+                    description: The classification of PII. Currently only `PERSONAL_EMAIL` and `CREDIT_OR_DEBIT_CARD_NUMBER` are supported.
+                    type: string
+                    enum:
+                    - PERSONAL_EMAIL
+                    - CREDIT_OR_DEBIT_CARD_NUMBER
+                    x-akamai:
+                      file-path: schemas/piiType.yaml
+                  userCreated:
+                    description: When `true`, PII is defined by a user. When `false`, the PII is discovered by the network.
+                    type: boolean
+                x-akamai:
+                  file-path: schemas/piiDto.yaml
+        '403':
+          description: You don't have permission to update PII status.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

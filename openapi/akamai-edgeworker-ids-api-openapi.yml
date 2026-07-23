@@ -1,0 +1,828 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens EdgeWorker IDs API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: EdgeWorker IDs
+paths:
+  /ids:
+    post:
+      description: Register a new EdgeWorker within a particular group.
+      operationId: post-ids
+      summary: Akamai Create a New EdgeWorker ID
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-ids
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              description: Geo-blocking EdgeWorker
+              groupId: 72297
+              name: Ew_42
+              resourceTierId: 100
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - groupId
+              - name
+              - resourceTierId
+              properties:
+                description:
+                  description: Description of the EdgeWorker.
+                  example: '{{description}}'
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+                groupId:
+                  description: Identifies a group to assign to the EdgeWorker.
+                  example: '{{groupId}}'
+                  minimum: 1
+                  type: integer
+                name:
+                  description: A name you assign to the EdgeWorker.
+                  example: '{{name}}'
+                  minLength: 1
+                  type: string
+                resourceTierId:
+                  description: Unique identifier of a resource tier. The resource tier is write-once data. To change the resource tier you need to [Clone an EdgeWorker ID](https://techdocs.akamai.com/edgeworkers/reference/post-id-clone).
+                  example: '{{resourceTierId}}'
+                  minimum: 1
+                  type: integer
+              x-akamai:
+                file-path: schemas/ids-post.yaml
+      responses:
+        '201':
+          description: This section describes attributes of an EdgeWorker registration.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT7890
+                createdBy: jsmith
+                createdTime: '2020-10-15T14:49:40Z'
+                description: Geo-blocking EdgeWorker
+                edgeWorkerId: 42
+                groupId: 72297
+                lastModifiedBy: jsmith
+                lastModifiedTime: '2020-10-15T15:21:15Z'
+                name: Ew_42
+                resourceTierId: 200
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - name
+                - resourceTierId
+                - groupId
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  description:
+                    description: Description of the EdgeWorker.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  groupId:
+                    description: Group identified by the user who created the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedBy:
+                    description: Username of the person who most recently updated the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  name:
+                    description: Name given by the user who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  resourceTierId:
+                    description: Resource tier selected when the EdgeWorker was created.
+                    minimum: 1
+                    type: integer
+                x-akamai:
+                  file-path: schemas/ids-post-201.yaml
+          headers:
+            Location:
+              description: Use this URL to fetch the new resource.
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/Location.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: View a list of EdgeWorker IDs created for your account. You can choose to specify the group and resource tier in the request to filter the response.
+      operationId: get-ids
+      summary: Akamai List EdgeWorker IDs
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-ids
+      responses:
+        '200':
+          description: Describes a list of EdgeWorker IDs.
+          content:
+            application/json:
+              example:
+                edgeWorkerIds:
+                - accountId: A-CCT9012
+                  createdBy: jsmith
+                  createdTime: '2020-10-15T14:49:40Z'
+                  description: Geo-blocking EdgeWorker
+                  edgeWorkerId: 1
+                  groupId: 72297
+                  lastModifiedBy: jsmith
+                  lastModifiedTime: '2020-10-15T15:21:15Z'
+                  name: Ew_1
+                  resourceTierId: 100
+                - accountId: A-CCT7890
+                  createdBy: jsmith
+                  createdTime: '2020-10-15T16:54:40Z'
+                  edgeWorkerId: 2
+                  groupId: 72297
+                  lastModifiedBy: jsmith
+                  lastModifiedTime: '2020-10-15T16:54:40Z'
+                  name: 'EdgeWorker #2'
+                  resourceTierId: 200
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerIds
+                properties:
+                  edgeWorkerIds:
+                    description: List of EdgeWorker IDs.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - accountId
+                      - createdBy
+                      - createdTime
+                      - edgeWorkerId
+                      - groupId
+                      - lastModifiedBy
+                      - lastModifiedTime
+                      - name
+                      - resourceTierId
+                      properties:
+                        accountId:
+                          description: Identifier for the account under which the EdgeWorker was created.
+                          minLength: 1
+                          type: string
+                        createdBy:
+                          description: Username of the person who created the EdgeWorker.
+                          minLength: 1
+                          type: string
+                        createdTime:
+                          description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                          format: date-time
+                          type: string
+                        description:
+                          description: Description of the EdgeWorker.
+                          maxLength: 128
+                          minLength: 1
+                          type: string
+                        edgeWorkerId:
+                          description: Unique identifier of the EdgeWorker.
+                          minimum: 1
+                          type: integer
+                        groupId:
+                          description: Group identified by the user who created the EdgeWorker.
+                          minimum: 1
+                          type: integer
+                        lastModifiedBy:
+                          description: Username of the person who most recently updated the EdgeWorker.
+                          minLength: 1
+                          type: string
+                        lastModifiedTime:
+                          description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                          format: date-time
+                          type: string
+                        name:
+                          description: Name given by the user who created the EdgeWorker.
+                          minLength: 1
+                          type: string
+                        resourceTierId:
+                          description: Resource tier selected when the EdgeWorker was created.
+                          minimum: 1
+                          type: integer
+                      x-akamai:
+                        file-path: schemas/id-get-200.yaml
+                x-akamai:
+                  file-path: schemas/ids-get-200.yaml
+      parameters:
+      - description: Unique identifier for the Akamai group containing the EdgeWorker.
+        example: '{{groupId}}'
+        in: query
+        name: groupId
+        schema:
+          example: 72297
+          type: integer
+        x-akamai:
+          file-path: parameters/groupId-query.yaml
+      - description: Unique identifier of the resource tier.
+        example: '{{resourceTierId}}'
+        in: query
+        name: resourceTierId
+        schema:
+          example: 100
+          type: integer
+        x-akamai:
+          file-path: parameters/resourceTierId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: View details for a specific EdgeWorker.
+      operationId: get-id
+      summary: Akamai Get an EdgeWorker ID
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-id
+      responses:
+        '200':
+          description: This section describes attributes of an EdgeWorker registration.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT3456
+                createdBy: jsmith
+                createdTime: '2020-10-15T14:49:40Z'
+                description: Geo-blocking EdgeWorker
+                edgeWorkerId: 42
+                groupId: 72297
+                lastModifiedBy: jsmith
+                lastModifiedTime: '2020-10-15T15:21:15Z'
+                name: Ew_1
+                resourceTierId: 200
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - accountId
+                - createdBy
+                - createdTime
+                - edgeWorkerId
+                - groupId
+                - lastModifiedBy
+                - lastModifiedTime
+                - name
+                - resourceTierId
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  description:
+                    description: Description of the EdgeWorker.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  groupId:
+                    description: Group identified by the user who created the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedBy:
+                    description: Username of the person who most recently updated the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  name:
+                    description: Name given by the user who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  resourceTierId:
+                    description: Resource tier selected when the EdgeWorker was created.
+                    minimum: 1
+                    type: integer
+                x-akamai:
+                  file-path: schemas/id-get-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Update the `name` or `groupId` of an existing EdgeWorker.
+      operationId: put-id
+      summary: Akamai Update an EdgeWorker ID
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/put-id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              description: New Description
+              groupId: 123456
+              name: New EdgeWorker Name
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                description:
+                  description: Description of the EdgeWorker.
+                  example: '{{description}}'
+                  maxLength: 128
+                  minLength: 0
+                  type: string
+                groupId:
+                  description: Identifies a group to assign to the EdgeWorker.
+                  example: '{{groupId}}'
+                  minimum: 1
+                  type: integer
+                name:
+                  description: A name you assign to the EdgeWorker.
+                  example: '{{name}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/id-put.yaml
+      responses:
+        '200':
+          description: This section describes attributes of an EdgeWorker registration.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT9012
+                createdBy: jsmith
+                createdTime: '2020-10-15T14:49:40Z'
+                description: New Description
+                edgeWorkerId: 42
+                groupId: 72297
+                lastModifiedBy: jsmith
+                lastModifiedTime: '2020-10-15T15:21:15Z'
+                name: New EdgeWorker Name
+                resourceTierId: 200
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - accountId
+                - createdBy
+                - createdTime
+                - edgeWorkerId
+                - groupId
+                - lastModifiedBy
+                - lastModifiedTime
+                - name
+                - resourceTierId
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  description:
+                    description: Description of the EdgeWorker.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  groupId:
+                    description: Group identified by the user who created the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedBy:
+                    description: Username of the person who most recently updated the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  name:
+                    description: Name given by the user who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  resourceTierId:
+                    description: Resource tier selected when the EdgeWorker was created.
+                    minimum: 1
+                    type: integer
+                x-akamai:
+                  file-path: schemas/id-put-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    delete:
+      description: Delete a specific EdgeWorker ID.
+      operationId: delete-id
+      summary: Akamai Delete an EdgeWorker ID
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/delete-id
+      responses:
+        '204':
+          description: Confirms the deletion of the EdgeWorker ID.
+          content:
+            '*/*': {}
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/clone:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    post:
+      description: Clone an EdgeWorker ID to change the resource tier.
+      operationId: post-id-clone
+      summary: Akamai Clone an EdgeWorker ID
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-id-clone
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              description: Clone of EdgeWorker ID 42
+              groupId: 72297
+              name: Ew_42
+              resourceTierId: 200
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - resourceTierId
+              properties:
+                description:
+                  description: Description of the EdgeWorker.
+                  example: '{{description}}'
+                  maxLength: 128
+                  minLength: 0
+                  type: string
+                groupId:
+                  description: Identifies a group to assign to the EdgeWorker.
+                  example: '{{groupId}}'
+                  minimum: 1
+                  type: integer
+                name:
+                  description: A name you assign to the EdgeWorker.
+                  example: '{{name}}'
+                  minLength: 1
+                  type: string
+                resourceTierId:
+                  description: Unique identifier of a resource tier.
+                  example: '{{resourceTierId}}'
+                  minimum: 1
+                  type: integer
+              x-akamai:
+                file-path: schemas/id-clone.yaml
+      responses:
+        '201':
+          description: This section describes attributes of an EdgeWorker registration.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT5678
+                createdBy: jsmith
+                createdTime: '2020-10-15T14:49:40Z'
+                description: Clone of EdgeWorker ID 42
+                edgeWorkerId: 43
+                groupId: 72297
+                lastModifiedBy: jsmith
+                lastModifiedTime: '2020-10-15T15:21:15Z'
+                name: Ew_42
+                resourceTierId: 100
+                sourceEdgeWorkerId: 42
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - accountId
+                - createdBy
+                - createdTime
+                - edgeWorkerId
+                - groupId
+                - lastModifiedBy
+                - lastModifiedTime
+                - name
+                - resourceTierId
+                - sourceEdgeWorkerId
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  createdBy:
+                    description: Username of the person who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was created.
+                    format: date-time
+                    type: string
+                  description:
+                    description: Description of the EdgeWorker.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  groupId:
+                    description: Group identified by the user who created the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedBy:
+                    description: Username of the person who most recently updated the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the EdgeWorker was most recently modified.
+                    format: date-time
+                    type: string
+                  name:
+                    description: Name given by the user who created the EdgeWorker.
+                    minLength: 1
+                    type: string
+                  resourceTierId:
+                    description: Resource tier selected when the EdgeWorker was created.
+                    minimum: 1
+                    type: integer
+                  sourceEdgeWorkerId:
+                    description: EdgeWorker ID used to create the current EdgeWorker ID. The `sourceEdgeWorkerId` also appears when you view the details of a cloned EdgeWorker ID using the [Get an Edgeworker ID](https://techdocs.akamai.com/edgeworkers/reference/get-id) operation.
+                    minimum: 1
+                    type: integer
+                x-akamai:
+                  file-path: schemas/id-clone-201.yaml
+          headers:
+            Location:
+              description: Use this URL to fetch the new resource.
+              schema:
+                type: string
+              x-akamai:
+                file-path: headers/Location.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/resource-tier:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: View the details of the resource tier assigned to the EdgeWorker ID.
+      operationId: get-id-resource-tier
+      summary: Akamai Get the Resource Tier
+      tags:
+      - EdgeWorker IDs
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-id-resource-tier
+      responses:
+        '200':
+          description: The resource tier defines the limits and billing rate applied to an EdgeWorker.
+          content:
+            application/json:
+              example:
+                resourceTierId: 200
+                resourceTierName: Dynamic Compute
+                edgeWorkerLimits:
+                - limitName: Maximum CPU time during initialization
+                  limitUnit: MILLISECOND
+                  limitValue: 30
+                - limitName: Maximum wall time during initialization
+                  limitUnit: MILLISECOND
+                  limitValue: 100
+                - limitName: Maximum number of HTTP sub-requests allowed in parallel per EdgeWorker ID
+                  limitUnit: COUNT
+                  limitValue: 0
+                - limitName: Maximum memory usage per event handler
+                  limitUnit: BYTE
+                  limitValue: 1310720
+                - limitName: Maximum CPU time per event handler
+                  limitUnit: MILLISECOND
+                  limitValue: 50
+                - limitName: Maximum wall time per event handler
+                  limitUnit: MILLISECOND
+                  limitValue: 4000
+                - limitName: Maximum number of HTTP sub-requests allowed from a parent request
+                  limitUnit: COUNT
+                  limitValue: 1
+                - limitName: Maximum number of HTTP sub-requests allowed in parallel with the parent request
+                  limitUnit: COUNT
+                  limitValue: 1
+                - limitName: Maximum wall time per HTTP sub-request
+                  limitUnit: MILLISECOND
+                  limitValue: 1000
+                - limitName: Maximum response size per HTTP sub-request
+                  limitUnit: BYTE
+                  limitValue: 1048576
+                - limitName: Maximum memory usage for responseProvider
+                  limitUnit: BYTE
+                  limitValue: 2097152
+                - limitName: Maximum CPU time for responseProvider
+                  limitUnit: MILLISECOND
+                  limitValue: 100
+                - limitName: Maximum wall time for responseProvider
+                  limitUnit: MILLISECOND
+                  limitValue: 4000
+                - limitName: Maximum number of HTTP sub-requests allowed for responseProvider
+                  limitUnit: COUNT
+                  limitValue: 50
+                - limitName: Maximum number of HTTP sub-requests allowed in parallel for responseProvider
+                  limitUnit: COUNT
+                  limitValue: 5
+                - limitName: Maximum walltime for HTTP sub-requests during the execution of the responseProvider event handler
+                  limitUnit: MILLISECOND
+                  limitValue: 1000
+                - limitName: Maximum response size for HTTP sub-requests during the responseProvider event handler
+                  limitUnit: BYTE
+                  limitValue: 1048576
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - resourceTierId
+                - resourceTierName
+                - edgeWorkerLimits
+                properties:
+                  edgeWorkerLimits:
+                    description: List of EdgeWorker limits.
+                    minItems: 1
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Provides details for an EdgeWorker limit.
+                      type: object
+                      required:
+                      - limitName
+                      - limitValue
+                      properties:
+                        limitName:
+                          description: Name of the limit.
+                          minLength: 1
+                          readOnly: true
+                          type: string
+                        limitUnit:
+                          description: Unit of the limit, either `BYTE`, `MILLISECOND`, or `COUNT`.
+                          readOnly: true
+                          type: string
+                          enum:
+                          - BYTE
+                          - MILLISECOND
+                          - COUNT
+                        limitValue:
+                          description: Value of the limit.
+                          minimum: 0
+                          readOnly: true
+                          type: integer
+                      x-akamai:
+                        file-path: schemas/ew-limit.yaml
+                  resourceTierId:
+                    description: Unique identifier of the resource tier.
+                    minimum: 1
+                    type: integer
+                  resourceTierName:
+                    description: Name of the resource tier.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/resource-tier-get-200.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

@@ -1,0 +1,767 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens SIEM settings API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage SIEM settings for your security configurations.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage SIEM settings for your security configurations.
+  name: SIEM settings
+paths:
+  /configs/{configId}/versions/{versionNumber}/siem:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-siem.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/siem
+    get:
+      description: __All products__ Return SIEM settings for a specific configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-siem
+      operationId: get-siem
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                enableForAllPolicies: false
+                enableSiem: true
+                enabledBotmanSiemEvents: false
+                exceptions:
+                - actionTypes:
+                  - '*'
+                  protection: botmanagement
+                - actionTypes:
+                  - alert
+                  protection: ipgeo
+                - actionTypes:
+                  - alert
+                  protection: rate
+                firewallPolicyIds:
+                - qik2_38799
+                - '4444_44572'
+                - teet_39295
+                - ds22_48583
+                includeJA4FingerprintToSiem: true
+                siemDefinitionId: 1
+              schema:
+                additionalProperties: false
+                description: Contains Security Information Event Management (SIEM) integration settings.
+                properties:
+                  enableForAllPolicies:
+                    description: Whether you enabled SIEM for all the security policies in the configuration version.
+                    type: boolean
+                  enableSiem:
+                    description: Whether you enabled SIEM in a security configuration version.
+                    type: boolean
+                  enabledBotmanSiemEvents:
+                    deprecated: true
+                    description: __Deprecated__ Whether you enabled SIEM for the Bot Manager events. Use `exceptions` parameter instead to set botman siem events exception.
+                    type: boolean
+                    x-akamai:
+                      status: DEPRECATED
+                  exceptions:
+                    description: Describes all attack type exceptions that will be ignored in SIEM events.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        actionTypes:
+                          description: Describes [actions](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be excluded for a particular attack type. A `*` value means all actions.
+                          items:
+                            enum:
+                            - '*'
+                            - alert
+                            - deny
+                            - all_custom
+                            - abort
+                            - allow
+                            - delay
+                            - ignore
+                            - monitor
+                            - slow
+                            - tarpit
+                            type: string
+                          type: array
+                        protection:
+                          description: '[Attack types](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be added as an exception.'
+                          enum:
+                          - ipgeo
+                          - rate
+                          - urlProtection
+                          - slowpost
+                          - customrules
+                          - waf
+                          - apirequestconstraints
+                          - clientrep
+                          - malwareprotection
+                          - botmanagement
+                          - aprProtection
+                          - aifirewallprotection
+                          type: string
+                      type: object
+                    type: array
+                  firewallPolicyIds:
+                    description: The list of security policy identifiers for which to enable the SIEM integration.
+                    items:
+                      type: string
+                    type: array
+                  includeJA4FingerprintToSiem:
+                    description: Whether you enabled JA4 header forwarding for SIEM.
+                    type: boolean
+                  siemDefinitionId:
+                    description: Uniquely identifies the SIEM settings.
+                    type: integer
+                required:
+                - enableSiem
+                type: object
+                x-akamai:
+                  file-path: schemas/siem-settings.yaml
+          description: Successfully retrieved SIEM settings.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Get SIEM settings
+      tags:
+      - SIEM settings
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Update SIEM settings for a specific configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-siem
+      operationId: put-siem
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              enableForAllPolicies: false
+              enableSiem: true
+              enabledBotmanSiemEvents: false
+              exceptions:
+              - actionTypes:
+                - '*'
+                protection: botmanagement
+              - actionTypes:
+                - alert
+                protection: ipgeo
+              - actionTypes:
+                - alert
+                protection: rate
+              firewallPolicyIds:
+              - qik2_38799
+              - '4444_44572'
+              - teet_39295
+              - ds22_48583
+              includeJA4FingerprintToSiem: true
+              siemDefinitionId: 1
+            schema:
+              additionalProperties: false
+              description: Contains Security Information Event Management (SIEM) integration settings.
+              properties:
+                enableForAllPolicies:
+                  description: Whether you enabled SIEM for all the security policies in the configuration version.
+                  type: boolean
+                enableSiem:
+                  description: Whether you enabled SIEM in a security configuration version.
+                  type: boolean
+                enabledBotmanSiemEvents:
+                  deprecated: true
+                  description: __Deprecated__ Whether you enabled SIEM for the Bot Manager events. Use `exceptions` parameter instead to set botman siem events exception.
+                  type: boolean
+                  x-akamai:
+                    status: DEPRECATED
+                exceptions:
+                  description: Describes all attack type exceptions that will be ignored in SIEM events.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      actionTypes:
+                        description: Describes [actions](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be excluded for a particular attack type. A `*` value means all actions.
+                        items:
+                          enum:
+                          - '*'
+                          - alert
+                          - deny
+                          - all_custom
+                          - abort
+                          - allow
+                          - delay
+                          - ignore
+                          - monitor
+                          - slow
+                          - tarpit
+                          type: string
+                        type: array
+                      protection:
+                        description: '[Attack types](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be added as an exception.'
+                        enum:
+                        - ipgeo
+                        - rate
+                        - urlProtection
+                        - slowpost
+                        - customrules
+                        - waf
+                        - apirequestconstraints
+                        - clientrep
+                        - malwareprotection
+                        - botmanagement
+                        - aprProtection
+                        - aifirewallprotection
+                        type: string
+                    type: object
+                  type: array
+                firewallPolicyIds:
+                  description: The list of security policy identifiers for which to enable the SIEM integration.
+                  items:
+                    type: string
+                  type: array
+                includeJA4FingerprintToSiem:
+                  description: Whether you enabled JA4 header forwarding for SIEM.
+                  type: boolean
+                siemDefinitionId:
+                  description: Uniquely identifies the SIEM settings.
+                  type: integer
+              required:
+              - enableSiem
+              type: object
+              x-akamai:
+                file-path: schemas/siem-settings.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                enableForAllPolicies: false
+                enableSiem: true
+                enabledBotmanSiemEvents: false
+                exceptions:
+                - actionTypes:
+                  - '*'
+                  protection: botmanagement
+                - actionTypes:
+                  - alert
+                  protection: ipgeo
+                - actionTypes:
+                  - alert
+                  protection: rate
+                firewallPolicyIds:
+                - qik2_38799
+                - '4444_44572'
+                - teet_39295
+                - ds22_48583
+                includeJA4FingerprintToSiem: true
+                siemDefinitionId: 1
+              schema:
+                additionalProperties: false
+                description: Contains Security Information Event Management (SIEM) integration settings.
+                properties:
+                  enableForAllPolicies:
+                    description: Whether you enabled SIEM for all the security policies in the configuration version.
+                    type: boolean
+                  enableSiem:
+                    description: Whether you enabled SIEM in a security configuration version.
+                    type: boolean
+                  enabledBotmanSiemEvents:
+                    deprecated: true
+                    description: __Deprecated__ Whether you enabled SIEM for the Bot Manager events. Use `exceptions` parameter instead to set botman siem events exception.
+                    type: boolean
+                    x-akamai:
+                      status: DEPRECATED
+                  exceptions:
+                    description: Describes all attack type exceptions that will be ignored in SIEM events.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        actionTypes:
+                          description: Describes [actions](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be excluded for a particular attack type. A `*` value means all actions.
+                          items:
+                            enum:
+                            - '*'
+                            - alert
+                            - deny
+                            - all_custom
+                            - abort
+                            - allow
+                            - delay
+                            - ignore
+                            - monitor
+                            - slow
+                            - tarpit
+                            type: string
+                          type: array
+                        protection:
+                          description: '[Attack types](https://techdocs.akamai.com/application-security/reference/siem-action-and-attack-type-exceptions) to be added as an exception.'
+                          enum:
+                          - ipgeo
+                          - rate
+                          - urlProtection
+                          - slowpost
+                          - customrules
+                          - waf
+                          - apirequestconstraints
+                          - clientrep
+                          - malwareprotection
+                          - botmanagement
+                          - aprProtection
+                          - aifirewallprotection
+                          type: string
+                      type: object
+                    type: array
+                  firewallPolicyIds:
+                    description: The list of security policy identifiers for which to enable the SIEM integration.
+                    items:
+                      type: string
+                    type: array
+                  includeJA4FingerprintToSiem:
+                    description: Whether you enabled JA4 header forwarding for SIEM.
+                    type: boolean
+                  siemDefinitionId:
+                    description: Uniquely identifies the SIEM settings.
+                    type: integer
+                required:
+                - enableSiem
+                type: object
+                x-akamai:
+                  file-path: schemas/siem-settings.yaml
+          description: Successfully retrieved SIEM settings.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify SIEM settings
+      tags:
+      - SIEM settings
+      x-akamai:
+        labels:
+        - All products
+  /siem-definitions:
+    x-akamai:
+      file-path: paths/siem-definitions.yaml
+      path-info: /siem-definitions
+    get:
+      description: __All products__ Get available SIEM versions.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-siem-definitions
+      operationId: get-siem-definitions
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                siemDefinitions:
+                - id: 1
+                  name: SIEM Version 01
+              schema:
+                additionalProperties: false
+                description: Contains details about SIEM versions.
+                properties:
+                  siemDefinitions:
+                    description: A list of SIEM versions.
+                    items:
+                      additionalProperties: false
+                      description: Contains Security Information Event Management (SIEM) version settings.
+                      properties:
+                        id:
+                          description: Uniquely identifies the SIEM version.
+                          type: integer
+                        name:
+                          description: The name assigned to the SIEM version.
+                          type: string
+                      required:
+                      - id
+                      - name
+                      type: object
+                      x-akamai:
+                        file-path: schemas/siem-version.yaml
+                    type: array
+                type: object
+                x-akamai:
+                  file-path: schemas/siem-versions.yaml
+          description: Successfully retrieved SIEM versions.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Get SIEM versions
+      tags:
+      - SIEM settings
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

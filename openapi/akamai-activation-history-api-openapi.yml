@@ -1,0 +1,235 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Activation history API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Get the activation history for a configuration.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Get the activation history for a configuration.
+  name: Activation history
+paths:
+  /configs/{configId}/activations:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    x-akamai:
+      file-path: paths/config-activations.yaml
+      path-info: /configs/{configId}/activations
+    get:
+      description: __All products__ Lists the activation history for a configuration. The history is an array in descending order of `submitDate`. The most recent submitted activation lists first.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-activation-history
+      operationId: get-activation-history
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                activationHistory:
+                - activatedBy: adevi
+                  activationDate: '2013-10-07T17:41:52+00:00'
+                  activationId: 1234
+                  network: PRODUCTION
+                  notes: Activated with new network lists
+                  status: ACTIVATED
+                  version: 1
+                - activatedBy: jperez
+                  activationDate: '2013-10-07T15:41:52+00:00'
+                  activationId: 1132
+                  network: STAGING
+                  notes: Activated with new network lists
+                  status: ACTIVATION_IN_PROGRESS
+                  version: 2
+                configId: 123
+              schema:
+                additionalProperties: false
+                properties:
+                  activationHistory:
+                    description: Activations of this configuration.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        activatedBy:
+                          description: Username of the person that created this activation request.
+                          type: string
+                        activationDate:
+                          description: Date and time at which this activation request was submitted.
+                          format: date-time
+                          type: string
+                        activationId:
+                          description: Uniquely identifies the activation.
+                          type: integer
+                        network:
+                          description: The target Akamai activation environment, either `STAGING` or `PRODUCTION`.
+                          enum:
+                          - STAGING
+                          - PRODUCTION
+                          type: string
+                        notes:
+                          description: Information on activation.
+                          type: string
+                        status:
+                          description: The status of the activation. Either `ACTIVATED`, `DEACTIVATED`, `ACTIVATION_IN_PROGRESS`, `DEACTIVATION_IN_PROGRESS`, `EXPEDITED`, `ACTIVATION_FAILED`, `EXPEDITE_ACTIVATION_CANCELLED`, or `DEACTIVATION_FAILED`.
+                          enum:
+                          - ACTIVATED
+                          - DEACTIVATED
+                          - ACTIVATION_IN_PROGRESS
+                          - DEACTIVATION_IN_PROGRESS
+                          - EXPEDITED
+                          - ACTIVATION_FAILED
+                          - EXPEDITE_ACTIVATION_CANCELLED
+                          - DEACTIVATION_FAILED
+                          type: string
+                        version:
+                          description: Version number.
+                          type: integer
+                      required:
+                      - activationId
+                      - version
+                      - status
+                      - network
+                      - activatedBy
+                      - activationDate
+                      type: object
+                      x-akamai:
+                        file-path: schemas/activation-history.yaml
+                    type: array
+                  configId:
+                    description: Unique security configuration identifier.
+                    type: integer
+                required:
+                - configId
+                - activationHistory
+                type: object
+                x-akamai:
+                  file-path: schemas/activation-history-list.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to this security configuration.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List activation history
+      tags:
+      - Activation history
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

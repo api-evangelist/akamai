@@ -1,0 +1,157 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens EdgeWorkers API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: EdgeWorkers
+paths:
+  /sandboxes/{sandboxId}/edgeworkers/{edgeWorkerId}:
+    parameters:
+    - description: Unique identifier for the EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 123
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    - description: Unique identifier for the sandbox.
+      example: '{{sandboxId}}'
+      in: path
+      name: sandboxId
+      required: true
+      schema:
+        example: 2956607f-854e-11e8-898a-0242ac110002
+        type: string
+      x-akamai:
+        file-path: parameters/sandboxId-path.yaml
+    get:
+      description: Retrieve the script bundle in `.tgz` form for the specified `sandboxId` and `edgeWorkerId`. To learn more about EdgeWorkers, refer to the [EdgeWorkers API](https://techdocs.akamai.com/edgeworkers/reference/api).
+      operationId: get-sandbox-edgeworker
+      summary: Download EdgeWorker code
+      tags:
+      - EdgeWorkers
+      externalDocs:
+        description: See documentation for this operation in Akamai's Sandbox API
+        url: https://techdocs.akamai.com/sandbox/reference/get-sandbox-edgeworker
+      responses:
+        '200':
+          description: Successful operation.
+          content:
+            '*/*': {}
+      parameters:
+      - description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account.
+        example: '{{access}}'
+        in: query
+        name: access
+        schema:
+          default: USER
+          example: ACCOUNT
+          type: string
+          enum:
+          - USER
+          - ACCOUNT
+        x-akamai:
+          file-path: parameters/accessParam-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Add a script bundle for a given `edgeWorkerId` to the specified `sandboxId`.
+      operationId: put-sandbox-edgeworker
+      summary: Upload EdgeWorker code
+      tags:
+      - EdgeWorkers
+      externalDocs:
+        description: See documentation for this operation in Akamai's Sandbox API
+        url: https://techdocs.akamai.com/sandbox/reference/put-sandbox-edgeworker
+      requestBody:
+        required: true
+        content:
+          application/tar+gzip:
+            example: A binary file bundle.
+            schema:
+              type: string
+      responses:
+        '201':
+          description: The resource was created.
+          content:
+            '*/*': {}
+      parameters:
+      - description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account.
+        example: '{{access}}'
+        in: query
+        name: access
+        schema:
+          default: USER
+          example: ACCOUNT
+          type: string
+          enum:
+          - USER
+          - ACCOUNT
+        x-akamai:
+          file-path: parameters/accessParam-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    delete:
+      description: Delete an EdgeWorker with an `edgeWorkerId` from the specified `sandboxId`.
+      operationId: delete-sandbox-edgeworker
+      summary: Delete EdgeWorker
+      tags:
+      - EdgeWorkers
+      externalDocs:
+        description: See documentation for this operation in Akamai's Sandbox API
+        url: https://techdocs.akamai.com/sandbox/reference/delete-sandbox-edgeworker
+      responses:
+        '204':
+          description: The request was successfully processed.
+          content:
+            '*/*': {}
+      parameters:
+      - description: __Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account.
+        example: '{{access}}'
+        in: query
+        name: access
+        schema:
+          default: USER
+          example: ACCOUNT
+          type: string
+          enum:
+          - USER
+          - ACCOUNT
+        x-akamai:
+          file-path: parameters/accessParam-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

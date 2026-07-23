@@ -1,0 +1,477 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens URL protection policy actions API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage your URL protection settings for your security policies.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage your URL protection settings for your security policies.
+  name: URL protection policy actions
+paths:
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/url-protections:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-url-protections.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/url-protections
+    get:
+      description: __All products__ Returns a list of all URL protection policies currently in use, along with the actions each policy takes when conditions are met.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-url-protection-policies-actions
+      operationId: get-url-protection-policies-actions
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                urlProtectionActions:
+                - loadSheddingAction: alert
+                  maxRpsAction: alert
+                  policyId: 747
+                - loadSheddingAction: none
+                  maxRpsAction: deny
+                  policyId: 745
+                - loadSheddingAction: none
+                  maxRpsAction: deny
+                  policyId: 681
+              schema:
+                additionalProperties: false
+                description: Contains details about the URL protection policy actions.
+                properties:
+                  urlProtectionActions:
+                    description: The actions to take when the specified conditions are met.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        loadSheddingAction:
+                          description: The action to assign to this URL protection policy once the intelligent load shedding threshold is reached. Choose `alert`, `deny`, `none`, `deny_custom_{custom_deny_id}` or `challenge_{id}`. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the URL protection policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for details.
+                          oneOf:
+                          - enum:
+                            - alert
+                            - deny
+                            - none
+                            title: Predefined actions
+                            type: string
+                          - minLength: 1
+                            pattern: ^(deny_custom|challenge)_[0-9]+$
+                            title: Custom actions
+                            type: string
+                        maxRpsAction:
+                          description: The action to assign to this URL protection policy once the rate control threshold (maximum rate per second) is reached. Choose `alert`, `deny`, `none`, `deny_custom_{custom_deny_id}` or `challenge_{id}`. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the URL protection policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for details.
+                          oneOf:
+                          - enum:
+                            - alert
+                            - deny
+                            - none
+                            title: Predefined actions
+                            type: string
+                          - minLength: 1
+                            pattern: ^(deny_custom|challenge)_[0-9]+$
+                            title: Custom actions
+                            type: string
+                        policyId:
+                          description: __Read-only__ Uniquely identifies each URL protection policy.
+                          readOnly: true
+                          type: integer
+                      required:
+                      - policyId
+                      - maxRpsAction
+                      - loadSheddingAction
+                      type: object
+                    type: array
+                required:
+                - urlProtectionActions
+                type: object
+                x-akamai:
+                  file-path: schemas/url-protection-policy-actions.yaml
+          description: In-use URL protection policies for this configuration.
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or policy wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List URL protection policy actions
+      tags:
+      - URL protection policy actions
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/url-protections/{urlProtectionPolicyId}:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    - description: A unique identifier for a security policy.
+      in: path
+      name: policyId
+      required: true
+      schema:
+        example: boBF_19288
+        type: string
+      x-akamai:
+        file-path: parameters/policy-id-path.yaml
+    - description: A unique identifier for each URL protection policy.
+      in: path
+      name: urlProtectionPolicyId
+      required: true
+      schema:
+        example: 112231
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/url-protection-policy-id-path.yaml
+    x-akamai:
+      file-path: paths/policy-url-protection.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/url-protections/{urlProtectionPolicyId}
+    put:
+      description: __All products__ Updates the actions in a URL protection policy.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-url-protection-policy-action
+      operationId: put-url-protection-policy-action
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              action: none
+              loadSheddingAction: alert
+            schema:
+              additionalProperties: false
+              description: Contains details about a URL protection policy action.
+              properties:
+                action:
+                  description: The action to assign to this URL protection policy once the rate control threshold is reached. Choose `alert`, `deny`, `none`, `deny_custom_{custom_deny_id}` or `challenge_{id}`. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the URL protection policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for details.
+                  oneOf:
+                  - enum:
+                    - alert
+                    - deny
+                    - none
+                    title: Predefined actions
+                    type: string
+                  - minLength: 1
+                    pattern: ^(deny_custom|challenge)_[0-9]+$
+                    title: Custom actions
+                    type: string
+                loadSheddingAction:
+                  description: The action to assign to this URL protection policy once the intelligent load shedding threshold is reached. Choose `alert`, `deny`, `none`, `deny_custom_{custom_deny_id}` or `challenge_{id}`. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the URL protection policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for details.
+                  oneOf:
+                  - enum:
+                    - alert
+                    - deny
+                    - none
+                    title: Predefined actions
+                    type: string
+                  - minLength: 1
+                    pattern: ^(deny_custom|challenge)_[0-9]+$
+                    title: Custom actions
+                    type: string
+              required:
+              - action
+              type: object
+              x-akamai:
+                file-path: schemas/url-protection-policy-action-put.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                action: none
+                loadSheddingAction: alert
+              schema:
+                additionalProperties: false
+                description: Contains details about a URL protection policy action.
+                properties:
+                  action:
+                    description: The action to assign to this URL protection policy once the rate control threshold is reached. Choose `alert`, `deny`, `none`, `deny_custom_{custom_deny_id}` or `challenge_{id}`. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the URL protection policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for details.
+                    oneOf:
+                    - enum:
+                      - alert
+                      - deny
+                      - none
+                      title: Predefined actions
+                      type: string
+                    - minLength: 1
+                      pattern: ^(deny_custom|challenge)_[0-9]+$
+                      title: Custom actions
+                      type: string
+                  loadSheddingAction:
+                    description: The action to assign to this URL protection policy once the intelligent load shedding threshold is reached. Choose `alert`, `deny`, `none`, `deny_custom_{custom_deny_id}` or `challenge_{id}`. Run [Modify a custom deny action](https://techdocs.akamai.com/application-security/reference/put-custom-deny) to manage your custom deny actions. If the action is `none`, the URL protection policy is inactive in the policy. Refer to [Challenge actions](https://techdocs.akamai.com/app-api-protector/docs/challenge-actions) for details.
+                    oneOf:
+                    - enum:
+                      - alert
+                      - deny
+                      - none
+                      title: Predefined actions
+                      type: string
+                    - minLength: 1
+                      pattern: ^(deny_custom|challenge)_[0-9]+$
+                      title: Custom actions
+                      type: string
+                required:
+                - action
+                type: object
+                x-akamai:
+                  file-path: schemas/url-protection-policy-action-put.yaml
+          description: Updated action.
+        '400':
+          content:
+            application/problem+json:
+              example:
+                detail: The request could not be understood by the server due to malformed syntax.
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 400
+                title: Bad Request
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.'
+          x-akamai:
+            file-path: errors/400.yaml
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). The configuration wasn''t found.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: Modify a URL protection policy action
+      tags:
+      - URL protection policy actions
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

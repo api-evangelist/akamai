@@ -1,0 +1,1456 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Revisions API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Revisions
+paths:
+  /ids/{edgeWorkerId}/revisions:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: __Beta__ View the list of revisions for an existing EdgeWorker based on ID. You can limit the results to a specific version or activation. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: get-revisions
+      summary: Akamai List Revisions
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-revisions
+      responses:
+        '200':
+          description: This section describes a list of EdgeWorker revisions.
+          content:
+            application/json:
+              example:
+                revisions:
+                - accountId: A-CCT3456
+                  activationId: 1
+                  checksum: db3697e7eb03c8fb4822fd763b840e1b915693ab03e02a583fecfcd55d07857d
+                  createdTime: '2023-08-10T15:32:22Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2023-08-10T15:41:20Z'
+                  network: PRODUCTION
+                  revisionActivationStatus: COMPLETE
+                  revisionId: 1-2
+                  version: '0.7'
+                - accountId: A-CCT5678
+                  activationId: 1
+                  checksum: a89dfc162fa3d81d36f40805620cb21be6de5d869374e71feda1afff17dae2a7
+                  createdTime: '2023-08-10T15:22:45Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2023-08-10T15:27:01Z'
+                  network: PRODUCTION
+                  revisionActivationStatus: COMPLETE
+                  revisionId: 1-1
+                  version: '0.7'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - revisions
+                properties:
+                  revisions:
+                    description: List of EdgeWorker revisions.
+                    minItems: 0
+                    type: array
+                    items:
+                      additionalProperties: false
+                      type: object
+                      required:
+                      - edgeWorkerId
+                      - version
+                      - activationId
+                      - revisionId
+                      - accountId
+                      - checksum
+                      - revisionActivationStatus
+                      - network
+                      - createdTime
+                      - lastModifiedTime
+                      properties:
+                        accountId:
+                          description: Identifier for the account under which the EdgeWorker was created.
+                          minLength: 1
+                          type: string
+                        activationId:
+                          description: Unique identifier of the activation.
+                          minimum: 1
+                          type: integer
+                        createdTime:
+                          description: ISO 8601 timestamp indicating when the revision was created.
+                          format: date-time
+                          type: string
+                        edgeWorkerId:
+                          description: Unique identifier of the EdgeWorker.
+                          minimum: 1
+                          type: integer
+                        lastModifiedTime:
+                          description: ISO 8601 timestamp indicating when the revision was most recently modified.
+                          format: date-time
+                          type: string
+                        network:
+                          description: The network on which the revision is activated, either `PRODUCTION` or `STAGING`.
+                          type: string
+                          enum:
+                          - STAGING
+                          - PRODUCTION
+                        note:
+                          description: Note to explain why you're reactivating the revision.
+                          maxLength: 128
+                          minLength: 1
+                          type: string
+                        revisionActivatedBy:
+                          description: Username of the person who reactivated the revision.
+                          minLength: 1
+                          type: string
+                        revisionActivatedTime:
+                          description: ISO 8601 timestamp indicating when the revision was most recently reactivated.
+                          format: date-time
+                          type: string
+                        revisionActivationStatus:
+                          description: The activation status of the EdgeWorker revision, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, `EXPIRED`, or `INVALID_COMBINED_BUNDLE`.
+                          type: string
+                          enum:
+                          - PRESUBMIT
+                          - PENDING
+                          - IN_PROGRESS
+                          - ABORTED
+                          - ERROR
+                          - COMPLETE
+                          - DELETED_BY_AKAMAI
+                          - EXPIRED
+                          - CANCELLED
+                          - INVALID_COMBINED_BUNDLE
+                        revisionId:
+                          description: Unique identifier of the revision.
+                          minLength: 1
+                          type: string
+                        validation:
+                          additionalProperties: false
+                          description: Validation result included if the revision activation status is `INVALID_COMBINED_BUNDLE`.
+                          type: object
+                          required:
+                          - errors
+                          properties:
+                            errors:
+                              description: List of validation errors.
+                              minItems: 1
+                              type: array
+                              items:
+                                additionalProperties: false
+                                description: Provides details for an EdgeWorker code bundle validation error.
+                                type: object
+                                required:
+                                - type
+                                - message
+                                properties:
+                                  message:
+                                    description: Message containing more details about the validation error.
+                                    minLength: 1
+                                    readOnly: true
+                                    type: string
+                                  type:
+                                    description: The type of the validation error. See [Validation error types](https://techdocs.akamai.com/edgeworkers/reference/validation-types).
+                                    readOnly: true
+                                    type: string
+                                    enum:
+                                    - ACCESS_TOKEN_EXPIRED
+                                    - ACCESS_TOKEN_INVALID
+                                    - ACCESS_TOKEN_MISSING
+                                    - EDGEKV_FILE_MISSING
+                                    - EDGEKV_TOKENS_FILE_MISSING
+                                    - EMPTY_TARBALL
+                                    - INVALID_EDGEKV_IMPORTS
+                                    - INVALID_GZIP_FORMAT
+                                    - INVALID_MANIFEST
+                                    - INVALID_TAR_ARCHIVE
+                                    - MAX_COMPRESSED_SIZE_EXCEEDED
+                                    - MAX_UNCOMPRESSED_SIZE_EXCEEDED
+                                    - MISSING_MANDATORY_FILES
+                                    - STATIC_VALIDATION_FAILED
+                                    - DEPENDENCY_NOT_FOUND
+                                    - MISSING_MEGABUNDLE_JSON_FILE
+                                    - MISSING_DEPENDENCIES_DIRECTORY
+                                    - INVALID_MEGABUNDLE_JSON_FILE
+                                x-akamai:
+                                  file-path: schemas/validation-error.yaml
+                        version:
+                          description: Unique identifier of the version.
+                          minLength: 1
+                          type: string
+                      x-akamai:
+                        file-path: schemas/revision-get-200.yaml
+                x-akamai:
+                  file-path: schemas/revisions-get-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: Unique identifier for a specific EdgeWorker version.
+        example: '{{version}}'
+        in: query
+        name: version
+        schema:
+          example: '5'
+          type: string
+        x-akamai:
+          file-path: parameters/version-query.yaml
+      - description: Filters results to a specific activation.
+        example: '{{activationId}}'
+        in: query
+        name: activationId
+        schema:
+          example: 3
+          minimum: 1
+          type: integer
+        x-akamai:
+          file-path: parameters/activationId-query.yaml
+      - description: __Enum__ The network on which to use this authentication token, either `STAGING` or `PRODUCTION`. If not specified, the token is created for the network where the last property version activation occurred.
+        example: '{{network}}'
+        in: query
+        name: network
+        schema:
+          example: STAGING
+          type: string
+          enum:
+          - STAGING
+          - PRODUCTION
+        x-akamai:
+          file-path: parameters/network-query.yaml
+      - description: When enabled, limits results to show only currently or previously pinned revisions.
+        example: '{{pinnedOnly}}'
+        in: query
+        name: pinnedOnly
+        schema:
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/pinnedOnly-query.yaml
+      - description: When enabled, limits results to show only revisions that are currently pinned.
+        example: '{{currentlyPinned}}'
+        in: query
+        name: currentlyPinned
+        schema:
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/currentlyPinned-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/activations:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    post:
+      description: __Beta__ Reactivate a previously active revision on Akamai's staging or production network. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: post-revision-activations
+      summary: Akamai Activate a Fallback Revision
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-revision-activations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              revisionId: 5-1
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - revisionId
+              properties:
+                note:
+                  description: Note to specify why the revision is being reactivated.
+                  example: '{{note}}'
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+                revisionId:
+                  description: Unique identifier of the revision.
+                  example: '{{revisionId}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/revision-activations-post.yaml
+      responses:
+        '200':
+          description: Provides details for the revision activation.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT7890
+                activationId: 5
+                createdBy: jsmith
+                createdTime: '2023-08-14T17:17:43Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2023-08-14T17:17:43Z'
+                network: STAGING
+                revisionId: 5-1
+                status: PRESUBMIT
+                version: '0.4'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - revisionId
+                - accountId
+                - status
+                - network
+                - createdBy
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdBy:
+                    description: Username of the person who activated the revision.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the revision was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the revision is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to explain why you're reactivating the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  revisionId:
+                    description: Unique identifier of the revision.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The activation status of the EdgeWorker revision, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, `EXPIRED`, or `INVALID_COMBINED_BUNDLE`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                    - INVALID_COMBINED_BUNDLE
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-activations-post-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    get:
+      description: __Beta__ List activations for an existing EdgeWorker revision based on the EdgeWorker's ID. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: get-revision-activations
+      summary: Akamai List Revision Activations
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-revision-activations
+      responses:
+        '200':
+          description: The response lists EdgeWorker revision activations.
+          content:
+            application/json:
+              example:
+                revisionActivations:
+                - accountId: A-CCT9012
+                  activationId: 5
+                  createdTime: '2023-08-18T23:19:01Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2023-08-18T23:22:01Z'
+                  network: STAGING
+                  revisionId: 5-2
+                  status: COMPLETE
+                  version: '0.4'
+                - accountId: A-CCT9012
+                  activationId: 5
+                  createdBy: jsmith
+                  createdTime: '2023-07-14T17:17:43Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2023-07-14T17:20:09Z'
+                  network: STAGING
+                  revisionId: 5-1
+                  status: COMPLETE
+                  version: '0.4'
+                - accountId: A-CCT1234
+                  activationId: 4
+                  createdTime: '2023-07-13T19:06:40Z'
+                  edgeWorkerId: 42
+                  lastModifiedTime: '2023-07-13T19:09:01Z'
+                  network: STAGING
+                  revisionId: 4-1
+                  status: COMPLETE
+                  version: '0.4'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - revisionId
+                - accountId
+                - status
+                - network
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdBy:
+                    description: Username of the person who activated the revision.
+                    minLength: 1
+                    type: string
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the revision was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the revision is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to explain why you're reactivating the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  revisionId:
+                    description: Unique identifier of the revision.
+                    minLength: 1
+                    type: string
+                  status:
+                    description: The activation status of the EdgeWorker revision, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, `EXPIRED`, or `INVALID_COMBINED_BUNDLE`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                    - INVALID_COMBINED_BUNDLE
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-activations-get-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: Unique identifier for a specific EdgeWorker version.
+        example: '{{version}}'
+        in: query
+        name: version
+        schema:
+          example: '5'
+          type: string
+        x-akamai:
+          file-path: parameters/version-query.yaml
+      - description: Filters results to a specific activation.
+        example: '{{activationId}}'
+        in: query
+        name: activationId
+        schema:
+          example: 3
+          minimum: 1
+          type: integer
+        x-akamai:
+          file-path: parameters/activationId-query.yaml
+      - description: __Enum__ The network on which to use this authentication token, either `STAGING` or `PRODUCTION`. If not specified, the token is created for the network where the last property version activation occurred.
+        example: '{{network}}'
+        in: query
+        name: network
+        schema:
+          example: STAGING
+          type: string
+          enum:
+          - STAGING
+          - PRODUCTION
+        x-akamai:
+          file-path: parameters/network-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/{revisionId}:
+    parameters:
+    - description: Unique identifier for an EdgeWorkers revision.
+      example: '{{revisionId}}'
+      in: path
+      name: revisionId
+      required: true
+      schema:
+        example: 3-1
+        type: string
+      x-akamai:
+        file-path: parameters/revisionId-path.yaml
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: __Beta__ View details for a specific revision. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: get-revision
+      summary: Akamai Get a Revision
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-revision
+      responses:
+        '200':
+          description: Provides details for an EdgeWorker revision.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT1234
+                activationId: 1
+                checksum: db3697e7eb03c8fb4822fd763b840e1b915693ab03e02a583fecfcd55d07857d
+                createdTime: '2023-08-10T15:32:22Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2023-08-10T15:41:20Z'
+                network: PRODUCTION
+                revisionActivationStatus: COMPLETE
+                revisionId: 1-2
+                version: '0.7'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - revisionId
+                - accountId
+                - checksum
+                - revisionActivationStatus
+                - network
+                - createdTime
+                - lastModifiedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the revision was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the revision is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to explain why you're reactivating the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  revisionActivatedBy:
+                    description: Username of the person who reactivated the revision.
+                    minLength: 1
+                    type: string
+                  revisionActivatedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently reactivated.
+                    format: date-time
+                    type: string
+                  revisionActivationStatus:
+                    description: The activation status of the EdgeWorker revision, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, `EXPIRED`, or `INVALID_COMBINED_BUNDLE`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                    - INVALID_COMBINED_BUNDLE
+                  revisionId:
+                    description: Unique identifier of the revision.
+                    minLength: 1
+                    type: string
+                  validation:
+                    additionalProperties: false
+                    description: Validation result included if the revision activation status is `INVALID_COMBINED_BUNDLE`.
+                    type: object
+                    required:
+                    - errors
+                    properties:
+                      errors:
+                        description: List of validation errors.
+                        minItems: 1
+                        type: array
+                        items:
+                          additionalProperties: false
+                          description: Provides details for an EdgeWorker code bundle validation error.
+                          type: object
+                          required:
+                          - type
+                          - message
+                          properties:
+                            message:
+                              description: Message containing more details about the validation error.
+                              minLength: 1
+                              readOnly: true
+                              type: string
+                            type:
+                              description: The type of the validation error. See [Validation error types](https://techdocs.akamai.com/edgeworkers/reference/validation-types).
+                              readOnly: true
+                              type: string
+                              enum:
+                              - ACCESS_TOKEN_EXPIRED
+                              - ACCESS_TOKEN_INVALID
+                              - ACCESS_TOKEN_MISSING
+                              - EDGEKV_FILE_MISSING
+                              - EDGEKV_TOKENS_FILE_MISSING
+                              - EMPTY_TARBALL
+                              - INVALID_EDGEKV_IMPORTS
+                              - INVALID_GZIP_FORMAT
+                              - INVALID_MANIFEST
+                              - INVALID_TAR_ARCHIVE
+                              - MAX_COMPRESSED_SIZE_EXCEEDED
+                              - MAX_UNCOMPRESSED_SIZE_EXCEEDED
+                              - MISSING_MANDATORY_FILES
+                              - STATIC_VALIDATION_FAILED
+                              - DEPENDENCY_NOT_FOUND
+                              - MISSING_MEGABUNDLE_JSON_FILE
+                              - MISSING_DEPENDENCIES_DIRECTORY
+                              - INVALID_MEGABUNDLE_JSON_FILE
+                          x-akamai:
+                            file-path: schemas/validation-error.yaml
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-get-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/{revisionId}/bom:
+    parameters:
+    - description: Unique identifier for an EdgeWorkers revision.
+      example: '{{revisionId}}'
+      in: path
+      name: revisionId
+      required: true
+      schema:
+        example: 3-1
+        type: string
+      x-akamai:
+        file-path: parameters/revisionId-path.yaml
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: __Beta__ View the Bill of Materials for a specific revision. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: get-revision-bom
+      summary: Akamai Get a Revision BOM
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-revision-bom
+      responses:
+        '200':
+          description: Provides the Bill of Materials for an EdgeWorker revision.
+          content:
+            application/json:
+              example:
+                edgeWorkerId: 42
+                version: '0.7'
+                dependencies:
+                  redirect-geo-query:
+                    edgeWorkerId: 23
+                    version: '4.0'
+                    dependencies: {}
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - dependencies
+                properties:
+                  activeVersion:
+                    description: Unique identifier for the active version.
+                    minLength: 1
+                    type: string
+                  dependencies:
+                    additionalProperties: false
+                    description: EdgeWorker dependencies.
+                    minProperties: 0
+                    type: object
+                    required:
+                    - edgeWorkerId
+                    - version
+                    - dependencies
+                    properties:
+                      activeVersion:
+                        description: Unique identifier for the active version.
+                        minLength: 1
+                        type: string
+                      dependencies:
+                        description: EdgeWorker dependencies. This is a further nested revision BOM object.
+                        minProperties: 0
+                        type: object
+                      edgeWorkerId:
+                        description: Unique identifier of the EdgeWorker.
+                        minimum: 1
+                        type: integer
+                      pinNote:
+                        description: Note for the pinned revision.
+                        maxLength: 128
+                        minLength: 1
+                        type: string
+                      pinnedRevisionId:
+                        description: Unique identifier of the pinned revision.
+                        minLength: 1
+                        type: string
+                      pinnedTime:
+                        description: ISO 8601 timestamp indicating when the revision was pinned.
+                        format: date-time
+                        type: string
+                      version:
+                        description: Unique identifier of the version.
+                        minLength: 1
+                        type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  pinNote:
+                    description: Note for the pinned revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  pinnedRevisionId:
+                    description: Unique identifier of the pinned revision.
+                    minLength: 1
+                    type: string
+                  pinnedTime:
+                    description: ISO 8601 timestamp indicating when the revision was pinned.
+                    format: date-time
+                    type: string
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-bom-get-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: When enabled, limits results to show only active versions.
+        example: '{{includeActiveVersions}}'
+        in: query
+        name: includeActiveVersions
+        schema:
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/includeActiveVersions-query.yaml
+      - description: When enabled, limits results to show only the pinned revisions when the BOM was created.
+        example: '{{includePinnedRevisions}}'
+        in: query
+        name: includePinnedRevisions
+        schema:
+          example: true
+          type: boolean
+        x-akamai:
+          file-path: parameters/includePinnedRevisions-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/{revisionId}/compare:
+    parameters:
+    - description: Unique identifier for an EdgeWorkers revision.
+      example: '{{revisionId}}'
+      in: path
+      name: revisionId
+      required: true
+      schema:
+        example: 3-1
+        type: string
+      x-akamai:
+        file-path: parameters/revisionId-path.yaml
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    post:
+      description: __Beta__ View dependency differences between two revisions of the same EdgeWorker activation. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: post-revision-compare
+      summary: Akamai Compare Revisions
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-revision-compare
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              revisionId: 5-1
+            schema:
+              additionalProperties: false
+              type: object
+              required:
+              - revisionId
+              properties:
+                revisionId:
+                  description: Unique identifier of the revision.
+                  example: '{{revisionId}}'
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/revision-compare-post.yaml
+      responses:
+        '200':
+          description: Provides dependency differences between two revisions.
+          content:
+            application/json:
+              example:
+                edgeWorkerId: 42
+                version: '0.7'
+                dependencies:
+                  redirect-geo-query:
+                    diff: UPDATED
+                    edgeWorkerId: 23
+                    previousVersion: '3.9'
+                    version: '4.0'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - dependencies
+                properties:
+                  dependencies:
+                    additionalProperties: false
+                    description: EdgeWorker dependencies.
+                    minProperties: 0
+                    type: object
+                    required:
+                    - edgeWorkerId
+                    - version
+                    - dependencies
+                    properties:
+                      dependencies:
+                        description: EdgeWorker dependencies. This is a further nested revision compare object.
+                        minProperties: 0
+                        type: object
+                      edgeWorkerId:
+                        description: Unique identifier of the EdgeWorker.
+                        minimum: 1
+                        type: integer
+                      previousVersion:
+                        description: Unique identifier of the previous version.
+                        minLength: 1
+                        type: string
+                      version:
+                        description: Unique identifier of the version.
+                        minLength: 1
+                        type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  previousVersion:
+                    description: Unique identifier of the previous version.
+                    minLength: 1
+                    type: string
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-compare-post-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/{revisionId}/content:
+    parameters:
+    - description: Unique identifier for an EdgeWorkers revision.
+      example: '{{revisionId}}'
+      in: path
+      name: revisionId
+      required: true
+      schema:
+        example: 3-1
+        type: string
+      x-akamai:
+        file-path: parameters/revisionId-path.yaml
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    get:
+      description: __Beta__ Download the combined code bundle that contains the code and the dependencies that the EdgeWorker executes. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: get-revision-content
+      summary: Akamai Download the Combined Code Bundle
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/get-revision-content
+      responses:
+        '200':
+          description: Downloaded combined code bundle for the revision.
+          content:
+            application/gzip:
+              schema:
+                format: binary
+                type: string
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/{revisionId}/pin:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    - description: Unique identifier for an EdgeWorkers revision.
+      example: '{{revisionId}}'
+      in: path
+      name: revisionId
+      required: true
+      schema:
+        example: 3-1
+        type: string
+      x-akamai:
+        file-path: parameters/revisionId-path.yaml
+    post:
+      description: __Beta__ Disable dynamic activation for an EdgeWorker revision on Akamai's staging or production network. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: post-revision-pin
+      summary: Akamai Pin an Active Revision
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-revision-pin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              pinNote: Disable dynamic activation during moratorium
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                pinNote:
+                  description: Note to specify why the revision is being pinned.
+                  example: '{{pinNote}}'
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/revision-pin-post.yaml
+      responses:
+        '200':
+          description: Provides details for the pinned EdgeWorker revision.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT9012
+                activationId: 5
+                checksum: 70f76db1a24a40fb194f69ef3d5d557abb11cd88f7fce035a1d21385daf50b6d
+                createdTime: '2023-07-13T19:20:01Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2023-08-14T17:20:09Z'
+                network: STAGING
+                pinNote: Disable dynamic reactivation during moratorium
+                pinnedBy: jsmith
+                pinnedTime: '2023-08-14T17:17:43Z'
+                revisionActivatedBy: jsmith
+                revisionActivatedTime: '2023-08-14T17:17:43Z'
+                revisionActivationStatus: COMPLETE
+                revisionId: 5-1
+                version: '0.4'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - revisionId
+                - accountId
+                - checksum
+                - revisionActivationStatus
+                - network
+                - createdTime
+                - lastModifiedTime
+                - pinnedBy
+                - pinnedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the revision was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the revision is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to explain why you're reactivating the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  pinNote:
+                    description: Note to explain why you're pinning the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  pinnedBy:
+                    description: Username of the person who pinned the revision.
+                    minLength: 1
+                    type: string
+                  pinnedTime:
+                    description: ISO 8601 timestamp indicating when the revision was pinned.
+                    format: date-time
+                    type: string
+                  revisionActivatedBy:
+                    description: Username of the person who reactivated the revision.
+                    minLength: 1
+                    type: string
+                  revisionActivatedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently reactivated.
+                    format: date-time
+                    type: string
+                  revisionActivationStatus:
+                    description: The activation status of the EdgeWorker revision, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, `EXPIRED`, or `INVALID_COMBINED_BUNDLE`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                    - INVALID_COMBINED_BUNDLE
+                  revisionId:
+                    description: Unique identifier of the revision.
+                    minLength: 1
+                    type: string
+                  unpinnedBy:
+                    description: Username of the person who unpinned the revision.
+                    minLength: 1
+                    type: string
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-pin-post-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /ids/{edgeWorkerId}/revisions/{revisionId}/unpin:
+    parameters:
+    - description: Unique identifier for an EdgeWorker.
+      example: '{{edgeWorkerId}}'
+      in: path
+      name: edgeWorkerId
+      required: true
+      schema:
+        example: 42
+        minimum: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/edgeWorkerId-path.yaml
+    - description: Unique identifier for an EdgeWorkers revision.
+      example: '{{revisionId}}'
+      in: path
+      name: revisionId
+      required: true
+      schema:
+        example: 3-1
+        type: string
+      x-akamai:
+        file-path: parameters/revisionId-path.yaml
+    post:
+      description: __Beta__ Enable dynamic activation for an EdgeWorker revision on Akamai's staging or production network. To learn more about Flexible composition refer to the [EdgeWorkers guide](https://techdocs.akamai.com/edgeworkers/docs/flexible-composition).
+      operationId: post-revision-unpin
+      summary: Akamai Unpin an Active Revision
+      tags:
+      - Revisions
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeWorkers API
+        url: https://techdocs.akamai.com/edgeworkers/reference/post-revision-unpin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              unpinNote: Unpin to re-enable dynamic activation
+            schema:
+              additionalProperties: false
+              type: object
+              properties:
+                unpinNote:
+                  description: Note to specify why you're unpinning the revision.
+                  example: '{{unpinNote}}'
+                  maxLength: 128
+                  minLength: 1
+                  type: string
+              x-akamai:
+                file-path: schemas/revision-unpin-post.yaml
+      responses:
+        '200':
+          description: Provides details for the unpinned EdgeWorker revision.
+          content:
+            application/json:
+              example:
+                accountId: A-CCT5678
+                activationId: 5
+                checksum: 70f76db1a24a40fb194f69ef3d5d557abb11cd88f7fce035a1d21385daf50b6d
+                createdTime: '2023-07-13T19:20:01Z'
+                edgeWorkerId: 42
+                lastModifiedTime: '2023-08-14T17:20:09Z'
+                network: STAGING
+                pinNote: Disable dynamic activation during moratorium
+                pinnedBy: jsmith
+                pinnedTime: '2023-08-14T17:17:43Z'
+                revisionActivatedBy: jsmith
+                revisionActivatedTime: '2023-08-14T17:17:43Z'
+                revisionActivationStatus: COMPLETE
+                revisionId: 5-1
+                unpinNote: Unpin to re-enable dynamic activation
+                unpinnedBy: jsmith
+                unpinnedTime: '2023-08-14T18:09:13Z'
+                version: '0.4'
+              schema:
+                additionalProperties: false
+                type: object
+                required:
+                - edgeWorkerId
+                - version
+                - activationId
+                - revisionId
+                - accountId
+                - checksum
+                - revisionActivationStatus
+                - network
+                - createdTime
+                - lastModifiedTime
+                - pinnedBy
+                - pinnedTime
+                - unpinnedBy
+                - unpinnedTime
+                properties:
+                  accountId:
+                    description: Identifier for the account under which the EdgeWorker was created.
+                    minLength: 1
+                    type: string
+                  activationId:
+                    description: Unique identifier of the activation.
+                    minimum: 1
+                    type: integer
+                  createdTime:
+                    description: ISO 8601 timestamp indicating when the revision was created.
+                    format: date-time
+                    type: string
+                  edgeWorkerId:
+                    description: Unique identifier of the EdgeWorker.
+                    minimum: 1
+                    type: integer
+                  lastModifiedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently modified.
+                    format: date-time
+                    type: string
+                  network:
+                    description: The network on which the revision is activated, either `PRODUCTION` or `STAGING`.
+                    type: string
+                    enum:
+                    - STAGING
+                    - PRODUCTION
+                  note:
+                    description: Note to explain why you're reactivating the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  pinNote:
+                    description: Note to explain why you're pinning the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  pinnedBy:
+                    description: Username of the person who pinned the revision.
+                    minLength: 1
+                    type: string
+                  pinnedTime:
+                    description: ISO 8601 timestamp indicating when the revision was pinned.
+                    format: date-time
+                    type: string
+                  revisionActivatedBy:
+                    description: Username of the person who reactivated the revision.
+                    minLength: 1
+                    type: string
+                  revisionActivatedTime:
+                    description: ISO 8601 timestamp indicating when the revision was most recently reactivated.
+                    format: date-time
+                    type: string
+                  revisionActivationStatus:
+                    description: The activation status of the EdgeWorker revision, either `PRESUBMIT`, `PENDING`, `IN_PROGRESS`, `COMPLETE`, `CANCELLED`, `ABORTED`, `ERROR`, `DELETED_BY_AKAMAI`, `EXPIRED`, or `INVALID_COMBINED_BUNDLE`.
+                    type: string
+                    enum:
+                    - PRESUBMIT
+                    - PENDING
+                    - IN_PROGRESS
+                    - ABORTED
+                    - ERROR
+                    - COMPLETE
+                    - DELETED_BY_AKAMAI
+                    - EXPIRED
+                    - CANCELLED
+                    - INVALID_COMBINED_BUNDLE
+                  revisionId:
+                    description: Unique identifier of the revision.
+                    minLength: 1
+                    type: string
+                  unpinNote:
+                    description: Note to explain why you're unpinning the revision.
+                    maxLength: 128
+                    minLength: 1
+                    type: string
+                  unpinnedBy:
+                    description: Username of the person who unpinned the revision.
+                    minLength: 1
+                    type: string
+                  unpinnedTime:
+                    description: ISO 8601 timestamp indicating when the revision was unpinned.
+                    format: date-time
+                    type: string
+                  version:
+                    description: Unique identifier of the version.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/revision-unpin-post-200.yaml
+      x-akamai:
+        status: BETA
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

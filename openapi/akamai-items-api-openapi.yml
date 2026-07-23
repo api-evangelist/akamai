@@ -1,0 +1,857 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Items API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Items
+paths:
+  /networks/{network}/namespaces/{namespaceId}/groups/{groupId}:
+    parameters:
+    - description: Unique identifier for each group within a namespace.
+      example: '{{groupId}}'
+      in: path
+      name: groupId
+      required: true
+      schema:
+        example: countries
+        type: string
+      x-akamai:
+        file-path: parameters/groupId-path.yaml
+    - description: Unique identifier for each namespace.
+      example: '{{namespaceId}}'
+      in: path
+      name: namespaceId
+      required: true
+      schema:
+        example: marketing
+        type: string
+      x-akamai:
+        file-path: parameters/namespaceId-path.yaml
+    - description: __Enum__ Network environment to execute the API request on.
+      example: '{{network}}'
+      in: path
+      name: network
+      required: true
+      schema:
+        example: staging
+        type: string
+        enum:
+        - production
+        - staging
+      x-akamai:
+        file-path: parameters/network-path.yaml
+    get:
+      description: View the details of an EdgeKV item (key-value pair) within a group. You need to specify the `namespace` and `group` the item belongs to. This operation returns up to 100 items by default or the number of items specified in the `maxItems`. If there are more than the default or requested items in the specified group, the operation returns a random set of the default or requested items. It can take ten seconds or longer to read an item that has been written to EdgeKV. The API may respond with a 404 error during that period. This is normal behavior for EdgeKV, which is an eventually consistent database.
+      operationId: get-group-items
+      summary: Akamai List Items Within a Group
+      tags:
+      - Items
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/get-group-items
+      responses:
+        '200':
+          description: Returns the list of items in the specified group.
+          content:
+            application/json:
+              example:
+              - US
+              - DE
+              schema:
+                description: A list of item identifiers (keys).
+                minItems: 1
+                type: array
+                items:
+                  description: An identifier for an item, also called the key.
+                  type: string
+                x-akamai:
+                  file-path: schemas/items-200.yaml
+        '400':
+          description: Invalid namespace name or group name specified.
+          content:
+            application/problem+json:
+              example:
+                detail: Group must only use a string that matches A-Z a-z 0-9 _ or -..
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/fcd285bd-aa69-493f-a3b7-4b9d5bbdae8b
+                status: 400
+                title: Bad Request
+                type: /edgekv/error-types/edgekv-bad-request
+                additionalDetail:
+                  requestId: c5c461e093e7083c
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Namespace or group does not exist.
+          content:
+            application/problem+json:
+              example:
+                detail: The requested group is empty or not found.
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/fcd285bd-aa69-493f-a3b7-4b9d5bbdae8b
+                status: 404
+                title: Not Found
+                type: /edgekv/error-types/edgekv-not-found
+                additionalDetail:
+                  requestId: c5c461e093e7083c
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: Internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: If specified, maximum number of items to return per request, up to the system [limits](https://techdocs.akamai.com/edgekv/docs/limits).
+        example: '{{maxItems}}'
+        in: query
+        name: maxItems
+        schema:
+          example: 10
+          type: integer
+        x-akamai:
+          file-path: parameters/maxItems-query.yaml
+      - description: Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation.
+        example: '{{sandboxId}}'
+        in: query
+        name: sandboxId
+        schema:
+          example: 4d91057d-xxxx-xxxx-xxxx-3a4472699df4
+          type: string
+        x-akamai:
+          file-path: parameters/sandboxId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /networks/{network}/namespaces/{namespaceId}/groups/{groupId}/items/{itemId}:
+    parameters:
+    - description: Unique identifier for each item. The key of a key-value pair.
+      example: '{{itemId}}'
+      in: path
+      name: itemId
+      required: true
+      schema:
+        example: DE
+        type: string
+      x-akamai:
+        file-path: parameters/itemId-path.yaml
+    - description: Unique identifier for each group within a namespace.
+      example: '{{groupId}}'
+      in: path
+      name: groupId
+      required: true
+      schema:
+        example: countries
+        type: string
+      x-akamai:
+        file-path: parameters/groupId-path.yaml
+    - description: Unique identifier for each namespace.
+      example: '{{namespaceId}}'
+      in: path
+      name: namespaceId
+      required: true
+      schema:
+        example: marketing
+        type: string
+      x-akamai:
+        file-path: parameters/namespaceId-path.yaml
+    - description: __Enum__ Network environment to execute the API request on.
+      example: '{{network}}'
+      in: path
+      name: network
+      required: true
+      schema:
+        example: staging
+        type: string
+        enum:
+        - production
+        - staging
+      x-akamai:
+        file-path: parameters/network-path.yaml
+    get:
+      description: Read an EdgeKV item. You need to specify the `namespace` and `group` the item belongs to. It can take ten seconds or longer to read an item that has been recently written to EdgeKV. The API may return a 404 error during that period. This is normal behavior for EdgeKV, which is an eventually consistent database.
+      operationId: get-item
+      summary: Akamai Read an Item
+      tags:
+      - Items
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/get-item
+      responses:
+        '200':
+          description: Returns the value for the item ID (key).
+          content:
+            application/json:
+              example:
+                currency: €
+                flag: /germany.png
+                name: Germany
+        '400':
+          description: Invalid namespace, group, or item.
+          content:
+            application/problem+json:
+              example:
+                detail: Key must only use a string that matches A-Z a-z 0-9 _ or -..
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/66344166-567c-4158-95b2-07d6127b8b75
+                status: 400
+                title: Bad Request
+                type: /edgekv/error-types/edgekv-bad-request
+                additionalDetail:
+                  requestId: a4c461e09bf602be
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '404':
+          description: Namespace, group, or item doesn't exist.
+          content:
+            application/problem+json:
+              example:
+                detail: Item 'item1' or group 'group1' was not found in the database.
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/d914f64f-020e-465c-ae70-e456fec8870a
+                status: 404
+                title: Not Found
+                type: /edgekv/error-types/edgekv-not-found
+                additionalDetail:
+                  requestId: ac1961e09b0e00a5
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '429':
+          description: Request rate is too high.
+          content:
+            application/problem+json:
+              example:
+                detail: 'Your request has been denied: 364 hits per second too high. limit set at 73. Please try again soon.'
+                errorCode: EKV_9100
+                instance: /edgekv/error-instances/80f9503f-633e-4412-9393-62f329868911
+                status: 429
+                title: Too Many Requests
+                type: /edgekv/error-types/edgekv-too-many-requests
+                additionalDetail:
+                  requestId: 16fc97b7cb0ee4dd
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: An internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation.
+        example: '{{sandboxId}}'
+        in: query
+        name: sandboxId
+        schema:
+          example: 4d91057d-xxxx-xxxx-xxxx-3a4472699df4
+          type: string
+        x-akamai:
+          file-path: parameters/sandboxId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Create or update an EdgeKV item (name-value). You need to specify the `namespace` and `group` the item belongs to. The target `namespace` must already exist before writing, while the `group` is automatically created for you if it doesn't exist yet.
+      operationId: put-item
+      summary: Akamai Write an Item
+      tags:
+      - Items
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/put-item
+      requestBody:
+        content:
+          application/json:
+            example:
+              currency: €
+              flag: /belgium.png
+              name: Belgium
+            schema:
+              type: object
+          text/plain:
+            example: English
+            schema:
+              type: string
+      responses:
+        '200':
+          description: Confirmation of successful update.
+          content:
+            text/plain:
+              example: Item was upserted in database, namespace default, group countries, and key US.
+              schema:
+                type: string
+        '400':
+          description: Invalid namespace, group or item specified.
+          content:
+            application/problem+json:
+              example:
+                detail: Key must only use a string that matches A-Z a-z 0-9 _ or -..
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/66344166-567c-4158-95b2-07d6127b8b75
+                status: 400
+                title: Bad Request
+                type: /edgekv/error-types/edgekv-bad-request
+                additionalDetail:
+                  requestId: a4c461e09bf602be
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '413':
+          description: Payload too large. The value has exceeded the allowed limits.
+          content:
+            application/problem+json:
+              example:
+                detail: Value cannot exceed 262144 characters.
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/2d272e67-0c0c-4d43-9860-a8fc999e9256
+                status: 413
+                title: Payload Too Large
+                type: /edgekv/error-types/edgekv-payload-too-large
+                additionalDetail:
+                  requestId: 8bea61e1a0e50169
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '429':
+          description: Request rate is too high.
+          content:
+            application/problem+json:
+              example:
+                detail: 'Your request has been denied: 364 hits per second too high. limit set at 73. Please try again soon.'
+                errorCode: EKV_9100
+                instance: /edgekv/error-instances/80f9503f-633e-4412-9393-62f329868911
+                status: 429
+                title: Too Many Requests
+                type: /edgekv/error-types/edgekv-too-many-requests
+                additionalDetail:
+                  requestId: 16fc97b7cb0ee4dd
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '500':
+          description: An internal error.
+          content:
+            application/problem+json:
+              example:
+                detail: An internal error occurred.
+                errorCode: EKV_0000
+                instance: /edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8
+                status: 500
+                title: Internal Server Error
+                type: /edgekv/error-types/edgekv-internal-server-error
+                additionalDetail:
+                  requestId: cd9b61e08148009b
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation.
+        example: '{{sandboxId}}'
+        in: query
+        name: sandboxId
+        schema:
+          example: 4d91057d-xxxx-xxxx-xxxx-3a4472699df4
+          type: string
+        x-akamai:
+          file-path: parameters/sandboxId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    delete:
+      description: Mark an EdgeKV item for deletion. You need to specify the `namespace` and `group` the item belongs to. It can take ten seconds or longer for a deleted item to be removed from the database. If you attempt a read operation before the value has been updated globally, stale data may be returned until the update is complete. This is normal behavior for EdgeKV, which is an eventually consistent database.
+      operationId: delete-item
+      summary: Akamai Delete an Item
+      tags:
+      - Items
+      externalDocs:
+        description: See documentation for this operation in Akamai's EdgeKV API
+        url: https://techdocs.akamai.com/edgekv/reference/delete-item
+      responses:
+        '200':
+          description: Successfully marked for deletion.
+          content:
+            text/plain:
+              example: Item was deleted in the KV store with database 123456 namespace default group countries key US.
+              schema:
+                type: string
+        '400':
+          description: Invalid namespace specified.
+          content:
+            application/problem+json:
+              example:
+                detail: Key must only use a string that matches A-Z a-z 0-9 _ or -..
+                errorCode: EKV_9000
+                instance: /edgekv/error-instances/66344166-567c-4158-95b2-07d6127b8b75
+                status: 400
+                title: Bad Request
+                type: /edgekv/error-types/edgekv-bad-request
+                additionalDetail:
+                  requestId: a4c461e09bf602be
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+        '429':
+          description: Request rate is too high.
+          content:
+            application/problem+json:
+              example:
+                detail: 'Your request has been denied: 364 hits per second too high. limit set at 73. Please try again soon.'
+                errorCode: EKV_9100
+                instance: /edgekv/error-instances/80f9503f-633e-4412-9393-62f329868911
+                status: 429
+                title: Too Many Requests
+                type: /edgekv/error-types/edgekv-too-many-requests
+                additionalDetail:
+                  requestId: 16fc97b7cb0ee4dd
+              schema:
+                additionalProperties: false
+                description: Error messaging.
+                type: object
+                properties:
+                  additionalDetail:
+                    additionalProperties: false
+                    type: object
+                    properties:
+                      requestId:
+                        description: Request identifier.
+                        type: string
+                  detail:
+                    description: A description of the error.
+                    type: string
+                  errorCode:
+                    description: Internal error code used to assist with troubleshooting by Akamai employees.
+                    type: string
+                  instance:
+                    description: Reference to unique instance of the error.
+                    type: string
+                  status:
+                    description: The HTTP code for the error.
+                    type: integer
+                  title:
+                    description: Text representation of the HTTP error code.
+                    type: string
+                  type:
+                    description: Reference to additional documentation.
+                    type: string
+                x-akamai:
+                  file-path: schemas/error.yaml
+      parameters:
+      - description: Accesses EdgeKV data in the specified sandbox environment. To list existing sandbox identifiers, run the Sandbox API's [List sandboxes](https://techdocs.akamai.com/sandbox/reference/get-sandboxes) operation.
+        example: '{{sandboxId}}'
+        in: query
+        name: sandboxId
+        schema:
+          example: 4d91057d-xxxx-xxxx-xxxx-3a4472699df4
+          type: string
+        x-akamai:
+          file-path: parameters/sandboxId-query.yaml
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

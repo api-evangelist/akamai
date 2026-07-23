@@ -1,0 +1,475 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Contracts and groups API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Contracts and groups
+paths:
+  /contracts/groups:
+    get:
+      description: You provision each API endpoint within the context of your contract with Akamai and a Control Center portal group. The response objects encapsulate pairings of contract and group identifiers available within the scope of the user who provisioned the API token, as described in [Get started](https://techdocs.akamai.com/api-definitions/reference/api-get-started).
+      operationId: get-contracts-groups
+      summary: List contracts and groups
+      tags:
+      - Contracts and groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-contracts-groups
+      responses:
+        '200':
+          description: The response lists combined contracts and groups you can use for API definitions.
+          content:
+            application/json:
+              schema:
+                description: The collection of pairings of contracts and groups under which you provision the security and delivery settings for an endpoint.
+                type: array
+                items:
+                  additionalProperties: false
+                  description: Contains information about a pairing of contract and group under which you provision the security and delivery settings for an endpoint.
+                  type: object
+                  properties:
+                    acgId:
+                      description: The unique identifier for the pairing of contract and group.
+                      type: string
+                    contractId:
+                      description: The unique identifier for the Akamai contract within the pairing.
+                      type: string
+                    displayName:
+                      description: The descriptive name for the pairing of contract and group.
+                      type: string
+                    groupId:
+                      description: The unique identifier for the group within the pairing.
+                      type: number
+                  x-akamai:
+                    file-path: schemas/aCGPickerRow.yaml
+                x-akamai:
+                  file-path: schemas/aCGPickerRows.yaml
+              example:
+              - acgId: 3-1Cgoa
+                contractId: K-0N7RAK7
+                displayName: Bookstore Users
+                groupId: 58220
+              - acgId: 3-1Cgoa.G75683
+                contractId: C-0N7RAC7
+                displayName: Bookstore Users - Developers
+                groupId: 75683
+        '403':
+          description: You don't have permission to edit the API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /contracts/{contractId}/groups/{groupId}/hosts:
+    parameters:
+    - description: The unique identifier for the group.
+      example: '{{groupId}}'
+      in: path
+      name: groupId
+      required: true
+      schema:
+        type: integer
+      x-akamai:
+        file-path: parameters/groupId-path.yaml
+    - description: The unique identifier for the contract.
+      example: '{{contractId}}'
+      in: path
+      name: contractId
+      required: true
+      schema:
+        type: string
+      x-akamai:
+        file-path: parameters/contractId-path.yaml
+    get:
+      description: Lists all hostnames through which API consumers can access an endpoint service under a given contract and group pairing. You can use Property Manager (or [PAPI](https://techdocs.akamai.com/property-mgr/reference/api)) to create new hostnames to make available to users.
+      operationId: get-contract-group-hosts
+      summary: List hostnames
+      tags:
+      - Contracts and groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-contract-group-hosts
+      responses:
+        '200':
+          description: The response lists hosts for the contract and group.
+          content:
+            application/json:
+              example:
+              - bookstore.api.akamai.com
+              - bookstore2.api.akamai.com
+              schema:
+                description: The collection of hostnames assigned to an endpoint.
+                type: array
+                items:
+                  type: string
+                x-akamai:
+                  file-path: schemas/hostsSchema.yaml
+        '403':
+          description: You don't have permission to read the API endpoint for the specified contract and group.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /contracts/{contractId}/groups/{groupId}/hostsAcgs:
+    parameters:
+    - description: The unique identifier for the group.
+      example: '{{groupId}}'
+      in: path
+      name: groupId
+      required: true
+      schema:
+        type: integer
+      x-akamai:
+        file-path: parameters/groupId-path.yaml
+    - description: The unique identifier for the contract.
+      example: '{{contractId}}'
+      in: path
+      name: contractId
+      required: true
+      schema:
+        type: string
+      x-akamai:
+        file-path: parameters/contractId-path.yaml
+    get:
+      description: Lists all hostnames through which API consumers can access an endpoint service under a given contract and group pairing. Returns each hostname together with the access control group where the hostname is registered. You can use Property Manager (or [PAPI](https://techdocs.akamai.com/property-mgr/reference/api)) to create new hostnames to make available to users.
+      operationId: get-contract-group-hosts-acgs
+      summary: List hostnames with access control groups
+      tags:
+      - Contracts and groups
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-contract-group-hosts-acgs
+      responses:
+        '200':
+          description: Response data lists hosts for the contract and group.
+          content:
+            application/json:
+              schema:
+                description: The collection of hostnames assigned to an endpoint.
+                type: array
+                items:
+                  additionalProperties: false
+                  description: Contains information about a hostname and access control group where the hostname is registered.
+                  type: object
+                  properties:
+                    acgId:
+                      description: The unique identifier for the access control group where the hostname is registered.
+                      type: string
+                    contractId:
+                      description: The unique identifier for the Akamai contract within the access control group.
+                      type: string
+                    hostname:
+                      description: The hostname that may receive traffic for an endpoint.
+                      type: string
+                  x-akamai:
+                    file-path: schemas/acgsHost.yaml
+                x-akamai:
+                  file-path: schemas/acgsHosts.yaml
+              example:
+              - acgId: WAA-3-1AINU1T
+                contractId: C-0N7RAC71
+                hostname: www.bookstore.api.akamai.com
+              - acgId: WAA-3-WNNG6F
+                contractId: K-0N7RAK71
+                hostname: www.bookstore2.api.akamai.com
+        '403':
+          description: You don't have permission to read the API endpoint for the specified contract and group.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /contracts-groups:
+    x-akamai:
+      file-path: paths/contracts-groups.yaml
+      path-info: /contracts-groups
+    get:
+      description: __All products__ List the contracts and groups for your account. Each object contains the contract, groups associated with the contract, and whether Kona Site Defender or Web Application Protector is the product for that contract. You'll need this information when you create a new security configuration or when you want to get a list of hostnames still available for use in a security policy.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-contracts-groups
+      operationId: get-contracts-groups
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                contract_groups:
+                - contractId: C-0N7RAC71
+                  displayName: 'Main Street Corporation '
+                  groupId: 12345
+                - contractId: K-0N7RAK71
+                  displayName: AltQ
+                  groupId: 12345
+                - contractId: K-0N7RAK71
+                  displayName: BV QA
+                  groupId: 32145
+              schema:
+                additionalProperties: false
+                description: Specifies contracts and groups that have Kona Site Defender or Web Application Firewall.
+                properties:
+                  contract_groups:
+                    description: The list of contract and group pairs.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        contractId:
+                          description: A unique identifier for a contract.
+                          type: string
+                        displayName:
+                          description: The display name for a contract group pair.
+                          type: string
+                        groupId:
+                          description: A unique identifier for a group.
+                          type: integer
+                      type: object
+                    type: array
+                type: object
+                x-akamai:
+                  file-path: schemas/contract-groups.yaml
+          description: Successful response.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don''t have access to the resource.'
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          content:
+            application/problem+json:
+              example:
+                detail: The requested resource is not found
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 404
+                title: Not Found
+                type: https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Not found](https://techdocs.akamai.com/application-security/reference/404). That resource doesn''t exist, or the URL is malformed.'
+          x-akamai:
+            file-path: errors/404.yaml
+      summary: List contracts and groups
+      tags:
+      - Contracts and groups
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

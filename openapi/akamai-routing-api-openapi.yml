@@ -1,0 +1,796 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Routing API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Routing
+paths:
+  /endpoints/{apiEndPointId}/versions/{versionNumber}/settings/routing:
+    parameters:
+    - description: The unique identifier for the endpoint version.
+      example: '{{versionNumber}}'
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/versionNumber-path.yaml
+    - description: The unique identifier for the endpoint.
+      example: '{{apiEndPointId}}'
+      in: path
+      name: apiEndPointId
+      required: true
+      schema:
+        example: 1
+        type: integer
+      x-akamai:
+        file-path: parameters/apiEndPointId-path.yaml
+    get:
+      description: Returns the incoming request's routing, forwarding, and SureRoute settings configured for an endpoint version. You can run this operation if you're taking part in the API Gateway beta program.
+      operationId: get-routing-settings
+      summary: Get routing settings
+      tags:
+      - Routing
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/get-routing-settings
+      responses:
+        '200':
+          description: The response shows the current routing settings.
+          content:
+            application/json:
+              example:
+                rules:
+                - customForwardPath: null
+                  description: null
+                  forwardHostHeader: null
+                  forwardPath: DEFAULT_PATH
+                  forwardPort: null
+                  name: /test.html
+                  origin: rapidzik.hereokuapp.com
+                  conditions:
+                  - operator: IS
+                    type: METHOD
+                    value: GET
+                  - operator: IS
+                    type: HOSTNAME
+                    value: '*.www.sqa.rapid.com'
+                sureRoute:
+                - forceSslForward: false
+                  origin: rapidzik.hereokuapp.com
+                  raceKey: some-custom-key.com
+                  raceKeyMode: CUSTOM
+                  testObjectPath: /test.html
+                  raceStatTtl:
+                    duration: 30
+                    unit: MINUTES
+              schema:
+                additionalProperties: false
+                description: Contains information about an incoming request's routing settings configured for an endpoint. Routing settings specify routing, forwarding, and SureRoute instructions for an endpoint version. You can configure routing settings if the API Gateway product is in your contract and you're taking part in the API Gateway beta program.
+                type: object
+                properties:
+                  rules:
+                    description: Routing Rules.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Consists of criteria that identifies which incoming requests to process for an endpoint.
+                      type: object
+                      required:
+                      - name
+                      - origin
+                      - forwardPath
+                      - conditions
+                      properties:
+                        conditions:
+                          description: A set of criteria that determines the action the API takes when an incoming request for an endpoint meets the criteria.
+                          type: array
+                          items:
+                            additionalProperties: false
+                            type: object
+                            properties:
+                              operator:
+                                description: Compares the incoming request to the `type` and `value` members. The only value currently available is `IS`.
+                                type: string
+                                enum:
+                                - IS
+                              type:
+                                description: Specifies the query string value to match. Use `RESOURCE` to match on a resource like JSON or XML. Use `METHOD` to match on the request method in the request header. Use `HOSTNAME` to match on the hostname in the request's incoming `Host` header.
+                                type: string
+                                enum:
+                                - RESOURCE
+                                - METHOD
+                                - HOSTNAME
+                              value:
+                                description: Specifies the string you're trying to match. For flexible URL path matching, use `*` and `?`.
+                                oneOf:
+                                - title: String
+                                  type: string
+                                - title: Number
+                                  type: number
+                        customForwardPath:
+                          description: Specifies the request's new forward path when the `forwardPath` value is `CUSTOM_PATH`.
+                          nullable: true
+                          type: string
+                        description:
+                          description: Descriptive text for the rule.
+                          nullable: true
+                          type: string
+                        forwardHostHeader:
+                          description: Specifies the request's new host header.
+                          nullable: true
+                          type: string
+                        forwardPath:
+                          description: Specifies the request's forward path mode, either `CUSTOM_PATH` or `DEFAULT_PATH`.
+                          type: string
+                          enum:
+                          - DEFAULT_PATH
+                          - CUSTOM_PATH
+                        forwardPort:
+                          description: Specifies the request's new port number.
+                          nullable: true
+                          type: number
+                        name:
+                          description: A unique identifier for the rule.
+                          type: string
+                        origin:
+                          description: Specifies the request's new origin server destination.
+                          type: string
+                      x-akamai:
+                        file-path: schemas/routing-rule.yaml
+                  sureRoute:
+                    description: Sure Route Definitions.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Specifies the SureRoute settings configured for an endpoint.
+                      type: object
+                      required:
+                      - origin
+                      - testObjectPath
+                      - forceSslForward
+                      properties:
+                        forceSslForward:
+                          description: Forces SureRoute to use SSL when requesting the test object from your alternate origin server. Set the value to `true` when the origin doesn't respond to HTTP requests or responds with a redirect to HTTPS.
+                          type: boolean
+                        origin:
+                          description: Specifies the origin server where the SureRoute definitions are applied.
+                          type: string
+                        raceKey:
+                          description: Specifies a custom key to store race results.
+                          nullable: true
+                          type: string
+                        raceKeyMode:
+                          description: Specifies which hostname to use to store race results. Either `DEFAULT` for the race destination's hostname or `CUSTOM` for a custom hostname.
+                          nullable: true
+                          type: string
+                          enum:
+                          - DEFAULT
+                          - CUSTOM
+                        raceStatTtl:
+                          additionalProperties: false
+                          description: Specifies the TTL to hold the SureRoute race results. Races only run when certain thresholds exceed their limit. If traffic drops below the thresholds, the edge server continues to use the last race results to determine the optimal route until this TTL expires. When traffic next increases over the thresholds, the edge server uses the direct route until SureRoute determines a new optimal route.
+                          nullable: true
+                          type: object
+                          required:
+                          - duration
+                          - unit
+                          properties:
+                            duration:
+                              description: The maximum duration of content caching in the selected unit of time.
+                              type: integer
+                            unit:
+                              description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                              type: string
+                              enum:
+                              - SECONDS
+                              - MINUTES
+                              - HOURS
+                              - DAYS
+                          x-akamai:
+                            file-path: schemas/durationDto.yaml
+                        testObjectPath:
+                          description: Specifies the test object's path on your alternate origin server. SureRoute uses this path in races to test routes. For example, `/akamai/testobject.html`.
+                          nullable: true
+                          type: string
+                      x-akamai:
+                        file-path: schemas/routing-sure-route.yaml
+                x-akamai:
+                  file-path: schemas/routingSettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: The API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+    put:
+      description: Updates the incoming request's routing, forwarding, and SureRoute settings configured for an endpoint version. You can run this operation if you're taking part in the API Gateway beta program.
+      operationId: put-routing-settings
+      summary: Edit routing settings
+      tags:
+      - Routing
+      externalDocs:
+        description: See documentation for this operation in Akamai's API Endpoint Definition API
+        url: https://techdocs.akamai.com/api-definitions/reference/put-routing-settings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              rules:
+              - customForwardPath: null
+                description: null
+                forwardHostHeader: null
+                forwardPath: DEFAULT_PATH
+                forwardPort: null
+                name: /test.html
+                origin: rapidzik.hereokuapp.com
+                conditions:
+                - operator: IS
+                  type: METHOD
+                  value: GET
+                - operator: IS
+                  type: HOSTNAME
+                  value: '*.www.sqa.rapid.com'
+              sureRoute:
+              - forceSslForward: false
+                origin: rapidzik.hereokuapp.com
+                raceKey: some-custom-key.com
+                raceKeyMode: CUSTOM
+                testObjectPath: /test.html
+                raceStatTtl:
+                  duration: 30
+                  unit: MINUTES
+            schema:
+              additionalProperties: false
+              description: Contains information about an incoming request's routing settings configured for an endpoint. Routing settings specify routing, forwarding, and SureRoute instructions for an endpoint version. You can configure routing settings if the API Gateway product is in your contract and you're taking part in the API Gateway beta program.
+              type: object
+              properties:
+                rules:
+                  description: Routing Rules.
+                  type: array
+                  items:
+                    additionalProperties: false
+                    description: Consists of criteria that identifies which incoming requests to process for an endpoint.
+                    type: object
+                    required:
+                    - name
+                    - origin
+                    - forwardPath
+                    - conditions
+                    properties:
+                      conditions:
+                        description: A set of criteria that determines the action the API takes when an incoming request for an endpoint meets the criteria.
+                        type: array
+                        items:
+                          additionalProperties: false
+                          type: object
+                          properties:
+                            operator:
+                              description: Compares the incoming request to the `type` and `value` members. The only value currently available is `IS`.
+                              type: string
+                              enum:
+                              - IS
+                            type:
+                              description: Specifies the query string value to match. Use `RESOURCE` to match on a resource like JSON or XML. Use `METHOD` to match on the request method in the request header. Use `HOSTNAME` to match on the hostname in the request's incoming `Host` header.
+                              type: string
+                              enum:
+                              - RESOURCE
+                              - METHOD
+                              - HOSTNAME
+                            value:
+                              description: Specifies the string you're trying to match. For flexible URL path matching, use `*` and `?`.
+                              oneOf:
+                              - title: String
+                                type: string
+                              - title: Number
+                                type: number
+                      customForwardPath:
+                        description: Specifies the request's new forward path when the `forwardPath` value is `CUSTOM_PATH`.
+                        nullable: true
+                        type: string
+                      description:
+                        description: Descriptive text for the rule.
+                        nullable: true
+                        type: string
+                      forwardHostHeader:
+                        description: Specifies the request's new host header.
+                        nullable: true
+                        type: string
+                      forwardPath:
+                        description: Specifies the request's forward path mode, either `CUSTOM_PATH` or `DEFAULT_PATH`.
+                        type: string
+                        enum:
+                        - DEFAULT_PATH
+                        - CUSTOM_PATH
+                      forwardPort:
+                        description: Specifies the request's new port number.
+                        nullable: true
+                        type: number
+                      name:
+                        description: A unique identifier for the rule.
+                        type: string
+                      origin:
+                        description: Specifies the request's new origin server destination.
+                        type: string
+                    x-akamai:
+                      file-path: schemas/routing-rule.yaml
+                sureRoute:
+                  description: Sure Route Definitions.
+                  type: array
+                  items:
+                    additionalProperties: false
+                    description: Specifies the SureRoute settings configured for an endpoint.
+                    type: object
+                    required:
+                    - origin
+                    - testObjectPath
+                    - forceSslForward
+                    properties:
+                      forceSslForward:
+                        description: Forces SureRoute to use SSL when requesting the test object from your alternate origin server. Set the value to `true` when the origin doesn't respond to HTTP requests or responds with a redirect to HTTPS.
+                        type: boolean
+                      origin:
+                        description: Specifies the origin server where the SureRoute definitions are applied.
+                        type: string
+                      raceKey:
+                        description: Specifies a custom key to store race results.
+                        nullable: true
+                        type: string
+                      raceKeyMode:
+                        description: Specifies which hostname to use to store race results. Either `DEFAULT` for the race destination's hostname or `CUSTOM` for a custom hostname.
+                        nullable: true
+                        type: string
+                        enum:
+                        - DEFAULT
+                        - CUSTOM
+                      raceStatTtl:
+                        additionalProperties: false
+                        description: Specifies the TTL to hold the SureRoute race results. Races only run when certain thresholds exceed their limit. If traffic drops below the thresholds, the edge server continues to use the last race results to determine the optimal route until this TTL expires. When traffic next increases over the thresholds, the edge server uses the direct route until SureRoute determines a new optimal route.
+                        nullable: true
+                        type: object
+                        required:
+                        - duration
+                        - unit
+                        properties:
+                          duration:
+                            description: The maximum duration of content caching in the selected unit of time.
+                            type: integer
+                          unit:
+                            description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                            type: string
+                            enum:
+                            - SECONDS
+                            - MINUTES
+                            - HOURS
+                            - DAYS
+                        x-akamai:
+                          file-path: schemas/durationDto.yaml
+                      testObjectPath:
+                        description: Specifies the test object's path on your alternate origin server. SureRoute uses this path in races to test routes. For example, `/akamai/testobject.html`.
+                        nullable: true
+                        type: string
+                    x-akamai:
+                      file-path: schemas/routing-sure-route.yaml
+              x-akamai:
+                file-path: schemas/routingSettingsDto.yaml
+      responses:
+        '200':
+          description: The response reflects your updated routing settings.
+          content:
+            application/json:
+              example:
+                bodyParamName: body-param-name
+                cacheOrigin: false
+                cacheResponseOnError: null
+                detectError: false
+                enabled: true
+                maxQuerySize: null
+                nestingLevel: null
+                queryParamName: query-param-name
+                serveStale: null
+                downstreamCaching:
+                  headers: SAME_AS_ORIGIN
+                  lifetime: SMALLER_VALUE
+                  markAsPrivate: false
+                  option: ALLOW_CACHING
+                maxAge:
+                  duration: 420
+                  unit: HOURS
+                preRefreshing:
+                  enabled: true
+                  value: 50
+              schema:
+                additionalProperties: false
+                description: Contains information about an incoming request's routing settings configured for an endpoint. Routing settings specify routing, forwarding, and SureRoute instructions for an endpoint version. You can configure routing settings if the API Gateway product is in your contract and you're taking part in the API Gateway beta program.
+                type: object
+                properties:
+                  rules:
+                    description: Routing Rules.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Consists of criteria that identifies which incoming requests to process for an endpoint.
+                      type: object
+                      required:
+                      - name
+                      - origin
+                      - forwardPath
+                      - conditions
+                      properties:
+                        conditions:
+                          description: A set of criteria that determines the action the API takes when an incoming request for an endpoint meets the criteria.
+                          type: array
+                          items:
+                            additionalProperties: false
+                            type: object
+                            properties:
+                              operator:
+                                description: Compares the incoming request to the `type` and `value` members. The only value currently available is `IS`.
+                                type: string
+                                enum:
+                                - IS
+                              type:
+                                description: Specifies the query string value to match. Use `RESOURCE` to match on a resource like JSON or XML. Use `METHOD` to match on the request method in the request header. Use `HOSTNAME` to match on the hostname in the request's incoming `Host` header.
+                                type: string
+                                enum:
+                                - RESOURCE
+                                - METHOD
+                                - HOSTNAME
+                              value:
+                                description: Specifies the string you're trying to match. For flexible URL path matching, use `*` and `?`.
+                                oneOf:
+                                - title: String
+                                  type: string
+                                - title: Number
+                                  type: number
+                        customForwardPath:
+                          description: Specifies the request's new forward path when the `forwardPath` value is `CUSTOM_PATH`.
+                          nullable: true
+                          type: string
+                        description:
+                          description: Descriptive text for the rule.
+                          nullable: true
+                          type: string
+                        forwardHostHeader:
+                          description: Specifies the request's new host header.
+                          nullable: true
+                          type: string
+                        forwardPath:
+                          description: Specifies the request's forward path mode, either `CUSTOM_PATH` or `DEFAULT_PATH`.
+                          type: string
+                          enum:
+                          - DEFAULT_PATH
+                          - CUSTOM_PATH
+                        forwardPort:
+                          description: Specifies the request's new port number.
+                          nullable: true
+                          type: number
+                        name:
+                          description: A unique identifier for the rule.
+                          type: string
+                        origin:
+                          description: Specifies the request's new origin server destination.
+                          type: string
+                      x-akamai:
+                        file-path: schemas/routing-rule.yaml
+                  sureRoute:
+                    description: Sure Route Definitions.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: Specifies the SureRoute settings configured for an endpoint.
+                      type: object
+                      required:
+                      - origin
+                      - testObjectPath
+                      - forceSslForward
+                      properties:
+                        forceSslForward:
+                          description: Forces SureRoute to use SSL when requesting the test object from your alternate origin server. Set the value to `true` when the origin doesn't respond to HTTP requests or responds with a redirect to HTTPS.
+                          type: boolean
+                        origin:
+                          description: Specifies the origin server where the SureRoute definitions are applied.
+                          type: string
+                        raceKey:
+                          description: Specifies a custom key to store race results.
+                          nullable: true
+                          type: string
+                        raceKeyMode:
+                          description: Specifies which hostname to use to store race results. Either `DEFAULT` for the race destination's hostname or `CUSTOM` for a custom hostname.
+                          nullable: true
+                          type: string
+                          enum:
+                          - DEFAULT
+                          - CUSTOM
+                        raceStatTtl:
+                          additionalProperties: false
+                          description: Specifies the TTL to hold the SureRoute race results. Races only run when certain thresholds exceed their limit. If traffic drops below the thresholds, the edge server continues to use the last race results to determine the optimal route until this TTL expires. When traffic next increases over the thresholds, the edge server uses the direct route until SureRoute determines a new optimal route.
+                          nullable: true
+                          type: object
+                          required:
+                          - duration
+                          - unit
+                          properties:
+                            duration:
+                              description: The maximum duration of content caching in the selected unit of time.
+                              type: integer
+                            unit:
+                              description: The unit of time for content caching, either `DAYS`, `HOURS`, `MINUTES`, or `SECONDS`.
+                              type: string
+                              enum:
+                              - SECONDS
+                              - MINUTES
+                              - HOURS
+                              - DAYS
+                          x-akamai:
+                            file-path: schemas/durationDto.yaml
+                        testObjectPath:
+                          description: Specifies the test object's path on your alternate origin server. SureRoute uses this path in races to test routes. For example, `/akamai/testobject.html`.
+                          nullable: true
+                          type: string
+                      x-akamai:
+                        file-path: schemas/routing-sure-route.yaml
+                x-akamai:
+                  file-path: schemas/routingSettingsDto.yaml
+        '400':
+          description: Some of user input is invalid.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '403':
+          description: User does not have permission to API endpoint.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+        '404':
+          description: This API endpoint doesn't exist.
+          content:
+            application/problem+json:
+              schema:
+                additionalProperties: false
+                description: Contains debugging information for error responses.
+                type: object
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  errors:
+                    description: The collection of nested error responses.
+                    type: array
+                    items:
+                      additionalProperties: false
+                      description: A further nested problem detail object.
+                      type: object
+                      x-akamai:
+                        file-path: schemas/httpProblemDetails-recurse.yaml
+                  instance:
+                    description: The non-referenceable URL for the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The title of the error.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                x-akamai:
+                  file-path: schemas/httpProblemDetails.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

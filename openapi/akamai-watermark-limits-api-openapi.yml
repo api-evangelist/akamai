@@ -1,0 +1,717 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Watermark limits API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- name: Watermark limits
+paths:
+  /cpcodes/contracts/{contractId}/watermark-limits:
+    x-akamai:
+      file-path: paths/cpcodes-watermark-limit.yaml
+      path-for-file: /cpcodes/contracts/{contractId}/watermark-limits
+    parameters:
+    - description: The identifier for the contract for which you want to check water-mark limits.
+      example: '{{contractId}}'
+      in: path
+      name: contractId
+      required: true
+      schema:
+        example: 1Q004
+        type: string
+      x-akamai:
+        file-path: parameters/contractId-path.yaml
+    get:
+      description: Get a watermark limit for CP codes for a specific contract within your account. For more details, see [Rate and resource limiting](https://techdocs.akamai.com/cp-codes/reference/rate-and-resource-limiting).
+      operationId: get-cpcodes-watermark-limits
+      summary: Get a water-mark limit
+      tags:
+      - Watermark limits
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/get-cpcodes-watermark-limits
+      responses:
+        '200':
+          description: Provides the current number of resources and available limit.
+          content:
+            application/json:
+              example:
+                currentCapacity: 3500
+                limit: 5000
+                limitType: account
+              schema:
+                additionalProperties: false
+                description: Provides watermark limits for CP codes or reporting groups within a specific contract.
+                type: object
+                required:
+                - currentCapacity
+                - limit
+                - limitType
+                properties:
+                  currentCapacity:
+                    description: The current number of CP codes or reporting groups.
+                    minimum: 0
+                    type: integer
+                  limit:
+                    description: The number of allowed CP codes or reporting groups.
+                    minimum: 0
+                    type: integer
+                  limitType:
+                    description: Identifies whether the `limit` applies to an account or a contract. For more details, see [Rate and resource limiting](https://techdocs.akamai.com/cp-codes/reference/rate-and-resource-limiting).
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/watermark-limits-200.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+  /reporting-groups/contracts/{contractId}/watermark-limits:
+    x-akamai:
+      file-path: paths/reporting-groups-watermark-limit.yaml
+      path-for-file: /cpcodes/contracts/{contractId}/watermark-limits
+    parameters:
+    - description: The identifier for the contract for which you want to check water-mark limits.
+      example: '{{contractId}}'
+      in: path
+      name: contractId
+      required: true
+      schema:
+        example: 1Q004
+        type: string
+      x-akamai:
+        file-path: parameters/contractId-path.yaml
+    get:
+      description: Get a watermark limit for CP reporting groups for a specific contract within your account. For more details, see [Rate and resource limiting](https://techdocs.akamai.com/cp-codes/reference/rate-and-resource-limiting).
+      operationId: get-reporting-groups-watermark-limits
+      summary: Get a water-mark limit for reporting groups
+      tags:
+      - Watermark limits
+      externalDocs:
+        description: See documentation for this operation in Akamai's CP Codes and Reporting Groups API
+        url: https://techdocs.akamai.com/cp-codes/reference/get-reporting-groups-watermark-limits
+      responses:
+        '200':
+          description: Provides the current number of resources and available limit.
+          content:
+            application/json:
+              examples:
+                reporting-groups-contract-limit:
+                  value:
+                    currentCapacity: 25
+                    limit: 100
+                    limitType: account
+                reporting-groups-contract-override:
+                  value:
+                    currentCapacity: 25
+                    limit: 100
+                    limitType: contract
+              schema:
+                additionalProperties: false
+                description: Provides watermark limits for CP codes or reporting groups within a specific contract.
+                type: object
+                required:
+                - currentCapacity
+                - limit
+                - limitType
+                properties:
+                  currentCapacity:
+                    description: The current number of CP codes or reporting groups.
+                    minimum: 0
+                    type: integer
+                  limit:
+                    description: The number of allowed CP codes or reporting groups.
+                    minimum: 0
+                    type: integer
+                  limitType:
+                    description: Identifies whether the `limit` applies to an account or a contract. For more details, see [Rate and resource limiting](https://techdocs.akamai.com/cp-codes/reference/rate-and-resource-limiting).
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/watermark-limits-200.yaml
+        '400':
+          description: '[Bad request](https://techdocs.akamai.com/cp-codes/reference/400).'
+          content:
+            application/problem+json:
+              example:
+                code: bad.request
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Bad Request
+                details:
+                - code: invalid.data
+                  message: Group name is mandatory
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/400.yaml
+        '401':
+          description: '[Unauthorized](https://techdocs.akamai.com/cp-codes/reference/401).'
+          content:
+            application/problem+json:
+              example:
+                code: unauthorized
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Unauthorized
+                details:
+                - code: invalid.data
+                  message: The request requires authentication
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/401.yaml
+        '403':
+          description: '[Forbidden](https://techdocs.akamai.com/cp-codes/reference/403).'
+          content:
+            application/problem+json:
+              example:
+                code: forbidden
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Forbidden
+                details:
+                - code: invalid.role
+                  message: User is not authorized
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/403.yaml
+        '404':
+          description: '[Not found](https://techdocs.akamai.com/cp-codes/reference/404).'
+          content:
+            application/problem+json:
+              example:
+                code: not.found
+                incidentId: dc2f405e-29d3-4845-a4ac-2f6b4a732aca
+                title: Not Found
+                details:
+                - code: invalid.data
+                  message: The reporting group with id 000 is already deleted
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/404.yaml
+        '405':
+          description: '[Method not allowed](https://techdocs.akamai.com/cp-codes/reference/405).'
+          content:
+            application/problem+json:
+              example:
+                code: method.not.allowed
+                incidentId: 3714936a-07a6-4991-939f-c201adbf35f3
+                title: Method Not Allowed
+                details:
+                - code: method.not.supported
+                  message: method.not.supported
+              schema:
+                additionalProperties: true
+                description: Provides detailed information about a failed request.
+                type: object
+                required:
+                - title
+                - code
+                - details
+                - incidentId
+                properties:
+                  code:
+                    description: A descriptive code that corresponds to overall HTTP status.
+                    minLength: 1
+                    type: string
+                  details:
+                    additionalProperties: true
+                    description: Each array member object encodes context for the failed request. For example, malformed query parameter field values.
+                    type: object
+                    required:
+                    - code
+                    - message
+                    properties:
+                      code:
+                        description: A descriptive identifier for each problem.
+                        minLength: 1
+                        type: string
+                      data:
+                        description: A loosely structured object that, when available, encapsulates the set of erroneous input values.
+                        type: object
+                      message:
+                        description: A description of the problem.
+                        minLength: 1
+                        type: string
+                  incidentId:
+                    description: A logging key useful when communicating about problems with Technical Support representatives.
+                    minLength: 1
+                    type: string
+                  title:
+                    description: A descriptive title that labels each error case.
+                    minLength: 1
+                    type: string
+                x-akamai:
+                  file-path: schemas/problem.yaml
+          x-akamai:
+            file-path: errors/405.yaml
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        example: '{{accountSwitchKey}}'
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node

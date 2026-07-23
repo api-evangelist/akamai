@@ -1,0 +1,2308 @@
+openapi: 3.0.0
+info:
+  title: 'Akamai: API Endpoint Definition Access tokens Shared resources: Custom rules API'
+  version: '2'
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  description: Manage your custom rules for security configurations and policies.
+servers:
+- url: https://{hostname}/api-definitions/v2
+tags:
+- description: Manage your custom rules for security configurations and policies.
+  name: 'Shared resources: Custom rules'
+paths:
+  /configs/{configId}/custom-rules:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    x-akamai:
+      file-path: paths/config-custom-rules.yaml
+      path-info: /configs/{configId}/custom-rules
+    post:
+      description: __All products__ Creates a new custom rule.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-config-custom-rules
+      operationId: post-config-custom-rules
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              conditions:
+              - positiveMatch: true
+                type: requestMethodMatch
+                value:
+                - GET
+                - CONNECT
+                - TRACE
+                - PUT
+                - POST
+                - OPTIONS
+                - DELETE
+                - HEAD
+              - positiveMatch: true
+                type: pathMatch
+                value:
+                - /H
+                - /Li
+                - /He
+              - positiveMatch: true
+                type: extensionMatch
+                value:
+                - Li
+                - He
+                - H
+                valueCase: true
+                valueWildcard: true
+              - positiveMatch: true
+                type: filenameMatch
+                value:
+                - He
+                - H
+                - Li
+                valueCase: false
+                valueWildcard: false
+              - positiveMatch: true
+                type: requestProtocolVersionMatch
+                value: HTTP/0.9
+              - name:
+                - H
+                - He
+                nameWildcard: true
+                positiveMatch: true
+                type: requestHeaderMatch
+                value:
+                - Li
+                - He
+                - H
+                valueCase: true
+                valueWildcard: true
+              - name:
+                - He
+                nameWildcard: true
+                positiveMatch: true
+                type: requestHeaderMatch
+                value:
+                - C
+                - Be
+                - B
+                valueCase: true
+                valueWildcard: true
+              - positiveMatch: true
+                type: headerOrderMatch
+                value: H:He
+              - name: H
+                nameCase: true
+                nameWildcard: true
+                positiveMatch: true
+                type: cookieMatch
+                value:
+                - H
+                - He
+                - Li
+                valueCase: true
+                valueWildcard: true
+              - name: Be
+                nameCase: true
+                nameWildcard: true
+                positiveMatch: true
+                type: cookieMatch
+                value:
+                - O
+                - N
+                - C
+                valueCase: true
+                valueWildcard: true
+              - name: C
+                nameCase: true
+                nameWildcard: true
+                positiveMatch: true
+                type: uriQueryMatch
+                value:
+                - Carbon
+                - C
+                valueCase: true
+                valueWildcard: true
+              - name: N
+                nameCase: false
+                nameWildcard: false
+                positiveMatch: true
+                type: uriQueryMatch
+                value:
+                - Nitrogen
+                - N
+                valueCase: false
+                valueWildcard: false
+              - name: H
+                positiveMatch: true
+                type: argsPostMatch
+                value:
+                - H
+                - Hydrogen
+              - name: He
+                positiveMatch: true
+                type: argsPostMatch
+                value:
+                - He
+                - Helium
+              - positiveMatch: true
+                type: argsPostNamesMatch
+                value:
+                - Carbon
+                - Oxygen
+                - Nitrogen
+                - Chlorine
+              - positiveMatch: true
+                type: clientCertPresentMatch
+              - positiveMatch: false
+                type: clientCertValidMatch
+              - positiveMatch: true
+                type: clientTlsFingerprintMatch
+                value:
+                - aebbfa8e53e8661f
+              - positiveMatch: true
+                type: hostMatch
+                value:
+                - example.com
+                - '*.Nitrogen.gb'
+              - positiveMatch: false
+                type: asNumberMatch
+                useXForwardForHeaders: true
+                value:
+                - '2145697538'
+              - positiveMatch: false
+                type: geoMatch
+                useXForwardForHeaders: true
+                value:
+                - AD
+              - positiveMatch: false
+                type: ipAddressMatch
+                useXForwardForHeaders: true
+                value:
+                - 81.477.377.57
+              - positiveMatch: true
+                type: clientListMatch
+                useXForwardForHeaders: true
+                value:
+                - 86744_AZURETLS
+                - 83629_40KHG
+              description: Can I create all conditions?
+              effectiveTimePeriod:
+                endDate: '2021-11-02T01:00:00.000Z'
+                startDate: '2021-08-05T01:00:00.000Z'
+              loggingOptions:
+              - id: CLIENT_TLS_FINGERPRINT_MATCH
+              name: Fat Rule
+              operation: AND
+              samplingRate: 10
+              stagingOnly: true
+              structured: true
+              tag:
+              - test
+            schema:
+              additionalProperties: false
+              description: Contains settings for a custom rule.
+              properties:
+                conditions:
+                  description: Contains the details about the condition that triggers the custom rule.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      name:
+                        description: The name you assign to the custom rule.
+                        oneOf:
+                        - items:
+                            type: string
+                          title: Array
+                          type: array
+                        - title: String
+                          type: string
+                      nameCase:
+                        description: Whether to consider the case-sensitivity of the provided query parameter `name`. This only applies to the `uriQueryMatch` condition `type`.
+                        type: boolean
+                      nameWildcard:
+                        description: Whether the provided header `name` is a wildcard. This only applies to the `requestHeaderMatch` condition `type`.
+                        type: boolean
+                      positiveMatch:
+                        description: Whether the condition should trigger on a match (`true`) or a lack of match (`false`).
+                        type: boolean
+                      type:
+                        description: The type of condition. See [CustomRule condition type values](https://techdocs.akamai.com/application-security/reference/condition-type-values).
+                        enum:
+                        - cookieMatch
+                        - extensionMatch
+                        - filenameMatch
+                        - ipMatch
+                        - pathMatch
+                        - requestHeaderMatch
+                        - requestMethodMatch
+                        - requestProtocolVersionMatch
+                        - uriQueryMatch
+                        - headerOrderMatch
+                        - argsPostMatch
+                        - argsPostNamesMatch
+                        - clientCertPresentMatch
+                        - clientCertValidMatch
+                        - clientTlsFingerprintMatch
+                        - hostMatch
+                        - ipAddressMatch
+                        - geoMatch
+                        - asNumberMatch
+                        - clientListMatch
+                        type: string
+                      useXForwardForHeaders:
+                        description: Whether the condition should include `X-Forwarded-For` (XFF) header. This only applies when the `type` is `ipAddressMatch`, `geoMatch`, `asNumberMatch`, or `clientListMatch`.
+                        type: boolean
+                      value:
+                        description: The value that triggers the condition when matched or not matched. Specify a string for the `requestProtocolVersionMatch`, `clientCertPresentMatch`, `clientCertValidMatch`, and `headerOrderMatch` conditions. For all other conditions, specify an array of strings.
+                        oneOf:
+                        - items:
+                            type: string
+                          title: Array
+                          type: array
+                        - title: String
+                          type: string
+                        type: string
+                      valueCase:
+                        description: Whether to consider the case-sensitivity of the provided header `value`. This only applies to the `requestHeaderMatch` condition `type`.
+                        type: boolean
+                      valueExactMatch:
+                        description: Whether to consider only exact matches of the header `value`.
+                        type: boolean
+                      valueIgnoreSegment:
+                        description: Whether to ignore path segments when matching. This only applies when the `type` is `pathMatch`.
+                        type: boolean
+                      valueNormalize:
+                        description: Whether to normalize the value of the header when matching. This only applies to type values of `extensionMatch` and `pathMatch`.
+                        type: boolean
+                      valueRecursive:
+                        description: Whether to use recursion when matching. When `false`, you can only match on the filename in the root folder. This only applies when the condition `type` is `filenameMatch`.
+                        type: boolean
+                      valueWildcard:
+                        description: Whether the provided header `value` is a wildcard. This only applies when the condition `type` is `requestHeaderMatch`.
+                        type: boolean
+                    required:
+                    - type
+                    - positiveMatch
+                    type: object
+                  type: array
+                description:
+                  description: The custom rule description.
+                  type: string
+                effectiveTimePeriod:
+                  additionalProperties: false
+                  description: The time period during which the custom rule is active.
+                  properties:
+                    endDate:
+                      description: An ISO 8601 timestamp that sets when the rule expires or deactivates.
+                      type: string
+                    startDate:
+                      description: An ISO 8601 timestamp that sets when the rule activates.
+                      format: date-time
+                      type: string
+                    status:
+                      description: The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.
+                      enum:
+                      - active
+                      - inactive
+                      - expiring
+                      - expired
+                      type: string
+                  required:
+                  - endDate
+                  - startDate
+                  type: object
+                id:
+                  description: Uniquely identifies the rule.
+                  type: integer
+                inspectRequest:
+                  description: Whether to inspect the HTTP request for unstructured custom rules.
+                  type: boolean
+                inspectResponse:
+                  description: Whether to inspect the HTTP response for unstructured custom rules.
+                  type: boolean
+                loggingOptions:
+                  description: The specific conditions to be logged.
+                  items:
+                    additionalProperties: false
+                    description: Condition to be logged.
+                    properties:
+                      id:
+                        description: The unique identifier for each logging option. See [Logging option values](https://techdocs.akamai.com/application-security/reference/logging-option-values).
+                        enum:
+                        - CLIENT_TLS_FINGERPRINT_MATCH
+                        - HEADER_ORDER_MATCH
+                        - REQUEST_HEADER_MATCH
+                        - COOKIE_MATCH
+                        - URI_QUERY_MATCH
+                        - ARGS_POST_MATCH
+                        type: string
+                      name:
+                        description: A description of the logging option type.
+                        type: string
+                      value:
+                        description: The value on which to match when determining whether to log the custom rule condition.
+                        type: string
+                    required:
+                    - id
+                    type: object
+                    x-akamai:
+                      file-path: schemas/logging-option.yaml
+                  type: array
+                metadata:
+                  description: The metadata you provided for unstructured custom rules.
+                  type: string
+                name:
+                  description: The custom rule name.
+                  type: string
+                operation:
+                  description: Specify `AND` logic to require all conditions, or `OR` logic to require at least one condition to match.
+                  enum:
+                  - AND
+                  - OR
+                  type: string
+                ruleActivated:
+                  description: Whether the rule is active in the configuration.
+                  type: boolean
+                samplingRate:
+                  description: The portion of traffic to sample, expressed as a percent.
+                  maximum: 100
+                  minimum: 0
+                  type: integer
+                stagingOnly:
+                  default: false
+                  description: Whether to show traffic from only the staging network, or all traffic. The default setting is `false` and only shows in the response when `true`.
+                  type: boolean
+                structured:
+                  description: Whether you created the rule with the structured custom rule builder or free-form XML. This needs to be `true`.
+                  type: boolean
+                tag:
+                  description: The list of labels you assigned to the custom rule.
+                  items:
+                    type: string
+                  type: array
+                version:
+                  description: The custom rule version.
+                  type: integer
+              required:
+              - name
+              - operation
+              - structured
+              type: object
+              x-akamai:
+                file-path: schemas/custom-rule.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                conditions:
+                - positiveMatch: true
+                  type: requestMethodMatch
+                  value:
+                  - GET
+                  - CONNECT
+                  - TRACE
+                  - PUT
+                  - POST
+                  - OPTIONS
+                  - DELETE
+                  - HEAD
+                - positiveMatch: true
+                  type: pathMatch
+                  value:
+                  - /H
+                  - /Li
+                  - /He
+                - positiveMatch: true
+                  type: extensionMatch
+                  value:
+                  - Li
+                  - He
+                  - H
+                  valueCase: true
+                  valueWildcard: true
+                - positiveMatch: true
+                  type: filenameMatch
+                  value:
+                  - He
+                  - H
+                  - Li
+                  valueCase: false
+                  valueWildcard: false
+                - positiveMatch: true
+                  type: requestProtocolVersionMatch
+                  value: HTTP/0.9
+                - name:
+                  - H
+                  - He
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: requestHeaderMatch
+                  value:
+                  - Li
+                  - He
+                  - H
+                  valueCase: true
+                  valueWildcard: true
+                - name:
+                  - He
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: requestHeaderMatch
+                  value:
+                  - C
+                  - Be
+                  - B
+                  valueCase: true
+                  valueWildcard: true
+                - positiveMatch: true
+                  type: headerOrderMatch
+                  value: H:He
+                - name: H
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: cookieMatch
+                  value:
+                  - H
+                  - He
+                  - Li
+                  valueCase: true
+                  valueWildcard: true
+                - name: Be
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: cookieMatch
+                  value:
+                  - O
+                  - N
+                  - C
+                  valueCase: true
+                  valueWildcard: true
+                - name: C
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: uriQueryMatch
+                  value:
+                  - Carbon
+                  - C
+                  valueCase: true
+                  valueWildcard: true
+                - name: N
+                  nameCase: false
+                  nameWildcard: false
+                  positiveMatch: true
+                  type: uriQueryMatch
+                  value:
+                  - Nitrogen
+                  - N
+                  valueCase: false
+                  valueWildcard: false
+                - name: H
+                  positiveMatch: true
+                  type: argsPostMatch
+                  value:
+                  - H
+                  - Hydrogen
+                - name: He
+                  positiveMatch: true
+                  type: argsPostMatch
+                  value:
+                  - He
+                  - Helium
+                - positiveMatch: true
+                  type: argsPostNamesMatch
+                  value:
+                  - Carbon
+                  - Oxygen
+                  - Nitrogen
+                  - Chlorine
+                - positiveMatch: true
+                  type: clientCertPresentMatch
+                - positiveMatch: true
+                  type: clientCertValidMatch
+                - positiveMatch: true
+                  type: clientTlsFingerprintMatch
+                  value:
+                  - aebbfa8e53e8661f
+                - positiveMatch: true
+                  type: hostMatch
+                  value:
+                  - example.com
+                  - '*.Nitrogen.gb'
+                - positiveMatch: false
+                  type: asNumberMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - '2145697538'
+                - positiveMatch: false
+                  type: geoMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - AD
+                - positiveMatch: false
+                  type: ipAddressMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - 81.477.377.57
+                - positiveMatch: true
+                  type: clientListMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - 86744_AZURETLS
+                  - 83629_40KHG
+                description: Can I create all conditions?
+                effectiveTimePeriod:
+                  endDate: '2021-11-02T01:00:00.000Z'
+                  startDate: '2021-08-05T01:00:00.000Z'
+                  status: expired
+                id: 661699
+                loggingOptions:
+                - id: CLIENT_TLS_FINGERPRINT_MATCH
+                name: Fat Rule
+                operation: AND
+                ruleActivated: false
+                samplingRate: 10
+                stagingOnly: true
+                structured: true
+                tag:
+                - test
+                version: 1
+              schema:
+                additionalProperties: false
+                description: Contains settings for a custom rule.
+                properties:
+                  conditions:
+                    description: Contains the details about the condition that triggers the custom rule.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        name:
+                          description: The name you assign to the custom rule.
+                          oneOf:
+                          - items:
+                              type: string
+                            title: Array
+                            type: array
+                          - title: String
+                            type: string
+                        nameCase:
+                          description: Whether to consider the case-sensitivity of the provided query parameter `name`. This only applies to the `uriQueryMatch` condition `type`.
+                          type: boolean
+                        nameWildcard:
+                          description: Whether the provided header `name` is a wildcard. This only applies to the `requestHeaderMatch` condition `type`.
+                          type: boolean
+                        positiveMatch:
+                          description: Whether the condition should trigger on a match (`true`) or a lack of match (`false`).
+                          type: boolean
+                        type:
+                          description: The type of condition. See [CustomRule condition type values](https://techdocs.akamai.com/application-security/reference/condition-type-values).
+                          enum:
+                          - cookieMatch
+                          - extensionMatch
+                          - filenameMatch
+                          - ipMatch
+                          - pathMatch
+                          - requestHeaderMatch
+                          - requestMethodMatch
+                          - requestProtocolVersionMatch
+                          - uriQueryMatch
+                          - headerOrderMatch
+                          - argsPostMatch
+                          - argsPostNamesMatch
+                          - clientCertPresentMatch
+                          - clientCertValidMatch
+                          - clientTlsFingerprintMatch
+                          - hostMatch
+                          - ipAddressMatch
+                          - geoMatch
+                          - asNumberMatch
+                          - clientListMatch
+                          type: string
+                        useXForwardForHeaders:
+                          description: Whether the condition should include `X-Forwarded-For` (XFF) header. This only applies when the `type` is `ipAddressMatch`, `geoMatch`, `asNumberMatch`, or `clientListMatch`.
+                          type: boolean
+                        value:
+                          description: The value that triggers the condition when matched or not matched. Specify a string for the `requestProtocolVersionMatch`, `clientCertPresentMatch`, `clientCertValidMatch`, and `headerOrderMatch` conditions. For all other conditions, specify an array of strings.
+                          oneOf:
+                          - items:
+                              type: string
+                            title: Array
+                            type: array
+                          - title: String
+                            type: string
+                          type: string
+                        valueCase:
+                          description: Whether to consider the case-sensitivity of the provided header `value`. This only applies to the `requestHeaderMatch` condition `type`.
+                          type: boolean
+                        valueExactMatch:
+                          description: Whether to consider only exact matches of the header `value`.
+                          type: boolean
+                        valueIgnoreSegment:
+                          description: Whether to ignore path segments when matching. This only applies when the `type` is `pathMatch`.
+                          type: boolean
+                        valueNormalize:
+                          description: Whether to normalize the value of the header when matching. This only applies to type values of `extensionMatch` and `pathMatch`.
+                          type: boolean
+                        valueRecursive:
+                          description: Whether to use recursion when matching. When `false`, you can only match on the filename in the root folder. This only applies when the condition `type` is `filenameMatch`.
+                          type: boolean
+                        valueWildcard:
+                          description: Whether the provided header `value` is a wildcard. This only applies when the condition `type` is `requestHeaderMatch`.
+                          type: boolean
+                      required:
+                      - type
+                      - positiveMatch
+                      type: object
+                    type: array
+                  description:
+                    description: The custom rule description.
+                    type: string
+                  effectiveTimePeriod:
+                    additionalProperties: false
+                    description: The time period during which the custom rule is active.
+                    properties:
+                      endDate:
+                        description: An ISO 8601 timestamp that sets when the rule expires or deactivates.
+                        type: string
+                      startDate:
+                        description: An ISO 8601 timestamp that sets when the rule activates.
+                        format: date-time
+                        type: string
+                      status:
+                        description: The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.
+                        enum:
+                        - active
+                        - inactive
+                        - expiring
+                        - expired
+                        type: string
+                    required:
+                    - endDate
+                    - startDate
+                    type: object
+                  id:
+                    description: Uniquely identifies the rule.
+                    type: integer
+                  inspectRequest:
+                    description: Whether to inspect the HTTP request for unstructured custom rules.
+                    type: boolean
+                  inspectResponse:
+                    description: Whether to inspect the HTTP response for unstructured custom rules.
+                    type: boolean
+                  loggingOptions:
+                    description: The specific conditions to be logged.
+                    items:
+                      additionalProperties: false
+                      description: Condition to be logged.
+                      properties:
+                        id:
+                          description: The unique identifier for each logging option. See [Logging option values](https://techdocs.akamai.com/application-security/reference/logging-option-values).
+                          enum:
+                          - CLIENT_TLS_FINGERPRINT_MATCH
+                          - HEADER_ORDER_MATCH
+                          - REQUEST_HEADER_MATCH
+                          - COOKIE_MATCH
+                          - URI_QUERY_MATCH
+                          - ARGS_POST_MATCH
+                          type: string
+                        name:
+                          description: A description of the logging option type.
+                          type: string
+                        value:
+                          description: The value on which to match when determining whether to log the custom rule condition.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                      x-akamai:
+                        file-path: schemas/logging-option.yaml
+                    type: array
+                  metadata:
+                    description: The metadata you provided for unstructured custom rules.
+                    type: string
+                  name:
+                    description: The custom rule name.
+                    type: string
+                  operation:
+                    description: Specify `AND` logic to require all conditions, or `OR` logic to require at least one condition to match.
+                    enum:
+                    - AND
+                    - OR
+                    type: string
+                  ruleActivated:
+                    description: Whether the rule is active in the configuration.
+                    type: boolean
+                  samplingRate:
+                    description: The portion of traffic to sample, expressed as a percent.
+                    maximum: 100
+                    minimum: 0
+                    type: integer
+                  stagingOnly:
+                    default: false
+                    description: Whether to show traffic from only the staging network, or all traffic. The default setting is `false` and only shows in the response when `true`.
+                    type: boolean
+                  structured:
+                    description: Whether you created the rule with the structured custom rule builder or free-form XML. This needs to be `true`.
+                    type: boolean
+                  tag:
+                    description: The list of labels you assigned to the custom rule.
+                    items:
+                      type: string
+                    type: array
+                  version:
+                    description: The custom rule version.
+                    type: integer
+                required:
+                - name
+                - operation
+                - structured
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-rule.yaml
+          description: Responds with the newly created rule.
+      summary: Create a custom rule
+      tags:
+      - 'Shared resources: Custom rules'
+      x-akamai:
+        labels:
+        - All products
+    get:
+      description: __All products__ Lists custom rules defined in a security configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-configs-custom-rules
+      operationId: get-configs-custom-rules
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                customRules:
+                - effectiveTimePeriod:
+                    endDate: '2021-11-02T01:00:00.000Z'
+                    startDate: '2021-08-05T01:00:00.000Z'
+                    status: expired
+                  id: 111111
+                  link: /appsec/v1/configs/99999/customRules/111111
+                  name: Example 1
+                  samplingRate: 10
+                  status: activated
+                  version: 1
+                - effectiveTimePeriod:
+                    endDate: '2021-11-02T01:00:00.000Z'
+                    startDate: '2021-08-05T01:00:00.000Z'
+                    status: expired
+                  id: 111112
+                  link: /appsec/v1/configs/99999/customRules/111112
+                  name: Example 2
+                  samplingRate: 10
+                  status: published
+                  version: 1
+                - effectiveTimePeriod:
+                    endDate: '2021-11-02T01:00:00.000Z'
+                    startDate: '2021-08-05T01:00:00.000Z'
+                    status: expired
+                  id: 111113
+                  link: /appsec/v1/configs/99999/customRules/111113
+                  name: Example 3
+                  samplingRate: 25
+                  status: unused
+                  version: 2
+              schema:
+                additionalProperties: false
+                description: Describes the custom rule's basic information.
+                properties:
+                  customRules:
+                    description: Describes basic information about a custom rule, such as activation status or time the rule is active.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        effectiveTimePeriod:
+                          additionalProperties: false
+                          description: The time period during which the custom rule is active.
+                          properties:
+                            endDate:
+                              description: An ISO 8601 timestamp that sets when the rule expires or deactivates.
+                              type: string
+                            startDate:
+                              description: An ISO 8601 timestamp that sets when the rule activates.
+                              format: date-time
+                              type: string
+                            status:
+                              description: The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.
+                              enum:
+                              - active
+                              - inactive
+                              - expiring
+                              - expired
+                              type: string
+                          required:
+                          - endDate
+                          - startDate
+                          type: object
+                        id:
+                          description: Uniquely identifies the custom rule.
+                          type: integer
+                        link:
+                          description: The link to the full custom rule definition. This field is only available when you run the [List custom rules](https://techdocs.akamai.com/application-security/reference/get-configs-custom-rules) operation.
+                          type: string
+                        name:
+                          description: The name you assign to the custom rule.
+                          type: string
+                        samplingRate:
+                          description: The portion of traffic to sample, expressed as a percent.
+                          maximum: 100
+                          minimum: 0
+                          type: integer
+                        status:
+                          description: The custom rule deployment status. Either `activated` if a rule is enabled in at least one security policy within a security configuration currently active in production, `published` if a rule is associated with at least one security policy in an inactive security configuration, or `unused` if a rule exists as a shared resource, but isn't associated with any security policy. This field is only available when you run the [List custom rules](https://techdocs.akamai.com/application-security/reference/get-configs-custom-rules) operation.
+                          enum:
+                          - activated
+                          - published
+                          - unused
+                          type: string
+                        version:
+                          description: The custom rule version.
+                          type: integer
+                      required:
+                      - id
+                      - link
+                      - name
+                      - status
+                      - version
+                      type: object
+                    type: array
+                required:
+                - customRules
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-rules.yaml
+          description: All the latest custom rules for this configuration.
+      summary: List custom rules
+      tags:
+      - 'Shared resources: Custom rules'
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/custom-rules/{ruleId}:
+    parameters:
+    - description: A unique identifier for rule.
+      in: path
+      name: ruleId
+      required: true
+      schema:
+        example: 699989
+        type: integer
+      x-akamai:
+        file-path: parameters/rule-id-path.yaml
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    x-akamai:
+      file-path: paths/config-custom-rule.yaml
+      path-info: /configs/{configId}/custom-rules/{ruleId}
+    get:
+      description: __All products__ Returns the details of a custom rule.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/get-config-custom-rule
+      operationId: get-config-custom-rule
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                conditions:
+                - positiveMatch: true
+                  type: requestMethodMatch
+                  value:
+                  - GET
+                  - CONNECT
+                  - TRACE
+                  - PUT
+                  - POST
+                  - OPTIONS
+                  - DELETE
+                  - HEAD
+                - positiveMatch: true
+                  type: pathMatch
+                  value:
+                  - /H
+                  - /Li
+                  - /He
+                - positiveMatch: true
+                  type: extensionMatch
+                  value:
+                  - Li
+                  - He
+                  - H
+                  valueCase: true
+                  valueWildcard: true
+                - positiveMatch: true
+                  type: filenameMatch
+                  value:
+                  - He
+                  - H
+                  - Li
+                  valueCase: false
+                  valueWildcard: false
+                - positiveMatch: true
+                  type: requestProtocolVersionMatch
+                  value: HTTP/0.9
+                - name:
+                  - H
+                  - He
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: requestHeaderMatch
+                  value:
+                  - Li
+                  - He
+                  - H
+                  valueCase: true
+                  valueWildcard: true
+                - name:
+                  - He
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: requestHeaderMatch
+                  value:
+                  - C
+                  - Be
+                  - B
+                  valueCase: true
+                  valueWildcard: true
+                - positiveMatch: true
+                  type: headerOrderMatch
+                  value: H:He
+                - name: H
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: cookieMatch
+                  value:
+                  - H
+                  - He
+                  - Li
+                  valueCase: true
+                  valueWildcard: true
+                - name: Be
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: cookieMatch
+                  value:
+                  - O
+                  - N
+                  - C
+                  valueCase: true
+                  valueWildcard: true
+                - name: C
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: uriQueryMatch
+                  value:
+                  - Carbon
+                  - C
+                  valueCase: true
+                  valueWildcard: true
+                - name: N
+                  nameCase: false
+                  nameWildcard: false
+                  positiveMatch: true
+                  type: uriQueryMatch
+                  value:
+                  - Nitrogen
+                  - N
+                  valueCase: false
+                  valueWildcard: false
+                - name: H
+                  positiveMatch: true
+                  type: argsPostMatch
+                  value:
+                  - H
+                  - Hydrogen
+                - name: He
+                  positiveMatch: true
+                  type: argsPostMatch
+                  value:
+                  - He
+                  - Helium
+                - positiveMatch: true
+                  type: argsPostNamesMatch
+                  value:
+                  - Carbon
+                  - Oxygen
+                  - Nitrogen
+                  - Chlorine
+                - positiveMatch: true
+                  type: clientCertPresentMatch
+                - positiveMatch: true
+                  type: clientCertValidMatch
+                - positiveMatch: true
+                  type: clientTlsFingerprintMatch
+                  value:
+                  - aebbfa8e53e8661f
+                - positiveMatch: true
+                  type: hostMatch
+                  value:
+                  - example.com
+                  - '*.Nitrogen.gb'
+                - positiveMatch: false
+                  type: asNumberMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - '2145697538'
+                - positiveMatch: false
+                  type: geoMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - AD
+                - positiveMatch: false
+                  type: ipAddressMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - 81.477.377.57
+                - positiveMatch: true
+                  type: clientListMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - 86744_AZURETLS
+                  - 83629_40KHG
+                description: Can I create all conditions?
+                effectiveTimePeriod:
+                  endDate: '2021-11-02T01:00:00.000Z'
+                  startDate: '2021-08-05T01:00:00.000Z'
+                  status: expired
+                id: 661699
+                loggingOptions:
+                - id: CLIENT_TLS_FINGERPRINT_MATCH
+                name: Fat Rule
+                operation: AND
+                ruleActivated: false
+                samplingRate: 10
+                stagingOnly: true
+                structured: true
+                tag:
+                - test
+                version: 1
+              schema:
+                additionalProperties: false
+                description: Contains settings for a custom rule.
+                properties:
+                  conditions:
+                    description: Contains the details about the condition that triggers the custom rule.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        name:
+                          description: The name you assign to the custom rule.
+                          oneOf:
+                          - items:
+                              type: string
+                            title: Array
+                            type: array
+                          - title: String
+                            type: string
+                        nameCase:
+                          description: Whether to consider the case-sensitivity of the provided query parameter `name`. This only applies to the `uriQueryMatch` condition `type`.
+                          type: boolean
+                        nameWildcard:
+                          description: Whether the provided header `name` is a wildcard. This only applies to the `requestHeaderMatch` condition `type`.
+                          type: boolean
+                        positiveMatch:
+                          description: Whether the condition should trigger on a match (`true`) or a lack of match (`false`).
+                          type: boolean
+                        type:
+                          description: The type of condition. See [CustomRule condition type values](https://techdocs.akamai.com/application-security/reference/condition-type-values).
+                          enum:
+                          - cookieMatch
+                          - extensionMatch
+                          - filenameMatch
+                          - ipMatch
+                          - pathMatch
+                          - requestHeaderMatch
+                          - requestMethodMatch
+                          - requestProtocolVersionMatch
+                          - uriQueryMatch
+                          - headerOrderMatch
+                          - argsPostMatch
+                          - argsPostNamesMatch
+                          - clientCertPresentMatch
+                          - clientCertValidMatch
+                          - clientTlsFingerprintMatch
+                          - hostMatch
+                          - ipAddressMatch
+                          - geoMatch
+                          - asNumberMatch
+                          - clientListMatch
+                          type: string
+                        useXForwardForHeaders:
+                          description: Whether the condition should include `X-Forwarded-For` (XFF) header. This only applies when the `type` is `ipAddressMatch`, `geoMatch`, `asNumberMatch`, or `clientListMatch`.
+                          type: boolean
+                        value:
+                          description: The value that triggers the condition when matched or not matched. Specify a string for the `requestProtocolVersionMatch`, `clientCertPresentMatch`, `clientCertValidMatch`, and `headerOrderMatch` conditions. For all other conditions, specify an array of strings.
+                          oneOf:
+                          - items:
+                              type: string
+                            title: Array
+                            type: array
+                          - title: String
+                            type: string
+                          type: string
+                        valueCase:
+                          description: Whether to consider the case-sensitivity of the provided header `value`. This only applies to the `requestHeaderMatch` condition `type`.
+                          type: boolean
+                        valueExactMatch:
+                          description: Whether to consider only exact matches of the header `value`.
+                          type: boolean
+                        valueIgnoreSegment:
+                          description: Whether to ignore path segments when matching. This only applies when the `type` is `pathMatch`.
+                          type: boolean
+                        valueNormalize:
+                          description: Whether to normalize the value of the header when matching. This only applies to type values of `extensionMatch` and `pathMatch`.
+                          type: boolean
+                        valueRecursive:
+                          description: Whether to use recursion when matching. When `false`, you can only match on the filename in the root folder. This only applies when the condition `type` is `filenameMatch`.
+                          type: boolean
+                        valueWildcard:
+                          description: Whether the provided header `value` is a wildcard. This only applies when the condition `type` is `requestHeaderMatch`.
+                          type: boolean
+                      required:
+                      - type
+                      - positiveMatch
+                      type: object
+                    type: array
+                  description:
+                    description: The custom rule description.
+                    type: string
+                  effectiveTimePeriod:
+                    additionalProperties: false
+                    description: The time period during which the custom rule is active.
+                    properties:
+                      endDate:
+                        description: An ISO 8601 timestamp that sets when the rule expires or deactivates.
+                        type: string
+                      startDate:
+                        description: An ISO 8601 timestamp that sets when the rule activates.
+                        format: date-time
+                        type: string
+                      status:
+                        description: The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.
+                        enum:
+                        - active
+                        - inactive
+                        - expiring
+                        - expired
+                        type: string
+                    required:
+                    - endDate
+                    - startDate
+                    type: object
+                  id:
+                    description: Uniquely identifies the rule.
+                    type: integer
+                  inspectRequest:
+                    description: Whether to inspect the HTTP request for unstructured custom rules.
+                    type: boolean
+                  inspectResponse:
+                    description: Whether to inspect the HTTP response for unstructured custom rules.
+                    type: boolean
+                  loggingOptions:
+                    description: The specific conditions to be logged.
+                    items:
+                      additionalProperties: false
+                      description: Condition to be logged.
+                      properties:
+                        id:
+                          description: The unique identifier for each logging option. See [Logging option values](https://techdocs.akamai.com/application-security/reference/logging-option-values).
+                          enum:
+                          - CLIENT_TLS_FINGERPRINT_MATCH
+                          - HEADER_ORDER_MATCH
+                          - REQUEST_HEADER_MATCH
+                          - COOKIE_MATCH
+                          - URI_QUERY_MATCH
+                          - ARGS_POST_MATCH
+                          type: string
+                        name:
+                          description: A description of the logging option type.
+                          type: string
+                        value:
+                          description: The value on which to match when determining whether to log the custom rule condition.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                      x-akamai:
+                        file-path: schemas/logging-option.yaml
+                    type: array
+                  metadata:
+                    description: The metadata you provided for unstructured custom rules.
+                    type: string
+                  name:
+                    description: The custom rule name.
+                    type: string
+                  operation:
+                    description: Specify `AND` logic to require all conditions, or `OR` logic to require at least one condition to match.
+                    enum:
+                    - AND
+                    - OR
+                    type: string
+                  ruleActivated:
+                    description: Whether the rule is active in the configuration.
+                    type: boolean
+                  samplingRate:
+                    description: The portion of traffic to sample, expressed as a percent.
+                    maximum: 100
+                    minimum: 0
+                    type: integer
+                  stagingOnly:
+                    default: false
+                    description: Whether to show traffic from only the staging network, or all traffic. The default setting is `false` and only shows in the response when `true`.
+                    type: boolean
+                  structured:
+                    description: Whether you created the rule with the structured custom rule builder or free-form XML. This needs to be `true`.
+                    type: boolean
+                  tag:
+                    description: The list of labels you assigned to the custom rule.
+                    items:
+                      type: string
+                    type: array
+                  version:
+                    description: The custom rule version.
+                    type: integer
+                required:
+                - name
+                - operation
+                - structured
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-rule.yaml
+          description: Responds with the requested rule.
+      summary: Get a custom rule
+      tags:
+      - 'Shared resources: Custom rules'
+      x-akamai:
+        labels:
+        - All products
+    put:
+      description: __All products__ Updates an existing custom rule.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/put-config-custom-rule
+      operationId: put-config-custom-rule
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              conditions:
+              - positiveMatch: true
+                type: requestMethodMatch
+                value:
+                - GET
+                - CONNECT
+                - TRACE
+                - PUT
+                - POST
+                - OPTIONS
+                - DELETE
+                - HEAD
+              - positiveMatch: true
+                type: pathMatch
+                value:
+                - /H
+                - /Li
+                - /He
+              - positiveMatch: true
+                type: extensionMatch
+                value:
+                - Li
+                - He
+                - H
+                valueCase: true
+                valueWildcard: true
+              - positiveMatch: true
+                type: filenameMatch
+                value:
+                - He
+                - H
+                - Li
+                valueCase: false
+                valueWildcard: false
+              - positiveMatch: true
+                type: requestProtocolVersionMatch
+                value: HTTP/0.9
+              - name:
+                - H
+                - He
+                nameWildcard: true
+                positiveMatch: true
+                type: requestHeaderMatch
+                value:
+                - Li
+                - He
+                - H
+                valueCase: true
+                valueWildcard: true
+              - name:
+                - He
+                nameWildcard: true
+                positiveMatch: true
+                type: requestHeaderMatch
+                value:
+                - C
+                - Be
+                - B
+                valueCase: true
+                valueWildcard: true
+              - positiveMatch: true
+                type: headerOrderMatch
+                value: H:He
+              - name: H
+                nameCase: true
+                nameWildcard: true
+                positiveMatch: true
+                type: cookieMatch
+                value:
+                - H
+                - He
+                - Li
+                valueCase: true
+                valueWildcard: true
+              - name: Be
+                nameCase: true
+                nameWildcard: true
+                positiveMatch: true
+                type: cookieMatch
+                value:
+                - O
+                - N
+                - C
+                valueCase: true
+                valueWildcard: true
+              - name: C
+                nameCase: true
+                nameWildcard: true
+                positiveMatch: true
+                type: uriQueryMatch
+                value:
+                - Carbon
+                - C
+                valueCase: true
+                valueWildcard: true
+              - name: N
+                nameCase: false
+                nameWildcard: false
+                positiveMatch: true
+                type: uriQueryMatch
+                value:
+                - Nitrogen
+                - N
+                valueCase: false
+                valueWildcard: false
+              - name: H
+                positiveMatch: true
+                type: argsPostMatch
+                value:
+                - H
+                - Hydrogen
+              - name: He
+                positiveMatch: true
+                type: argsPostMatch
+                value:
+                - He
+                - Helium
+              - positiveMatch: true
+                type: argsPostNamesMatch
+                value:
+                - Carbon
+                - Oxygen
+                - Nitrogen
+                - Chlorine
+              - positiveMatch: true
+                type: clientCertPresentMatch
+              - positiveMatch: false
+                type: clientCertValidMatch
+              - positiveMatch: true
+                type: clientTlsFingerprintMatch
+                value:
+                - aebbfa8e53e8661f
+              - positiveMatch: true
+                type: hostMatch
+                value:
+                - example.com
+                - '*.Nitrogen.gb'
+              - positiveMatch: false
+                type: asNumberMatch
+                useXForwardForHeaders: true
+                value:
+                - '2145697538'
+              - positiveMatch: false
+                type: geoMatch
+                useXForwardForHeaders: true
+                value:
+                - AD
+              - positiveMatch: false
+                type: ipAddressMatch
+                useXForwardForHeaders: true
+                value:
+                - 81.477.377.57
+              - positiveMatch: true
+                type: clientListMatch
+                useXForwardForHeaders: true
+                value:
+                - 86744_AZURETLS
+                - 83629_40KHG
+              description: Can I create all conditions?
+              effectiveTimePeriod:
+                endDate: '2021-11-02T01:00:00.000Z'
+                startDate: '2021-08-05T01:00:00.000Z'
+                status: expired
+              id: 661699
+              loggingOptions:
+              - id: CLIENT_TLS_FINGERPRINT_MATCH
+              name: Fat Rule
+              operation: AND
+              samplingRate: 10
+              stagingOnly: true
+              structured: true
+              tag:
+              - test
+              version: 1
+            schema:
+              additionalProperties: false
+              description: Contains settings for a custom rule.
+              properties:
+                conditions:
+                  description: Contains the details about the condition that triggers the custom rule.
+                  items:
+                    additionalProperties: false
+                    properties:
+                      name:
+                        description: The name you assign to the custom rule.
+                        oneOf:
+                        - items:
+                            type: string
+                          title: Array
+                          type: array
+                        - title: String
+                          type: string
+                      nameCase:
+                        description: Whether to consider the case-sensitivity of the provided query parameter `name`. This only applies to the `uriQueryMatch` condition `type`.
+                        type: boolean
+                      nameWildcard:
+                        description: Whether the provided header `name` is a wildcard. This only applies to the `requestHeaderMatch` condition `type`.
+                        type: boolean
+                      positiveMatch:
+                        description: Whether the condition should trigger on a match (`true`) or a lack of match (`false`).
+                        type: boolean
+                      type:
+                        description: The type of condition. See [CustomRule condition type values](https://techdocs.akamai.com/application-security/reference/condition-type-values).
+                        enum:
+                        - cookieMatch
+                        - extensionMatch
+                        - filenameMatch
+                        - ipMatch
+                        - pathMatch
+                        - requestHeaderMatch
+                        - requestMethodMatch
+                        - requestProtocolVersionMatch
+                        - uriQueryMatch
+                        - headerOrderMatch
+                        - argsPostMatch
+                        - argsPostNamesMatch
+                        - clientCertPresentMatch
+                        - clientCertValidMatch
+                        - clientTlsFingerprintMatch
+                        - hostMatch
+                        - ipAddressMatch
+                        - geoMatch
+                        - asNumberMatch
+                        - clientListMatch
+                        type: string
+                      useXForwardForHeaders:
+                        description: Whether the condition should include `X-Forwarded-For` (XFF) header. This only applies when the `type` is `ipAddressMatch`, `geoMatch`, `asNumberMatch`, or `clientListMatch`.
+                        type: boolean
+                      value:
+                        description: The value that triggers the condition when matched or not matched. Specify a string for the `requestProtocolVersionMatch`, `clientCertPresentMatch`, `clientCertValidMatch`, and `headerOrderMatch` conditions. For all other conditions, specify an array of strings.
+                        oneOf:
+                        - items:
+                            type: string
+                          title: Array
+                          type: array
+                        - title: String
+                          type: string
+                        type: string
+                      valueCase:
+                        description: Whether to consider the case-sensitivity of the provided header `value`. This only applies to the `requestHeaderMatch` condition `type`.
+                        type: boolean
+                      valueExactMatch:
+                        description: Whether to consider only exact matches of the header `value`.
+                        type: boolean
+                      valueIgnoreSegment:
+                        description: Whether to ignore path segments when matching. This only applies when the `type` is `pathMatch`.
+                        type: boolean
+                      valueNormalize:
+                        description: Whether to normalize the value of the header when matching. This only applies to type values of `extensionMatch` and `pathMatch`.
+                        type: boolean
+                      valueRecursive:
+                        description: Whether to use recursion when matching. When `false`, you can only match on the filename in the root folder. This only applies when the condition `type` is `filenameMatch`.
+                        type: boolean
+                      valueWildcard:
+                        description: Whether the provided header `value` is a wildcard. This only applies when the condition `type` is `requestHeaderMatch`.
+                        type: boolean
+                    required:
+                    - type
+                    - positiveMatch
+                    type: object
+                  type: array
+                description:
+                  description: The custom rule description.
+                  type: string
+                effectiveTimePeriod:
+                  additionalProperties: false
+                  description: The time period during which the custom rule is active.
+                  properties:
+                    endDate:
+                      description: An ISO 8601 timestamp that sets when the rule expires or deactivates.
+                      type: string
+                    startDate:
+                      description: An ISO 8601 timestamp that sets when the rule activates.
+                      format: date-time
+                      type: string
+                    status:
+                      description: The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.
+                      enum:
+                      - active
+                      - inactive
+                      - expiring
+                      - expired
+                      type: string
+                  required:
+                  - endDate
+                  - startDate
+                  type: object
+                id:
+                  description: Uniquely identifies the rule.
+                  type: integer
+                inspectRequest:
+                  description: Whether to inspect the HTTP request for unstructured custom rules.
+                  type: boolean
+                inspectResponse:
+                  description: Whether to inspect the HTTP response for unstructured custom rules.
+                  type: boolean
+                loggingOptions:
+                  description: The specific conditions to be logged.
+                  items:
+                    additionalProperties: false
+                    description: Condition to be logged.
+                    properties:
+                      id:
+                        description: The unique identifier for each logging option. See [Logging option values](https://techdocs.akamai.com/application-security/reference/logging-option-values).
+                        enum:
+                        - CLIENT_TLS_FINGERPRINT_MATCH
+                        - HEADER_ORDER_MATCH
+                        - REQUEST_HEADER_MATCH
+                        - COOKIE_MATCH
+                        - URI_QUERY_MATCH
+                        - ARGS_POST_MATCH
+                        type: string
+                      name:
+                        description: A description of the logging option type.
+                        type: string
+                      value:
+                        description: The value on which to match when determining whether to log the custom rule condition.
+                        type: string
+                    required:
+                    - id
+                    type: object
+                    x-akamai:
+                      file-path: schemas/logging-option.yaml
+                  type: array
+                metadata:
+                  description: The metadata you provided for unstructured custom rules.
+                  type: string
+                name:
+                  description: The custom rule name.
+                  type: string
+                operation:
+                  description: Specify `AND` logic to require all conditions, or `OR` logic to require at least one condition to match.
+                  enum:
+                  - AND
+                  - OR
+                  type: string
+                ruleActivated:
+                  description: Whether the rule is active in the configuration.
+                  type: boolean
+                samplingRate:
+                  description: The portion of traffic to sample, expressed as a percent.
+                  maximum: 100
+                  minimum: 0
+                  type: integer
+                stagingOnly:
+                  default: false
+                  description: Whether to show traffic from only the staging network, or all traffic. The default setting is `false` and only shows in the response when `true`.
+                  type: boolean
+                structured:
+                  description: Whether you created the rule with the structured custom rule builder or free-form XML. This needs to be `true`.
+                  type: boolean
+                tag:
+                  description: The list of labels you assigned to the custom rule.
+                  items:
+                    type: string
+                  type: array
+                version:
+                  description: The custom rule version.
+                  type: integer
+              required:
+              - name
+              - operation
+              - structured
+              type: object
+              x-akamai:
+                file-path: schemas/custom-rule.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                conditions:
+                - positiveMatch: true
+                  type: requestMethodMatch
+                  value:
+                  - GET
+                  - CONNECT
+                  - TRACE
+                  - PUT
+                  - POST
+                  - OPTIONS
+                  - DELETE
+                  - HEAD
+                - positiveMatch: true
+                  type: pathMatch
+                  value:
+                  - /H
+                  - /Li
+                  - /He
+                - positiveMatch: true
+                  type: extensionMatch
+                  value:
+                  - Li
+                  - He
+                  - H
+                  valueCase: true
+                  valueWildcard: true
+                - positiveMatch: true
+                  type: filenameMatch
+                  value:
+                  - He
+                  - H
+                  - Li
+                  valueCase: false
+                  valueWildcard: false
+                - positiveMatch: true
+                  type: requestProtocolVersionMatch
+                  value: HTTP/0.9
+                - name:
+                  - H
+                  - He
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: requestHeaderMatch
+                  value:
+                  - Li
+                  - He
+                  - H
+                  valueCase: true
+                  valueWildcard: true
+                - name:
+                  - He
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: requestHeaderMatch
+                  value:
+                  - C
+                  - Be
+                  - B
+                  valueCase: true
+                  valueWildcard: true
+                - positiveMatch: true
+                  type: headerOrderMatch
+                  value: H:He
+                - name: H
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: cookieMatch
+                  value:
+                  - H
+                  - He
+                  - Li
+                  valueCase: true
+                  valueWildcard: true
+                - name: Be
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: cookieMatch
+                  value:
+                  - O
+                  - N
+                  - C
+                  valueCase: true
+                  valueWildcard: true
+                - name: C
+                  nameCase: true
+                  nameWildcard: true
+                  positiveMatch: true
+                  type: uriQueryMatch
+                  value:
+                  - Carbon
+                  - C
+                  valueCase: true
+                  valueWildcard: true
+                - name: N
+                  nameCase: false
+                  nameWildcard: false
+                  positiveMatch: true
+                  type: uriQueryMatch
+                  value:
+                  - Nitrogen
+                  - N
+                  valueCase: false
+                  valueWildcard: false
+                - name: H
+                  positiveMatch: true
+                  type: argsPostMatch
+                  value:
+                  - H
+                  - Hydrogen
+                - name: He
+                  positiveMatch: true
+                  type: argsPostMatch
+                  value:
+                  - He
+                  - Helium
+                - positiveMatch: true
+                  type: argsPostNamesMatch
+                  value:
+                  - Carbon
+                  - Oxygen
+                  - Nitrogen
+                  - Chlorine
+                - positiveMatch: true
+                  type: clientCertPresentMatch
+                - positiveMatch: true
+                  type: clientCertValidMatch
+                - positiveMatch: true
+                  type: clientTlsFingerprintMatch
+                  value:
+                  - aebbfa8e53e8661f
+                - positiveMatch: true
+                  type: hostMatch
+                  value:
+                  - example.com
+                  - '*.Nitrogen.gb'
+                - positiveMatch: false
+                  type: asNumberMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - '2145697538'
+                - positiveMatch: false
+                  type: geoMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - AD
+                - positiveMatch: false
+                  type: ipAddressMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - 81.477.377.57
+                - positiveMatch: true
+                  type: clientListMatch
+                  useXForwardForHeaders: true
+                  value:
+                  - 86744_AZURETLS
+                  - 83629_40KHG
+                description: Can I create all conditions?
+                effectiveTimePeriod:
+                  endDate: '2021-11-02T01:00:00.000Z'
+                  startDate: '2021-08-05T01:00:00.000Z'
+                  status: expired
+                id: 661699
+                loggingOptions:
+                - id: CLIENT_TLS_FINGERPRINT_MATCH
+                name: Fat Rule
+                operation: AND
+                ruleActivated: false
+                samplingRate: 10
+                stagingOnly: true
+                structured: true
+                tag:
+                - test
+                version: 1
+              schema:
+                additionalProperties: false
+                description: Contains settings for a custom rule.
+                properties:
+                  conditions:
+                    description: Contains the details about the condition that triggers the custom rule.
+                    items:
+                      additionalProperties: false
+                      properties:
+                        name:
+                          description: The name you assign to the custom rule.
+                          oneOf:
+                          - items:
+                              type: string
+                            title: Array
+                            type: array
+                          - title: String
+                            type: string
+                        nameCase:
+                          description: Whether to consider the case-sensitivity of the provided query parameter `name`. This only applies to the `uriQueryMatch` condition `type`.
+                          type: boolean
+                        nameWildcard:
+                          description: Whether the provided header `name` is a wildcard. This only applies to the `requestHeaderMatch` condition `type`.
+                          type: boolean
+                        positiveMatch:
+                          description: Whether the condition should trigger on a match (`true`) or a lack of match (`false`).
+                          type: boolean
+                        type:
+                          description: The type of condition. See [CustomRule condition type values](https://techdocs.akamai.com/application-security/reference/condition-type-values).
+                          enum:
+                          - cookieMatch
+                          - extensionMatch
+                          - filenameMatch
+                          - ipMatch
+                          - pathMatch
+                          - requestHeaderMatch
+                          - requestMethodMatch
+                          - requestProtocolVersionMatch
+                          - uriQueryMatch
+                          - headerOrderMatch
+                          - argsPostMatch
+                          - argsPostNamesMatch
+                          - clientCertPresentMatch
+                          - clientCertValidMatch
+                          - clientTlsFingerprintMatch
+                          - hostMatch
+                          - ipAddressMatch
+                          - geoMatch
+                          - asNumberMatch
+                          - clientListMatch
+                          type: string
+                        useXForwardForHeaders:
+                          description: Whether the condition should include `X-Forwarded-For` (XFF) header. This only applies when the `type` is `ipAddressMatch`, `geoMatch`, `asNumberMatch`, or `clientListMatch`.
+                          type: boolean
+                        value:
+                          description: The value that triggers the condition when matched or not matched. Specify a string for the `requestProtocolVersionMatch`, `clientCertPresentMatch`, `clientCertValidMatch`, and `headerOrderMatch` conditions. For all other conditions, specify an array of strings.
+                          oneOf:
+                          - items:
+                              type: string
+                            title: Array
+                            type: array
+                          - title: String
+                            type: string
+                          type: string
+                        valueCase:
+                          description: Whether to consider the case-sensitivity of the provided header `value`. This only applies to the `requestHeaderMatch` condition `type`.
+                          type: boolean
+                        valueExactMatch:
+                          description: Whether to consider only exact matches of the header `value`.
+                          type: boolean
+                        valueIgnoreSegment:
+                          description: Whether to ignore path segments when matching. This only applies when the `type` is `pathMatch`.
+                          type: boolean
+                        valueNormalize:
+                          description: Whether to normalize the value of the header when matching. This only applies to type values of `extensionMatch` and `pathMatch`.
+                          type: boolean
+                        valueRecursive:
+                          description: Whether to use recursion when matching. When `false`, you can only match on the filename in the root folder. This only applies when the condition `type` is `filenameMatch`.
+                          type: boolean
+                        valueWildcard:
+                          description: Whether the provided header `value` is a wildcard. This only applies when the condition `type` is `requestHeaderMatch`.
+                          type: boolean
+                      required:
+                      - type
+                      - positiveMatch
+                      type: object
+                    type: array
+                  description:
+                    description: The custom rule description.
+                    type: string
+                  effectiveTimePeriod:
+                    additionalProperties: false
+                    description: The time period during which the custom rule is active.
+                    properties:
+                      endDate:
+                        description: An ISO 8601 timestamp that sets when the rule expires or deactivates.
+                        type: string
+                      startDate:
+                        description: An ISO 8601 timestamp that sets when the rule activates.
+                        format: date-time
+                        type: string
+                      status:
+                        description: The current status of the rule based on its `startDate` and `endDate`. By default, rules are active for 30 days. When `ACTIVE`, the rule triggers when conditions are met. When `INACTIVE`, the rule doesn't trigger. When `EXPIRING`, the rule still triggers because it's still active until its specified expiration date. When the rule's status is `EXPIRED`, the rule is inactive and doesn't trigger. If your rule expires and you want to use it again, make a PUT request to [Modify a custom rule](https://techdocs.akamai.com/application-security/reference/put-config-custom-rule) with the new dates you'd like the rule to be active.
+                        enum:
+                        - active
+                        - inactive
+                        - expiring
+                        - expired
+                        type: string
+                    required:
+                    - endDate
+                    - startDate
+                    type: object
+                  id:
+                    description: Uniquely identifies the rule.
+                    type: integer
+                  inspectRequest:
+                    description: Whether to inspect the HTTP request for unstructured custom rules.
+                    type: boolean
+                  inspectResponse:
+                    description: Whether to inspect the HTTP response for unstructured custom rules.
+                    type: boolean
+                  loggingOptions:
+                    description: The specific conditions to be logged.
+                    items:
+                      additionalProperties: false
+                      description: Condition to be logged.
+                      properties:
+                        id:
+                          description: The unique identifier for each logging option. See [Logging option values](https://techdocs.akamai.com/application-security/reference/logging-option-values).
+                          enum:
+                          - CLIENT_TLS_FINGERPRINT_MATCH
+                          - HEADER_ORDER_MATCH
+                          - REQUEST_HEADER_MATCH
+                          - COOKIE_MATCH
+                          - URI_QUERY_MATCH
+                          - ARGS_POST_MATCH
+                          type: string
+                        name:
+                          description: A description of the logging option type.
+                          type: string
+                        value:
+                          description: The value on which to match when determining whether to log the custom rule condition.
+                          type: string
+                      required:
+                      - id
+                      type: object
+                      x-akamai:
+                        file-path: schemas/logging-option.yaml
+                    type: array
+                  metadata:
+                    description: The metadata you provided for unstructured custom rules.
+                    type: string
+                  name:
+                    description: The custom rule name.
+                    type: string
+                  operation:
+                    description: Specify `AND` logic to require all conditions, or `OR` logic to require at least one condition to match.
+                    enum:
+                    - AND
+                    - OR
+                    type: string
+                  ruleActivated:
+                    description: Whether the rule is active in the configuration.
+                    type: boolean
+                  samplingRate:
+                    description: The portion of traffic to sample, expressed as a percent.
+                    maximum: 100
+                    minimum: 0
+                    type: integer
+                  stagingOnly:
+                    default: false
+                    description: Whether to show traffic from only the staging network, or all traffic. The default setting is `false` and only shows in the response when `true`.
+                    type: boolean
+                  structured:
+                    description: Whether you created the rule with the structured custom rule builder or free-form XML. This needs to be `true`.
+                    type: boolean
+                  tag:
+                    description: The list of labels you assigned to the custom rule.
+                    items:
+                      type: string
+                    type: array
+                  version:
+                    description: The custom rule version.
+                    type: integer
+                required:
+                - name
+                - operation
+                - structured
+                type: object
+                x-akamai:
+                  file-path: schemas/custom-rule.yaml
+          description: Responds with the updated rule.
+      summary: Modify a custom rule
+      tags:
+      - 'Shared resources: Custom rules'
+      x-akamai:
+        labels:
+        - All products
+    delete:
+      description: __All products__ Deletes a custom rule as long as it isn't activated.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/delete-config-custom-rule
+      operationId: delete-config-custom-rule
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      responses:
+        '204':
+          content: {}
+          description: Custom rule successfully deleted.
+        '403':
+          content:
+            application/problem+json:
+              example:
+                detail: You do not have the necessary access to perform this operation or the requested resource cannot be modified
+                instance: https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                status: 403
+                title: Forbidden
+                type: https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED
+              schema:
+                additionalProperties: true
+                description: Details the errors you can receive.
+                properties:
+                  detail:
+                    description: The detailed error message.
+                    type: string
+                  fieldErrors:
+                    description: Pointers to fields for which invalid input was provided, whose values are messages detailing the reason this input was invalid for this field.
+                    type: object
+                  instance:
+                    description: The non-referenceable URI that indicates the error instance.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749
+                    type: string
+                  status:
+                    description: The HTTP status code.
+                    example: 404
+                    type: integer
+                  title:
+                    description: The error title.
+                    example: Not Found
+                    type: string
+                  type:
+                    description: The URL for the error type.
+                    example: https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND
+                    type: string
+                required:
+                - title
+                - type
+                - detail
+                - instance
+                - status
+                type: object
+                x-akamai:
+                  file-path: schemas/problem-details.yaml
+          description: '[Forbidden](https://techdocs.akamai.com/application-security/reference/403). Custom rule used and cannot be deleted.'
+          x-akamai:
+            file-path: errors/403.yaml
+      summary: Remove a custom rule
+      tags:
+      - 'Shared resources: Custom rules'
+      x-akamai:
+        labels:
+        - All products
+  /configs/{configId}/versions/{versionNumber}/custom-rules/usage:
+    parameters:
+    - description: A unique identifier for each configuration.
+      in: path
+      name: configId
+      required: true
+      schema:
+        example: 77653
+        format: int64
+        type: integer
+      x-akamai:
+        file-path: parameters/config-id-path.yaml
+    - description: A unique identifier for each version of a configuration.
+      in: path
+      name: versionNumber
+      required: true
+      schema:
+        example: 25
+        type: integer
+      x-akamai:
+        file-path: parameters/version-number-path.yaml
+    x-akamai:
+      file-path: paths/config-custom-rules-usage.yaml
+      path-info: /configs/{configId}/versions/{versionNumber}/custom-rules/usage
+    post:
+      description: __All products__ Returns a list of security policies using each requested custom rule with a set action (Allow or Deny), if any apply. Skips custom rule IDs that do not belong to this security configuration.
+      externalDocs:
+        description: See documentation for this operation in Akamai's Application Security API
+        url: https://techdocs.akamai.com/application-security/reference/post-config-custom-rules-usage
+      operationId: post-config-custom-rules-usage
+      parameters:
+      - description: For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys).
+        in: query
+        name: accountSwitchKey
+        required: false
+        schema:
+          example: 1-5C0YLB:1-8BYUX
+          type: string
+      requestBody:
+        content:
+          application/json:
+            example:
+              ruleIds:
+              - 661699
+              - 661700
+              - 100500
+            schema:
+              additionalProperties: false
+              description: Collects data for custom rule usage analysis.
+              properties:
+                ruleIds:
+                  description: A list of the custom rule IDs.
+                  items:
+                    type: integer
+                  minItems: 1
+                  nullable: false
+                  type: array
+                  uniqueItems: true
+              required:
+              - ruleIds
+              type: object
+              x-akamai:
+                file-path: schemas/config-custom-rules-usage-request.yaml
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                rules:
+                - policies:
+                  - policyId: bt17_75755
+                    policyName: Open Cloned IV 2
+                  ruleId: 661699
+                - policies: []
+                  ruleId: 661700
+              schema:
+                additionalProperties: false
+                description: Custom rule usage data.
+                properties:
+                  rules:
+                    description: The requested custom rule IDs and names of the security policies that use them.
+                    items:
+                      additionalProperties: false
+                      description: Usage of the requested custom rule in security policies.
+                      properties:
+                        policies:
+                          description: A list of security policies which use the custom rule.
+                          items:
+                            additionalProperties: false
+                            description: A security policy using the custom rule.
+                            properties:
+                              policyId:
+                                description: A security policy ID.
+                                nullable: false
+                                type: string
+                              policyName:
+                                description: A security policy name.
+                                nullable: false
+                                type: string
+                            required:
+                            - policyId
+                            - policyName
+                            type: object
+                          minItems: 0
+                          nullable: false
+                          type: array
+                          uniqueItems: true
+                        ruleId:
+                          description: A custom rule ID.
+                          nullable: false
+                          type: integer
+                      required:
+                      - ruleId
+                      - policies
+                      type: object
+                    minItems: 0
+                    nullable: false
+                    type: array
+                    uniqueItems: true
+                required:
+                - rules
+                type: object
+                x-akamai:
+                  file-path: schemas/config-custom-rules-usage-response.yaml
+          description: Returns all requested custom rules along with a list of the security policies using them, if any are available.
+      summary: List custom rules usage by security policies
+      tags:
+      - 'Shared resources: Custom rules'
+      x-akamai:
+        labels:
+        - All products
+externalDocs:
+  description: See documentation for Akamai's API Endpoint Definition API
+  url: https://techdocs.akamai.com/api-definitions/reference
+x-readme:
+  samples-languages:
+  - curl
+  - python
+  - node
