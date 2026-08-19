@@ -1,0 +1,116 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Access tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Access Tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/tokens",
+            "params": [
+              {
+                "name": "includeExpired",
+                "value": "{{includeExpired}}",
+                "type": "query",
+                "description": "Whether to include expired tokens that are less than 30 days old in the response."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View a list of EdgeKV access tokens."
+        },
+        {
+          "info": {
+            "name": "Akamai Create an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/tokens",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate an access token that allows an EdgeWorkers code bundle to access the specified namespace. Each token name needs to be unique and have a defined expiration of no longer than six months. You can't renew a token once it expires. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens)."
+        },
+        {
+          "info": {
+            "name": "Akamai Download an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/tokens/:tokenName",
+            "params": [
+              {
+                "name": "tokenName",
+                "value": "{{tokenName}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Download a previously created EdgeKV access token. To get a token you need to know the token `name`. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens)."
+        },
+        {
+          "info": {
+            "name": "Akamai Revoke an Access Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/tokens/:tokenName",
+            "params": [
+              {
+                "name": "tokenName",
+                "value": "{{tokenName}}",
+                "type": "path",
+                "description": "Unique identifier for each namespace."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Once you revoke an access token, you can't undo it. You also need to update any deployed EdgeWorkers code bundles that use the old token with a new token, or requests to EdgeKV fail. Any requests from an EdgeWorkers code bundle using a revoked token cause a 401 error. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

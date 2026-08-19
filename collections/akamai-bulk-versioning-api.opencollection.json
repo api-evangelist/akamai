@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Bulk versioning API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk versioning",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Bulk Version a Set of Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/bulk/property-version-creations",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create new versions of a set of properties based on any previous version. This operation launches an asynchronous process to increment versions. To check its progress, run the [List bulk-versioned properties](https://techdocs.akamai.com/property-mgr/reference/get-bulk-version) operation, whose link is available in the `Location` header or `bulkCreateVersionLink` member of this operation's response. Run this operation only after [bulk searching](https://techdocs.akamai.com/property-mgr/reference/"
+        },
+        {
+          "info": {
+            "name": "Akamai List Bulk-versioned Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/bulk/property-version-creations/:bulkCreateId",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "bulkCreateId",
+                "value": "{{bulkCreateId}}",
+                "type": "path",
+                "description": "Identifies each bulk-versioning job."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "List all new property versions that result from a [bulk versioning request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version). This operation polls the asynchronous process's status. After the `bulkCreateVersionsStatus` is `COMPLETE`, use the new version numbers along with search paths from a [bulk search](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) operation to [bulk patch](https://techdocs.akamai.com/property-mgr/reference/post-bulk-patch) them. See"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

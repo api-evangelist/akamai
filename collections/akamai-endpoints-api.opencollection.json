@@ -1,0 +1,390 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Endpoints API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Endpoints",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/endpoints",
+            "params": [
+              {
+                "name": "piiOnly",
+                "value": "{{piiOnly}}",
+                "type": "query",
+                "description": "Whether to return only endpoints with personally identifiable information (PII)."
+              },
+              {
+                "name": "page",
+                "value": "{{page}}",
+                "type": "query",
+                "description": "The page number index, starting at the default value of `1`."
+              },
+              {
+                "name": "pageSize",
+                "value": "{{pageSize}}",
+                "type": "query",
+                "description": "The number of endpoints on each page of results, `25` by default."
+              },
+              {
+                "name": "category",
+                "value": "{{category}}",
+                "type": "query",
+                "description": "Filters endpoints by the specified `apiCategoryName`, including the `__UNCATEGORIZED__` keyword."
+              },
+              {
+                "name": "contains",
+                "value": "{{contains}}",
+                "type": "query",
+                "description": "The search query substring criteria matching the endpoint's name, description, `basePath`, `apiCategoryName`, and `resourcePath`."
+              },
+              {
+                "name": "sortBy",
+                "value": "{{sortBy}}",
+                "type": "query",
+                "description": "__Enum__ The field to sort endpoints by, either the API `name` (corresponding to the `apiEndPointName` member) or `updateDate`."
+              },
+              {
+                "name": "sortOrder",
+                "value": "{{sortOrder}}",
+                "type": "query",
+                "description": "__Enum__ The sort order, either `desc` for descending or the default `asc` for ascending."
+              },
+              {
+                "name": "versionPreference",
+                "value": "{{versionPreference}}",
+                "type": "query",
+                "description": "__Enum__ The preference for selecting the endpoint version to return. By default the API returns the `LAST_UPDATED` version. If you set the preference to `ACTIVATED_FIRST`, the API first attempts to return the version currently active on the production network. If such version doesn't exist, the API attempts to return the version currently active on the staging network. If both of these checks fail, the API returns the last updated version."
+              },
+              {
+                "name": "show",
+                "value": "{{show}}",
+                "type": "query",
+                "description": "__Enum__ The type of endpoints to return based on their visibility status. By default the API returns `ALL` endpoints. You can instead decide to return `ONLY_VISIBLE` endpoints, or `ONLY_HIDDEN` endpoints. Run the [Show an endpoint](https://techdocs.akamai.com/api-definitions/reference/post-endpoint-show) and [Hide an endpoint](https://techdocs.akamai.com/api-definitions/reference/post-endpoint-hide) operations to control which endpoints are listed."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Filters endpoints to a specific contract. You need to specify this along with a `groupId`."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Filters endpoints to a specific group. You need to specify this along with a `contractId`."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists the available API endpoints, with results optionally paginated, sorted, and filtered. If no endpoints are available, the operation responds with an empty array."
+        },
+        {
+          "info": {
+            "name": "Register an endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/endpoints",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates the first version of an API endpoint configuration. You can specify the new endpoint's full set of resources. Alternatively, you can create them later either by modifying the endpoint object, or separately with the [Create a resource](https://techdocs.akamai.com/api-definitions/reference/post-resource) operation. The endpoint's name needs to be unique within an account."
+        },
+        {
+          "info": {
+            "name": "Clone an endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/cloneEndpoint",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an endpoint as a clone from the specified source endpoint ID and version."
+        },
+        {
+          "info": {
+            "name": "Register an endpoint from an API definition file",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/files",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Imports an API definition file and creates a new endpoint based on the file contents. You can run this operation in two ways. To POST JSON data, see [Make a JSON request to register an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/endpoint-request-json). To make a form request using these parameters, see [Make a form request to register an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/endpoint-request-for"
+        },
+        {
+          "info": {
+            "name": "List user entitlements",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/user-entitlements",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists user entitlements based on your assigned permissions. It helps you determine if your user identity assigned to the API client can run various other operations to modify data. See [Get started](https://techdocs.akamai.com/api-definitions/reference/api-get-started) for details on setting up the API client with the appropriate level of access. This operation's array values include `API_READ` for read-only access, `API_WRITE` for modifying the existing endpoint versions, `API_VERSIONING` for v"
+        },
+        {
+          "info": {
+            "name": "Verify secure connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/verify-secure-connection",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verifies that provided hostnames are signed with a provided certificate chain. This ensures that edge servers can connect to the hostnames securely. The response is a map of hostnames to connection status values. For the list of available connection status values and their descriptions, see Connection status values. You can use the response information when setting up JWKS in the [Edit JWT settings](https://techdocs.akamai.com/api-definitions/reference/put-jwt-settings) operation."
+        },
+        {
+          "info": {
+            "name": "Delete an endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/:apiEndPointId",
+            "params": [
+              {
+                "name": "apiEndPointId",
+                "value": "{{apiEndPointId}}",
+                "type": "path",
+                "description": "The unique identifier for the endpoint."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Removes an endpoint configuration from API Gateway if none of the endpoint's versions are active or pending activation on the staging or production network."
+        },
+        {
+          "info": {
+            "name": "Hide an endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/:apiEndPointId/hide",
+            "params": [
+              {
+                "name": "apiEndPointId",
+                "value": "{{apiEndPointId}}",
+                "type": "path",
+                "description": "The unique identifier for the endpoint."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Hides an endpoint and all its versions. You can only hide an endpoint with no active versions on the staging or production network. You can't activate or delete versions of a hidden endpoint. A hidden endpoint appears in the [List endpoints](https://techdocs.akamai.com/api-definitions/reference/get-endpoints) operation's response object by default, or when you set the operation's `show` query parameter to `ONLY_HIDDEN`. Running this operation affects the endpoint listing in the API Definitions u"
+        },
+        {
+          "info": {
+            "name": "Show an endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/endpoints/:apiEndPointId/show",
+            "params": [
+              {
+                "name": "apiEndPointId",
+                "value": "{{apiEndPointId}}",
+                "type": "path",
+                "description": "The unique identifier for the endpoint."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Reveals a hidden endpoint and all its versions. A revealed endpoint appears in the [List endpoints](https://techdocs.akamai.com/api-definitions/reference/get-endpoints) operation's response object by default, or when you set the operation's `show` query parameter to `ONLY_VISIBLE`. Running this operation affects the endpoint listing in the API Definitions user interface."
+        },
+        {
+          "info": {
+            "name": "Modify an API's visibility",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/api-definitions/v2/api-discovery/host/:hostname/basepath/:basePath",
+            "params": [
+              {
+                "name": "hostname",
+                "value": "",
+                "type": "path",
+                "description": "The base64-encoded value of the hostname."
+              },
+              {
+                "name": "basePath",
+                "value": "",
+                "type": "path",
+                "description": "The base64-encoded value of the base path."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "__All products__ Hide or show an API. You can choose to include or exclude APIs from the [Get discovered APIs](https://techdocs.akamai.com/application-security/reference/get-api-list) response. This operation is per-user. If you hide an API from the response, another of your colleagues will still see that API in the response when they run this operation with their own credentials."
+        },
+        {
+          "info": {
+            "name": "List discovered API endpoints",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/api-discovery/host/:hostname/basepath/:basePath/endpoints",
+            "params": [
+              {
+                "name": "hostname",
+                "value": "",
+                "type": "path",
+                "description": "The base64-encoded value of the hostname."
+              },
+              {
+                "name": "basePath",
+                "value": "",
+                "type": "path",
+                "description": "The base64-encoded value of the base path."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__All products__ Returns API endpoints for the specified hostname and base path. Unlike [Get discovered APIs](https://techdocs.akamai.com/application-security/reference/get-api-list), this operation returns APIs already in your API definitions. When you see a discovered API or a new resource, add it to your definition with [Create an endpoint or resource](https://techdocs.akamai.com/application-security/reference/post-api-endpoint-resource)."
+        },
+        {
+          "info": {
+            "name": "Create an endpoint or resource",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/api-discovery/host/:hostname/basepath/:basePath/endpoints",
+            "params": [
+              {
+                "name": "hostname",
+                "value": "",
+                "type": "path",
+                "description": "The base64-encoded value of the hostname."
+              },
+              {
+                "name": "basePath",
+                "value": "",
+                "type": "path",
+                "description": "The base64-encoded value of the base path."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "__All products__ Create a new API endpoint or add a resource to an existing endpoint. When you run this operation to add a new resource to an existing API, the API version is cloned for you and the resource is included in the new version."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

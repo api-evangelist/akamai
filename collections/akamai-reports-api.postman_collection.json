@@ -1,0 +1,264 @@
+{
+  "item": [
+    {
+      "id": "742b2cfd-3f22-46d8-972c-11433e658711",
+      "name": "Reports",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c9d0be76-7ab1-46d7-af3f-6810c00ae8f8",
+          "name": "Akamai List Reports",
+          "request": {
+            "name": "Akamai List Reports",
+            "description": {
+              "content": "View a list of available reports. The data in these reports is also available in the [EdgeWorkers Management application](https://techdocs.akamai.com/edgeworkers/docs/manage-report-data).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fd23bc10-49ef-4a76-b80b-c0e5c6e81665",
+              "name": "Describes a list of EdgeWorker reports.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reports\": [\n    {\n      \"description\": \"This report contains an overview of other reports.\",\n      \"name\": \"Overall summary\",\n      \"reportId\": 1\n    },\n    {\n      \"description\": \"This report lists execution and initialization times, grouped by EdgeWorker ID and event handler.\",\n      \"name\": \"Initialization and execution times by EdgeWorker ID and event handler\",\n      \"reportId\": 2,\n      \"unavailable\": true\n    },\n    {\n      \"description\": \"This report lists execution statuses, grouped by EdgeWorker ID and event handler.\",\n      \"name\": \"Execution statuses by EdgeWorker ID and event handler\",\n      \"reportId\": 3\n    },\n    {\n      \"description\": \"This report lists memory usage, grouped by EdgeWorker ID and event handler.\",\n      \"name\": \"Memory usage by EdgeWorker ID and event handler\",\n      \"reportId\": 4,\n      \"unavailable\": true\n    },\n    {\n      \"description\": \"This report lists execution and initialization times with percentiles, grouped by EdgeWorker ID and event handler.\",\n      \"name\": \"Initialization and execution times with percentiles by EdgeWorker ID and event handler\",\n      \"reportId\": 5\n    },\n    {\n      \"description\": \"This report lists memory usage with percentiles, grouped by EdgeWorker ID and event handler.\",\n      \"name\": \"Memory usage with percentiles by EdgeWorker ID and event handler\",\n      \"reportId\": 6\n    },\n    {\n      \"description\": \"This report contains the total number of sub-requests.\",\n      \"name\": \"Sub-requests\",\n      \"reportId\": 7\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "74643c15-4522-4a32-9301-4ec0a005117d",
+          "name": "Akamai Get an EdgeWorker Report",
+          "request": {
+            "name": "Akamai Get an EdgeWorker Report",
+            "description": {
+              "content": "View details for a specific EdgeWorker.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports",
+                ":reportId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "start",
+                  "value": "<dateTime>",
+                  "description": "(Required) ISO 8601 timestamp indicating the start time of the EdgeWorker report."
+                },
+                {
+                  "disabled": false,
+                  "key": "end",
+                  "value": "<dateTime>",
+                  "description": "(Required) ISO 8601 timestamp indicating the end time of the EdgeWorker report. If not specified, the end time defaults to the current time."
+                },
+                {
+                  "disabled": false,
+                  "key": "edgeWorker",
+                  "value": "<string>",
+                  "description": "(Required) Filter by EdgeWorker ID such as `42` or more specific version such as `42-1.0`."
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "<string>",
+                  "description": "(Required) __Enum__ Filter by the EdgeWorker status, either `success`, `genericError`, `unknownEdgeWorkerId`, `unimplementedEventHandler`, `runtimeError`, `executionError`, `timeoutError`, `resourceLimitHit`, `cpuTimeoutError`, `wallTimeoutError`, `initCpuTimeoutError`, or `initWallTimeoutError`."
+                },
+                {
+                  "disabled": false,
+                  "key": "eventHandler",
+                  "value": "<string>",
+                  "description": "__Enum__ Filter EdgeWorkers by the event that triggers them, either `onClientRequest`, `onOriginRequest`, `onOriginResponse`, `onClientResponse`, or `responseProvider`."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "reportId",
+                  "description": "(Required) Unique identifier of an EdgeWorker report."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "acabadc2-2645-447b-9910-b033cc6cb37d",
+              "name": "This section describes attributes of an EdgeWorker report.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports",
+                    ":reportId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "start",
+                      "value": "{{start}}"
+                    },
+                    {
+                      "key": "end",
+                      "value": "{{end}}"
+                    },
+                    {
+                      "key": "edgeWorker",
+                      "value": "{{edgeWorker}}"
+                    },
+                    {
+                      "key": "status",
+                      "value": "{{status}}"
+                    },
+                    {
+                      "key": "eventHandler",
+                      "value": "{{eventHandler}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reportId",
+                      "description": "(Required) Unique identifier of an EdgeWorker report."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"description\": \"This report lists execution and initialization times with percentiles, grouped by EdgeWorker ID and event handler.\",\n  \"end\": \"2022-04-19T15:04:39Z\",\n  \"name\": \"Initialization and execution times by EdgeWorker ID and event handler\",\n  \"reportId\": 5,\n  \"start\": \"2022-04-18T15:04:39Z\",\n  \"summaryStatistics\": {\n    \"init\": {\n      \"fiftyPercentile\": 0.1,\n      \"ninetyFivePercentile\": 0.5,\n      \"ninetyNinePercentile\": 0.5,\n      \"seventyFivePercentile\": 0.5,\n      \"twentyFivePercentile\": 0.1\n    },\n    \"onClientRequest\": {\n      \"fiftyPercentile\": 5,\n      \"ninetyFivePercentile\": 20,\n      \"ninetyNinePercentile\": 100,\n      \"seventyFivePercentile\": 7,\n      \"twentyFivePercentile\": 0.5\n    },\n    \"onClientResponse\": {\n      \"fiftyPercentile\": 7,\n      \"ninetyFivePercentile\": 20,\n      \"ninetyNinePercentile\": 100,\n      \"seventyFivePercentile\": 10,\n      \"twentyFivePercentile\": 0.1\n    },\n    \"onOriginRequest\": {\n      \"fiftyPercentile\": 8,\n      \"ninetyFivePercentile\": 25,\n      \"ninetyNinePercentile\": 70,\n      \"seventyFivePercentile\": 10,\n      \"twentyFivePercentile\": 0.1\n    },\n    \"onOriginResponse\": {\n      \"fiftyPercentile\": 7,\n      \"ninetyFivePercentile\": 30,\n      \"ninetyNinePercentile\": 100,\n      \"seventyFivePercentile\": 10,\n      \"twentyFivePercentile\": 0.4\n    },\n    \"responseProvider\": {},\n    \"totalExecTime\": {\n      \"fiftyPercentile\": 3,\n      \"ninetyFivePercentile\": 20,\n      \"ninetyNinePercentile\": 100,\n      \"seventyFivePercentile\": 7,\n      \"twentyFivePercentile\": 0.5\n    }\n  },\n  \"data\": [\n    {\n      \"edgeWorkerId\": 37017,\n      \"data\": {\n        \"init\": [\n          {\n            \"edgeWorkerVersion\": \"0.8\",\n            \"invocations\": 1,\n            \"startDateTime\": \"2022-04-18T15:04:39Z\",\n            \"initDuration\": {\n              \"avg\": 4.192,\n              \"fiftyPercentile\": 1,\n              \"max\": 4.192,\n              \"min\": 4.192,\n              \"ninetyFivePercentile\": 7,\n              \"ninetyNinePercentile\": 20,\n              \"seventyFivePercentile\": 3,\n              \"twentyFivePercentile\": 0.5\n            }\n          }\n        ],\n        \"onClientRequest\": [\n          {\n            \"edgeWorkerVersion\": \"1\",\n            \"invocations\": 3,\n            \"startDateTime\": \"2022-04-18T15:35:00Z\",\n            \"execDuration\": {\n              \"avg\": 0.128,\n              \"fiftyPercentile\": 1,\n              \"max\": 0.217,\n              \"min\": 0.077,\n              \"ninetyFivePercentile\": 7,\n              \"ninetyNinePercentile\": 10,\n              \"seventyFivePercentile\": 3,\n              \"twentyFivePercentile\": 0.1\n            }\n          }\n        ],\n        \"onClientResponse\": [\n          {\n            \"edgeWorkerVersion\": \"1\",\n            \"invocations\": 3,\n            \"startDateTime\": \"2022-04-18T15:04:39Z\",\n            \"execDuration\": {\n              \"avg\": 0.11,\n              \"fiftyPercentile\": 1,\n              \"max\": 0.16,\n              \"min\": 0.071,\n              \"ninetyFivePercentile\": 10,\n              \"ninetyNinePercentile\": 20,\n              \"seventyFivePercentile\": 3,\n              \"twentyFivePercentile\": 0.1\n            }\n          }\n        ],\n        \"onOriginRequest\": [\n          {\n            \"edgeWorkerVersion\": \"1\",\n            \"invocations\": 3,\n            \"startDateTime\": \"2022-04-18T15:04:39Z\",\n            \"execDuration\": {\n              \"avg\": 0.138,\n              \"fiftyPercentile\": 1,\n              \"max\": 0.254,\n              \"min\": 0.073,\n              \"ninetyFivePercentile\": 7,\n              \"ninetyNinePercentile\": 20,\n              \"seventyFivePercentile\": 3,\n              \"twentyFivePercentile\": 0.5\n            }\n          }\n        ],\n        \"onOriginResponse\": [\n          {\n            \"edgeWorkerVersion\": \"1\",\n            \"invocations\": 3,\n            \"startDateTime\": \"2022-04-19T12:35:00Z\",\n            \"execDuration\": {\n              \"avg\": 0.105,\n              \"fiftyPercentile\": 1,\n              \"max\": 0.175,\n              \"min\": 0.069,\n              \"ninetyFivePercentile\": 7,\n              \"ninetyNinePercentile\": 7,\n              \"seventyFivePercentile\": 1,\n              \"twentyFivePercentile\": 0\n            }\n          }\n        ]\n      },\n      \"summaryStatistics\": {\n        \"init\": {\n          \"fiftyPercentile\": 0.1,\n          \"ninetyFivePercentile\": 0.5,\n          \"ninetyNinePercentile\": 0.5,\n          \"seventyFivePercentile\": 0.5,\n          \"twentyFivePercentile\": 0.1\n        },\n        \"onClientRequest\": {\n          \"fiftyPercentile\": 5,\n          \"ninetyFivePercentile\": 20,\n          \"ninetyNinePercentile\": 100,\n          \"seventyFivePercentile\": 7,\n          \"twentyFivePercentile\": 0.5\n        },\n        \"onClientResponse\": {\n          \"fiftyPercentile\": 7,\n          \"ninetyFivePercentile\": 20,\n          \"ninetyNinePercentile\": 100,\n          \"seventyFivePercentile\": 10,\n          \"twentyFivePercentile\": 0.1\n        },\n        \"onOriginRequest\": {\n          \"fiftyPercentile\": 8,\n          \"ninetyFivePercentile\": 25,\n          \"ninetyNinePercentile\": 70,\n          \"seventyFivePercentile\": 10,\n          \"twentyFivePercentile\": 0.1\n        },\n        \"onOriginResponse\": {\n          \"fiftyPercentile\": 7,\n          \"ninetyFivePercentile\": 30,\n          \"ninetyNinePercentile\": 100,\n          \"seventyFivePercentile\": 10,\n          \"twentyFivePercentile\": 0.4\n        },\n        \"responseProvider\": {},\n        \"totalExecTime\": {\n          \"fiftyPercentile\": 3,\n          \"ninetyFivePercentile\": 20,\n          \"ninetyNinePercentile\": 100,\n          \"seventyFivePercentile\": 7,\n          \"twentyFivePercentile\": 0.5\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "29a39cb4-f77b-427c-8531-9cae3537e3d2",
+    "name": "Akamai: API Endpoint Definition Access tokens Reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

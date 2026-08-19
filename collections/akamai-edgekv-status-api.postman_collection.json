@@ -1,0 +1,441 @@
+{
+  "item": [
+    {
+      "id": "e4ba3636-dd13-4a31-bd9a-e50d524a28b6",
+      "name": "EdgeKV status",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "47f2c443-4b37-4f4c-8297-e9cde556a036",
+          "name": "Akamai Get the EdgeKV Initialization Status",
+          "request": {
+            "name": "Akamai Get the EdgeKV Initialization Status",
+            "description": {
+              "content": "View the EdgeKV initialization status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "initialize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8bf94680-ff32-429e-8b4d-386e20ef116d",
+              "name": "Returns current initialization status.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountStatus\": \"INITIALIZED\",\n  \"cpcode\": \"1234567\",\n  \"productionStatus\": \"INITIALIZED\",\n  \"stagingStatus\": \"INITIALIZED\",\n  \"dataAccessPolicy\": {\n    \"allowNamespacePolicyOverride\": false,\n    \"restrictDataAccess\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7206e92-c69a-467a-bf81-6499988c9705",
+              "name": "EdgeKV has not been initialized.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"accountStatus\": \"UNINITIALIZED\",\n  \"cpcode\": null,\n  \"dataAccessPolicy\": null,\n  \"productionStatus\": \"UNINITIALIZED\",\n  \"stagingStatus\": \"UNINITIALIZED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fd94782-ac1c-435d-a90e-c3f980205058",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal error occurred.\",\n  \"errorCode\": \"EKV_0000\",\n  \"instance\": \"/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"/edgekv/error-types/edgekv-internal-server-error\",\n  \"additionalDetail\": {\n    \"requestId\": \"cd9b61e08148009b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "75a5434b-fbe4-481e-959f-d46b2dbbfcbf",
+          "name": "Akamai Initialize EdgeKV",
+          "request": {
+            "name": "Akamai Initialize EdgeKV",
+            "description": {
+              "content": "You only need to initialize EdgeKV once. This operation adds the `default` EdgeKV namespace to Akamai's `STAGING` and `PRODUCTION` networks. It also creates a new dedicated CP code for you to track your EdgeKV usage. You won't be able to use any of the EdgeKV API operations or your EdgeKV database until initialization completes. You should only use the default namespace for experimentation and testing purposes. When deploying your EdgeKV database in production, use a new namespace with a different name. You need to specify a database Data Access Policy when running this operation. The Data Access Policy determines if new namespaces should be processed only on Akamai's enhanced secure network with high security standards, or both enhanced and standard secure networks. By default, all current existing namespaces in EdgeKV are set to use only the enhanced secure network. To use the standard secure network, you need special contract entitlement for Standard TLS Support.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "initialize"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dataAccessPolicy\": {\n    \"restrictDataAccess\": \"<boolean>\",\n    \"allowNamespacePolicyOverride\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0eb31380-633d-4878-aa3a-9f428275beae",
+              "name": "An existing initialization request is currently processing for current account.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dataAccessPolicy\": {\n    \"allowNamespacePolicyOverride\": false,\n    \"restrictDataAccess\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Processing (WebDAV) (RFC 2518)",
+              "code": 102,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountStatus\": \"PENDING\",\n  \"cpcode\": null,\n  \"dataAccessPolicy\": null,\n  \"productionStatus\": \"PENDING\",\n  \"stagingStatus\": \"PENDING\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb65a954-134e-4622-a89f-466031342d69",
+              "name": "On initial successful initialization, returns current initialization status and the assigned CP code.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dataAccessPolicy\": {\n    \"allowNamespacePolicyOverride\": false,\n    \"restrictDataAccess\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountStatus\": \"INITIALIZED\",\n  \"cpcode\": \"1234567\",\n  \"productionStatus\": \"INITIALIZED\",\n  \"stagingStatus\": \"INITIALIZED\",\n  \"dataAccessPolicy\": {\n    \"allowNamespacePolicyOverride\": false,\n    \"restrictDataAccess\": true\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e607065f-113e-4680-9199-51548d6c7160",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dataAccessPolicy\": {\n    \"allowNamespacePolicyOverride\": false,\n    \"restrictDataAccess\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You cannot set `restrictDataAccess` to false. Your account entitlement doesn't allow EdgeKV data access to Akamai's Standard TLS network.\",\n  \"errorCode\": \"EKV_1005\",\n  \"instance\": \"/edgekv/error-instances/2c82be29-f909-4d42-b775-de404e264fd9\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"/edgekv/error-types/edgekv-bad-request\",\n  \"additionalDetail\": {\n    \"requestId\": \"5d424b9289ab9b43\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6586d167-7a9b-45b4-a5a7-3f392dd4705c",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "initialize"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"dataAccessPolicy\": {\n    \"allowNamespacePolicyOverride\": false,\n    \"restrictDataAccess\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal error occurred.\",\n  \"errorCode\": \"EKV_0000\",\n  \"instance\": \"/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"/edgekv/error-types/edgekv-internal-server-error\",\n  \"additionalDetail\": {\n    \"requestId\": \"cd9b61e08148009b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "576fadce-131e-4ebc-925f-cf700c7f7135",
+    "name": "Akamai: API Endpoint Definition Access tokens EdgeKV status API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

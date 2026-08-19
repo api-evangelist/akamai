@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens URL/ARL API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "URL/ARL",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Delete by URL or ARL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/delete/url/:network",
+            "params": [
+              {
+                "name": "network",
+                "value": "",
+                "type": "path",
+                "description": "__Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Deletes content on the selected URL or ARL  for the selected `network`.  URLs and ARLs can be submitted in the same request. In most cases, you should [invalidate](https://techdocs.akamai.com/purge-cache/reference/post-invalidate-url) rather than delete content. Invalidation keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the "
+        },
+        {
+          "info": {
+            "name": "Invalidate by URL or ARL",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/invalidate/url/:network",
+            "params": [
+              {
+                "name": "network",
+                "value": "",
+                "type": "path",
+                "description": "__Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invalidates content on the selected URL or ARL for the selected `network`. You should consider invalidating content by default. This keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable. URLs and ARLs can be submitted in the same request."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

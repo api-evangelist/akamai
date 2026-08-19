@@ -1,0 +1,2067 @@
+{
+  "item": [
+    {
+      "id": "c9e0d406-1fe0-48b0-a6da-eccefd57606c",
+      "name": "Edge hostnames",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e6064c4f-f830-4917-821d-6d731cdb1401",
+          "name": "Akamai Create a New Edge Hostname",
+          "request": {
+            "name": "Akamai Create a New Edge Hostname",
+            "description": {
+              "content": "**Note:** You can skip this operation if you're using Secure by Default that automatically creates an edge hostname upon activation. \n\nThis POST operation creates a new edge hostname. As detailed in the sections below, you can use three approaches to secure new edge hostnames: Standard TLS, Enhanced TLS, or a Shared Certificate. You can [assign a use case](https://techdocs.akamai.com/property-mgr/reference/modify-property-hostnames) mapping profile to optimize the hostname to serve specific types of traffic. Once the edge hostname is active, you can [Update a property's hostnames](https://techdocs.akamai.com/property-mgr/reference/put-property-version-hostnames) to assign it to a hostname on a property. After you [activate a property](https://techdocs.akamai.com/property-mgr/reference/post-property-activations), modifying your DNS to map the property hostname to the edge hostname ultimately enables traffic on the property. For details, see [Enable traffic for a new hostname](https://techdocs.akamai.com/property-mgr/reference/modify-property-hostnames). Use the [Edge Hostname API](https://techdocs.akamai.com/edge-hostnames/reference/get-edge-hostname-certificate) (HAPI) to modify edge hostnames, or delete any that aren't currently assigned to an active property configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "edgehostnames"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "options",
+                  "value": "<string>",
+                  "description": "Currently the only supported option is `mapDetails` that enables extra mapping-related information. See [Site Shield API](https://techdocs.akamai.com/site-shield/reference/api) for more information."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "null",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1ab8c1c4-93ec-4dd0-8206-c8d50637ceaa",
+              "name": "The response provides a URL link to the newly created edge hostname.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Provides a URL path you can GET the newly created resource from.",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum number of edge hostnames per contract.",
+                  "key": "X-Limit-Edgehostnames-Per-Contract-Limit",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining number of edge hostnames per contract. See [Rate and resource limiting](https://techdocs.akamai.com/property-mgr/reference/rate-and-resource-limiting) for details.",
+                  "key": "X-Limit-Edgehostnames-Per-Contract-Remaining",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"edgeHostnameLink\": \"/papi/v0/edgehostnames/ehn_1332?contractId=ctr_C-0N7RAC7&grp_15225\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "026ae758-73f4-454d-8646-a6a958ddc6cb",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bbb500e4-e8a1-47d6-9b3b-52a5002e039a",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2d69ea1-c912-48f0-a308-f6a416502794",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf26fbde-b89f-41d5-a118-1c3c1b55db15",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44c988b6-e001-43b6-a300-d8d18e83f732",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "326f93ba-cd29-4852-bc69-751510288079",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bbd02d8c-c1f7-425a-810e-d0ca8a72a310",
+              "name": "[Unsupported media type](https://techdocs.akamai.com/property-mgr/reference/415).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system does not support requests in the format you're sending.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/unsupported-media-type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55985b02-96e5-43f0-a857-251b34af9833",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3233e41c-b511-4aa6-b797-dd152ab7bbb7",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domainPrefix\": \"www.example.com\",\n  \"domainSuffix\": \"edgesuite.net\",\n  \"ipVersionBehavior\": \"IPV4\",\n  \"productId\": \"prd_Dynamic_Site_Del\",\n  \"secureNetwork\": \"STANDARD_TLS\",\n  \"useCases\": [\n    {\n      \"option\": \"BACKGROUND\",\n      \"type\": \"GLOBAL\",\n      \"useCase\": \"Download_Mode\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "dbd280d6-6a63-4bbd-97db-b7ce881ad16c",
+          "name": "Akamai List Edge Hostnames",
+          "request": {
+            "name": "Akamai List Edge Hostnames",
+            "description": {
+              "content": "This lists all edge hostnames available under a contract. To assign any of these hostnames to a property, run [Update a property's hostnames](https://techdocs.akamai.com/property-mgr/reference/put-property-version-hostnames). Use the [Edge Hostname API](https://techdocs.akamai.com/edge-hostnames/reference/get-edge-hostname-certificate) (HAPI) to modify edge hostnames, or delete any that aren't currently assigned to an active property configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "edgehostnames"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "options",
+                  "value": "<string>",
+                  "description": "Currently the only supported option is `mapDetails` that enables extra mapping-related information. See [Site Shield API](https://techdocs.akamai.com/site-shield/reference/api) for more information."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aba562a6-34af-4371-8a5a-f57b206f3a8c",
+              "name": "The response lists edge hostnames available under a contract.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Maximum number of edge hostnames per contract.",
+                  "key": "X-Limit-Edgehostnames-Per-Contract-Limit",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining number of edge hostnames per contract. See [Rate and resource limiting](https://techdocs.akamai.com/property-mgr/reference/rate-and-resource-limiting) for details.",
+                  "key": "X-Limit-Edgehostnames-Per-Contract-Remaining",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountId\": \"act_A-CCT5678\",\n  \"contractId\": \"ctr_C-0N7RAC7\",\n  \"groupId\": \"grp_15225\",\n  \"edgeHostnames\": {\n    \"items\": [\n      {\n        \"domainPrefix\": \"example.com\",\n        \"domainSuffix\": \"edgekey.net\",\n        \"edgeHostnameDomain\": \"example.com.edgekey.net\",\n        \"edgeHostnameId\": \"ehn_895822\",\n        \"ipVersionBehavior\": \"IPV4\",\n        \"productId\": \"prd_Alta\",\n        \"secure\": true,\n        \"status\": \"PENDING\"\n      },\n      {\n        \"domainPrefix\": \"example.com\",\n        \"domainSuffix\": \"edgesuite.net\",\n        \"edgeHostnameDomain\": \"example.com.edgesuite.net\",\n        \"edgeHostnameId\": \"ehn_887436\",\n        \"ipVersionBehavior\": \"IPV4\",\n        \"productId\": \"prd_Alta\",\n        \"secure\": false\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d6ef8e5-105c-43fc-97a2-57368a709f9b",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d029d97-e00f-49b5-b290-4c1e1d4a9925",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59a95029-db2a-41ca-8990-a0405ef43acf",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a17f4d46-a124-495a-94cc-32149c036798",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e4222d9-1fdb-4cc8-91a5-10c7e0ca3b34",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e558e79-d399-4b4b-af5d-7090b3d49974",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c2856d8-fbb9-48cc-af0d-26d68b57b356",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "347cc230-97b3-4091-932d-0bfb4267da99",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "19ed3b39-71e5-4912-a96f-fccf6c4e45e7",
+          "name": "Akamai Get an Edge Hostname",
+          "request": {
+            "name": "Akamai Get an Edge Hostname",
+            "description": {
+              "content": "This polls the state of an edge hostname, typically after [creating a new edge hostname](https://techdocs.akamai.com/property-mgr/reference/post-edgehostnames). The response tells you whether the CNAME has been fully distributed across the network. If the hostname's `status` is `ACTIVE`, the process is complete. Until then, you typically see values of `ZONE1`, `ZONE2`, `ZONE3`, or simply `PENDING`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "edgehostnames",
+                ":edgeHostnameId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "options",
+                  "value": "<string>",
+                  "description": "Currently the only supported option is `mapDetails` that enables extra mapping-related information. See [Site Shield API](https://techdocs.akamai.com/site-shield/reference/api) for more information."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "edgeHostnameId",
+                  "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7c5360ef-e3ad-4dfd-b24a-7229c8e8b0d0",
+              "name": "The response shows the specified edge hostname.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountId\": \"act_A-CCT7890\",\n  \"contractId\": \"ctr_C-0N7RAC7\",\n  \"groupId\": \"grp_15225\",\n  \"edgeHostnames\": {\n    \"items\": [\n      {\n        \"domainPrefix\": \"example.com\",\n        \"domainSuffix\": \"edgesuite.net\",\n        \"edgeHostnameDomain\": \"example.com.edgesuite.net\",\n        \"edgeHostnameId\": \"ehn_887436\",\n        \"ipVersionBehavior\": \"IPV4\",\n        \"productId\": \"prd_Alta\",\n        \"secure\": false,\n        \"useCases\": [\n          {\n            \"option\": \"BACKGROUND\",\n            \"type\": \"GLOBAL\",\n            \"useCase\": \"Download_Mode\"\n          }\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78f0de0e-adb6-46d5-a251-ee48d1b8ffdd",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e55bbd32-3ca5-47c9-97c1-7012fe550939",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0d5131ab-d2aa-44cd-9af5-4d44609f40d0",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3618370f-8167-4075-9f0e-4bee9a8a77f7",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ebe967e-3e07-4bab-b359-040ec848ea71",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7aef899e-352a-4a6d-881d-81b40e398304",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d2aa022-1fdd-4ef1-856e-9b30783ba409",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cf9c424f-a5a6-4ed9-8ee1-74db94b89076",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "edgehostnames",
+                    ":edgeHostnameId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "options",
+                      "value": "{{options}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "edgeHostnameId",
+                      "description": "(Required) Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "22b733b2-ff9c-4383-bf0a-9ea4a03d0c8d",
+    "name": "Akamai: API Endpoint Definition Access tokens Edge hostnames API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

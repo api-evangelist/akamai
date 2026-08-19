@@ -1,0 +1,1528 @@
+{
+  "item": [
+    {
+      "id": "fe5d0132-ade8-467a-900c-62b7940202e5",
+      "name": "URL protection policies",
+      "description": {
+        "content": "Manage your URL protection policies.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ab692aaa-ae76-42d0-9ef3-d0268d3b4e02",
+          "name": "Create a URL protection policy",
+          "request": {
+            "name": "Create a URL protection policy",
+            "description": {
+              "content": "__All products__ Creates a new URL protection policy for a specific configuration version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "url-protections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"intelligentLoadShedding\": \"<boolean>\",\n  \"rateThreshold\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"apiDefinitions\": [\n    {\n      \"apiDefinitionId\": \"<long>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<long>\",\n        \"<long>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    },\n    {\n      \"apiDefinitionId\": \"<long>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<long>\",\n        \"<long>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    }\n  ],\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"<string>\",\n        \"name\": [\n          \"<string>\"\n        ],\n        \"nameWildcard\": \"<boolean>\",\n        \"value\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"valueCase\": \"<boolean>\",\n        \"valueWildcard\": \"<boolean>\"\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\"\n    }\n  ],\n  \"configId\": \"<long>\",\n  \"configVersion\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"<string>\",\n      \"paths\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"protectionType\": \"<string>\",\n  \"sheddingThresholdHitsPerSec\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b10ffc9d-6ebb-4091-be0b-d9f8bf652451",
+              "name": "Successfully created a URL protection policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"nameWildcard\": false,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"my-custom-value\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": false\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    },\n    {\n      \"listIds\": [\n        \"16656_CPISERVERS\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    }\n  ],\n  \"configId\": 43007,\n  \"configVersion\": 40,\n  \"createDate\": \"2023-04-14T18:58:53Z\",\n  \"createdBy\": \"jsmith\",\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"custom.com\",\n      \"paths\": [\n        \"/asd\",\n        \"/my-test-path\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"URL Protection\",\n  \"policyId\": 681,\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150,\n  \"updateDate\": \"2023-04-26T02:42:28Z\",\n  \"updatedBy\": \"jperez\",\n  \"used\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e0efe97-71d6-4bfc-8e24-28b7349908f3",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef019f20-b286-4e7e-a8f6-3bb30e651252",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to URL protection policies in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdb81ec4-d511-4d5e-a241-7e312c0a6795",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d2c95bca-ddfa-4595-95cd-6ad46672b246",
+          "name": "List URL protection policies",
+          "request": {
+            "name": "List URL protection policies",
+            "description": {
+              "content": "__All products__ Returns all URL protection policies for a specific security configuration version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "url-protections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c0f6c08e-2bd9-48de-a679-c7359ad8879e",
+              "name": "Successfully returned the URL protection policies.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"urlProtectionPolicies\": [\n    {\n      \"categories\": [\n        {\n          \"type\": \"BOTS\"\n        },\n        {\n          \"listIds\": [\n            \"12345_IPCLIENTLISTFEB09\"\n          ],\n          \"positiveMatch\": true,\n          \"type\": \"CLIENT_LIST\"\n        },\n        {\n          \"type\": \"CLOUD_PROVIDERS\"\n        },\n        {\n          \"type\": \"PROXIES\"\n        },\n        {\n          \"type\": \"TOR_EXIT_NODES\"\n        },\n        {\n          \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n        }\n      ],\n      \"configId\": 43007,\n      \"configVersion\": 40,\n      \"createDate\": \"2023-04-26T03:02:43Z\",\n      \"createdBy\": \"mrossi\",\n      \"description\": \"protect APIs\",\n      \"hostnamePaths\": [\n        {\n          \"hostname\": \"api.custom.com\",\n          \"paths\": [\n            \"/payments\"\n          ]\n        },\n        {\n          \"hostname\": \"staging.api.custom.com\",\n          \"paths\": [\n            \"/inventory\",\n            \"/payments\"\n          ]\n        }\n      ],\n      \"intelligentLoadShedding\": true,\n      \"name\": \"Second URL Protection Policy\",\n      \"policyId\": 745,\n      \"protectionType\": \"MULTIPLE\",\n      \"rateThreshold\": 1100,\n      \"sheddingThresholdHitsPerSec\": 880,\n      \"updateDate\": \"2023-04-26T03:02:43Z\",\n      \"updatedBy\": \"jkowalski\",\n      \"used\": false\n    },\n    {\n      \"categories\": [\n        {\n          \"type\": \"BOTS\"\n        },\n        {\n          \"listIds\": [\n            \"16656_CPISERVERS\"\n          ],\n          \"positiveMatch\": true,\n          \"type\": \"CLIENT_LIST\"\n        },\n        {\n          \"type\": \"CLOUD_PROVIDERS\"\n        },\n        {\n          \"type\": \"PROXIES\"\n        },\n        {\n          \"type\": \"TOR_EXIT_NODES\"\n        },\n        {\n          \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n        }\n      ],\n      \"configId\": 43007,\n      \"configVersion\": 40,\n      \"createDate\": \"2023-04-14T18:58:53Z\",\n      \"createdBy\": \"szhang\",\n      \"description\": \"URL Protection\",\n      \"hostnamePaths\": [\n        {\n          \"hostname\": \"custom.com\",\n          \"paths\": [\n            \"/Hamza-path\",\n            \"/asd\",\n            \"/my-test-path\"\n          ]\n        }\n      ],\n      \"intelligentLoadShedding\": true,\n      \"name\": \"Transaction site protection\",\n      \"policyId\": 681,\n      \"protectionType\": \"MULTIPLE\",\n      \"rateThreshold\": 195,\n      \"sheddingThresholdHitsPerSec\": 150,\n      \"updateDate\": \"2023-04-26T02:42:28Z\",\n      \"updatedBy\": \"afero\",\n      \"used\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0970cc22-b66f-4daa-a0ef-9068aebbb28e",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to the URL protection policies in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef70b335-c01e-4fe8-b2d1-0d5baed55f3b",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "87eb6183-09a7-4ccf-9159-2559dd19490e",
+          "name": "Get a URL protection policy",
+          "request": {
+            "name": "Get a URL protection policy",
+            "description": {
+              "content": "__All products__ Returns the specified URL protection policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "url-protections",
+                ":urlProtectionPolicyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "urlProtectionPolicyId",
+                  "description": "(Required) A unique identifier for each URL protection policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b998cbca-b9bc-42f5-b706-0dc7c3474459",
+              "name": "Successfully returned the URL protection policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"nameWildcard\": false,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"my-custom-value\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": false\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    },\n    {\n      \"listIds\": [\n        \"16656_CPISERVERS\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    }\n  ],\n  \"configId\": 43007,\n  \"configVersion\": 40,\n  \"createDate\": \"2023-04-14T18:58:53Z\",\n  \"createdBy\": \"jsmith\",\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"custom.com\",\n      \"paths\": [\n        \"/asd\",\n        \"/my-test-path\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"URL Protection\",\n  \"policyId\": 681,\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150,\n  \"updateDate\": \"2023-04-26T02:42:28Z\",\n  \"updatedBy\": \"jperez\",\n  \"used\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ea54cbdf-9d45-4b21-bea1-818fb1216500",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to the URL protection policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe6bf6ff-7515-4543-bade-2972e19a1b5a",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or URL protection policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "246a21e7-fe6c-457d-8576-0431ed03436a",
+          "name": "Modify a URL protection policy",
+          "request": {
+            "name": "Modify a URL protection policy",
+            "description": {
+              "content": "__All products__ Updates the specified URL protection policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "url-protections",
+                ":urlProtectionPolicyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "urlProtectionPolicyId",
+                  "description": "(Required) A unique identifier for each URL protection policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"intelligentLoadShedding\": \"<boolean>\",\n  \"rateThreshold\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"apiDefinitions\": [\n    {\n      \"apiDefinitionId\": \"<long>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<long>\",\n        \"<long>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    },\n    {\n      \"apiDefinitionId\": \"<long>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<long>\",\n        \"<long>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    }\n  ],\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"<string>\",\n        \"name\": [\n          \"<string>\"\n        ],\n        \"nameWildcard\": \"<boolean>\",\n        \"value\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"valueCase\": \"<boolean>\",\n        \"valueWildcard\": \"<boolean>\"\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\"\n    }\n  ],\n  \"configId\": \"<long>\",\n  \"configVersion\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"<string>\",\n      \"paths\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"protectionType\": \"<string>\",\n  \"sheddingThresholdHitsPerSec\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4556d6de-a4de-43b2-80d6-546f21a3cbeb",
+              "name": "Successfully updated URL protection policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLIENT_REPUTATIONS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"81658_CLIENTLIST\",\n        \"56789_1234\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"nameWildcard\": false,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"my-custom-value\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": false\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"listIds\": [\n        \"12345_10CLIENTLIST\",\n        \"54321_123\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    },\n    {\n      \"listIds\": [\n        \"16656_CPISERVERS\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    }\n  ],\n  \"configId\": 43007,\n  \"configVersion\": 40,\n  \"createDate\": \"2023-04-14T18:58:53Z\",\n  \"createdBy\": \"jsmith\",\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"custom.com\",\n      \"paths\": [\n        \"/asd\",\n        \"/my-test-path\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"URL Protection\",\n  \"policyId\": 681,\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150,\n  \"updateDate\": \"2023-04-26T02:42:28Z\",\n  \"updatedBy\": \"jperez\",\n  \"used\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7408ea6-6b60-4495-806c-5f3d2a0283d2",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLIENT_REPUTATIONS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"81658_CLIENTLIST\",\n        \"56789_1234\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2e1fd1e-caed-4fdc-a7a7-94b851ccda4f",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to URL protection policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLIENT_REPUTATIONS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"81658_CLIENTLIST\",\n        \"56789_1234\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fe8b8f1-5db9-4013-9c24-bbc8f5e68fb9",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or URL protection policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"NetworkListCondition\",\n        \"value\": [\n          \"12345_10CLIENTLIST\",\n          \"54321_123\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"my-custom-header\"\n        ],\n        \"value\": [\n          \"my-custom-value\"\n        ]\n      }\n    ]\n  },\n  \"categories\": [\n    {\n      \"type\": \"BOTS\"\n    },\n    {\n      \"type\": \"CLIENT_REPUTATIONS\"\n    },\n    {\n      \"type\": \"CLOUD_PROVIDERS\"\n    },\n    {\n      \"type\": \"PROXIES\"\n    },\n    {\n      \"type\": \"TOR_EXIT_NODES\"\n    },\n    {\n      \"type\": \"PLATFORM_DDOS_INTELLIGENCE\"\n    },\n    {\n      \"listIds\": [\n        \"81658_CLIENTLIST\",\n        \"56789_1234\"\n      ],\n      \"positiveMatch\": true,\n      \"type\": \"CLIENT_LIST\"\n    }\n  ],\n  \"description\": \"URL Protection\",\n  \"hostnamePaths\": [\n    {\n      \"hostname\": \"api.demo.com\",\n      \"paths\": [\n        \"/login\",\n        \"/checkout\",\n        \"/history\"\n      ]\n    }\n  ],\n  \"intelligentLoadShedding\": true,\n  \"name\": \"Transaction site protection\",\n  \"protectionType\": \"MULTIPLE\",\n  \"rateThreshold\": 195,\n  \"sheddingThresholdHitsPerSec\": 150\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "411354ec-caeb-4b82-9670-5fa705c04d54",
+          "name": "Remove a URL protection policy",
+          "request": {
+            "name": "Remove a URL protection policy",
+            "description": {
+              "content": "__All products__ Deletes the specified URL protection policy. You can't delete a URL protection policy that's actively in use. To delete an active URL protection policy, either activate an older configuration version or create a new version without the policy in place.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "url-protections",
+                ":urlProtectionPolicyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "urlProtectionPolicyId",
+                  "description": "(Required) A unique identifier for each URL protection policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a2e28b60-3a01-4884-8629-066a21cc07f3",
+              "name": "Successfully deleted the URL protection policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "473b8b03-40e6-43da-9371-8d8582b40d13",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to the URL protection policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "37a6f788-ea4c-4182-b052-ee0f55ad060f",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or URL protection policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "url-protections",
+                    ":urlProtectionPolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "urlProtectionPolicyId",
+                      "description": "(Required) A unique identifier for each URL protection policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4403e695-d1d8-4d34-917c-2f5c00ec21ad",
+    "name": "Akamai: API Endpoint Definition Access tokens URL protection policies API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manage your URL protection policies.",
+      "type": "text/plain"
+    }
+  }
+}

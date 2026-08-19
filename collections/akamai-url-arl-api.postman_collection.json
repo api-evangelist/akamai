@@ -1,0 +1,774 @@
+{
+  "item": [
+    {
+      "id": "a10fb4e6-e736-4543-9bf0-9e8da0dc73cd",
+      "name": "URL/ARL",
+      "description": {
+        "content": "Purge by URL or by Akamai resource locator (ARL).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "87eb7b45-9ca0-46e3-a334-17605ebf4da2",
+          "name": "Delete by URL or ARL",
+          "request": {
+            "name": "Delete by URL or ARL",
+            "description": {
+              "content": "Deletes content on the selected URL or ARL  for the selected `network`.  URLs and ARLs can be submitted in the same request. In most cases, you should [invalidate](https://techdocs.akamai.com/purge-cache/reference/post-invalidate-url) rather than delete content. Invalidation keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "delete",
+                "url",
+                ":network"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "production",
+                  "key": "network",
+                  "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"objects\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "9880cdb7-fb2c-4541-8ba8-0af7faf94fb1",
+              "name": "Successful POST of a purge request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "delete",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The burst limit that specifies how many requests you can make in excess of the imposed rate limit. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The burst limit that specifies how many objects you can add to a request in excess of the imposed rate limit. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Objects",
+                  "value": "10000"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum sustainable number of requests allowed each second per account. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Per-Second",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum sustainable number of objects allowed each second per request. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Per-Second-Objects",
+                  "value": "200"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Remaining",
+                  "value": "99"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of objects left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Remaining-Objects",
+                  "value": "10000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Seconds-To-Refresh-Limit",
+                  "value": "0.02"
+                },
+                {
+                  "disabled": false,
+                  "description": "The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit-Objects`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Seconds-To-Refresh-Limit-Objects",
+                  "value": "0"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Request accepted\",\n  \"estimatedSeconds\": 5,\n  \"httpStatus\": 201,\n  \"purgeId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc92ebae-1759-4c5a-aa12-1e0de3c27126",
+              "name": "[Bad request](https://techdocs.akamai.com/purge-cache/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "delete",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"Invalid or malformed hostname\",\n  \"httpStatus\": 400,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"bad URL hostname\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "12138065-7755-4487-acc9-d0091b85f4c7",
+              "name": "[Forbidden](https://techdocs.akamai.com/purge-cache/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "delete",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"http://fpj-test.bad-ideas2.org/\",\n  \"httpStatus\": 403,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"unauthorized arl\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "404b2953-d5ba-4255-80a6-b6e26c294467",
+              "name": "[Too many requests](https://techdocs.akamai.com/purge-cache/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "delete",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"\",\n  \"httpStatus\": 429,\n  \"rateLimit\": 10000,\n  \"rateLimitCurrentRequestSize\": 110,\n  \"rateLimitRemaining\": 94,\n  \"supportId\": \"edup-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"URL Rate Limit exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1bb24948-eb82-47b8-919c-2c8a7c311583",
+              "name": "[Internal server error](https://techdocs.akamai.com/purge-cache/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "delete",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"If problem persists over multiple requests, please contact Customer Care\",\n  \"httpStatus\": 500,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"internal error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d11fa05a-1b59-4b6d-b2fa-773736f0dc0c",
+          "name": "Invalidate by URL or ARL",
+          "request": {
+            "name": "Invalidate by URL or ARL",
+            "description": {
+              "content": "Invalidates content on the selected URL or ARL for the selected `network`. You should consider invalidating content by default. This keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable. URLs and ARLs can be submitted in the same request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "invalidate",
+                "url",
+                ":network"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "production",
+                  "key": "network",
+                  "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"objects\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "eeec0d27-21b4-42d4-89e3-704d3e08847a",
+              "name": "Successful POST of a purge request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidate",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The burst limit that specifies how many requests you can make in excess of the imposed rate limit. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The burst limit that specifies how many objects you can add to a request in excess of the imposed rate limit. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Objects",
+                  "value": "10000"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum sustainable number of requests allowed each second per account. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Per-Second",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum sustainable number of objects allowed each second per request. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Per-Second-Objects",
+                  "value": "200"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Remaining",
+                  "value": "99"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of objects left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Remaining-Objects",
+                  "value": "10000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Seconds-To-Refresh-Limit",
+                  "value": "0.02"
+                },
+                {
+                  "disabled": false,
+                  "description": "The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit-Objects`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Seconds-To-Refresh-Limit-Objects",
+                  "value": "0"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Request accepted\",\n  \"estimatedSeconds\": 5,\n  \"httpStatus\": 201,\n  \"purgeId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cfbd1d7-b5e0-44f3-bb07-9a705d2395df",
+              "name": "[Bad request](https://techdocs.akamai.com/purge-cache/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidate",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"Invalid or malformed hostname\",\n  \"httpStatus\": 400,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"bad URL hostname\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dd0619dd-64aa-4b6f-a8a5-cda1f23eb369",
+              "name": "[Forbidden](https://techdocs.akamai.com/purge-cache/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidate",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"http://fpj-test.bad-ideas2.org/\",\n  \"httpStatus\": 403,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"unauthorized arl\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3e1f268b-70fc-436b-bf6e-91350ba07b6c",
+              "name": "[Too many requests](https://techdocs.akamai.com/purge-cache/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidate",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"\",\n  \"httpStatus\": 429,\n  \"rateLimit\": 10000,\n  \"rateLimitCurrentRequestSize\": 110,\n  \"rateLimitRemaining\": 94,\n  \"supportId\": \"edup-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"URL Rate Limit exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d43a4519-aebf-4f76-8577-b32327585c2b",
+              "name": "[Internal server error](https://techdocs.akamai.com/purge-cache/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "invalidate",
+                    "url",
+                    ":network"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "production",
+                      "key": "network",
+                      "description": "(Required) __Enum__ The network on which you want to invalidate or delete content, either `staging` or the default `production` network. If omitting this optional parameter, also omit any trailing slash from the shortened URL."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"objects\": [\n    \"https://foo1.bar.com/some/path\",\n    \"http://foo2.bar.com/some/other/path\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"If problem persists over multiple requests, please contact Customer Care\",\n  \"httpStatus\": 500,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"internal error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0ea0c5b6-137e-480a-a755-85a644ad58b9",
+    "name": "Akamai: API Endpoint Definition Access tokens URL/ARL API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Purge by URL or by Akamai resource locator (ARL).",
+      "type": "text/plain"
+    }
+  }
+}

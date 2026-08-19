@@ -1,0 +1,344 @@
+{
+  "item": [
+    {
+      "id": "1f52c964-b917-4d26-aaad-0a7247892b7c",
+      "name": "Rate limits",
+      "description": {
+        "content": "Groups operations that let you control rate limits.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "1ccd8b42-4dc1-4be5-8d07-4aefc607c27d",
+          "name": "Check rate and object limit statuses",
+          "request": {
+            "name": "Check rate and object limit statuses",
+            "description": {
+              "content": "The Fast Purge API uses a token bucket model for [rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) to protect itself from inadvertent or malicious overuse. For each Akamai account, there's a rate limit shared by all object types (CP codes, cache tags, and URL/ARLs), and three separate resource limits for each object type. Each purge request uses one rate limit token from the requests bucket. Each purge object in a request takes up a token from the resource bucket.\nThis operation fetches information on the remaining number of requests and objects for a specific account. You can use these details to monitor the request consumption or throttle requests to prevent exceeding the limits, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "rate-limit-status",
+                ":purge-type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "purge-type",
+                  "description": "(Required) __Enum__ A single item within a purge request that identifies the content you want to purge. You can identify your content by a URL or ARL (Akamai resource locator), content provider (CP) code, or cache tag."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "427d395f-1551-48a3-8979-26096090863c",
+              "name": "Successful POST of a rate limit status request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rate-limit-status",
+                    ":purge-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "purge-type",
+                      "description": "(Required) __Enum__ A single item within a purge request that identifies the content you want to purge. You can identify your content by a URL or ARL (Akamai resource locator), content provider (CP) code, or cache tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The burst limit that specifies how many requests you can make in excess of the imposed rate limit. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit",
+                  "value": "100"
+                },
+                {
+                  "disabled": false,
+                  "description": "The burst limit that specifies how many objects you can add to a request in excess of the imposed rate limit. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Objects",
+                  "value": "10000"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum sustainable number of requests allowed each second per account. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Per-Second",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum sustainable number of objects allowed each second per request. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Limit-Per-Second-Objects",
+                  "value": "200"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of requests left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Remaining",
+                  "value": "99"
+                },
+                {
+                  "disabled": false,
+                  "description": "The number of objects left before exceeding the limit, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error. This depends on the object type in the given request. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Remaining-Objects",
+                  "value": "10000"
+                },
+                {
+                  "disabled": false,
+                  "description": "The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Seconds-To-Refresh-Limit",
+                  "value": "0.02"
+                },
+                {
+                  "disabled": false,
+                  "description": "The minimum number of seconds to wait before you can send a request burst of size `X-Ratelimit-Limit-Objects`. See [Rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) for details.",
+                  "key": "X-Ratelimit-Seconds-To-Refresh-Limit-Objects",
+                  "value": "0"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Request accepted\",\n  \"estimatedSeconds\": 5,\n  \"httpStatus\": 201,\n  \"purgeId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "edf39441-f708-4368-8ca9-4e6bfa149ec5",
+              "name": "[Bad request](https://techdocs.akamai.com/purge-cache/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rate-limit-status",
+                    ":purge-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "purge-type",
+                      "description": "(Required) __Enum__ A single item within a purge request that identifies the content you want to purge. You can identify your content by a URL or ARL (Akamai resource locator), content provider (CP) code, or cache tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"Invalid or malformed hostname\",\n  \"httpStatus\": 400,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"bad URL hostname\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdc9f9e8-86bf-4f7b-8c77-22020472b40f",
+              "name": "[Forbidden](https://techdocs.akamai.com/purge-cache/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rate-limit-status",
+                    ":purge-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "purge-type",
+                      "description": "(Required) __Enum__ A single item within a purge request that identifies the content you want to purge. You can identify your content by a URL or ARL (Akamai resource locator), content provider (CP) code, or cache tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"http://fpj-test.bad-ideas2.org/\",\n  \"httpStatus\": 403,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"unauthorized arl\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88a24c20-753c-404d-b6a4-08ece6b1bbd3",
+              "name": "[Too many requests](https://techdocs.akamai.com/purge-cache/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rate-limit-status",
+                    ":purge-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "purge-type",
+                      "description": "(Required) __Enum__ A single item within a purge request that identifies the content you want to purge. You can identify your content by a URL or ARL (Akamai resource locator), content provider (CP) code, or cache tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"\",\n  \"httpStatus\": 429,\n  \"rateLimit\": 10000,\n  \"rateLimitCurrentRequestSize\": 110,\n  \"rateLimitRemaining\": 94,\n  \"supportId\": \"edup-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"URL Rate Limit exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2fcac1fb-1b39-411a-9433-c4b55c78a988",
+              "name": "[Internal server error](https://techdocs.akamai.com/purge-cache/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "rate-limit-status",
+                    ":purge-type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "purge-type",
+                      "description": "(Required) __Enum__ A single item within a purge request that identifies the content you want to purge. You can identify your content by a URL or ARL (Akamai resource locator), content provider (CP) code, or cache tag."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/api-problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/api-problem+json"
+                }
+              ],
+              "body": "{\n  \"describedBy\": \"https://techdocs.akamai.com/purge-cache/reference/api-errors\",\n  \"detail\": \"If problem persists over multiple requests, please contact Customer Care\",\n  \"httpStatus\": 500,\n  \"supportId\": \"edcp-NZbXzFpHBjcJeryhw6PVgG\",\n  \"title\": \"internal error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4acac28c-1ad8-40f2-a1b5-781224c853ff",
+    "name": "Akamai: API Endpoint Definition Access tokens Rate limits API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Groups operations that let you control rate limits.",
+      "type": "text/plain"
+    }
+  }
+}

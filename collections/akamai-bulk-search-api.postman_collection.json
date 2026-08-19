@@ -1,0 +1,2092 @@
+{
+  "item": [
+    {
+      "id": "4d899e81-c509-45ea-847f-db6dc3e70e34",
+      "name": "Bulk search",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "436b3e0a-cdc3-425c-8e83-f6fa770dcdb3",
+          "name": "Akamai Bulk Search a Set of Properties or Includes",
+          "request": {
+            "name": "Akamai Bulk Search a Set of Properties or Includes",
+            "description": {
+              "content": "POST a bulk search object to search across all active property or include versions. Specify a [JSONPath](http://goessner.net/articles/JsonPath/) expression to match their rule trees. This operation launches an asynchronous process to gather search results. To check its progress, run the [List bulk search results](https://techdocs.akamai.com/property-mgr/reference/get-bulk-search) operation, whose link is available in the `Location` header or the `bulkSearchLink` member of this operation's response. After gathering completed results, you can create new property versions, bulk patch the rule trees, then activate them. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance on this feature. Run [Synchronously bulk search a set of properties](https://techdocs.akamai.com/property-mgr/reference/post-bulk-searchsynchronus) as an alternative to get completed search results directly. To perform simpler searches for an include's name or property's name or hostnames to which it applies, run the [Search properties and includes](https://techdocs.akamai.com/property-mgr/reference/post-search-find-by-value) operation instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "rules-search-requests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bulkSearchQuery\": {\n    \"syntax\": \"<string>\",\n    \"match\": \"<string>\",\n    \"bulkSearchQualifiers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"propertyType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7379ba7c-550b-444c-be05-718757976993",
+              "name": "The response links the bulk search process.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Provides a URL path you can GET the newly created resource from.",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bulkSearchLink\": \"/papi/v0/bulk/rules-search-requests/737\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cadf8074-0494-483a-9dc7-92e24ef9eeee",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99f6138a-32e5-4d49-a3c7-2a03bee77b2d",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "528d138e-ee06-4cd2-9eaa-b67a66574e21",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "243b6a7e-5d86-4dbd-9dee-aab1836053b2",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e0e68d2-b8a5-4590-a400-07cc92616723",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfe77e3d-3e6c-4e3d-b8cf-183cb9ca966c",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02c26bd9-e694-481f-9bd9-32087d80d98b",
+              "name": "[Unsupported media type](https://techdocs.akamai.com/property-mgr/reference/415).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system does not support requests in the format you're sending.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/unsupported-media-type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db977633-65e6-438a-94d3-7366b2eab2c6",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d0e38b4-bc00-409d-98ae-df4cc64da39b",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e17574a4-d21d-4333-a620-17d43f300e10",
+          "name": "Akamai Synchronously Bulk Search a Set of Properties or Includes",
+          "request": {
+            "name": "Akamai Synchronously Bulk Search a Set of Properties or Includes",
+            "description": {
+              "content": "Provides an alternative to the asynchronous [Bulk search a set of properties or includes](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) operation. It yields completed bulk search results directly, but with possibly high latency, making it more appropriate to target for small-batch searches. POST a bulk search object to search across all active property or include versions, specifying a [JSONPath](http://goessner.net/articles/JsonPath/) expression to match their rule trees. After gathering results, you can create new property versions, bulk patch the rule trees, then activate them. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance on this feature. To perform simpler searches for an include's name or property's name or hostnames to which it applies, run the [Search properties and includes](https://techdocs.akamai.com/property-mgr/reference/post-search-find-by-value) operation instead.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "rules-search-requests-synch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bulkSearchQuery\": {\n    \"syntax\": \"<string>\",\n    \"match\": \"<string>\",\n    \"bulkSearchQualifiers\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"propertyType\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "05953747-831a-431d-999e-0a6ae0be4caf",
+              "name": "This delayed response shows the completed bulk search job. Unlike the asynchronous [Bulk search a set of properties or includes](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) operation, this response's `searchTargetStatus` is always `COMPLETE`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bulkSearchId\": 5,\n  \"searchSubmitDate\": \"2018-01-18T00:00:00Z\",\n  \"searchTargetStatus\": \"COMPLETE\",\n  \"searchUpdateDate\": \"2018-01-18T00:01:00Z\",\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  },\n  \"results\": [\n    {\n      \"accountId\": \"act_A-CCT7890\",\n      \"isLatest\": true,\n      \"isLocked\": true,\n      \"isSecure\": true,\n      \"lastModifiedTime\": \"2018-01-18T00:00:00Z\",\n      \"productionStatus\": \"INACTIVE\",\n      \"propertyId\": \"prp_1\",\n      \"propertyName\": \"example1.example.com\",\n      \"propertyVersion\": 1,\n      \"stagingStatus\": \"ACTIVE\",\n      \"matchLocations\": [\n        \"/rules/children/1/features/0\",\n        \"/rules/children/1/features/3\"\n      ]\n    },\n    {\n      \"accountId\": \"act_A-CCT5678\",\n      \"isLatest\": false,\n      \"isLocked\": false,\n      \"isSecure\": true,\n      \"lastModifiedTime\": \"2018-01-18T00:00:00Z\",\n      \"productionStatus\": \"INACTIVE\",\n      \"propertyId\": \"prp_15\",\n      \"propertyName\": \"example2.example.com\",\n      \"propertyVersion\": 2,\n      \"stagingStatus\": \"INACTIVE\",\n      \"matchLocations\": [\n        \"/rules/children/1/children/0/features/1\"\n      ]\n    },\n    {\n      \"accountId\": \"act_A-CCT3456\",\n      \"isLatest\": true,\n      \"isLocked\": true,\n      \"isSecure\": true,\n      \"lastModifiedTime\": \"2018-01-18T00:00:00Z\",\n      \"productionStatus\": \"ACTIVE\",\n      \"propertyId\": \"prp_3\",\n      \"propertyName\": \"example3.example.com\",\n      \"propertyVersion\": 10,\n      \"stagingStatus\": \"INACTIVE\",\n      \"matchLocations\": [\n        \"/rules/children/0/children/1/children/2/features/1\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "63391e70-5ef7-4f03-95c0-d1726a522bfb",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8a67769-ad79-4bfb-8a1c-a9e5fd5edea2",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "098c7d80-7b90-47be-9511-045f665a7ec4",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5f939a04-de0b-4790-a493-64e25703b645",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a2625520-354c-4730-bb19-38d54808d29d",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be665218-bf74-4565-961e-8f156d4e6ef0",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a60625d-2082-4cb6-9da7-51a57d6b15e4",
+              "name": "[Unsupported media type](https://techdocs.akamai.com/property-mgr/reference/415).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system does not support requests in the format you're sending.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/unsupported-media-type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa392139-68f6-4841-b24b-5e3801ee6050",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bf955c2-8f9b-4417-9936-4bb7c51751a5",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests-synch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "127f9f39-9d44-4102-b201-dc40bf6f2ccd",
+          "name": "Akamai List Bulk Search Results",
+          "request": {
+            "name": "Akamai List Bulk Search Results",
+            "description": {
+              "content": "List all property or include versions that result from a [bulk search request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search). Run this operation to poll the asynchronous process's status. Once the `searchTargetStatus` is `COMPLETE`, you can feed the `results` into a [bulk versioning](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version) operation. Also use the JSON path `matchLocations` to run a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/post-bulk-patch) operation over the rule trees. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "rules-search-requests",
+                ":bulkSearchId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "bulkSearchId",
+                  "description": "(Required) Identifies each bulk search job."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d47cd6ca-3607-41e3-904b-fa91cf68a430",
+              "name": "The response shows the bulk search job, which proceeds until the `searchTargetStatus` is `COMPLETE`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bulkSearchId\": 5,\n  \"searchSubmitDate\": \"2018-01-18T00:00:00Z\",\n  \"searchTargetStatus\": \"COMPLETE\",\n  \"searchUpdateDate\": \"2018-01-18T00:01:00Z\",\n  \"bulkSearchQuery\": {\n    \"match\": \"$..conditions[?(@.name == \\\"ext\\\" && \\\"mp3\\\" in @.options.value && \\\"mp4\\\" nin @.options.value)].options.value[?(@ == \\\"mp3\\\")]\",\n    \"syntax\": \"JSONPATH\",\n    \"bulkSearchQualifiers\": [\n      \"$.options[?(@.secure==\\\"true\\\")]\",\n      \"$..features[?(@.name==\\\"origin\\\")].options[?(@.hostname==\\\"old.origin.example.com\\\")]\"\n    ]\n  },\n  \"results\": [\n    {\n      \"accountId\": \"act_A-CCT1234\",\n      \"isLatest\": true,\n      \"isLocked\": true,\n      \"isSecure\": true,\n      \"lastModifiedTime\": \"2018-01-18T00:00:00Z\",\n      \"productionStatus\": \"INACTIVE\",\n      \"propertyId\": \"prp_1\",\n      \"propertyName\": \"example1.example.com\",\n      \"propertyVersion\": 1,\n      \"stagingStatus\": \"ACTIVE\",\n      \"matchLocations\": [\n        \"/rules/children/1/features/0\",\n        \"/rules/children/1/features/3\"\n      ]\n    },\n    {\n      \"accountId\": \"act_A-CCT9012\",\n      \"isLatest\": false,\n      \"isLocked\": false,\n      \"isSecure\": true,\n      \"lastModifiedTime\": \"2018-01-18T00:00:00Z\",\n      \"productionStatus\": \"INACTIVE\",\n      \"propertyId\": \"prp_15\",\n      \"propertyName\": \"example2.example.com\",\n      \"propertyVersion\": 2,\n      \"stagingStatus\": \"INACTIVE\",\n      \"matchLocations\": [\n        \"/rules/children/1/children/0/features/1\"\n      ]\n    },\n    {\n      \"accountId\": \"act_A-CCT3456\",\n      \"isLatest\": true,\n      \"isLocked\": true,\n      \"isSecure\": true,\n      \"lastModifiedTime\": \"2018-01-18T00:00:00Z\",\n      \"productionStatus\": \"ACTIVE\",\n      \"propertyId\": \"prp_3\",\n      \"propertyName\": \"example3.example.com\",\n      \"propertyVersion\": 10,\n      \"stagingStatus\": \"INACTIVE\",\n      \"matchLocations\": [\n        \"/rules/children/0/children/1/children/2/features/1\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7a5c8bc-10aa-42e5-b3af-1189a25ba0af",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "745dfdc0-d3bc-4ced-8b6f-bf8a28195070",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2cc060b-4abf-47f1-b216-fd3d069e181a",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "672ad9f0-ab2c-4ebe-8bb5-d62547a722f8",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0f2ac1d-459a-438a-82bc-a5798c167d75",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd61eb66-7a49-48b8-bbbf-78c71d07f9e0",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e64aa310-7fd4-4e6c-94a2-03d79e11efc2",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "346e9f93-0243-4f39-bcdd-42bf85fd8f1d",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "rules-search-requests",
+                    ":bulkSearchId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkSearchId",
+                      "description": "(Required) Identifies each bulk search job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "268a9319-252e-4b97-9bf9-cc307977a386",
+    "name": "Akamai: API Endpoint Definition Access tokens Bulk search API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

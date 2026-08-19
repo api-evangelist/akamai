@@ -1,0 +1,145 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Property hostnames API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Property hostnames",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Hostnames for an Account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/hostnames",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "offset",
+                "value": "{{offset}}",
+                "type": "query",
+                "description": "For paginated responses, specifies the page of results you want to navigate to, starting from `0`."
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "description": "For paginated responses, specifies the number of `hostnames` objects to include on each page."
+              },
+              {
+                "name": "sort",
+                "value": "{{sort}}",
+                "type": "query",
+                "description": "__Enum__ Sort the results based on the `cnameFrom` value, either `hostname:a` for ascending or `hostname:d` for descending order. The default is `hostname:a`."
+              },
+              {
+                "name": "hostname",
+                "value": "{{hostname}}",
+                "type": "query",
+                "description": "Filter the results by `cnameFrom`. Supports wildcard matches with `*`."
+              },
+              {
+                "name": "cnameTo",
+                "value": "{{cnameTo}}",
+                "type": "query",
+                "description": "Filter the results by edge hostname. Supports wildcard matches with `*`."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "query",
+                "description": "__Enum__ Network of activated hostnames, either `STAGING` or `PRODUCTION`."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This operation lists active property hostnames for all properties available in an account. Use the optional query parameters to paginate, sort, and filter the results. You can nest and combine filters to obtain desired results. To view paginated results, use the response's `nextLink` and `previousLink`."
+        },
+        {
+          "info": {
+            "name": "Akamai Generate Domain Validation Challenges",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/hostnames/certificate-challenges",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "If you're using Secure by Default, you can generate the domain validation challenges ahead of setting hostnames for your property. Ordinarily, you get the challenges when you [add hostnames to a property version](https://techdocs.akamai.com/property-mgr/reference/patch-property-version-hostnames) or [add hostnames to a property's hostname bucket](https://techdocs.akamai.com/property-mgr/reference/patch-property-hostnames). This operation returns the `validationCname` object that you use to valid"
+        },
+        {
+          "info": {
+            "name": "Akamai Get Audit History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/hostnames/:hostname/audit-history",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "hostname",
+                "value": "{{hostname}}",
+                "type": "path",
+                "description": "The `cnameFrom` for the hostname your end users see, indicated by the `Host` header in end user requests."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets a detailed record of all modifications made to a property hostname."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

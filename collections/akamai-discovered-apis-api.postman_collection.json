@@ -1,0 +1,619 @@
+{
+  "item": [
+    {
+      "id": "f5dd2f8d-90ee-4edf-8d20-9f140a5d46ff",
+      "name": "Discovered APIs",
+      "description": {
+        "content": "Get information about APIs discovered in your traffic that are\nnew or not yet protected under API protections.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "eaedba18-0f9d-4440-9ba4-c828a123574a",
+          "name": "List discovered APIs",
+          "request": {
+            "name": "List discovered APIs",
+            "description": {
+              "content": "__All products__ List APIs discovered in your traffic that are new or not yet protected under API protections. An API is considered new if it isn't registered, and appears in the discovered APIs list if it's had at least 1000 requests over the last 30 days and at least one 2xx response.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api-discovery"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeHidden",
+                  "value": "false",
+                  "description": "If `true`, includes all discovered APIs including ones you have hidden. By default, `false` returns only the visible APIs."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Filter results by hostname or basepath. You can also match on substrings."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6bd854b3-0468-475c-a314-184f0a05483f",
+              "name": "Successfully retrieved APIs.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "www.example.com"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"apis\": [\n    {\n      \"basePath\": \"/api/v2\",\n      \"encodedBasePath\": \"L2FwaS92Mg\",\n      \"encodedHost\": \"Y2RuLnh5ei5jb20\",\n      \"host\": \"cdn.xyz.com\",\n      \"lastModified\": \"2021-08-24\",\n      \"type\": \"API\",\n      \"visibility\": \"VISIBLE\"\n    },\n    {\n      \"basePath\": \"/api/v3\",\n      \"encodedBasePath\": \"L2FwaS92Mg\",\n      \"encodedHost\": \"Y2RuLnh5ei5jb20\",\n      \"host\": \"host.xyz.com\",\n      \"lastModified\": \"2021-08-29\",\n      \"type\": \"RESOURCE\",\n      \"visibility\": \"VISIBLE\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09af32bc-1317-495c-ba14-fdd2f8e470b9",
+              "name": "[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "www.example.com"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd8fb217-8e07-48f4-ae85-d15f6921fb12",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn't exist, doesn't carry application layer controls, or no rule with this ID is available for use in this policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "www.example.com"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "89b2ce74-2361-41ad-84a2-f33f1a39c7ab",
+              "name": "[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "www.example.com"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"12ab3c45-789d-01ef-2gh3-ijk4l56m78no\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"internal_server_error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97a55f20-aba9-4f17-98cf-e2e79a978197",
+          "name": "Get a discovered API",
+          "request": {
+            "name": "Get a discovered API",
+            "description": {
+              "content": "__All products__ Returns details about an API discovered in account traffic. It is identified based on hostname and basepath.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api-discovery",
+                "host",
+                ":hostname",
+                "basepath",
+                ":basePath"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeHidden",
+                  "value": "false",
+                  "description": "If `true`, includes all discovered APIs including ones you have hidden. By default, `false` returns only the visible APIs."
+                },
+                {
+                  "disabled": false,
+                  "key": "search",
+                  "value": "<string>",
+                  "description": "Filter results by name, description, or ID. You can match on substrings."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "hostname",
+                  "description": "(Required) The base64-encoded value of the hostname."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "basePath",
+                  "description": "(Required) The base64-encoded value of the base path."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c49daa8e-c7b6-4c08-b200-514f11492dca",
+              "name": "Successfully retrieved the details.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery",
+                    "host",
+                    ":hostname",
+                    "basepath",
+                    ":basePath"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "SQL Injection"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "hostname",
+                      "description": "(Required) The base64-encoded value of the hostname."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "basePath",
+                      "description": "(Required) The base64-encoded value of the base path."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"apiEndpointIds\": [\n    320110\n  ],\n  \"basePath\": \"/routing/checkout/init\",\n  \"discoveryType\": \"RESOURCE\",\n  \"enrichment\": {\n    \"options\": 0,\n    \"browsers\": 1715,\n    \"clientErrors\": 0,\n    \"clientReputation\": 0,\n    \"dateFirstSeen\": \"2021-11-30\",\n    \"dateLastModified\": \"2021-11-30\",\n    \"dateLastSeen\": \"2021-12-29\",\n    \"deletes\": 0,\n    \"dosAttackers\": 0,\n    \"formats\": [\n      \"JSON\"\n    ],\n    \"gets\": 0,\n    \"hostSamples\": [\n      \"example.com\"\n    ],\n    \"mobiles\": 810,\n    \"paths\": [\n      {\n        \"options\": 0,\n        \"deletes\": 0,\n        \"gets\": 0,\n        \"posts\": 1715,\n        \"puts\": 0,\n        \"samples\": [\n          \"\"\n        ],\n        \"template\": \"\"\n      }\n    ],\n    \"posts\": 1715,\n    \"puts\": 0,\n    \"redirects\": 0,\n    \"requests\": 1715,\n    \"requestsBadReputation\": 0,\n    \"requestsLastDay\": 57,\n    \"scanningTools\": 0,\n    \"serverErrors\": 0,\n    \"successes\": 1715,\n    \"totalErrors\": 0,\n    \"trend\": \"DOWN\",\n    \"webAttackers\": 0,\n    \"webScrapers\": 0\n  },\n  \"host\": \"example.com\",\n  \"visibility\": \"VISIBLE\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1cbf64f-a5d9-46be-9c88-d85d500d06e9",
+              "name": "[Invalid](https://techdocs.akamai.com/application-security/reference/400). Client error, such as invalid or malformed input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery",
+                    "host",
+                    ":hostname",
+                    "basepath",
+                    ":basePath"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "SQL Injection"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "hostname",
+                      "description": "(Required) The base64-encoded value of the hostname."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "basePath",
+                      "description": "(Required) The base64-encoded value of the base path."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2900c6e4-f3bb-4250-85fa-f2adcf5f640d",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). The security policy doesn't exist, doesn't carry application layer controls, or no rule with this ID is available for use in this policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery",
+                    "host",
+                    ":hostname",
+                    "basepath",
+                    ":basePath"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "SQL Injection"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "hostname",
+                      "description": "(Required) The base64-encoded value of the hostname."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "basePath",
+                      "description": "(Required) The base64-encoded value of the base path."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "98996bbf-6915-447f-9cd9-af910573e098",
+              "name": "[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api-discovery",
+                    "host",
+                    ":hostname",
+                    "basepath",
+                    ":basePath"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeHidden",
+                      "value": "true"
+                    },
+                    {
+                      "key": "search",
+                      "value": "SQL Injection"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "hostname",
+                      "description": "(Required) The base64-encoded value of the hostname."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "basePath",
+                      "description": "(Required) The base64-encoded value of the base path."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"12ab3c45-789d-01ef-2gh3-ijk4l56m78no\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"internal_server_error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fea21619-ebc0-4695-a46c-3413e1e54067",
+    "name": "Akamai: API Endpoint Definition Access tokens Discovered APIs API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Get information about APIs discovered in your traffic that are\nnew or not yet protected under API protections.",
+      "type": "text/plain"
+    }
+  }
+}

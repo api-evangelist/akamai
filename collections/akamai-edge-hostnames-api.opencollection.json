@@ -1,0 +1,157 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Edge hostnames API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Edge hostnames",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Edge Hostnames",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/edgehostnames",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "options",
+                "value": "{{options}}",
+                "type": "query",
+                "description": "Currently the only supported option is `mapDetails` that enables extra mapping-related information. See [Site Shield API](https://techdocs.akamai.com/site-shield/reference/api) for more information."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This lists all edge hostnames available under a contract. To assign any of these hostnames to a property, run [Update a property's hostnames](https://techdocs.akamai.com/property-mgr/reference/put-property-version-hostnames). Use the [Edge Hostname API](https://techdocs.akamai.com/edge-hostnames/reference/get-edge-hostname-certificate) (HAPI) to modify edge hostnames, or delete any that aren't currently assigned to an active property configuration."
+        },
+        {
+          "info": {
+            "name": "Akamai Create a New Edge Hostname",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/edgehostnames",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "options",
+                "value": "{{options}}",
+                "type": "query",
+                "description": "Currently the only supported option is `mapDetails` that enables extra mapping-related information. See [Site Shield API](https://techdocs.akamai.com/site-shield/reference/api) for more information."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Note:** You can skip this operation if you're using Secure by Default that automatically creates an edge hostname upon activation. \n\nThis POST operation creates a new edge hostname. As detailed in the sections below, you can use three approaches to secure new edge hostnames: Standard TLS, Enhanced TLS, or a Shared Certificate. You can [assign a use case](https://techdocs.akamai.com/property-mgr/reference/modify-property-hostnames) mapping profile to optimize the hostname to serve specific type"
+        },
+        {
+          "info": {
+            "name": "Akamai Get an Edge Hostname",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/edgehostnames/:edgeHostnameId",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "edgeHostnameId",
+                "value": "{{edgeHostnameId}}",
+                "type": "path",
+                "description": "Unique identifier for the edge hostname. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ehn_` prefix."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "options",
+                "value": "{{options}}",
+                "type": "query",
+                "description": "Currently the only supported option is `mapDetails` that enables extra mapping-related information. See [Site Shield API](https://techdocs.akamai.com/site-shield/reference/api) for more information."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This polls the state of an edge hostname, typically after [creating a new edge hostname](https://techdocs.akamai.com/property-mgr/reference/post-edgehostnames). The response tells you whether the CNAME has been fully distributed across the network. If the hostname's `status` is `ACTIVE`, the process is complete. Until then, you typically see values of `ZONE1`, `ZONE2`, `ZONE3`, or simply `PENDING`."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

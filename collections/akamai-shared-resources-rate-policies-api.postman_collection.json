@@ -1,0 +1,1915 @@
+{
+  "item": [
+    {
+      "id": "9b594ecc-48c9-470e-8e99-d7e2e2f62af7",
+      "name": "Shared resources: Rate policies",
+      "description": {
+        "content": "Manage rate policies for security configurations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "288ac681-3f00-4ed7-941a-4d60f4f7257d",
+          "name": "Create a rate policy",
+          "request": {
+            "name": "Create a rate policy",
+            "description": {
+              "content": "__All products__ Create a new rate policy for a specific configuration version. Now you can match on defined or undefined resources. If you're setting a match for either resource type, both `definedResources` and `undefinedResources` must be present in the request object or the request is considered incomplete. When `true`, match on _any_ defined resources without passing a `resourceId`. When `false`, you'll need to pass a `resourceId`. If you pass `definedResources` and `undefinedResources` with empty values, they default to `false`. You can omit both resources and use this operation without these new match criteria. Contact your account team if you'd like to match on `definedResources` or `undefinedResources`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "rate-policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matchType\": \"<string>\",\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"averageThreshold\": \"<integer>\",\n  \"burstThreshold\": \"<integer>\",\n  \"clientIdentifier\": \"<string>\",\n  \"requestType\": \"<string>\",\n  \"sameActionOnIpv6\": \"<boolean>\",\n  \"pathMatchType\": \"<string>\",\n  \"additionalMatchOptions\": [\n    {\n      \"type\": \"<string>\",\n      \"positiveMatch\": \"<boolean>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"positiveMatch\": \"<boolean>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"apiSelectors\": [\n    {\n      \"apiDefinitionId\": \"<integer>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    },\n    {\n      \"apiDefinitionId\": \"<integer>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    }\n  ],\n  \"bodyParameters\": [\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    }\n  ],\n  \"burstWindow\": \"<integer>\",\n  \"clientIdentifiers\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"<string>\",\n        \"name\": [\n          \"<string>\"\n        ],\n        \"nameWildcard\": \"<boolean>\",\n        \"positiveMatch\": \"<boolean>\",\n        \"value\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"valueCase\": \"<boolean>\",\n        \"valueWildcard\": \"<boolean>\"\n      }\n    ],\n    \"positiveMatch\": \"<boolean>\"\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"<string>\",\n  \"evaluation\": {\n    \"averageThreshold\": \"<integer>\",\n    \"burstThreshold\": \"<integer>\",\n    \"counterType\": \"region_aggregated\"\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": \"<boolean>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"hosts\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"path\": {\n    \"positiveMatch\": \"<boolean>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"pathUriPositiveMatch\": \"<boolean>\",\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    }\n  ],\n  \"useXForwardForHeaders\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "406950c8-38cc-402e-9801-de47b9302cae",
+              "name": "Successfully created a  rate policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.210\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.13\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"createDate\": \"2016-07-22T18:57:08Z\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8,\n    \"burstWindow\": 5,\n    \"counterType\": \"region_aggregated\",\n    \"endDate\": \"2024-04-11T16:04:43Z\",\n    \"evaluationId\": 97,\n    \"evaluationStatus\": \"in_progress\",\n    \"startDate\": \"2024-03-28T16:04:43Z\",\n    \"version\": 1\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 484616,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"updateDate\": \"2017-02-22T00:05:41Z\",\n  \"useXForwardForHeaders\": true,\n  \"used\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd54eb96-2178-4d57-aef8-97c8aea84758",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.210\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fe506f1-16ca-4576-88f6-f047b3aeb119",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to rate policies in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.210\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18c6564d-6e86-4e3d-be6c-5070e9bb2530",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.210\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "079be69b-da26-4ff2-b890-a715edd6494f",
+          "name": "List rate policies",
+          "request": {
+            "name": "List rate policies",
+            "description": {
+              "content": "__All products__ Returns rate policies for a specific security configuration version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "rate-policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b93264db-f048-4923-82b4-4e1844978c85",
+              "name": "Successfully returned rate policies.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ratePolicies\": [\n    {\n      \"additionalMatchOptions\": [\n        {\n          \"positiveMatch\": true,\n          \"type\": \"IpAddressCondition\",\n          \"values\": [\n            \"192.0.2.215\"\n          ]\n        },\n        {\n          \"positiveMatch\": true,\n          \"type\": \"RequestMethodCondition\",\n          \"values\": [\n            \"GET\"\n          ]\n        }\n      ],\n      \"averageThreshold\": 5,\n      \"burstThreshold\": 10,\n      \"burstWindow\": 3,\n      \"clientIdentifier\": \"ip\",\n      \"clientIdentifiers\": [\n        \"ip\"\n      ],\n      \"condition\": {\n        \"atomicConditions\": [\n          {\n            \"className\": \"TlsFingerprintCondition\",\n            \"positiveMatch\": true,\n            \"value\": [\n              \"a797dc449ef113be\",\n              \"ba51ec8d71259a5b3c92d8787370e2c3\"\n            ]\n          },\n          {\n            \"className\": \"ClientReputationCondition\",\n            \"name\": [\n              \"DOSATCK\",\n              \"WEBATCK\"\n            ],\n            \"positiveMatch\": true,\n            \"sharedIpHandling\": \"BOTH\",\n            \"value\": 3\n          },\n          {\n            \"className\": \"RequestHeaderCondition\",\n            \"name\": [\n              \"Accept\",\n              \"Content-Type\"\n            ],\n            \"nameWildcard\": true,\n            \"positiveMatch\": true,\n            \"value\": [\n              \"json\",\n              \"xml\"\n            ],\n            \"valueCase\": false,\n            \"valueWildcard\": true\n          }\n        ],\n        \"positiveMatch\": true\n      },\n      \"counterType\": \"per_edge\",\n      \"createDate\": \"2016-07-22T18:57:08Z\",\n      \"description\": \"AFW Test Extensions\",\n      \"evaluation\": {\n        \"averageThreshold\": 5,\n        \"burstThreshold\": 8,\n        \"burstWindow\": 5,\n        \"counterType\": \"region_aggregated\",\n        \"endDate\": \"2024-04-11T16:04:43Z\",\n        \"evaluationId\": 97,\n        \"evaluationStatus\": \"completed\",\n        \"startDate\": \"2024-03-28T16:04:43Z\",\n        \"version\": 1\n      },\n      \"fileExtensions\": {\n        \"positiveMatch\": false,\n        \"values\": [\n          \"3g2\",\n          \"3gp\",\n          \"aif\",\n          \"aiff\",\n          \"au\",\n          \"avi\",\n          \"bin\",\n          \"bmp\",\n          \"cab\"\n        ]\n      },\n      \"hosts\": {\n        \"positiveMatch\": false,\n        \"values\": [\n          \"www.myexamplehostname.org\"\n        ]\n      },\n      \"id\": 484616,\n      \"matchType\": \"path\",\n      \"name\": \"Test_Paths 2\",\n      \"path\": {\n        \"positiveMatch\": true,\n        \"values\": [\n          \"/login/\",\n          \"/path/\"\n        ]\n      },\n      \"pathMatchType\": \"Custom\",\n      \"pathUriPositiveMatch\": true,\n      \"penaltyBoxDuration\": \"TEN_MINUTES\",\n      \"queryParameters\": [\n        {\n          \"name\": \"productId\",\n          \"positiveMatch\": true,\n          \"valueInRange\": false,\n          \"values\": [\n            \"BUB_12\",\n            \"SUSH_11\"\n          ]\n        }\n      ],\n      \"requestType\": \"ClientRequest\",\n      \"sameActionOnIpv6\": false,\n      \"type\": \"WAF\",\n      \"updateDate\": \"2017-02-22T00:05:41Z\",\n      \"useXForwardForHeaders\": true,\n      \"used\": false\n    },\n    {\n      \"additionalMatchOptions\": [\n        {\n          \"positiveMatch\": false,\n          \"type\": \"NetworkListCondition\",\n          \"values\": [\n            \"18198_DSWINTERNALTESTIPADDRES\",\n            \"7054_FEOSERVERS\"\n          ]\n        },\n        {\n          \"positiveMatch\": false,\n          \"type\": \"UserAgentCondition\",\n          \"values\": [\n            \"soasta\",\n            \"MovableInk\"\n          ]\n        }\n      ],\n      \"apiSelectors\": [\n        {\n          \"apiDefinitionId\": 602,\n          \"definedResources\": false,\n          \"resourceIds\": [\n            748\n          ],\n          \"undefinedResources\": false\n        }\n      ],\n      \"averageThreshold\": 5,\n      \"bodyParameters\": [\n        {\n          \"name\": \"Country\",\n          \"positiveMatch\": true,\n          \"valueInRange\": false,\n          \"values\": [\n            \"USA\",\n            \"Canada\"\n          ]\n        }\n      ],\n      \"burstThreshold\": 10,\n      \"clientIdentifier\": \"ip\",\n      \"clientIdentifiers\": [\n        \"ip\"\n      ],\n      \"counterType\": \"per_edge\",\n      \"createDate\": \"2016-07-22T18:57:08Z\",\n      \"description\": \"AFW Test Extensions\",\n      \"fileExtensions\": {\n        \"positiveMatch\": false,\n        \"values\": [\n          \"avi\",\n          \"bmp\",\n          \"jpg\"\n        ]\n      },\n      \"hosts\": {\n        \"positiveMatch\": false,\n        \"values\": [\n          \"www.myexamplehostname.org\"\n        ]\n      },\n      \"id\": 484617,\n      \"matchType\": \"api\",\n      \"name\": \"Test_Paths 2\",\n      \"pathMatchType\": \"Custom\",\n      \"penaltyBoxDuration\": \"TEN_MINUTES\",\n      \"queryParameters\": [\n        {\n          \"name\": \"productId\",\n          \"positiveMatch\": true,\n          \"valueInRange\": false,\n          \"values\": [\n            \"BUB_12\",\n            \"SUSH_11\"\n          ]\n        }\n      ],\n      \"requestType\": \"ClientRequest\",\n      \"sameActionOnIpv6\": false,\n      \"type\": \"WAF\",\n      \"updateDate\": \"2017-02-22T00:05:41Z\",\n      \"useXForwardForHeaders\": true,\n      \"used\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e3d6b2e-a7d5-4170-afba-cbbc7534d51d",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to rate policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "327c18bb-3ba7-4560-a58a-2bfa7fa77764",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7ca6d63e-8d58-4187-b503-669ad298b1c4",
+          "name": "Get a rate policy",
+          "request": {
+            "name": "Get a rate policy",
+            "description": {
+              "content": "__All products__ Returns the specified rate policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "rate-policies",
+                ":ratePolicyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "ratePolicyId",
+                  "description": "(Required) A unique identifier for each rate policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "61fa2038-c2f8-48e1-96e2-6c4c85007c1c",
+              "name": "Successfully returned rate policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.13\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"createDate\": \"2016-07-22T18:57:08Z\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8,\n    \"burstWindow\": 5,\n    \"counterType\": \"region_aggregated\",\n    \"endDate\": \"2024-04-11T16:04:43Z\",\n    \"evaluationId\": 97,\n    \"evaluationStatus\": \"in_progress\",\n    \"startDate\": \"2024-03-28T16:04:43Z\",\n    \"version\": 1\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 484616,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"updateDate\": \"2017-02-22T00:05:41Z\",\n  \"useXForwardForHeaders\": true,\n  \"used\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14f5ca38-8b3f-4c74-8e71-3b1d9a7f0e21",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to rate policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff1c90fc-8d71-40df-95d0-80b9c2b54606",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or rate policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f92427eb-7978-4c0f-a155-c816b9363af2",
+          "name": "Modify a rate policy",
+          "request": {
+            "name": "Modify a rate policy",
+            "description": {
+              "content": "__All products__ Update details for a specific rate policy. Now you can match on defined or undefined resources. If you're setting a match for either resource type, both `definedResources` and `undefinedResources` must be present in the request object or the request is considered incomplete. When `true`, match on _any_ defined resources without passing a `resourceId`. When `false`, you'll need to pass a `resourceId`. If you pass `definedResources` and `undefinedResources` with empty values, they default to `false`. You can omit both resources and use this operation without these new match criteria. Contact your account team if you'd like to match on `definedResources` or `undefinedResources`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "rate-policies",
+                ":ratePolicyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "ratePolicyId",
+                  "description": "(Required) A unique identifier for each rate policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"matchType\": \"<string>\",\n  \"type\": \"<string>\",\n  \"name\": \"<string>\",\n  \"averageThreshold\": \"<integer>\",\n  \"burstThreshold\": \"<integer>\",\n  \"clientIdentifier\": \"<string>\",\n  \"requestType\": \"<string>\",\n  \"sameActionOnIpv6\": \"<boolean>\",\n  \"pathMatchType\": \"<string>\",\n  \"additionalMatchOptions\": [\n    {\n      \"type\": \"<string>\",\n      \"positiveMatch\": \"<boolean>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    },\n    {\n      \"type\": \"<string>\",\n      \"positiveMatch\": \"<boolean>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  ],\n  \"apiSelectors\": [\n    {\n      \"apiDefinitionId\": \"<integer>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    },\n    {\n      \"apiDefinitionId\": \"<integer>\",\n      \"definedResources\": \"<boolean>\",\n      \"resourceIds\": [\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      \"undefinedResources\": \"<boolean>\"\n    }\n  ],\n  \"bodyParameters\": [\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    }\n  ],\n  \"burstWindow\": \"<integer>\",\n  \"clientIdentifiers\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"<string>\",\n        \"name\": [\n          \"<string>\"\n        ],\n        \"nameWildcard\": \"<boolean>\",\n        \"positiveMatch\": \"<boolean>\",\n        \"value\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"valueCase\": \"<boolean>\",\n        \"valueWildcard\": \"<boolean>\"\n      }\n    ],\n    \"positiveMatch\": \"<boolean>\"\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"<string>\",\n  \"evaluation\": {\n    \"averageThreshold\": \"<integer>\",\n    \"burstThreshold\": \"<integer>\",\n    \"counterType\": \"region_aggregated\"\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": \"<boolean>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"hostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"hosts\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"path\": {\n    \"positiveMatch\": \"<boolean>\",\n    \"values\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"pathUriPositiveMatch\": \"<boolean>\",\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"values\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"positiveMatch\": \"<boolean>\",\n      \"valueInRange\": \"<boolean>\"\n    }\n  ],\n  \"useXForwardForHeaders\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e4a2b414-456d-4878-a1ed-33c6e8e0a313",
+              "name": "Successfully updated rate policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.232\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 2234,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.13\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"createDate\": \"2016-07-22T18:57:08Z\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8,\n    \"burstWindow\": 5,\n    \"counterType\": \"region_aggregated\",\n    \"endDate\": \"2024-04-11T16:04:43Z\",\n    \"evaluationId\": 97,\n    \"evaluationStatus\": \"in_progress\",\n    \"startDate\": \"2024-03-28T16:04:43Z\",\n    \"version\": 1\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 484616,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"updateDate\": \"2017-02-22T00:05:41Z\",\n  \"useXForwardForHeaders\": true,\n  \"used\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fdd4c78f-c355-430a-97b5-c5b2ea7ad749",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.232\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 2234,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8c2009a-6f1d-4914-bb93-b30f226deb89",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to rate policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.232\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 2234,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "133c2747-a322-43dd-832d-3e253cf67134",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or rate policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.232\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"per_edge\",\n  \"description\": \"AFW Test Extensions\",\n  \"evaluation\": {\n    \"averageThreshold\": 5,\n    \"burstThreshold\": 8\n  },\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 2234,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"useXForwardForHeaders\": true\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5389f25f-c9a4-4eda-97b7-1428398bbd6e",
+          "name": "Remove a rate policy",
+          "request": {
+            "name": "Remove a rate policy",
+            "description": {
+              "content": "__All products__ Delete the specified rate policy. You can't delete a rate policy that is actively in use. To delete the rate policy, first activate an older configuration version or create a new version without the policy in place.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "rate-policies",
+                ":ratePolicyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "ratePolicyId",
+                  "description": "(Required) A unique identifier for each rate policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "091836e6-6b50-43fc-bd0f-5dd93fa2090e",
+              "name": "Successfully deleted the rate policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "fe1cfeb0-7711-4da2-b76a-4639d61b3569",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to rate policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7f026596-f305-4e22-90b5-29922f394214",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or rate policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "48e1d399-8a29-4d92-8dd1-ebbbf8dce54d",
+          "name": "Modify a rate policy evaluation",
+          "request": {
+            "name": "Modify a rate policy evaluation",
+            "description": {
+              "content": "__All products__ Apply or discard a rate policy evaluation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "rate-policies",
+                ":ratePolicyId",
+                "evaluation"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "ratePolicyId",
+                  "description": "(Required) A unique identifier for each rate policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"action\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "619b2093-a135-4cc5-af97-73fb4c3dad27",
+              "name": "Successfully apply or discard rate policy evaluation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId",
+                    "evaluation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"APPLY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"additionalMatchOptions\": [\n    {\n      \"positiveMatch\": true,\n      \"type\": \"IpAddressCondition\",\n      \"values\": [\n        \"192.0.2.13\"\n      ]\n    },\n    {\n      \"positiveMatch\": true,\n      \"type\": \"RequestMethodCondition\",\n      \"values\": [\n        \"GET\"\n      ]\n    }\n  ],\n  \"averageThreshold\": 5,\n  \"burstThreshold\": 10,\n  \"burstWindow\": 3,\n  \"clientIdentifier\": \"ip\",\n  \"clientIdentifiers\": [\n    \"ip\"\n  ],\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"TlsFingerprintCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"a797dc449ef113be\",\n          \"ba51ec8d71259a5b3c92d8787370e2c3\"\n        ]\n      },\n      {\n        \"className\": \"ClientReputationCondition\",\n        \"name\": [\n          \"DOSATCK\",\n          \"WEBATCK\"\n        ],\n        \"positiveMatch\": true,\n        \"sharedIpHandling\": \"BOTH\",\n        \"value\": 3\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Accept\",\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"json\",\n          \"xml\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"counterType\": \"region_aggregated\",\n  \"createDate\": \"2016-07-22T18:57:08.0Z\",\n  \"description\": \"AFW Test Extensions\",\n  \"fileExtensions\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"3g2\",\n      \"3gp\",\n      \"aif\",\n      \"aiff\",\n      \"au\",\n      \"avi\",\n      \"bin\",\n      \"bmp\",\n      \"cab\"\n    ]\n  },\n  \"hosts\": {\n    \"positiveMatch\": false,\n    \"values\": [\n      \"www.myexamplehostname.org\"\n    ]\n  },\n  \"id\": 484616,\n  \"matchType\": \"path\",\n  \"name\": \"Test_Paths 2\",\n  \"path\": {\n    \"positiveMatch\": true,\n    \"values\": [\n      \"/login/\",\n      \"/path/\"\n    ]\n  },\n  \"pathMatchType\": \"Custom\",\n  \"pathUriPositiveMatch\": true,\n  \"penaltyBoxDuration\": \"TEN_MINUTES\",\n  \"queryParameters\": [\n    {\n      \"name\": \"productId\",\n      \"positiveMatch\": true,\n      \"valueInRange\": false,\n      \"values\": [\n        \"BUB_12\",\n        \"SUSH_11\"\n      ]\n    }\n  ],\n  \"requestType\": \"ClientRequest\",\n  \"sameActionOnIpv6\": false,\n  \"type\": \"WAF\",\n  \"updateDate\": \"2017-02-22T00:05:41.0Z\",\n  \"useXForwardForHeaders\": true,\n  \"used\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "402e46c8-7233-4c8b-875c-06c8ad37dd47",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId",
+                    "evaluation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"APPLY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e7ae79e-ee33-40e2-86ad-52ef0ebf940a",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to rate policy in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId",
+                    "evaluation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"APPLY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16cc552c-aafc-4700-8bbf-a115482a72cb",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or rate policy wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "rate-policies",
+                    ":ratePolicyId",
+                    "evaluation"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "ratePolicyId",
+                      "description": "(Required) A unique identifier for each rate policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"action\": \"APPLY\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "98b81908-7893-485e-b127-734834fcd8dd",
+    "name": "Akamai: API Endpoint Definition Access tokens Shared resources: Rate policies API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manage rate policies for security configurations.",
+      "type": "text/plain"
+    }
+  }
+}

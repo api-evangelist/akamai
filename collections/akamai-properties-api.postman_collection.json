@@ -1,0 +1,3636 @@
+{
+  "item": [
+    {
+      "id": "9dbec804-6392-4836-a3cf-94fc2bd91d08",
+      "name": "Properties",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ef4f3788-159c-4a45-83df-b7d81a8b842d",
+          "name": "Akamai List Properties",
+          "request": {
+            "name": "Akamai List Properties",
+            "description": {
+              "content": "View the list of properties using an existing EdgeWorker ID. You can limit the results to active properties.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "ids",
+                ":edgeWorkerId",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "activeOnly",
+                  "value": "<boolean>",
+                  "description": "When enabled, limits results to active properties."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "edgeWorkerId",
+                  "description": "(Required) Unique identifier for an EdgeWorker."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fa51af5f-1b4e-4f72-856d-fd43a145d357",
+              "name": "This section describes a list of properties.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "ids",
+                    ":edgeWorkerId",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "activeOnly",
+                      "value": "{{activeOnly}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "edgeWorkerId",
+                      "description": "(Required) Unique identifier for an EdgeWorker."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"limitedAccessToProperties\": false,\n  \"properties\": [\n    {\n      \"latestVersion\": 147,\n      \"productionVersion\": null,\n      \"propertyId\": 4567,\n      \"propertyName\": \"www.customer.com\",\n      \"stagingVersion\": 147\n    },\n    {\n      \"latestVersion\": 56,\n      \"productionVersion\": 55,\n      \"propertyId\": 6789,\n      \"propertyName\": \"www.other.customer.com\",\n      \"stagingVersion\": 56\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "330c3013-6f38-4ff4-865e-1fc3dbcce854",
+          "name": "Akamai Create or Clone a Property",
+          "request": {
+            "name": "Akamai Create or Clone a Property",
+            "description": {
+              "content": "This operation either creates a new property from scratch or bases one on another property's rule tree and optionally its set of assigned hostnames. Version 1 of a new property is created automatically. PAPI's ability to create and clone new properties means that you can design a system of rule templates targeted to specific domains, rather than maintain a single set of rules with conditional logic for your full range of domains. Maintaining properties manually within the Control Center interface limited you to that more consolidated approach, but you can deploy rules more efficiently using PAPI. In either case, PAPI makes it much easier for you to support a large, flexible set of domains.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "null",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "87b8cded-a32c-4ab5-8fda-a03beda9e6c0",
+              "name": "The response provides a URL link to the newly created or cloned property.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Provides a URL path you can GET the newly created resource from.",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Maximum number of activated property configurations per contract.",
+                  "key": "X-Limit-Properties-Per-Contract-Limit",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining number of activated property configurations per contract. See [Rate and resource limiting](https://techdocs.akamai.com/property-mgr/reference/rate-and-resource-limiting) for details.",
+                  "key": "X-Limit-Properties-Per-Contract-Remaining",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"propertyLink\": \"/papi/v0/properties/prp_173137?contractId=ctr_C-0N7RAC7&groupId=grp_15225\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "14b89df4-94d4-4540-94d8-dbef8cc0d2cf",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8d38114-0afe-457c-8e09-1376a2581301",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5677d7b3-f8ed-48e7-a2f0-a34512ac6fd9",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3d8bc06b-ab5a-4eea-957d-e4088a76baea",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b2173840-06a0-46ff-97ab-62e87b2c5254",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0499462-aad7-4a9d-b112-dabfcf0b9ec7",
+              "name": "[Request entity too large](https://techdocs.akamai.com/property-mgr/reference/413).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Request Entity Too Large",
+              "code": 413,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"TBD\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 413,\n  \"title\": \"Request entity too large\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "868f308e-90fe-4448-b3c6-e685820528a3",
+              "name": "[Unsupported media type](https://techdocs.akamai.com/property-mgr/reference/415).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system does not support requests in the format you're sending.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/unsupported-media-type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "45deaba7-c785-4fb2-a7be-b3cf063d6cc2",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cbddc3d3-2eea-4540-8ac1-b38563f077e0",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"productId\": \"prd_Alta\",\n  \"propertyName\": \"my.new.property1.com\",\n  \"ruleFormat\": \"v2018-09-12\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51b1d9af-5944-4e50-8d3e-536133934cc2",
+          "name": "Akamai List Properties",
+          "request": {
+            "name": "Akamai List Properties",
+            "description": {
+              "content": "This operation lists properties available for the current contract and group. Use optional query parameters to only show properties that were modified within a specified time range or on a selected network. If you specify the `modifiedSince` parameter, `contractId` and `groupId` become optional. If you don't identify a contract and group, the operation lists all properties you have access to, modified within a specified time range.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "modifiedSince",
+                  "value": "<string>",
+                  "description": "Filters properties or includes that have been modified in a specified time. Accepts duration in the ISO 8601 format."
+                },
+                {
+                  "disabled": false,
+                  "key": "modifiedNetwork",
+                  "value": "<string>",
+                  "description": "__Enum__ Filters and only shows properties or includes that have been modified within a specified period on a selected network, either `STAGING`, `PRODUCTION`, or `BOTH`. You need to specify it along with the `modifiedSince` query parameter."
+                },
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "(Required) Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "42319f76-b3f4-4102-9e82-15b65b73ade7",
+              "name": "The response lists all properties available for the requested contract and group.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Maximum number of activated property configurations per contract.",
+                  "key": "X-Limit-Properties-Per-Contract-Limit",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining number of activated property configurations per contract. See [Rate and resource limiting](https://techdocs.akamai.com/property-mgr/reference/rate-and-resource-limiting) for details.",
+                  "key": "X-Limit-Properties-Per-Contract-Remaining",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"properties\": {\n    \"items\": [\n      {\n        \"accountId\": \"act_A-CCT1234\",\n        \"assetId\": \"aid_101\",\n        \"contractId\": \"ctr_K-0N7RAK71\",\n        \"groupId\": \"grp_15225\",\n        \"latestVersion\": 2,\n        \"note\": \"Notes about example.com\",\n        \"productionVersion\": null,\n        \"propertyId\": \"prp_175780\",\n        \"propertyName\": \"example.com\",\n        \"stagingVersion\": 1\n      },\n      {\n        \"accountId\": \"act_A-CCT7890\",\n        \"assetId\": \"aid_101\",\n        \"contractId\": \"ctr_C-0N7RAC71\",\n        \"groupId\": \"grp_15225\",\n        \"latestVersion\": 1,\n        \"note\": \"Notes about m.example.com\",\n        \"productionVersion\": null,\n        \"propertyId\": \"prp_175781\",\n        \"propertyName\": \"m.example.com\",\n        \"stagingVersion\": null\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6f98ae83-e1c5-43e8-a4eb-4054c593c413",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce5dbfc7-d9bf-437a-ad2b-145c43f47a34",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7f432e6-3adc-4ec8-a9c3-27930f8c1c3b",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04fdcb45-9ba8-47e5-9e7f-d269f14ddbc7",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "88067ec7-244c-49aa-94d0-44716c6ca9f7",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6cb2640c-e46a-4fb3-87d0-32821a001889",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "feaf4421-3904-48b8-9bf5-593a7a880331",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "57153237-6dc7-45e5-9441-c16ed981dc4b",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "modifiedSince",
+                      "value": "{{modifiedSince}}"
+                    },
+                    {
+                      "key": "modifiedNetwork",
+                      "value": "{{modifiedNetwork}}"
+                    },
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "928e24bc-bfd8-4d58-8813-164f28c2f457",
+          "name": "Akamai Get a Property",
+          "request": {
+            "name": "Akamai Get a Property",
+            "description": {
+              "content": "This operation gets a specific property. You can call this operation by specifying any of the `propertyId` members from a [list of properties](https://techdocs.akamai.com/property-mgr/reference/get-properties), or by running a GET on the `propertyLink` response when [creating a new property](https://techdocs.akamai.com/property-mgr/reference/post-properties).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "properties",
+                ":propertyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "propertyId",
+                  "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ace9e981-14d6-47f3-98c2-08abd2ce0cb7",
+              "name": "The response shows details for the requested property.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"properties\": {\n    \"items\": [\n      {\n        \"accountId\": \"act_A-CCT9012\",\n        \"assetId\": \"aid_101\",\n        \"contractId\": \"ctr_C-0N7RAC71\",\n        \"groupId\": \"grp_15225\",\n        \"latestVersion\": 2,\n        \"note\": \"Notes about example.com\",\n        \"productionVersion\": null,\n        \"propertyId\": \"prp_175780\",\n        \"propertyName\": \"example.com\",\n        \"stagingVersion\": 1\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e259eb33-4a4c-47ba-b805-8b050010d26c",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4eae09e7-a278-4a10-b467-5752bf58cd75",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ebc41865-36f6-41bb-84bc-cb082ce722a8",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "852ad35e-a371-4efc-8f09-5450932db22b",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35e6a75b-cb01-4e79-955b-a3fd0208629f",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5200f042-85be-42a5-953a-3742dab46f44",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "559db72d-afbe-4ecc-b3e8-0c2c6222c510",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6aa88410-7a27-4e85-89bc-695897f566c7",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "14379760-1eb6-4aa8-b7a8-ebd02d1d771c",
+          "name": "Akamai Remove a Property",
+          "request": {
+            "name": "Akamai Remove a Property",
+            "description": {
+              "content": "Removes a specific property, which you can only do if none of its versions are currently active. Activating another property with the same set of hostnames automatically triggers a deactivation on the targeted property. See [Create a new activation](https://techdocs.akamai.com/property-mgr/reference/post-property-activations) for details. A successful DELETE results in a 200 response with the confirmation message. Attempting to delete an active property results in a 500 error. Attempting to delete an unknown property results in a 404 error.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "properties",
+                ":propertyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "propertyId",
+                  "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9d87d67c-4436-4204-8749-f207fe8b107c",
+              "name": "Shows a message confirming the property deletion.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Deletion Successful.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "67c65591-791d-4cce-a4a2-f258ffa411f3",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0c2e12f5-c280-4c5d-afac-c4540ed48c40",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a3c1c37-fed9-42db-a58b-4860aae5b263",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1db6c5b8-99fa-4c5f-af52-7ee738f00d7d",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36cf1030-37ce-457f-96d4-504540d8eafd",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07644e0d-932e-40f2-90b8-08b941c32652",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77ff257d-0eea-4893-9393-f66e9320cf4f",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "84dc45ca-5545-459c-ab09-fbc2a9451468",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "properties",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "38da9f62-ef07-499f-b9de-9e4804aaedd1",
+          "name": "Add a property to a sandbox",
+          "request": {
+            "name": "Add a property to a sandbox",
+            "description": {
+              "content": "You can add a property to a sandbox. Use this if you need to support more than one `hostname` in your sandbox environment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contractId\": \"<string>\",\n  \"cpcode\": \"<number>\",\n  \"edgeHostname\": \"<string>\",\n  \"groupId\": \"<string>\",\n  \"hostname\": \"<string>\",\n  \"propertyId\": \"<string>\",\n  \"propertyName\": \"<string>\",\n  \"propertyVersion\": \"<number>\",\n  \"requestHostnames\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"ruleFormat\": \"<string>\",\n  \"rules\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "517c9455-9097-4f13-b707-523571d87062",
+              "name": "The resource was created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"propertyId\": \"470031\",\n  \"ruleFormat\": \"latest\",\n  \"requestHostnames\": [\n    \"portal.example.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Provides a URL link to GET the newly created resource.",
+                  "key": "Location",
+                  "value": "/sandbox-api/v1/sandboxes/2956607f-854e-11e8-898a-0242ac110002/properties/f48caeff-68e5-11e8-8870-0242ac110003"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cpcode\": 1234567,\n  \"productId\": \"prd_Fresca\",\n  \"propertyId\": 470031,\n  \"ruleFormat\": \"latest\",\n  \"sandboxPropertyId\": \"e4ae2447-7430-11e8-8f80-0242ac110007\",\n  \"validationStatus\": \"SUCCESS\",\n  \"additionalRequestHostnamesInProperty\": [\n    \"portal.example.com\"\n  ],\n  \"editedRuleBehaviors\": [\n    \"cpCode\"\n  ],\n  \"filteredRuleBehaviors\": [\n    \"http2\"\n  ],\n  \"requestHostnames\": [\n    \"shop.example.com\"\n  ],\n  \"_links\": {\n    \"rules\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/e43a53d6-7430-11e8-8f80-0242ac110007/properties/e4ae2447-7430-11e8-8f80-0242ac110007/rules\"\n    },\n    \"sandbox\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/e43a53d6-7430-11e8-8f80-0242ac110007\"\n    },\n    \"self\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/e43a53d6-7430-11e8-8f80-0242ac110007/properties/e4ae2447-7430-11e8-8f80-0242ac110007\"\n    }\n  },\n  \"validationWarnings\": [\n    {\n      \"detail\": \"If your `Origin Server` uses HTTPS, make sure to follow <a href=\\\"/dl/property-manager/property-manager-help/csh_lookup.html?id=PM_0034\\\" target=\\\"_blank\\\">this procedure</a> to avoid a service outage or a security breach when you rotate your origin's certificate.\",\n      \"errorLocation\": \"#/rules/behaviors/0\",\n      \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/validation/validation_message.ssl_delegate_warning_rotate\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "467e1aa5-5ada-4997-b18f-a3d559d03ceb",
+          "name": "List properties",
+          "request": {
+            "name": "List properties",
+            "description": {
+              "content": "This operation returns a list of sandbox properties available to the current user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access",
+                  "value": "USER",
+                  "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "84fd619d-fc16-4336-aed7-b9c8faa7ab91",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access",
+                      "value": "{{access}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"properties\": [\n    {\n      \"cpcode\": 1234567,\n      \"productId\": \"prd_Fresca\",\n      \"propertyId\": \"prp_1712\",\n      \"ruleFormat\": \"latest\",\n      \"sandboxPropertyId\": \"ad37282c-8549-11e8-898a-0242ac110002\",\n      \"validationStatus\": \"SUCCESS\",\n      \"additionalRequestHostnamesInProperty\": [\n        \"portal.example.com\"\n      ],\n      \"editedRuleBehaviors\": [\n        \"cpCode\"\n      ],\n      \"filteredRuleBehaviors\": [\n        \"http2\"\n      ],\n      \"requestHostnames\": [\n        \"shop.example.com\"\n      ],\n      \"_links\": {\n        \"rules\": {\n          \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002/properties/ad37282c-8549-11e8-898a-0242ac110002/rules\"\n        },\n        \"sandbox\": {\n          \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002\"\n        },\n        \"self\": {\n          \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002/properties/ad37282c-8549-11e8-898a-0242ac110002\"\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b036f6ff-6ca1-40e7-be5e-88205b1dfca4",
+          "name": "Read a property",
+          "request": {
+            "name": "Read a property",
+            "description": {
+              "content": "Get a specific property of a sandbox so you can review the information in the response body.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties",
+                ":sandboxPropertyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access",
+                  "value": "USER",
+                  "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxPropertyId",
+                  "description": "(Required) Unique identifier for the property within a sandbox."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b0993ace-5475-4af8-a7dc-5178c8c63bdf",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties",
+                    ":sandboxPropertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access",
+                      "value": "{{access}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxPropertyId",
+                      "description": "(Required) Unique identifier for the property within a sandbox."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"cpcode\": 1234567,\n  \"productId\": \"prd_Fresca\",\n  \"propertyId\": \"prp_1712\",\n  \"ruleFormat\": \"latest\",\n  \"sandboxPropertyId\": \"ad37282c-8549-11e8-898a-0242ac110002\",\n  \"validationStatus\": \"SUCCESS\",\n  \"additionalRequestHostnamesInProperty\": [\n    \"portal.example.com\"\n  ],\n  \"editedRuleBehaviors\": [\n    \"cpCode\"\n  ],\n  \"filteredRuleBehaviors\": [\n    \"http2\"\n  ],\n  \"requestHostnames\": [\n    \"shop.example.com\"\n  ],\n  \"_links\": {\n    \"rules\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002/properties/ad37282c-8549-11e8-898a-0242ac110002/rules\"\n    },\n    \"sandbox\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002\"\n    },\n    \"self\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002/properties/ad37282c-8549-11e8-898a-0242ac110002\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "165974ab-7387-4466-b1d7-2df085db95cf",
+          "name": "Update a property",
+          "request": {
+            "name": "Update a property",
+            "description": {
+              "content": "Update the `requestHostnames` of the sandbox property. Your sandbox can support multiple hostnames for testing purposes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties",
+                ":sandboxPropertyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access",
+                  "value": "USER",
+                  "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxPropertyId",
+                  "description": "(Required) Unique identifier for the property within a sandbox."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestHostnames\": [\n    \"<string>\"\n  ],\n  \"_links\": {\n    \"resource\": {\n      \"href\": \"<string>\"\n    },\n    \"key_0\": 192.45255059236575,\n    \"key_1\": 9516.518820771085,\n    \"key_2\": 7230\n  },\n  \"additionalRequestHostnamesInProperty\": [\n    \"<string>\"\n  ],\n  \"cpcode\": \"<number>\",\n  \"editedRuleBehaviors\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"filteredRuleBehaviors\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"productId\": \"<string>\",\n  \"propertyId\": \"<string>\",\n  \"ruleFormat\": \"<string>\",\n  \"sandboxPropertyId\": \"<string>\",\n  \"validationStatus\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f06f9d3a-5bd0-45f4-85be-ad4b54bf404c",
+              "name": "The request was successfully processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties",
+                    ":sandboxPropertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access",
+                      "value": "{{access}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxPropertyId",
+                      "description": "(Required) Unique identifier for the property within a sandbox."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"cpcode\": 1234567,\n  \"requestHostnames\": [\n    \"host1.example.com\",\n    \"host2.example.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a4e709b8-387a-4f50-943f-7d70980e9d58",
+          "name": "Delete a property",
+          "request": {
+            "name": "Delete a property",
+            "description": {
+              "content": "Remove a property from a sandbox. This operation applies when the sandbox contains more than one property. You cannot delete the only property of a sandbox.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties",
+                ":sandboxPropertyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access",
+                  "value": "USER",
+                  "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxPropertyId",
+                  "description": "(Required) Unique identifier for the property within a sandbox."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "*/*"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a494ac2-5e76-461e-8af1-4a9011a196ad",
+              "name": "The request was successfully processed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties",
+                    ":sandboxPropertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access",
+                      "value": "{{access}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxPropertyId",
+                      "description": "(Required) Unique identifier for the property within a sandbox."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "*/*"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "*/*"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb9ee1c2-544a-40e0-96a9-09f9ded2cd59",
+          "name": "Get a rule tree",
+          "request": {
+            "name": "Get a rule tree",
+            "description": {
+              "content": "Get a specific rule tree of a sandbox property. Each sandbox property references one rule tree. For more information on how content-handling rules are defined, review the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties",
+                ":sandboxPropertyId",
+                "rules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access",
+                  "value": "USER",
+                  "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxPropertyId",
+                  "description": "(Required) Unique identifier for the property within a sandbox."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "61cdd5a7-faa5-4f89-b5be-e0125faea617",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties",
+                    ":sandboxPropertyId",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access",
+                      "value": "{{access}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxPropertyId",
+                      "description": "(Required) Unique identifier for the property within a sandbox."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"_links\": {\n    \"property\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002/properties/ad37282c-8549-11e8-898a-0242ac110002\"\n    },\n    \"sandbox\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002\"\n    },\n    \"self\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/ac6ef62b-8549-11e8-898a-0242ac110002/properties/ad37282c-8549-11e8-898a-0242ac110002/rules\"\n    }\n  },\n  \"rules\": {\n    \"name\": \"default\",\n    \"children\": [\n      {\n        \"criteriaMustSatisfy\": \"all\",\n        \"name\": \"Handle /my-path\",\n        \"behaviors\": [\n          {\n            \"behavior\": \"max-age\",\n            \"name\": \"caching\",\n            \"ttl\": \"1m\"\n          }\n        ],\n        \"criteria\": [\n          {\n            \"name\": \"path\",\n            \"value\": [\n              \"/my-path\"\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "63ad2586-c069-41ee-a0ce-afcd8e7e4ac4",
+          "name": "Update a rule tree",
+          "request": {
+            "name": "Update a rule tree",
+            "description": {
+              "content": "Modify the rules of a sandbox property to make changes to content-handling behaviors for testing purposes within your development environment. Once you are satisfied with the results in your sandbox, you can use the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api) to apply the rule changes to your property configuration.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "sandboxes",
+                ":sandboxId",
+                "properties",
+                ":sandboxPropertyId",
+                "rules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "access",
+                  "value": "USER",
+                  "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxPropertyId",
+                  "description": "(Required) Unique identifier for the property within a sandbox."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sandboxId",
+                  "description": "(Required) Unique identifier for the sandbox."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rules\": \"<object>\",\n  \"_links\": {\n    \"resource\": {\n      \"href\": \"<string>\"\n    },\n    \"key_0\": 8450.134319283916,\n    \"key_1\": 5319\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2551f738-a1e1-4484-ac0d-f2690dbb04df",
+              "name": "Successful operation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "sandboxes",
+                    ":sandboxId",
+                    "properties",
+                    ":sandboxPropertyId",
+                    "rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "access",
+                      "value": "{{access}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxPropertyId",
+                      "description": "(Required) Unique identifier for the property within a sandbox."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sandboxId",
+                      "description": "(Required) Unique identifier for the sandbox."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"rules\": {\n    \"name\": \"default\",\n    \"children\": [\n      {\n        \"criteriaMustSatisfy\": \"all\",\n        \"name\": \"Handle /my-path\",\n        \"behaviors\": [\n          {\n            \"behavior\": \"max-age\",\n            \"name\": \"caching\",\n            \"ttl\": \"5m\"\n          }\n        ],\n        \"criteria\": [\n          {\n            \"name\": \"path\",\n            \"value\": [\n              \"/my-path\"\n            ]\n          }\n        ]\n      }\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ruleFormat\": \"latest\",\n  \"editedRuleBehaviors\": [\n    \"cpCode\"\n  ],\n  \"filteredRuleBehaviors\": [\n    \"http2\"\n  ],\n  \"_links\": {\n    \"property\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/e43a53d6-7430-11e8-8f80-0242ac110007/properties/e4ae2447-7430-11e8-8f80-0242ac110007\"\n    },\n    \"sandbox\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/e43a53d6-7430-11e8-8f80-0242ac110007\"\n    },\n    \"self\": {\n      \"href\": \"/sandbox-api/v1/sandboxes/e43a53d6-7430-11e8-8f80-0242ac110007/properties/e4ae2447-7430-11e8-8f80-0242ac110007/rules\"\n    }\n  },\n  \"validationWarnings\": [\n    {\n      \"detail\": \"If your `Origin Server` uses HTTPS, make sure to follow <a href=\\\"/dl/property-manager/property-manager-help/csh_lookup.html?id=PM_0034\\\" target=\\\"_blank\\\">this procedure</a> to avoid a service outage or a security breach when you rotate your origin's certificate.\",\n      \"errorLocation\": \"#/rules/behaviors/0\",\n      \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/validation/validation_message.ssl_delegate_warning_rotate\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "605f80bb-7bfc-4f0f-975e-ab9124d65972",
+    "name": "Akamai: API Endpoint Definition Access tokens Properties API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

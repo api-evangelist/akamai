@@ -1,0 +1,304 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Includes API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Includes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Includes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/includes",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "modifiedSince",
+                "value": "{{modifiedSince}}",
+                "type": "query",
+                "description": "Filters properties or includes that have been modified in a specified time. Accepts duration in the ISO 8601 format."
+              },
+              {
+                "name": "modifiedNetwork",
+                "value": "{{modifiedNetwork}}",
+                "type": "query",
+                "description": "__Enum__ Filters and only shows properties or includes that have been modified within a specified period on a selected network, either `STAGING`, `PRODUCTION`, or `BOTH`. You need to specify it along with the `modifiedSince` query parameter."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__Limited availability__ This operation lists includes available for the current contract and group. Use optional query parameters to only show includes that were modified within a specified time range or on a selected network. If you specify the `modifiedSince` parameter, `contractId` and `groupId` become optional. If you don't identify a contract and group, the operation lists all includes you have access to, modified within a specified time range."
+        },
+        {
+          "info": {
+            "name": "Akamai Create or Clone an Include",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/includes",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "__Limited availability__ This operation either creates a new include from scratch or bases one on another include's rule tree. Version 1 of a new include is created automatically."
+        },
+        {
+          "info": {
+            "name": "Akamai Validate an Include",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/includes/validation-results/:activationId/properties/:propertyId/versions/:propertyVersion",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "activationId",
+                "value": "{{activationId}}",
+                "type": "path",
+                "description": "Unique identifier for the property or include activation."
+              },
+              {
+                "name": "propertyVersion",
+                "value": "{{propertyVersion}}",
+                "type": "path",
+                "description": "Property's incremental version number."
+              },
+              {
+                "name": "propertyId",
+                "value": "{{propertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+              },
+              {
+                "name": "offset",
+                "value": "{{offset}}",
+                "type": "query",
+                "description": "For paginated responses, specifies the page of results you want to navigate to, starting from `0`."
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "description": "For paginated responses, specifies the number of `hostnames` objects to include on each page."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__Limited availability__ Gets the results of an include validation against the specified parent property version that references the include."
+        },
+        {
+          "info": {
+            "name": "Akamai Get an Include",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/includes/:includeId",
+            "params": [
+              {
+                "name": "includeId",
+                "value": "{{includeId}}",
+                "type": "path",
+                "description": "Unique identifier for the include. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `inc_` prefix."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__Limited availability__ This operation gets a specific include. You can call this operation by specifying any of the `includeId` members from a [list of includes](https://techdocs.akamai.com/property-mgr/reference/get-includes), or by running a GET on the `includeLink` response when [creating a new include](https://techdocs.akamai.com/property-mgr/reference/post-includes)."
+        },
+        {
+          "info": {
+            "name": "Akamai Remove an Include",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/includes/:includeId",
+            "params": [
+              {
+                "name": "includeId",
+                "value": "{{includeId}}",
+                "type": "path",
+                "description": "Unique identifier for the include. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `inc_` prefix."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__Limited availability__ Removes a specific include, which you can only do if none of its versions are currently active. A successful DELETE results in a 200 response and a confirmation message. Attempting to delete an active include results in a 500 error. Attempting to delete an unknown include results in a 404 error."
+        },
+        {
+          "info": {
+            "name": "Akamai List Parent Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/includes/:includeId/parents",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "includeId",
+                "value": "{{includeId}}",
+                "type": "path",
+                "description": "Unique identifier for the include. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `inc_` prefix."
+              },
+              {
+                "name": "offset",
+                "value": "{{offset}}",
+                "type": "query",
+                "description": "For paginated responses, specifies the page of results you want to navigate to, starting from `0`."
+              },
+              {
+                "name": "limit",
+                "value": "{{limit}}",
+                "type": "query",
+                "description": "For paginated responses, specifies the number of `hostnames` objects to include on each page."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__Limited availability__ Lists all active properties that reference a specific include. Combine optional query parameters to paginate, sort, and filter the results. Specify any `includeId` you get from a [list of includes](https://techdocs.akamai.com/property-mgr/reference/get-includes)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

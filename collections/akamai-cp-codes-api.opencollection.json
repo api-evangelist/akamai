@@ -1,0 +1,156 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens CP codes API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "CP codes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List CP codes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/cpcodes",
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Identifies the contract to filter data by. Include this optional parameter to narrow down the results to a specific contract only."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Identifies the access group to filter data by. Include this optional parameter to narrow down the results to a specific access group only."
+              },
+              {
+                "name": "productId",
+                "value": "{{productId}}",
+                "type": "query",
+                "description": "Identifies the product or service to filter data by. Include this optional parameter to narrow down the results to a specific product only."
+              },
+              {
+                "name": "cpcodeName",
+                "value": "{{cpcodeName}}",
+                "type": "query",
+                "description": "The name of the CP code to filter data by. Include this optional parameter to narrow down the results to a specific CP code name only."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Lists detailed information about CP codes available within your account and contract."
+        },
+        {
+          "info": {
+            "name": "Akamai Create a New CP Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/cpcodes",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "To create a new CP code, you need to associate it with a product. You can assign any CP code within a property's rule tree as detailed in the [Rule Trees](https://techdocs.akamai.com/property-mgr/reference/rule-trees) section. You should match the same `productId` that's assigned to properties that invoke the CP code to the one assigned to the CP code, otherwise you may get a warning.\n\nTo view or update certain CP code data, such as name, time zone, and purgeability, use the [CP Codes and Report"
+        },
+        {
+          "info": {
+            "name": "Get a CP code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/cpcodes/:cpcodeId",
+            "params": [
+              {
+                "name": "cpcodeId",
+                "value": "{{cpcodeId}}",
+                "type": "path",
+                "description": "The identifier for the CP code."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get detailed information about a specific CP code. The details include the CP code type, name, time zone, as well as the account, contracts, and products it's assigned to. This operation also lists the access control group the CP code belongs to."
+        },
+        {
+          "info": {
+            "name": "Update a CP code",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/api-definitions/v2/cpcodes/:cpcodeId",
+            "params": [
+              {
+                "name": "cpcodeId",
+                "value": "{{cpcodeId}}",
+                "type": "path",
+                "description": "The identifier for the CP code."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modifies a specific CP code. After running the [GET a CP code](https://techdocs.akamai.com/cp-codes/reference/get-cpcode) operation, use the response to build a request body. You can only modify a CP code's name, time zone, and purgeable member."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,494 @@
+{
+  "item": [
+    {
+      "id": "5bfdb6cc-fd4a-4eb6-9e83-487651a71823",
+      "name": "Groups",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f13b83c3-3dc1-4883-9d73-caa90beb4fb2",
+          "name": "Akamai List Groups",
+          "request": {
+            "name": "Akamai List Groups",
+            "description": {
+              "content": "You need information about the prevailing group to access most PAPI interfaces. This operation provides a read-only list of groups, which may contain properties. This operation provides a flat list of groups, along with `parentGroupId` information to structure them as a hierarchy. Each group also lists any available contracts that enable property features, but not which group contains a given property. Use the [Identity and Access Management API](https://techdocs.akamai.com/iam-api/reference/api) to assign properties to groups, and modify the group hierarchy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "groups"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4cd46799-7baa-4f11-abe0-21dfe06c39b5",
+              "name": "The response lists available groups.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"accountId\": \"act_1-1TJZFB\",\n  \"accountName\": \"Digital Company\",\n  \"groups\": {\n    \"items\": [\n      {\n        \"groupId\": \"grp_15225\",\n        \"groupName\": \"Example.com-1-1TJZH5\",\n        \"contractIds\": [\n          \"1-12345\"\n        ]\n      },\n      {\n        \"groupId\": \"grp_15231\",\n        \"groupName\": \"Test\",\n        \"parentGroupId\": \"grp_15225\",\n        \"contractIds\": [\n          \"1-12345\"\n        ]\n      },\n      {\n        \"groupId\": \"grp_41443\",\n        \"groupName\": \"TomTest\",\n        \"parentGroupId\": \"grp_15225\",\n        \"contractIds\": [\n          \"1-12345\"\n        ]\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38064afd-4cfb-47cb-9d24-7b7db4fa335f",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c433c583-659c-4b69-ab69-1e7524eaf353",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cca22e13-c5b7-475c-b9cc-cb53f56b3c3c",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "20f6bfb4-d2bf-4bd3-bfc4-9ab66c4ce589",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1833071e-219b-41e0-a94b-4b21b2d0978d",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0e54e7f4-fdc2-4b4b-8d7a-80edcd2d3183",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d945c806-169d-4b06-9144-c16b7053f43d",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd9c25db-04a6-4015-8e3e-7b2f4cba2cf6",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "groups"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9c24f6d7-1bd6-4b46-b518-500716f631e2",
+    "name": "Akamai: API Endpoint Definition Access tokens Groups API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

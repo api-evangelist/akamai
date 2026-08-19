@@ -1,0 +1,419 @@
+{
+  "item": [
+    {
+      "id": "51dbf495-c1bb-469e-888b-5139ca8a3d2b",
+      "name": "Security policy: Evaluation mode",
+      "description": {
+        "content": "Set the evaluation mode for your security policies.  This mode\nruns concurrently with your existing Web Application Firewall\nRule settings and records how the rules would respond if applied\nto live traffic.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "5019aba4-0935-4922-afbb-c32bd69253cb",
+          "name": "Set evaluation mode",
+          "request": {
+            "name": "Set evaluation mode",
+            "description": {
+              "content": "__Kona Site Defender__, __App & API Protector with the Advanced Security module__ Evaluation mode runs concurrently with your existing Web Application Firewall Rule settings and records how the rules would respond if they were applied to live traffic. The default action for evaluation rules is `alert`. Unlike other POST or PUT actions, this request object supports values other than `enabled` or `disabled`. Use `START` to begin evaluation mode. An evaluation period lasts four weeks unless you stop the evaluation. Once you begin, the rules you evaluate will respond to traffic as if they are your current rules. However, instead of taking an action the evaluation rules will log which action they would have taken if they were your active rules and not a test of future rules. Use `STOP` to end the evaluation before it completes on its own, and not upgrade your rules. Use `RESTART` to start an evaluation you previously stopped, or one that has expired. Use `COMPLETE` to stop your in-progress evaluation and automatically upgrade your existing KRS rules to the rule set you just evaluated. Use `UPDATE` to upgrade to the newest available version of evaluation rules. A request value of `START`, `RESTART`, or `COMPLETE` returns an `eval` value of `enabled`. A request value of `STOP` or `UPDATE` returns an `eval` value of `disabled`.   If you're using Adaptive Security Engine, pass `eval` as usual, and add `\"mode\": \"ASE_AUTO\"` or `ASE_MANUAL` in your request. If you're using Kona Rule Sets, continue to pass only the `eval` value.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "security-policies",
+                ":policyId",
+                "eval"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "policyId",
+                  "description": "(Required) A unique identifier for a security policy."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eval\": \"<string>\",\n  \"mode\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5280b294-09de-49ed-be9b-e6c2a401dc52",
+              "name": "Successfully set the evaluation action in the specified security policy.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "security-policies",
+                    ":policyId",
+                    "eval"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policyId",
+                      "description": "(Required) A unique identifier for a security policy."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eval\": \"START\",\n  \"mode\": \"ASE_MANUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"current\": \"ASE Manual (Mar 16, 2022)\",\n  \"eval\": \"enabled\",\n  \"evaluating\": \"ASE Manual (Mar 16, 2022)\",\n  \"mode\": \"ASE_MANUAL\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1084759-5a10-4a3a-8ce8-3f8f53c4d6e1",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "security-policies",
+                    ":policyId",
+                    "eval"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policyId",
+                      "description": "(Required) A unique identifier for a security policy."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eval\": \"START\",\n  \"mode\": \"ASE_MANUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68183c23-e067-4033-a4e0-575124bbdd5c",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "security-policies",
+                    ":policyId",
+                    "eval"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policyId",
+                      "description": "(Required) A unique identifier for a security policy."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eval\": \"START\",\n  \"mode\": \"ASE_MANUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a7d7e93-c3cd-485a-9e93-9fb2876faaa4",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "security-policies",
+                    ":policyId",
+                    "eval"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "policyId",
+                      "description": "(Required) A unique identifier for a security policy."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"eval\": \"START\",\n  \"mode\": \"ASE_MANUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "29641958-9ade-4e6e-bde9-09d32731ebac",
+    "name": "Akamai: API Endpoint Definition Access tokens Security policy: Evaluation mode API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Set the evaluation mode for your security policies.  This mode\nruns concurrently with your existing Web Application Firewall\nRule settings and records how the rules would respond if applied\nto live traffic.",
+      "type": "text/plain"
+    }
+  }
+}

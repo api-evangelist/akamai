@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Bulk activations API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk activations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Bulk Activate a Set of Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/bulk/activations",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk activate a set of property versions. Alternately, perform a bulk [fallback](https://techdocs.akamai.com/property-mgr/reference/property-activation-error-handling) to the previous activation within an hour of the previous bulk activation. Base the set of versions to activate on the results of a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/get-bulk-patch) operation, which you use in this operation's request. This operation launches an asynchronous process to update properti"
+        },
+        {
+          "info": {
+            "name": "Akamai List Bulk-activated Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/bulk/activations/:bulkActivationId",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "bulkActivationId",
+                "value": "{{bulkActivationId}}",
+                "type": "path",
+                "description": "Identifies each bulk activation job."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "List all activations that result from a [bulk activation request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-activations). Once the overall `bulkActivationStatus` is `COMPLETE`, check each activation's `activationStatus` to confirm it's `ACTIVATED`. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

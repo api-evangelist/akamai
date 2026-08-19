@@ -1,0 +1,1002 @@
+{
+  "item": [
+    {
+      "id": "fb501d15-8fbd-40a4-a172-dc2cbc9b21af",
+      "name": "Access tokens",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "90ca7fb5-8484-4855-ae6b-9f8a2bd46562",
+          "name": "Akamai Create an Access Token",
+          "request": {
+            "name": "Akamai Create an Access Token",
+            "description": {
+              "content": "Generate an access token that allows an EdgeWorkers code bundle to access the specified namespace. Each token name needs to be unique and have a defined expiration of no longer than six months. You can't renew a token once it expires. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"allowOnProduction\": \"<boolean>\",\n  \"allowOnStaging\": \"<boolean>\",\n  \"expiry\": \"<string>\",\n  \"name\": \"<string>\",\n  \"namespacePermissions\": {\n    \"key_0\": [\n      \"<string>\"\n    ],\n    \"key_1\": [\n      \"<string>\"\n    ],\n    \"key_2\": [\n      \"<string>\"\n    ],\n    \"key_3\": [\n      \"<string>\"\n    ],\n    \"key_4\": [\n      \"<string>\"\n    ],\n    \"key_5\": [\n      \"<string>\"\n    ],\n    \"key_6\": [\n      \"<string>\"\n    ],\n    \"key_7\": [\n      \"<string>\"\n    ],\n    \"key_8\": [\n      \"<string>\"\n    ],\n    \"key_9\": [\n      \"<string>\"\n    ],\n    \"key_10\": [\n      \"<string>\"\n    ],\n    \"key_11\": [\n      \"<string>\"\n    ],\n    \"key_12\": [\n      \"<string>\"\n    ]\n  },\n  \"restrictToEdgeWorkerIds\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "83ca3735-8156-461a-bc25-86a2068ddc15",
+              "name": "Returns generated token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allowOnProduction\": false,\n  \"allowOnStaging\": true,\n  \"expiry\": \"2021-09-30\",\n  \"name\": \"my_token\",\n  \"namespacePermissions\": {\n    \"marketing\": [\n      \"r\",\n      \"w\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"expiry\": \"2021-09-30\",\n  \"name\": \"my_token\",\n  \"uuid\": \"fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466\",\n  \"value\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "de332768-79c6-4e1c-a37f-bc40f4d4ecad",
+              "name": "An existing token using the same name was found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allowOnProduction\": false,\n  \"allowOnStaging\": true,\n  \"expiry\": \"2021-09-30\",\n  \"name\": \"my_token\",\n  \"namespacePermissions\": {\n    \"marketing\": [\n      \"r\",\n      \"w\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Token with name my_token is already stored.\",\n  \"errorCode\": \"EKV_3000\",\n  \"instance\": \"/edgekv/error-instances/e0ddea79-a457-4f49-9d70-c4c22e674bcf\",\n  \"status\": 409,\n  \"title\": \"Conflict\",\n  \"type\": \"/edgekv/error-types/edgekv-conflict\",\n  \"additionalDetail\": {\n    \"requestId\": \"9c5c61e18b90013b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8033763-1895-45b0-8dd5-91d1e20687a1",
+              "name": "The specified token JSON contained a syntax error or duplicate attributes.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allowOnProduction\": false,\n  \"allowOnStaging\": true,\n  \"expiry\": \"2021-09-30\",\n  \"name\": \"my_token\",\n  \"namespacePermissions\": {\n    \"marketing\": [\n      \"r\",\n      \"w\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The JSON request body contained a syntax error or duplicate attributes.\",\n  \"errorCode\": \"EKV_2001\",\n  \"instance\": \"/edgekv/error-instances/e0ddea79-a457-4f49-9d70-c4c22e674bcf\",\n  \"status\": 422,\n  \"title\": \"Unprocessable Entity\",\n  \"type\": \"/edgekv/error-types/edgekv-unprocessable-entity\",\n  \"additionalDetail\": {\n    \"requestId\": \"9c5c61e18b90013b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8931620-b495-493a-a36e-ec99f1bf7575",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"allowOnProduction\": false,\n  \"allowOnStaging\": true,\n  \"expiry\": \"2021-09-30\",\n  \"name\": \"my_token\",\n  \"namespacePermissions\": {\n    \"marketing\": [\n      \"r\",\n      \"w\"\n    ]\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal error occurred.\",\n  \"errorCode\": \"EKV_0000\",\n  \"instance\": \"/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"/edgekv/error-types/edgekv-internal-server-error\",\n  \"additionalDetail\": {\n    \"requestId\": \"cd9b61e08148009b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d7ef2539-75a4-46cf-a835-0b3da92c932b",
+          "name": "Akamai List Access Tokens",
+          "request": {
+            "name": "Akamai List Access Tokens",
+            "description": {
+              "content": "View a list of EdgeKV access tokens.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tokens"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeExpired",
+                  "value": "<boolean>",
+                  "description": "Whether to include expired tokens that are less than 30 days old in the response."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2e91a72d-cf59-4ed9-846f-be11fb8279c8",
+              "name": "Returns a list of EdgeKV access tokens you have permissions to see.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeExpired",
+                      "value": "{{includeExpired}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tokens\": [\n    {\n      \"expiry\": \"2021-09-30\",\n      \"name\": \"token1\",\n      \"uuid\": \"12886ccf-7662-5f19-b039-766740ce227f\"\n    },\n    {\n      \"expiry\": \"2021-09-30\",\n      \"name\": \"my_token\",\n      \"uuid\": \"a600dfaa-3b7a-5d2a-bae3-b0c0d0e88e4a\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f118d45a-78d5-4544-bdf4-41abd16ce5b4",
+              "name": "No tokens are found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeExpired",
+                      "value": "{{includeExpired}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"No tokens exist.\",\n  \"errorCode\": \"EKV_3000\",\n  \"instance\": \"/edgekv/error-instances/420e5e11-210f-4d16-ab84-eebf4b70757a\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"/edgekv/error-types/edgekv-not-found\",\n  \"additionalDetail\": {\n    \"requestId\": \"aad261e0a45b000a\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "864eb5be-2f73-4a34-ba99-fd78a05aa78f",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeExpired",
+                      "value": "{{includeExpired}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal error occurred.\",\n  \"errorCode\": \"EKV_0000\",\n  \"instance\": \"/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"/edgekv/error-types/edgekv-internal-server-error\",\n  \"additionalDetail\": {\n    \"requestId\": \"cd9b61e08148009b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "900cd745-fdad-4734-9d5f-46d3f6a5fe11",
+          "name": "Akamai Download an Access Token",
+          "request": {
+            "name": "Akamai Download an Access Token",
+            "description": {
+              "content": "Download a previously created EdgeKV access token. To get a token you need to know the token `name`. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tokens",
+                ":tokenName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tokenName",
+                  "description": "(Required) Unique identifier for each namespace."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "21193c67-7541-4d7f-bacb-0f70a34dac10",
+              "name": "Returns an EdgeKV access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"expiry\": \"2021-09-30\",\n  \"name\": \"my_token\",\n  \"uuid\": \"fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466\",\n  \"value\": \"xxxxxxxxxxxxxxxxxxxxxxxxxxxx\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac034d63-7b70-4941-a733-86e53d4bb1a0",
+              "name": "Invalid token name.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Name contains invalid characters.\",\n  \"errorCode\": \"EKV_2000\",\n  \"instance\": \"/edgekv/error-instances/0959b9b3-8043-4f87-9510-0e752160d713\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"/edgekv/error-types/edgekv-bad-request\",\n  \"additionalDetail\": {\n    \"requestId\": \"e30761e0a7b6072b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3458fab-b93b-4816-b3b6-f5520ed0b108",
+              "name": "Token is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Token with name token1 does not exist.\",\n  \"errorCode\": \"EKV_3000\",\n  \"instance\": \"/edgekv/error-instances/e77c8cc1-3698-412a-b574-64fc12c05741\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"/edgekv/error-types/edgekv-not-found\",\n  \"additionalDetail\": {\n    \"requestId\": \"b08961e0a5540233\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc2eedbf-0a62-4eaf-a7fa-e45180926652",
+              "name": "Token has expired.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Gone",
+              "code": 410,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Token has expired.\",\n  \"errorCode\": \"EKV_3000\",\n  \"instance\": \"/edgekv/error-instances/e77c8cc1-3698-412a-b574-64fc12c05741\",\n  \"status\": 410,\n  \"title\": \"Not Found\",\n  \"type\": \"/edgekv/error-types/edgekv-not-found\",\n  \"additionalDetail\": {\n    \"requestId\": \"b08961e0a5540233\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "48a4a298-3be1-4e6e-b25b-91c82e59eb35",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal error occurred.\",\n  \"errorCode\": \"EKV_0000\",\n  \"instance\": \"/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"/edgekv/error-types/edgekv-internal-server-error\",\n  \"additionalDetail\": {\n    \"requestId\": \"cd9b61e08148009b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6d411b8b-b43b-47db-a0e5-61c26139a2b6",
+          "name": "Akamai Revoke an Access Token",
+          "request": {
+            "name": "Akamai Revoke an Access Token",
+            "description": {
+              "content": "Once you revoke an access token, you can't undo it. You also need to update any deployed EdgeWorkers code bundles that use the old token with a new token, or requests to EdgeKV fail. Any requests from an EdgeWorkers code bundle using a revoked token cause a 401 error. To learn more about access tokens, refer to the [EdgeKV guide](https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tokens",
+                ":tokenName"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tokenName",
+                  "description": "(Required) Unique identifier for each namespace."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4a37c4fe-8284-4d0b-9951-870ccbb30548",
+              "name": "Token revocation successful.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"my_token\",\n  \"uuid\": \"fa3a7ae0-1b0c-45c7-adc3-f0638c6b7466\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03119683-e852-46e4-88fa-26abfe0fb99e",
+              "name": "Invalid token name.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Name contains invalid characters.\",\n  \"errorCode\": \"EKV_2000\",\n  \"instance\": \"/edgekv/error-instances/0959b9b3-8043-4f87-9510-0e752160d713\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"/edgekv/error-types/edgekv-bad-request\",\n  \"additionalDetail\": {\n    \"requestId\": \"e30761e0a7b6072b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac46f670-93db-4286-bdf0-0d347ccf0ea2",
+              "name": "Token is not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Token with name token1 does not exist.\",\n  \"errorCode\": \"EKV_3000\",\n  \"instance\": \"/edgekv/error-instances/e77c8cc1-3698-412a-b574-64fc12c05741\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"/edgekv/error-types/edgekv-not-found\",\n  \"additionalDetail\": {\n    \"requestId\": \"b08961e0a5540233\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bd51e6cf-0fcd-4b08-9a3a-82b66475b6af",
+              "name": "Internal error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tokens",
+                    ":tokenName"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tokenName",
+                      "description": "(Required) Unique identifier for each namespace."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"An internal error occurred.\",\n  \"errorCode\": \"EKV_0000\",\n  \"instance\": \"/edgekv/error-instances/cdb7767c-817e-4805-9f28-0816eefa0ba8\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"/edgekv/error-types/edgekv-internal-server-error\",\n  \"additionalDetail\": {\n    \"requestId\": \"cd9b61e08148009b\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9a7840b0-97e1-4166-a756-da537dc30915",
+    "name": "Akamai: API Endpoint Definition Access tokens API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

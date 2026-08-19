@@ -1,0 +1,182 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Onboarding: Creation and settings API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Onboarding: Creation and settings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List onboardings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/onboardings",
+            "params": [
+              {
+                "name": "onboardingStatuses",
+                "value": "",
+                "type": "query",
+                "description": "Lists onboardings for a specific status."
+              },
+              {
+                "name": "hostnames",
+                "value": "",
+                "type": "query",
+                "description": "Returns onboardings containing the specified hostnames."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__App & API Protector__, __App & API Protector with the Advanced Security module__ Lists onboardings. You can filter results by hostname or onboarding status."
+        },
+        {
+          "info": {
+            "name": "Create an onboarding",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/onboardings",
+            "params": [
+              {
+                "name": "createNewResourcesOnly",
+                "value": "",
+                "type": "query",
+                "description": "This creates an onboarding with a new CPS certificate and security protections. If your contract limits how many certificates you create, the API responds with an error."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "__App & API Protector__, __App & API Protector with the Advanced Security module__ Create a new onboarding. To start, you'll need a valid set of hostnames that either need delivery settings, an Akamai-owned certificate from the Certificate Provisioning System (CPS), and security protections, or have delivery settings complete and only need security protections. However, you can include only one type of these hostnames per onboarding, not both. If you have both kinds of hostnames, those that need"
+        },
+        {
+          "info": {
+            "name": "Get an onboarding",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/onboardings/:onboardingId",
+            "params": [
+              {
+                "name": "onboardingId",
+                "value": "",
+                "type": "path",
+                "description": "A unique identifier for an onboarding."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__App & API Protector__, __App & API Protector with the Advanced Security module__ Get an onboarding's details. Once you've completed all steps in the onboarding process, run this call again to verify `onboardingStatus: \"COMPLETE\"`."
+        },
+        {
+          "info": {
+            "name": "Delete an onboarding",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/onboardings/:onboardingId",
+            "params": [
+              {
+                "name": "onboardingId",
+                "value": "",
+                "type": "path",
+                "description": "A unique identifier for an onboarding."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__App & API Protector__, __App & API Protector with the Advanced Security module__ Delete a specific onboarding. You can't delete an onboarding that has an activation in progress. To delete an onboarding that's activating, wait for the activation to complete, then run this operation."
+        },
+        {
+          "info": {
+            "name": "Get onboarding settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/onboardings/:onboardingId/settings",
+            "params": [
+              {
+                "name": "onboardingId",
+                "value": "",
+                "type": "path",
+                "description": "A unique identifier for an onboarding."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__App & API Protector__, __App & API Protector with the Advanced Security module__ Gets the settings for a specific onboarding."
+        },
+        {
+          "info": {
+            "name": "Modify onboarding settings",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/api-definitions/v2/onboardings/:onboardingId/settings",
+            "params": [
+              {
+                "name": "onboardingId",
+                "value": "",
+                "type": "path",
+                "description": "A unique identifier for an onboarding."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "__App & API Protector__, __App & API Protector with the Advanced Security module__ Update the settings in an onboarding. You can't update settings for an onboarding object that has already activated on staging or production. You can, however, change settings for an onboarding that has not been activated."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,332 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Activations API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Activations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Activate a configuration version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/activations",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "__All products__ Activates one or more configurations globally. Note that you need to explicitly list any invalid hosts in the `acknowledgedInvalidHostsByConfig` parameter in order to successfully activate a configuration that includes invalid hostnames. If you have an invalid hostname that isn't explicitly called out you'll receive an error telling you to add them to `acknowledgedInvalidHostsByConfig`. See [Activate with invalid hostnames](https://techdocs.akamai.com/application-security/refere"
+        },
+        {
+          "info": {
+            "name": "Akamai List Activations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/ids/:edgeWorkerId/activations",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorker."
+              },
+              {
+                "name": "version",
+                "value": "{{version}}",
+                "type": "query",
+                "description": "Unique identifier for a specific EdgeWorker version."
+              },
+              {
+                "name": "activeOnNetwork",
+                "value": "{{activeOnNetwork}}",
+                "type": "query",
+                "description": "When enabled, limits results to show only currently activate versions. Pair this with a `network` to get the version that's currently active on a specific network. Otherwise the response may include up to two versions."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "query",
+                "description": "__Enum__ When enabled, limits results to show only versions activated on a specific network, either `STAGING` or `PRODUCTION`. Pair this with `activeOnNetwork=true` to get the version that's currently active on the specified network."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View the list of activations for an existing EdgeWorker based on ID. You can choose to specify the version in the request. The response filters the list of activations down by version number."
+        },
+        {
+          "info": {
+            "name": "Akamai Activate an EdgeWorker Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/ids/:edgeWorkerId/activations",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorker."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Activate an existing EdgeWorker version on the Akamai network, either staging or production."
+        },
+        {
+          "info": {
+            "name": "Akamai Roll Back to the Previous Active EdgeWorker Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/ids/:edgeWorkerId/activations/rollback",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorker."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Reactivate the EdgeWorker version that was previously active on the Akamai network, either staging or production."
+        },
+        {
+          "info": {
+            "name": "Akamai Get an Activation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/ids/:edgeWorkerId/activations/:activationId",
+            "params": [
+              {
+                "name": "activationId",
+                "value": "{{activationId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorkers activation."
+              },
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorker."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View details for a specific activation."
+        },
+        {
+          "info": {
+            "name": "Akamai Cancel an Activation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/ids/:edgeWorkerId/activations/:activationId",
+            "params": [
+              {
+                "name": "activationId",
+                "value": "{{activationId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorkers activation."
+              },
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorker."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Cancel a pending activation. You can cancel any activation whose `status` is still `PENDING`. After that you need to wait for the activation to complete and then deactivate it. Once the deactivation is complete you can then delete the EdgeWorker version."
+        },
+        {
+          "info": {
+            "name": "Akamai Get Activation Details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/activations/:activationId",
+            "params": [
+              {
+                "name": "activationId",
+                "value": "{{activationId}}",
+                "type": "path",
+                "description": "The unique identifier for this activation request."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Provides detailed status for a given activation, including progress on _fast_ activation and other audit information, in addition to information ordinarily available from the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation."
+        },
+        {
+          "info": {
+            "name": "Akamai Activate a Network List",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/network-lists/:networkListId/environments/:environment/activate",
+            "params": [
+              {
+                "name": "environment",
+                "value": "{{environment}}",
+                "type": "path",
+                "description": "__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`."
+              },
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Activate the most recent `syncPoint` version of a network list in either the `STAGING` or `PRODUCTION` environment."
+        },
+        {
+          "info": {
+            "name": "Akamai Get Activation Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/network-lists/:networkListId/environments/:environment/status",
+            "params": [
+              {
+                "name": "environment",
+                "value": "{{environment}}",
+                "type": "path",
+                "description": "__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`."
+              },
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Shows a network list's activation status on either the `STAGING` or `PRODUCTION` environment. The response reflects standard activation status. For fast activation status, see [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation)."
+        },
+        {
+          "info": {
+            "name": "Akamai Get an Activation's Snapshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/network-lists/:networkListId/sync-points/:syncPoint/history",
+            "params": [
+              {
+                "name": "syncPoint",
+                "value": "{{syncPoint}}",
+                "type": "path",
+                "description": "The network list version for which to retrieve the snapshot. This corresponds to the `syncPoint` the API exchanges for each successive modification to the network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details."
+              },
+              {
+                "name": "networkListId",
+                "value": "{{networkListId}}",
+                "type": "path",
+                "description": "Unique identifier for each network list."
+              },
+              {
+                "name": "extended",
+                "value": "{{extended}}",
+                "type": "query",
+                "description": "When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Gets a version of a network list in its state when activated, with each version identified by its `syncPoint` value.  You can only get `syncPoint` versions that have been activated."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

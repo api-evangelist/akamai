@@ -1,0 +1,90 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Secure tokens API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Secure tokens",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Create a Secure Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/secure-token",
+            "params": [
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Generate a JWT authentication token to [enable enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enable-enhanced-debug-headers) for EdgeWorkers."
+        },
+        {
+          "info": {
+            "name": "Akamai Get a Secure Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/secure-token/:propertyId",
+            "params": [
+              {
+                "name": "propertyId",
+                "value": "{{propertyId}}",
+                "type": "path",
+                "description": "Unique identifier for a property."
+              },
+              {
+                "name": "acl",
+                "value": "{{acl}}",
+                "type": "query",
+                "description": "Path prefix of the response pages to debug. This value can be a pattern that matches multiple pages, and is explicitly part of the final token. The default is `/*`. If you specify an `acl`, don't specify a `url`."
+              },
+              {
+                "name": "url",
+                "value": "{{url}}",
+                "type": "query",
+                "description": "Exact path of the response pages to debug. This value is not explicitly part of the final token, but is used as a salt in the HMAC computation. If you specify a `url`, don't specify an `acl`."
+              },
+              {
+                "name": "expiry",
+                "value": "{{expiry}}",
+                "type": "query",
+                "description": "Number of minutes before the authentication token expires, from a minute to an hour. The default is 15."
+              },
+              {
+                "name": "network",
+                "value": "{{network}}",
+                "type": "query",
+                "description": "__Enum__ The network on which to use this authentication token, either `STAGING` or `PRODUCTION`. If not specified, the token is created for the network where the last property version activation occurred."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "__Deprecated__ Use the [Create a secure token](https://techdocs.akamai.com/edgeworkers/reference/post-secure-token) operation instead. This returns a generated authentication token, for use with enhanced debug headers for EdgeWorkers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

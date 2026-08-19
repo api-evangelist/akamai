@@ -1,0 +1,1528 @@
+{
+  "item": [
+    {
+      "id": "8387fd2b-5b9a-4463-b7e8-153e574596ad",
+      "name": "Shared resources: Reputation profiles",
+      "description": {
+        "content": "Manage your reputation profiles.  Reputation protections\nidentify potentially malicious IP addresses, scoring them based\non prior interactions with other Akamai customers.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e827d8cc-0cb9-4c71-832f-8974276af121",
+          "name": "Create a reputation profile",
+          "request": {
+            "name": "Create a reputation profile",
+            "description": {
+              "content": "__Kona Site Defender__, __App & API Protector with the Advanced Security module__ Create a new reputation profile for a specific configuration version.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "reputation-profiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"context\": \"<string>\",\n  \"threshold\": \"<number>\",\n  \"sharedIpHandling\": \"<string>\",\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"<string>\",\n        \"className\": \"<string>\",\n        \"host\": [\n          \"<string>\"\n        ],\n        \"index\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"nameCase\": \"<boolean>\",\n        \"nameWildcard\": \"<boolean>\",\n        \"positiveMatch\": \"<boolean>\",\n        \"value\": [\n          \"<string>\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"checkIps\": \"<string>\",\n        \"className\": \"<string>\",\n        \"host\": [\n          \"<string>\"\n        ],\n        \"index\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"nameCase\": \"<boolean>\",\n        \"nameWildcard\": \"<boolean>\",\n        \"positiveMatch\": \"<boolean>\",\n        \"value\": [\n          \"<string>\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": \"<boolean>\"\n  },\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8db8c4a9-78b4-4d1f-a5f2-033cc4ab9e9e",
+              "name": "Successfully created a  reputation profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"AsNumberCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "245e7f80-bda9-4963-9d32-c7cb690263f2",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"AsNumberCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "327d851c-058c-45b3-acea-4f2caad3dafd",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to reputation profiles in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"AsNumberCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be03b01d-65ab-4252-b593-13fb44d619a8",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"AsNumberCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4735be05-a771-4bce-ab4a-712ccd151954",
+          "name": "List reputation profiles",
+          "request": {
+            "name": "List reputation profiles",
+            "description": {
+              "content": "__Kona Site Defender__, __App & API Protector with the Advanced Security module__ Returns reputation profiles for a specific security configuration version. To use reputation profiles, you need to add [Client Reputation](https://techdocs.akamai.com/app-api-protector/docs/control-client-reputation) to Kona Site Defender on your contract.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "reputation-profiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "19c1ae2f-1450-4bf4-a6d9-a4072a88ac06",
+              "name": "Successfully returned reputation profiles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"reputationProfiles\": [\n    {\n      \"context\": \"SCANTL\",\n      \"contextReadable\": \"Scanning Tools\",\n      \"enabled\": false,\n      \"id\": 146254,\n      \"name\": \"Scanning Tools (High Threat)\",\n      \"sharedIpHandling\": \"NON_SHARED\",\n      \"threshold\": 9\n    },\n    {\n      \"context\": \"WEBATCK\",\n      \"contextReadable\": \"Web Attackers\",\n      \"enabled\": false,\n      \"id\": 146258,\n      \"name\": \"Web Attackers (Low Threat)\",\n      \"sharedIpHandling\": \"SHARED_ONLY\",\n      \"threshold\": 5\n    },\n    {\n      \"condition\": {\n        \"atomicConditions\": [\n          {\n            \"className\": \"RequestCookieCondition\",\n            \"name\": \"cookie\",\n            \"nameWildcard\": true,\n            \"positiveMatch\": true,\n            \"value\": [\n              \"cookie\"\n            ],\n            \"valueWildcard\": true\n          }\n        ],\n        \"positiveMatch\": true\n      },\n      \"context\": \"WEBATCK\",\n      \"contextReadable\": \"Web Attackers\",\n      \"description\": \"this is a customized reputation profile\",\n      \"enabled\": true,\n      \"id\": 146259,\n      \"name\": \"Custom Reputation Profile\",\n      \"sharedIpHandling\": \"SHARED_ONLY\",\n      \"threshold\": 3\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc4410ee-2620-465c-b791-11b3bb188234",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to reputation profile in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "46f3a969-ef88-4a8e-817f-37605153064e",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ae34f49a-b75e-461d-ad61-79278c55edb0",
+          "name": "Get a reputation profile",
+          "request": {
+            "name": "Get a reputation profile",
+            "description": {
+              "content": "__Kona Site Defender__, __App & API Protector with the Advanced Security module__ Returns the details for a specific reputation profile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "reputation-profiles",
+                ":reputationProfileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "reputationProfileId",
+                  "description": "(Required) A unique identifier for each reputation profile."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "56275c8a-489c-4d68-af5a-366c6438d30f",
+              "name": "Successfully returned reputation profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6e304873-33ed-4c8a-9094-dc0c004d3180",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to reputation profile in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7b07f56-b42a-4515-876d-9b16b5852ea7",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or reputation profile wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7649bdf1-a48d-4ca6-b27e-de0199ff5b3c",
+          "name": "Modify a reputation profile",
+          "request": {
+            "name": "Modify a reputation profile",
+            "description": {
+              "content": "__Kona Site Defender__, __App & API Protector with the Advanced Security module__ Update details for a specific reputation profile.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "reputation-profiles",
+                ":reputationProfileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "reputationProfileId",
+                  "description": "(Required) A unique identifier for each reputation profile."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"context\": \"<string>\",\n  \"threshold\": \"<number>\",\n  \"sharedIpHandling\": \"<string>\",\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"<string>\",\n        \"className\": \"<string>\",\n        \"host\": [\n          \"<string>\"\n        ],\n        \"index\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"nameCase\": \"<boolean>\",\n        \"nameWildcard\": \"<boolean>\",\n        \"positiveMatch\": \"<boolean>\",\n        \"value\": [\n          \"<string>\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"checkIps\": \"<string>\",\n        \"className\": \"<string>\",\n        \"host\": [\n          \"<string>\"\n        ],\n        \"index\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"nameCase\": \"<boolean>\",\n        \"nameWildcard\": \"<boolean>\",\n        \"positiveMatch\": \"<boolean>\",\n        \"value\": [\n          \"<string>\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": \"<boolean>\"\n  },\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e478877a-de3c-4f95-bc69-1a27b4dfa6e3",
+              "name": "Successfully updated reputation profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"example.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"*.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ba7afa3-0e28-4abe-963a-6c6779359de7",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"example.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3256e440-be17-4902-91cd-19519611c0f3",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to reputation profile in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"example.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d5a2a336-52dd-4c01-8f06-424313aa5eae",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or reputation profile wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"condition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"AsNumberCondition\",\n        \"index\": 1,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"1\"\n        ]\n      },\n      {\n        \"className\": \"RequestCookieCondition\",\n        \"index\": 2,\n        \"name\": \"x-header\",\n        \"nameCase\": true,\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      },\n      {\n        \"className\": \"HostCondition\",\n        \"host\": [\n          \"example.com\"\n        ],\n        \"index\": 3,\n        \"positiveMatch\": true,\n        \"valueWildcard\": true\n      }\n    ],\n    \"positiveMatch\": true\n  },\n  \"context\": \"WEBATCK\",\n  \"description\": \"Reputation profile description\",\n  \"enabled\": false,\n  \"id\": 2509987,\n  \"name\": \"Web Attack Rep Profile\",\n  \"sharedIpHandling\": \"NON_SHARED\",\n  \"threshold\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "10dd3a85-8f0c-43d4-b1c2-5c63f5eed40f",
+          "name": "Remove a reputation profile",
+          "request": {
+            "name": "Remove a reputation profile",
+            "description": {
+              "content": "__Kona Site Defender__, __App & API Protector with the Advanced Security module__ Delete a reputation profile. You can't delete a reputation profile that is actively in use. To delete the reputation profile, first activate an older configuration version or create a new version without that policy in place.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "reputation-profiles",
+                ":reputationProfileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "reputationProfileId",
+                  "description": "(Required) A unique identifier for each reputation profile."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ad6ab50b-d20a-4183-b7f8-ad5e590210c9",
+              "name": "Successfully deleted the reputation profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a5843e76-c009-4a16-a781-3d733d3cafdf",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to reputation profile in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6d34248a-58ec-473c-a3aa-3de875bfbfe5",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or reputation profile wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "reputation-profiles",
+                    ":reputationProfileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "reputationProfileId",
+                      "description": "(Required) A unique identifier for each reputation profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e57902d3-f217-4131-89cd-8b351b9e42f1",
+    "name": "Akamai: API Endpoint Definition Access tokens Shared resources: Reputation profiles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Manage your reputation profiles.  Reputation protections\nidentify potentially malicious IP addresses, scoring them based\non prior interactions with other Akamai customers.",
+      "type": "text/plain"
+    }
+  }
+}

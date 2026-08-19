@@ -1,0 +1,323 @@
+{
+  "item": [
+    {
+      "id": "ddbd7ac6-0baa-494a-a202-86831d242228",
+      "name": "Secure tokens",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e12ea8cd-fff5-4c72-95b0-f43521b0025a",
+          "name": "Akamai Create a Secure Token",
+          "request": {
+            "name": "Akamai Create a Secure Token",
+            "description": {
+              "content": "Generate a JWT authentication token to [enable enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enable-enhanced-debug-headers) for EdgeWorkers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "secure-token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"expiry\": 480,\n  \"hostname\": \"<string>\",\n  \"hostnames\": [\n    \"<string>\"\n  ],\n  \"propertyId\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "397e27d1-d267-47cd-8e61-6ca8eaaebbeb",
+              "name": "A generated JWT authentication token, for use with enhanced debug headers for EdgeWorkers. See [Enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enhanced-debug-header-details).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "secure-token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expiry\": 30,\n  \"hostname\": \"www.example.com\",\n  \"propertyId\": \"123456789\",\n  \"hostnames\": [\n    \"www.hostname1.com\",\n    \"www.hostname2.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"akamaiEwTrace\": \"eyJ0eXAiOiJKV1Qi ... iu1XOS9eJOl-54Yw\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ac6aabf-a667-4d02-b70f-1bcb94803e6e",
+              "name": "A specified hostname does not exist in the property.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "secure-token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"expiry\": 30,\n  \"hostname\": \"www.example.com\",\n  \"propertyId\": \"123456789\",\n  \"hostnames\": [\n    \"www.hostname1.com\",\n    \"www.hostname2.com\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Host name provided does not exist in the property \",\n  \"errorCode\": \"EW4807\",\n  \"instance\": \"f6d70100-9214-45d8-8a22-3974bb40db1f\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"/edgeworkers/error-types/invalid-host-name\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4c09b171-ec28-439d-bec7-a3e58a6522ce",
+          "name": "Akamai Get a Secure Token",
+          "request": {
+            "name": "Akamai Get a Secure Token",
+            "description": {
+              "content": "__Deprecated__ Use the [Create a secure token](https://techdocs.akamai.com/edgeworkers/reference/post-secure-token) operation instead. This returns a generated authentication token, for use with enhanced debug headers for EdgeWorkers.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "secure-token",
+                ":propertyId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "acl",
+                  "value": "/*",
+                  "description": "Path prefix of the response pages to debug. This value can be a pattern that matches multiple pages, and is explicitly part of the final token. The default is `/*`. If you specify an `acl`, don't specify a `url`."
+                },
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "Exact path of the response pages to debug. This value is not explicitly part of the final token, but is used as a salt in the HMAC computation. If you specify a `url`, don't specify an `acl`."
+                },
+                {
+                  "disabled": false,
+                  "key": "expiry",
+                  "value": "15",
+                  "description": "Number of minutes before the authentication token expires, from a minute to an hour. The default is 15."
+                },
+                {
+                  "disabled": false,
+                  "key": "network",
+                  "value": "<string>",
+                  "description": "__Enum__ The network on which to use this authentication token, either `STAGING` or `PRODUCTION`. If not specified, the token is created for the network where the last property version activation occurred."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "propertyId",
+                  "description": "(Required) Unique identifier for a property."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a319ca4a-1696-489d-b5b9-ac235ebc5cbb",
+              "name": "A generated authentication token, for use with enhanced debug headers for EdgeWorkers. See [Enhanced debug headers](https://techdocs.akamai.com/edgeworkers/docs/enhanced-debug-header-details).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "secure-token",
+                    ":propertyId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "acl",
+                      "value": "{{acl}}"
+                    },
+                    {
+                      "key": "url",
+                      "value": "{{url}}"
+                    },
+                    {
+                      "key": "expiry",
+                      "value": "{{expiry}}"
+                    },
+                    {
+                      "key": "network",
+                      "value": "{{network}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "propertyId",
+                      "description": "(Required) Unique identifier for a property."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"akamaiEwTrace\": \"eyJ0eXAiOiJKV1Qi ... iu1XOS9eJOl-54Yw\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "fd461d98-3405-4dc9-8f67-a01addba1e3e",
+    "name": "Akamai: API Endpoint Definition Access tokens Secure tokens API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

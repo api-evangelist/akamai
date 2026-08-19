@@ -1,0 +1,681 @@
+{
+  "item": [
+    {
+      "id": "297180d3-eb33-4fcc-9878-c57c69870e55",
+      "name": "JWT",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "abd85918-170a-4613-b4d7-a83534c811bd",
+          "name": "Get JWT settings",
+          "request": {
+            "name": "Get JWT settings",
+            "description": {
+              "content": "Returns the JWT validation settings configured for an endpoint version and its assigned resources.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoints",
+                ":apiEndPointId",
+                "versions",
+                ":versionNumber",
+                "settings",
+                "jwt"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) The unique identifier for the endpoint version."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "apiEndPointId",
+                  "description": "(Required) The unique identifier for the endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d3f833c0-ac36-480a-90b6-505680d3fe82",
+              "name": "The response shows the current JWT validation settings.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enabled\": true,\n  \"resources\": {\n    \"2926712\": {\n      \"enabled\": true,\n      \"inheritsFromEndpoint\": true,\n      \"notes\": \"A book item within the bookstore API.\",\n      \"path\": \"/book/{bookId}\",\n      \"methods\": [\n        \"POST\",\n        \"GET\"\n      ]\n    },\n    \"2935128\": {\n      \"enabled\": true,\n      \"inheritsFromEndpoint\": true,\n      \"notes\": \"A registered bookstore user.\",\n      \"path\": \"/user/{userId}\",\n      \"methods\": [\n        \"POST\",\n        \"GET\",\n        \"PUT\"\n      ]\n    },\n    \"2935139\": {\n      \"enabled\": true,\n      \"inheritsFromEndpoint\": true,\n      \"notes\": \"A magazine item within the bookstore API.\",\n      \"path\": \"/magazine/{magazineId}\",\n      \"methods\": [\n        \"GET\"\n      ]\n    }\n  },\n  \"settings\": {\n    \"clockSkew\": 10,\n    \"location\": \"HEADER\",\n    \"paramName\": \"Authorization\",\n    \"validation\": {\n      \"rsaPublicKeyB\": null,\n      \"rsaPublicKeyA\": {\n        \"content\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN\\n80jxZCxfweelZKvYT9Qdms/1SJv\\nrQIDAQAB\\n-----END PUBLIC KEY-----\",\n        \"name\": \"publicKey\"\n      },\n      \"claims\": [\n        {\n          \"name\": \"aud\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": false,\n          \"value\": []\n        },\n        {\n          \"name\": \"iss\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"Akamai\"\n        },\n        {\n          \"name\": \"sub\",\n          \"required\": false,\n          \"type\": \"REGEX\",\n          \"validate\": true,\n          \"value\": \"^[a-zA-Z0-9_]*$\"\n        },\n        {\n          \"name\": \"exp\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"nbf\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"dept\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"IT\"\n        },\n        {\n          \"name\": \"roles\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": true,\n          \"value\": [\n            \"admin\",\n            \"premium_user\",\n            \"regular_user\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fab3636f-9af4-4e4c-bf58-70a272989448",
+              "name": "Some of user input is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ebb728b-a666-4729-83dc-60a29925db3f",
+              "name": "User does not have permission to API endpoint.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0bcb4250-c565-435a-a95e-7e540780b374",
+              "name": "This API endpoint doesn't exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "026d259e-2c2f-4b2f-9f92-f35d3ea1ce67",
+          "name": "Edit JWT settings",
+          "request": {
+            "name": "Edit JWT settings",
+            "description": {
+              "content": "Updates the JWT validation settings configured for an endpoint version and its assigned resources.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "endpoints",
+                ":apiEndPointId",
+                "versions",
+                ":versionNumber",
+                "settings",
+                "jwt"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) The unique identifier for the endpoint version."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "apiEndPointId",
+                  "description": "(Required) The unique identifier for the endpoint."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"enabled\": \"<boolean>\",\n  \"settings\": {\n    \"location\": \"HEADER\",\n    \"paramName\": \"<string>\",\n    \"clockSkew\": \"<integer>\",\n    \"validation\": {\n      \"rsaPublicKeyA\": {\n        \"name\": \"<string>\",\n        \"content\": \"<string>\"\n      },\n      \"claims\": [\n        {\n          \"type\": \"<string>\",\n          \"required\": \"<boolean>\",\n          \"validate\": \"<boolean>\",\n          \"name\": \"<string>\",\n          \"value\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        },\n        {\n          \"type\": \"<string>\",\n          \"required\": \"<boolean>\",\n          \"validate\": \"<boolean>\",\n          \"name\": \"<string>\",\n          \"value\": [\n            \"<string>\",\n            \"<string>\"\n          ]\n        }\n      ],\n      \"jwks\": {\n        \"certChain\": {\n          \"name\": \"<string>\",\n          \"content\": \"<string>\"\n        },\n        \"hosts\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"jwksSetUrl\": \"<uri>\",\n        \"publicKeyMaxAge\": {\n          \"duration\": \"<integer>\",\n          \"unit\": \"<string>\"\n        }\n      },\n      \"method\": \"INLINE_PUBLIC_KEY\",\n      \"rsaPublicKeyB\": {\n        \"name\": \"<string>\",\n        \"content\": \"<string>\"\n      },\n      \"signingAlgorithm\": \"<string>\"\n    }\n  },\n  \"resources\": {\n    \"key_0\": {\n      \"enabled\": \"<boolean>\"\n    },\n    \"key_1\": {\n      \"enabled\": \"<boolean>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dc97f5db-8e81-440d-b613-99d97500d36f",
+              "name": "The response reflects your updated JWT validation settings.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": true,\n  \"resources\": {\n    \"2926712\": {\n      \"enabled\": true\n    },\n    \"2935128\": {\n      \"enabled\": true\n    },\n    \"2935139\": {\n      \"enabled\": true\n    }\n  },\n  \"settings\": {\n    \"clockSkew\": 10,\n    \"location\": \"HEADER\",\n    \"paramName\": \"Authorization\",\n    \"validation\": {\n      \"rsaPublicKeyB\": null,\n      \"rsaPublicKeyA\": {\n        \"content\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN\\n80jxZCxfweelZKvYT9Qdms/1SJv\\nrQIDAQAB\\n-----END PUBLIC KEY-----\",\n        \"name\": \"publicKey\"\n      },\n      \"claims\": [\n        {\n          \"name\": \"aud\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": false,\n          \"value\": []\n        },\n        {\n          \"name\": \"iss\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"Akamai\"\n        },\n        {\n          \"name\": \"sub\",\n          \"required\": false,\n          \"type\": \"REGEX\",\n          \"validate\": true,\n          \"value\": \"^[a-zA-Z0-9_]*$\"\n        },\n        {\n          \"name\": \"exp\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"nbf\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"dept\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"IT\"\n        },\n        {\n          \"name\": \"roles\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": true,\n          \"value\": [\n            \"admin\",\n            \"premium_user\",\n            \"regular_user\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"enabled\": true,\n  \"resources\": {\n    \"2926712\": {\n      \"enabled\": true,\n      \"inheritsFromEndpoint\": true,\n      \"notes\": \"A book item within the bookstore API.\",\n      \"path\": \"/book/{bookId}\",\n      \"methods\": [\n        \"POST\",\n        \"GET\"\n      ]\n    },\n    \"2935128\": {\n      \"enabled\": true,\n      \"inheritsFromEndpoint\": true,\n      \"notes\": \"A registered bookstore user.\",\n      \"path\": \"/user/{userId}\",\n      \"methods\": [\n        \"POST\",\n        \"GET\",\n        \"PUT\"\n      ]\n    },\n    \"2935139\": {\n      \"enabled\": true,\n      \"inheritsFromEndpoint\": true,\n      \"notes\": \"A magazine item within the bookstore API.\",\n      \"path\": \"/magazine/{magazineId}\",\n      \"methods\": [\n        \"GET\"\n      ]\n    }\n  },\n  \"settings\": {\n    \"clockSkew\": 10,\n    \"location\": \"HEADER\",\n    \"paramName\": \"Authorization\",\n    \"validation\": {\n      \"rsaPublicKeyB\": null,\n      \"rsaPublicKeyA\": {\n        \"content\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN\\n80jxZCxfweelZKvYT9Qdms/1SJv\\nrQIDAQAB\\n-----END PUBLIC KEY-----\",\n        \"name\": \"publicKey\"\n      },\n      \"claims\": [\n        {\n          \"name\": \"aud\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": false,\n          \"value\": []\n        },\n        {\n          \"name\": \"iss\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"Akamai\"\n        },\n        {\n          \"name\": \"sub\",\n          \"required\": false,\n          \"type\": \"REGEX\",\n          \"validate\": true,\n          \"value\": \"^[a-zA-Z0-9_]*$\"\n        },\n        {\n          \"name\": \"exp\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"nbf\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"dept\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"IT\"\n        },\n        {\n          \"name\": \"roles\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": true,\n          \"value\": [\n            \"admin\",\n            \"premium_user\",\n            \"regular_user\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81bd0c24-d9c6-4cef-a3e9-3578cc175981",
+              "name": "Some of user input is invalid.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": true,\n  \"resources\": {\n    \"2926712\": {\n      \"enabled\": true\n    },\n    \"2935128\": {\n      \"enabled\": true\n    },\n    \"2935139\": {\n      \"enabled\": true\n    }\n  },\n  \"settings\": {\n    \"clockSkew\": 10,\n    \"location\": \"HEADER\",\n    \"paramName\": \"Authorization\",\n    \"validation\": {\n      \"rsaPublicKeyB\": null,\n      \"rsaPublicKeyA\": {\n        \"content\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN\\n80jxZCxfweelZKvYT9Qdms/1SJv\\nrQIDAQAB\\n-----END PUBLIC KEY-----\",\n        \"name\": \"publicKey\"\n      },\n      \"claims\": [\n        {\n          \"name\": \"aud\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": false,\n          \"value\": []\n        },\n        {\n          \"name\": \"iss\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"Akamai\"\n        },\n        {\n          \"name\": \"sub\",\n          \"required\": false,\n          \"type\": \"REGEX\",\n          \"validate\": true,\n          \"value\": \"^[a-zA-Z0-9_]*$\"\n        },\n        {\n          \"name\": \"exp\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"nbf\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"dept\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"IT\"\n        },\n        {\n          \"name\": \"roles\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": true,\n          \"value\": [\n            \"admin\",\n            \"premium_user\",\n            \"regular_user\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2153b4f-4582-48b8-8421-cb25cddb1289",
+              "name": "User does not have permission to API endpoint.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": true,\n  \"resources\": {\n    \"2926712\": {\n      \"enabled\": true\n    },\n    \"2935128\": {\n      \"enabled\": true\n    },\n    \"2935139\": {\n      \"enabled\": true\n    }\n  },\n  \"settings\": {\n    \"clockSkew\": 10,\n    \"location\": \"HEADER\",\n    \"paramName\": \"Authorization\",\n    \"validation\": {\n      \"rsaPublicKeyB\": null,\n      \"rsaPublicKeyA\": {\n        \"content\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN\\n80jxZCxfweelZKvYT9Qdms/1SJv\\nrQIDAQAB\\n-----END PUBLIC KEY-----\",\n        \"name\": \"publicKey\"\n      },\n      \"claims\": [\n        {\n          \"name\": \"aud\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": false,\n          \"value\": []\n        },\n        {\n          \"name\": \"iss\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"Akamai\"\n        },\n        {\n          \"name\": \"sub\",\n          \"required\": false,\n          \"type\": \"REGEX\",\n          \"validate\": true,\n          \"value\": \"^[a-zA-Z0-9_]*$\"\n        },\n        {\n          \"name\": \"exp\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"nbf\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"dept\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"IT\"\n        },\n        {\n          \"name\": \"roles\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": true,\n          \"value\": [\n            \"admin\",\n            \"premium_user\",\n            \"regular_user\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6c158f0-2988-4f25-bea2-e9bfa35a7de3",
+              "name": "This API endpoint doesn't exist.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "endpoints",
+                    ":apiEndPointId",
+                    "versions",
+                    ":versionNumber",
+                    "settings",
+                    "jwt"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) The unique identifier for the endpoint version."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "apiEndPointId",
+                      "description": "(Required) The unique identifier for the endpoint."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"enabled\": true,\n  \"resources\": {\n    \"2926712\": {\n      \"enabled\": true\n    },\n    \"2935128\": {\n      \"enabled\": true\n    },\n    \"2935139\": {\n      \"enabled\": true\n    }\n  },\n  \"settings\": {\n    \"clockSkew\": 10,\n    \"location\": \"HEADER\",\n    \"paramName\": \"Authorization\",\n    \"validation\": {\n      \"rsaPublicKeyB\": null,\n      \"rsaPublicKeyA\": {\n        \"content\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjwE9GQg+OR0WYHtq4AKsvK2eucDs06ejWRDb+uDN\\n80jxZCxfweelZKvYT9Qdms/1SJv\\nrQIDAQAB\\n-----END PUBLIC KEY-----\",\n        \"name\": \"publicKey\"\n      },\n      \"claims\": [\n        {\n          \"name\": \"aud\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": false,\n          \"value\": []\n        },\n        {\n          \"name\": \"iss\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"Akamai\"\n        },\n        {\n          \"name\": \"sub\",\n          \"required\": false,\n          \"type\": \"REGEX\",\n          \"validate\": true,\n          \"value\": \"^[a-zA-Z0-9_]*$\"\n        },\n        {\n          \"name\": \"exp\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"nbf\",\n          \"required\": false,\n          \"type\": \"TIMESTAMP\",\n          \"validate\": true,\n          \"value\": null\n        },\n        {\n          \"name\": \"dept\",\n          \"required\": false,\n          \"type\": \"STRING\",\n          \"validate\": true,\n          \"value\": \"IT\"\n        },\n        {\n          \"name\": \"roles\",\n          \"required\": false,\n          \"type\": \"ARRAY\",\n          \"validate\": true,\n          \"value\": [\n            \"admin\",\n            \"premium_user\",\n            \"regular_user\"\n          ]\n        }\n      ]\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"string\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/api-definitions/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/api-definitions/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bcb33300-f0fb-4b56-9553-cb3f82fa7e2a",
+    "name": "Akamai: API Endpoint Definition Access tokens JWT API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

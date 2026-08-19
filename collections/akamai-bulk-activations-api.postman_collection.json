@@ -1,0 +1,1388 @@
+{
+  "item": [
+    {
+      "id": "17eaf6a0-c0ea-47c4-9e0b-243c3e1ca8b4",
+      "name": "Bulk activations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a7b8029f-f961-4111-a309-e945dc5041cd",
+          "name": "Akamai Bulk Activate a Set of Properties",
+          "request": {
+            "name": "Akamai Bulk Activate a Set of Properties",
+            "description": {
+              "content": "Bulk activate a set of property versions. Alternately, perform a bulk [fallback](https://techdocs.akamai.com/property-mgr/reference/property-activation-error-handling) to the previous activation within an hour of the previous bulk activation. Base the set of versions to activate on the results of a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/get-bulk-patch) operation, which you use in this operation's request. This operation launches an asynchronous process to update properties. To check its progress, run the [List bulk-activated properties](https://techdocs.akamai.com/property-mgr/reference/get-bulk-activation) operation, whose link is available in the `Location` header or `bulkActivationLink` member of this operation's response. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "activations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activatePropertyVersions\": [\n    {\n      \"propertyId\": \"<string>\",\n      \"propertyVersion\": \"<integer>\",\n      \"network\": \"<string>\",\n      \"acknowledgeWarnings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"note\": \"<string>\"\n    },\n    {\n      \"propertyId\": \"<string>\",\n      \"propertyVersion\": \"<integer>\",\n      \"network\": \"<string>\",\n      \"acknowledgeWarnings\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"note\": \"<string>\"\n    }\n  ],\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": \"<boolean>\",\n    \"fastPush\": true,\n    \"notifyEmails\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"useFastFallback\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7742b6f8-f73c-4a5a-af86-ee73ddfaa484",
+              "name": "The response links the bulk activation process.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Provides a URL path you can GET the newly created resource from.",
+                  "key": "Location",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bulkActivationLink\": \"/papi/v0/bulk/activations/311?contractId=ctr_C-0N7RAC7&groupId=grp_15225\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09f0c3fa-ce3e-4bcc-8420-e694d0d22b01",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fdc3a4d-3357-40e6-b307-1fd4abce8dc4",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cd9a4bb-f5dc-47db-ad0e-eaae02a35503",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fd630743-9c44-4456-8db4-3e5f335c6423",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38ec8197-5763-413a-a950-130d3f0eac83",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dfb81cee-dac8-404f-8087-97d8d787373d",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db362a5a-f8d2-492b-beac-57cf2ac71abc",
+              "name": "[Unsupported media type](https://techdocs.akamai.com/property-mgr/reference/415).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system does not support requests in the format you're sending.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 415,\n  \"title\": \"Unsupported Media Type\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/unsupported-media-type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8bc0114c-ab59-4fd9-8fc7-41ceaf51307f",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ee0c8268-800f-479d-b4cf-a82f08e6f996",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false,\n    \"notifyEmails\": [\n      \"you@example.com\",\n      \"them@example.com\"\n    ]\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2\n    },\n    {\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"acknowledgeWarnings\": [\n        \"msg_123\",\n        \"msg_234\"\n      ]\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "45ab80cb-98aa-4a80-8a43-4439b2cebcc6",
+          "name": "Akamai List Bulk-activated Properties",
+          "request": {
+            "name": "Akamai List Bulk-activated Properties",
+            "description": {
+              "content": "List all activations that result from a [bulk activation request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-activations). Once the overall `bulkActivationStatus` is `COMPLETE`, check each activation's `activationStatus` to confirm it's `ACTIVATED`. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "bulk",
+                "activations",
+                ":bulkActivationId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "contractId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "groupId",
+                  "value": "<string>",
+                  "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+                },
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "bulkActivationId",
+                  "description": "(Required) Identifies each bulk activation job."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                "key": "PAPI-Use-Prefixes",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "908f0d29-74a6-4d51-9b8e-48b0d1279bba",
+              "name": "The response shows the bulk activation job, which proceeds until the `bulkActivationStatus` is `COMPLETE`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bulkActivationId\": 234,\n  \"bulkActivationStatus\": \"COMPLETE\",\n  \"bulkActivationSubmitDate\": \"2018-01-18T00:00:00Z\",\n  \"bulkActivationUpdateDate\": \"2018-01-18T01:00:00Z\",\n  \"defaultActivationSettings\": {\n    \"acknowledgeAllWarnings\": true,\n    \"fastPush\": true,\n    \"useFastFallback\": false\n  },\n  \"activatePropertyVersions\": [\n    {\n      \"acknowledgeAllWarnings\": true,\n      \"activationStatus\": \"NEW\",\n      \"activationSubmitDate\": \"2018-01-18T00:00:00Z\",\n      \"activationUpdateDate\": \"2018-01-18T00:00:00Z\",\n      \"fastPush\": true,\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyActivationLink\": \"/papi/v1/properties/prp_1/activations/act_1\",\n      \"propertyId\": \"prp_1\",\n      \"propertyVersion\": 2,\n      \"taskStatus\": \"COMPLETE\",\n      \"useFastFallback\": false,\n      \"notifyEmails\": [\n        \"you@example.com\",\n        \"them@example.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": true,\n      \"activationStatus\": \"NEW\",\n      \"activationSubmitDate\": \"2018-01-18T00:00:00Z\",\n      \"activationUpdateDate\": \"2018-01-18T00:00:00Z\",\n      \"fastPush\": true,\n      \"network\": \"STAGING\",\n      \"note\": \"Sample activation\",\n      \"numberOfWarningsFromActivation\": 5,\n      \"propertyActivationLink\": \"/papi/v1/properties/prp_1/activations/act_1\",\n      \"propertyId\": \"prp_15\",\n      \"propertyVersion\": 3,\n      \"taskStatus\": \"COMPLETE\",\n      \"useFastFallback\": false,\n      \"notifyEmails\": [\n        \"someoneElse@somewhere.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"activationStatus\": \"NEW\",\n      \"activationSubmitDate\": \"2018-01-18T00:00:00Z\",\n      \"activationUpdateDate\": \"2018-01-18T00:00:00Z\",\n      \"fastPush\": true,\n      \"network\": \"PRODUCTION\",\n      \"note\": \"created by xyz\",\n      \"propertyActivationLink\": \"/papi/v1/properties/prp_1/activations/act_1\",\n      \"propertyId\": \"prp_3\",\n      \"propertyVersion\": 11,\n      \"taskStatus\": \"COMPLETE\",\n      \"useFastFallback\": false,\n      \"notifyEmails\": [\n        \"you@example.com\",\n        \"them@example.com\"\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": false,\n      \"activationStatus\": \"NEW\",\n      \"activationSubmitDate\": \"2018-01-18T00:00:00Z\",\n      \"activationUpdateDate\": \"2018-01-18T00:00:00Z\",\n      \"fastPush\": true,\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyActivationLink\": \"/papi/v1/properties/prp_1/activations/act_1\",\n      \"propertyId\": \"prp_4\",\n      \"propertyVersion\": 2,\n      \"taskStatus\": \"SUBMISSION_ERROR\",\n      \"useFastFallback\": false,\n      \"notifyEmails\": [\n        \"you@example.com\",\n        \"them@example.com\"\n      ],\n      \"activationWarnings\": [\n        {\n          \"detail\": \"The CP Code within `Content Provider Code` isn't configured for use with the product used by this property, Dynamic Site Accelerator. Traffic for this property might not show up under the correct traffic reports.\",\n          \"messageId\": \"msg_48d27043qr3r2322781ac6dd06763470987ed7a5d\",\n          \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/validation/product_behavior_issue.cpcode_incorrect_product\"\n        }\n      ]\n    },\n    {\n      \"acknowledgeAllWarnings\": true,\n      \"activationStatus\": \"NEW\",\n      \"activationSubmitDate\": \"2018-01-18T00:00:00Z\",\n      \"activationUpdateDate\": \"2018-01-18T00:00:00Z\",\n      \"fastPush\": true,\n      \"fatalError\": \"activation requires a valid notifyEmail\",\n      \"network\": \"STAGING\",\n      \"note\": \"Some activation note\",\n      \"propertyActivationLink\": \"/papi/v1/properties/prp_1/activations/act_1\",\n      \"propertyId\": \"prp_5\",\n      \"propertyVersion\": 3,\n      \"taskStatus\": \"SUBMISSION_ERROR\",\n      \"useFastFallback\": false\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "603392dd-38fc-4283-bce6-b60dfc971d98",
+              "name": "[Bad request](https://techdocs.akamai.com/property-mgr/reference/400).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system cannot understand your request.  Please check the syntax and correct any problems.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/bad-request\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a0cf8938-9b6d-4058-b05d-3aeea3a28520",
+              "name": "[Unauthorized](https://techdocs.akamai.com/property-mgr/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request requires authentication.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 401,\n  \"title\": \"Unauthorized\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v0/http/unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7754379a-2715-4424-83a5-bd11556e1087",
+              "name": "[Forbidden](https://techdocs.akamai.com/property-mgr/reference/403).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The authorization token you provided does not allow access to this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/forbidden\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "acef570b-54a9-41ac-8480-f83daa979ba1",
+              "name": "[Not found](https://techdocs.akamai.com/property-mgr/reference/404).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system was unable to locate the requested resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-found\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "80fa488b-659c-459a-a796-4dbbc759fdb4",
+              "name": "[Method not allowed](https://techdocs.akamai.com/property-mgr/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the method you provided for this resource.\",\n  \"instance\": \"/papi/v1/properties?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"status\": 405,\n  \"title\": \"Method not allowed\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/method-not-allowed\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5ccfc9f6-18ea-4ef1-bc6f-245fde09c6f9",
+              "name": "[Not acceptable](https://techdocs.akamai.com/property-mgr/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The system does not support the content-type restrictions provided by your 'Accept' header.\",\n  \"instance\": \"papi/v1/build#abc12345abcc02a7\",\n  \"status\": 406,\n  \"title\": \"Not Acceptable\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/http/not-acceptable\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e00d10dd-d66c-463b-9181-ef6c52acb2f0",
+              "name": "[Too many requests](https://techdocs.akamai.com/property-mgr/reference/429).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Too many includes exist on contract ctr_1-12345.  You must delete an include before continuing.\",\n  \"instance\": \"/papi/v1/includes?contractId=ctr_C-0N7RAC7&groupId=grp_12345#abc12345abcc02a7\",\n  \"instanceKey\": \"1-12345\",\n  \"limit\": 500,\n  \"limitKey\": \"INCLUDES_PER_CONTRACT\",\n  \"remaining\": 0,\n  \"status\": 429,\n  \"title\": \"Too many includes\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/v1/limit-exceeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e188f5d3-9a7a-449c-a909-cc1f9e5c977b",
+              "name": "[Internal server error](https://techdocs.akamai.com/property-mgr/reference/500).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "bulk",
+                    "activations",
+                    ":bulkActivationId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "contractId",
+                      "value": "{{contractId}}"
+                    },
+                    {
+                      "key": "groupId",
+                      "value": "{{groupId}}"
+                    },
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "{{accountSwitchKey}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "bulkActivationId",
+                      "description": "(Required) Identifies each bulk activation job."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "(Required) __Enum__ Sets whether to represent [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) in response data. Set to `false` when exchanging PAPI data with other APIs.",
+                    "key": "PAPI-Use-Prefixes",
+                    "value": "{{PAPI-Use-Prefixes}}"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Our system is experiencing errors. We''ll get this fixed as soon as possible.\",\n  \"instance\": \"/papi/v1/properties/12345/activations#abc12345abcc02a7\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/papi/proxy/internal-server-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6ee53b1b-ddc7-476a-8d4b-f1320b1fd7a5",
+    "name": "Akamai: API Endpoint Definition Access tokens Bulk activations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

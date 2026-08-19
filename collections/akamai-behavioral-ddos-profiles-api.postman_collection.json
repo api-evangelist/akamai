@@ -1,0 +1,1774 @@
+{
+  "item": [
+    {
+      "id": "696a21ce-fa80-4d77-aaf8-4e475b022978",
+      "name": "Behavioral DDoS profiles",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "552411d7-800a-4ae9-9529-2893da83db20",
+          "name": "Create a Behavioral DDoS profile",
+          "request": {
+            "name": "Create a Behavioral DDoS profile",
+            "description": {
+              "content": "Creates a new Behavioral DDoS profile for a specific configuration version. _Products:_ All.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "behavioral-ddos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"sensitivity\": \"<string>\",\n  \"hostnames\": [\n    \"<string>\"\n  ],\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"className\": \"<string>\",\n        \"name\": [\n          \"<string>\"\n        ],\n        \"nameWildcard\": \"<boolean>\",\n        \"value\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"valueCase\": \"<boolean>\",\n        \"valueWildcard\": \"<boolean>\"\n      }\n    ]\n  },\n  \"configId\": \"<long>\",\n  \"configVersion\": \"<integer>\",\n  \"description\": \"<string>\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"<string>\"\n      ],\n      \"paths\": [\n        \"<string>\"\n      ]\n    },\n    {\n      \"hosts\": [\n        \"<string>\"\n      ],\n      \"paths\": [\n        \"<string>\"\n      ]\n    }\n  ],\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"<string>\",\n      \"path\": \"<string>\",\n      \"sensitivity\": \"<string>\"\n    },\n    {\n      \"host\": \"<string>\",\n      \"path\": \"<string>\",\n      \"sensitivity\": \"<string>\"\n    }\n  ],\n  \"suspend\": {\n    \"hostnames\": [\n      \"<string>\"\n    ],\n    \"fromDate\": \"<dateTime>\",\n    \"toDate\": \"<dateTime>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "62677361-babb-430f-8957-4e67effc7baa",
+              "name": "Successfully created a Behavioral DDoS profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"createDate\": \"2025-02-05T14:00:00Z\",\n  \"createdBy\": \"jkowalski\",\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"profileId\": 100,\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  },\n  \"updateDate\": \"2025-02-05T14:00:00Z\",\n  \"updatedBy\": \"adevi\",\n  \"used\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d2b21b17-2944-4cdb-8c3f-6896c7c1240a",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6f15b9a-abfd-4c6c-8fd2-7324ad7ed81c",
+              "name": "[Unauthorized](https://techdocs.akamai.com/application-security/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The signature does not match\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 401,\n  \"title\": \"Not authorized\",\n  \"type\": \"https://problems.luna-dev.akamaiapis.net/-/pep-authn/deny\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "59012964-7995-425c-b250-9f78bc36553d",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to Behavioral DDoS profiles in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3766ab69-3868-4027-a314-4eaff35d2c6c",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2736aff2-4060-4f46-b4a5-d1a35f3f01a6",
+              "name": "[Method not allowed](https://techdocs.akamai.com/application-security/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Unsupported method\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 405,\n  \"title\": \"Method Not Allowed\",\n  \"type\": \"https://problems.luna-dev.akamaiapis.net/-/pep-authn/policy-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cbe394c-bd8d-4406-a116-602e0a6629e3",
+              "name": "[Not acceptable](https://techdocs.akamai.com/application-security/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"HTTP 406 Not Acceptable\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 406,\n  \"title\": \"Invalid Input Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/INVALID-INPUT-ERROR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ca492236-a291-44b4-a94f-9da71691b0a7",
+              "name": "[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"bypassCondition\": {\n    \"atomicConditions\": [\n      {\n        \"checkIps\": \"connecting\",\n        \"className\": \"NetworkListCondition\",\n        \"positiveMatch\": true,\n        \"value\": [\n          \"100065_IPLIST\"\n        ]\n      },\n      {\n        \"className\": \"RequestHeaderCondition\",\n        \"name\": [\n          \"Content-Type\"\n        ],\n        \"nameWildcard\": true,\n        \"positiveMatch\": true,\n        \"value\": [\n          \"application/json\"\n        ],\n        \"valueCase\": false,\n        \"valueWildcard\": true\n      }\n    ]\n  },\n  \"configId\": 1,\n  \"configVersion\": 1,\n  \"description\": \"This is a description of the profile\",\n  \"exceptions\": [\n    {\n      \"hosts\": [\n        \"secure.host1.com\",\n        \"help.host3.com\"\n      ],\n      \"paths\": [\n        \"/path1\",\n        \"/path2\",\n        \"/path3\"\n      ]\n    }\n  ],\n  \"hostnames\": [\n    \"secure.host1.com\",\n    \"www.host2.com\",\n    \"help.host3.com\",\n    \"info.host4.com\"\n  ],\n  \"name\": \"My first BDE profile\",\n  \"sensitivity\": \"STRICT\",\n  \"sensitivityOverrides\": [\n    {\n      \"host\": \"info.host4.com\",\n      \"path\": \"/path3\",\n      \"sensitivity\": \"MODERATE\"\n    }\n  ],\n  \"suspend\": {\n    \"fromDate\": \"2025-02-20T14:00:00Z\",\n    \"hostnames\": [\n      \"secure.host1.com\"\n    ],\n    \"toDate\": \"2025-03-20T14:00:00Z\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"12ab3c45-789d-01ef-2gh3-ijk4l56m78no\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"internal_server_error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7d8965ba-bccb-4c5b-a581-a2ff64e2289f",
+          "name": "List Behavioral DDoS profiles",
+          "request": {
+            "name": "List Behavioral DDoS profiles",
+            "description": {
+              "content": "Returns all Behavioral DDoS profiles for a specific security configuration version. _Products:_ All.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "behavioral-ddos"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2cb15039-b8d1-4a51-acd4-ddfbf335961a",
+              "name": "Successfully returned the Behavioral DDoS profiles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"behavioralDdosProfiles\": [\n    {\n      \"bypassCondition\": {\n        \"atomicConditions\": [\n          {\n            \"checkIps\": \"connecting\",\n            \"className\": \"NetworkListCondition\",\n            \"positiveMatch\": true,\n            \"value\": [\n              \"100065_IPLIST\"\n            ]\n          },\n          {\n            \"className\": \"RequestHeaderCondition\",\n            \"name\": [\n              \"Content-Type\"\n            ],\n            \"nameWildcard\": true,\n            \"positiveMatch\": true,\n            \"value\": [\n              \"application/json\"\n            ],\n            \"valueCase\": false,\n            \"valueWildcard\": true\n          }\n        ]\n      },\n      \"configId\": 1,\n      \"configVersion\": 1,\n      \"createDate\": \"2025-02-05T14:00:00Z\",\n      \"createdBy\": \"jsmith\",\n      \"description\": \"This is a description of the profile\",\n      \"exceptions\": [\n        {\n          \"hosts\": [\n            \"secure.host1.com\",\n            \"help.host3.com\"\n          ],\n          \"paths\": [\n            \"/path1\",\n            \"/path2\",\n            \"/path3\"\n          ]\n        }\n      ],\n      \"hostnames\": [\n        \"secure.host1.com\",\n        \"www.host2.com\",\n        \"help.host3.com\",\n        \"info.host4.com\"\n      ],\n      \"name\": \"My first BDE profile\",\n      \"profileId\": 100,\n      \"sensitivity\": \"STRICT\",\n      \"sensitivityOverrides\": [\n        {\n          \"host\": \"info.host4.com\",\n          \"path\": \"/path3\",\n          \"sensitivity\": \"MODERATE\"\n        }\n      ],\n      \"suspend\": {\n        \"fromDate\": \"2025-02-20T14:00:00Z\",\n        \"hostnames\": [\n          \"secure.host1.com\"\n        ],\n        \"toDate\": \"2025-03-20T14:00:00Z\"\n      },\n      \"updateDate\": \"2025-02-05T14:00:00Z\",\n      \"updatedBy\": \"jsmith\",\n      \"used\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cb73d505-84a5-4750-bf8d-d4cd6864d1e3",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f035ce0b-5c13-4973-afa4-180e7a2e3939",
+              "name": "[Unauthorized](https://techdocs.akamai.com/application-security/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The signature does not match\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 401,\n  \"title\": \"Not authorized\",\n  \"type\": \"https://problems.luna-dev.akamaiapis.net/-/pep-authn/deny\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "01fb85c2-561d-4160-89ef-54258ee5b34f",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to the Behavioral DDoS profiles in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22e2af5f-5d7a-45ed-8294-aa94567761d5",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "867b4a23-a1a3-469b-a4bf-71085e8aadb1",
+              "name": "[Method not allowed](https://techdocs.akamai.com/application-security/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Unsupported method\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 405,\n  \"title\": \"Method Not Allowed\",\n  \"type\": \"https://problems.luna-dev.akamaiapis.net/-/pep-authn/policy-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03960625-3414-43ce-af21-085f157ced39",
+              "name": "[Not acceptable](https://techdocs.akamai.com/application-security/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"HTTP 406 Not Acceptable\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 406,\n  \"title\": \"Invalid Input Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/INVALID-INPUT-ERROR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c7f825a7-d540-4192-aa2c-58c1ea334baf",
+              "name": "[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"12ab3c45-789d-01ef-2gh3-ijk4l56m78no\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"internal_server_error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f3abe3b8-da73-4222-a704-e86a462fd12a",
+          "name": "Remove a Behavioral DDoS profile",
+          "request": {
+            "name": "Remove a Behavioral DDoS profile",
+            "description": {
+              "content": "Deletes the specified Behavioral DDoS profile. You can't delete a Behavioral DDoS profile that's actively in use. To delete an active Behavioral DDoS profile, either activate an older configuration version or create a new version without the policy in place. _Products:_ All.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "configs",
+                ":configId",
+                "versions",
+                ":versionNumber",
+                "behavioral-ddos",
+                ":profileId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "accountSwitchKey",
+                  "value": "<string>",
+                  "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "configId",
+                  "description": "(Required) A unique identifier for each configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "versionNumber",
+                  "description": "(Required) A unique identifier for each version of a configuration."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<long>",
+                  "key": "profileId",
+                  "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/problem+json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "020e57c9-ca48-4c89-8646-9cf039a3249d",
+              "name": "Successfully deleted the Behavioral DDoS profile.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e81f2e34-0bd0-4809-b8ab-ec716d04a80e",
+              "name": "[Bad request](https://techdocs.akamai.com/application-security/reference/400). Invalid request body or URL parameter input.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The request could not be understood by the server due to malformed syntax.\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 400,\n  \"title\": \"Bad Request\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/BAD-REQUEST\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4f728919-0a50-4970-bd8e-4dfbcab9a6f5",
+              "name": "[Unauthorized](https://techdocs.akamai.com/application-security/reference/401).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The signature does not match\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 401,\n  \"title\": \"Not authorized\",\n  \"type\": \"https://problems.luna-dev.akamaiapis.net/-/pep-authn/deny\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69331049-1010-4f6b-9e2d-fd60b7751b79",
+              "name": "[Forbidden](https://techdocs.akamai.com/application-security/reference/403). You don't have access to the Behavioral DDoS profile in this security configuration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"You do not have the necessary access to perform this operation or the requested resource cannot be modified\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 403,\n  \"title\": \"Forbidden\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec-resource/error-types/ACCESS-DENIED\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "abdbf030-6a39-4561-97d3-74bf72989283",
+              "name": "[Not found](https://techdocs.akamai.com/application-security/reference/404). Security configuration version or Behavioral DDoS profile wasn't found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"The requested resource is not found\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 404,\n  \"title\": \"Not Found\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/NOT-FOUND\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "645f8451-a280-485a-a2ba-c85bb5a64390",
+              "name": "[Method not allowed](https://techdocs.akamai.com/application-security/reference/405).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Unsupported method\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 405,\n  \"title\": \"Method Not Allowed\",\n  \"type\": \"https://problems.luna-dev.akamaiapis.net/-/pep-authn/policy-error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "938f7692-c02e-495e-bd5a-f69aa1688abc",
+              "name": "[Not acceptable](https://techdocs.akamai.com/application-security/reference/406).",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Acceptable",
+              "code": 406,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"HTTP 406 Not Acceptable\",\n  \"instance\": \"https://problems.luna.akamaiapis.net/appsec/error-instances/d54686b5-21cb-4ab7-a8d6-a92282cf1749\",\n  \"status\": 406,\n  \"title\": \"Invalid Input Error\",\n  \"type\": \"https://problems.luna.akamaiapis.net/appsec/error-types/INVALID-INPUT-ERROR\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0601a924-48cc-4d70-9d17-ae1f5a87d3aa",
+              "name": "[Internal server error](https://techdocs.akamai.com/application-security/reference/500). Something went wrong on our side. Try again in a few minutes or contact support if the error persists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "configs",
+                    ":configId",
+                    "versions",
+                    ":versionNumber",
+                    "behavioral-ddos",
+                    ":profileId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "accountSwitchKey",
+                      "value": "1-5C0YLB:1-8BYUX"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "configId",
+                      "description": "(Required) A unique identifier for each configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "versionNumber",
+                      "description": "(Required) A unique identifier for each version of a configuration."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<long>",
+                      "key": "profileId",
+                      "description": "(Required) A unique identifier for each Behavioral DDoS profile."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/problem+json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/problem+json"
+                }
+              ],
+              "body": "{\n  \"detail\": \"Internal Server Error\",\n  \"instance\": \"12ab3c45-789d-01ef-2gh3-ijk4l56m78no\",\n  \"status\": 500,\n  \"title\": \"Internal Server Error\",\n  \"type\": \"internal_server_error\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://{{hostname}}/api-definitions/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4b59e276-5071-4574-89b3-5d84c98906e5",
+    "name": "Akamai: API Endpoint Definition Access tokens Behavioral DDoS profiles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

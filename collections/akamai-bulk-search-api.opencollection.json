@@ -1,0 +1,143 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Bulk search API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk search",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Bulk Search a Set of Properties or Includes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/bulk/rules-search-requests",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "POST a bulk search object to search across all active property or include versions. Specify a [JSONPath](http://goessner.net/articles/JsonPath/) expression to match their rule trees. This operation launches an asynchronous process to gather search results. To check its progress, run the [List bulk search results](https://techdocs.akamai.com/property-mgr/reference/get-bulk-search) operation, whose link is available in the `Location` header or the `bulkSearchLink` member of this operation's respon"
+        },
+        {
+          "info": {
+            "name": "Akamai Synchronously Bulk Search a Set of Properties or Includes",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/bulk/rules-search-requests-synch",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Provides an alternative to the asynchronous [Bulk search a set of properties or includes](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) operation. It yields completed bulk search results directly, but with possibly high latency, making it more appropriate to target for small-batch searches. POST a bulk search object to search across all active property or include versions, specifying a [JSONPath](http://goessner.net/articles/JsonPath/) expression to match their rule trees."
+        },
+        {
+          "info": {
+            "name": "Akamai List Bulk Search Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/bulk/rules-search-requests/:bulkSearchId",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "bulkSearchId",
+                "value": "{{bulkSearchId}}",
+                "type": "path",
+                "description": "Identifies each bulk search job."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "List all property or include versions that result from a [bulk search request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search). Run this operation to poll the asynchronous process's status. Once the `searchTargetStatus` is `COMPLETE`, you can feed the `results` into a [bulk versioning](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version) operation. Also use the JSON path `matchLocations` to run a [bulk patch](https://techdocs.akamai.com/property-mgr/referenc"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

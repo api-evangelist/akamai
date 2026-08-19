@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Bulk patch API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk patch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai Bulk Patch a Set of Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/bulk/rules-patch-requests",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Apply a series of JSON Patch operations to modify a set of property versions. Form this set of `patches` based on the [JSONPath](http://goessner.net/articles/JsonPath/) locations from a [bulk search](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) response. Specify a set of new property versions based on the results of a [bulk versioning](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version) operation. The request is a bulk patch object. This operation launch"
+        },
+        {
+          "info": {
+            "name": "Akamai List Bulk-patched Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/bulk/rules-patch-requests/:bulkPatchId",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "bulkPatchId",
+                "value": "{{bulkPatchId}}",
+                "type": "path",
+                "description": "Identifies each bulk patch job."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified contract. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Optionally filters bulk searches to properties created under the specified group. For bulk operations, you can specify `contractId` and `groupId` independently from each other."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "List all modified property versions that result from a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/post-bulk-patch) request. This operation polls the asynchronous process's status. Once the overall `bulkPatchStatus` is `COMPLETE`, you can feed all successfully updated property versions whose `status` is `UPDATED` into a subsequent request to [bulk activate](https://techdocs.akamai.com/property-mgr/reference/post-bulk-activations) them. See [Bulk Search and Update](https://tec"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

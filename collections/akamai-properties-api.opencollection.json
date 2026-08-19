@@ -1,0 +1,472 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Akamai: API Endpoint Definition Access tokens Properties API",
+    "version": "2"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Properties",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Akamai List Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/ids/:edgeWorkerId/properties",
+            "params": [
+              {
+                "name": "edgeWorkerId",
+                "value": "{{edgeWorkerId}}",
+                "type": "path",
+                "description": "Unique identifier for an EdgeWorker."
+              },
+              {
+                "name": "activeOnly",
+                "value": "{{activeOnly}}",
+                "type": "query",
+                "description": "When enabled, limits results to active properties."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "View the list of properties using an existing EdgeWorker ID. You can limit the results to active properties."
+        },
+        {
+          "info": {
+            "name": "Akamai List Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/properties",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "modifiedSince",
+                "value": "{{modifiedSince}}",
+                "type": "query",
+                "description": "Filters properties or includes that have been modified in a specified time. Accepts duration in the ISO 8601 format."
+              },
+              {
+                "name": "modifiedNetwork",
+                "value": "{{modifiedNetwork}}",
+                "type": "query",
+                "description": "__Enum__ Filters and only shows properties or includes that have been modified within a specified period on a selected network, either `STAGING`, `PRODUCTION`, or `BOTH`. You need to specify it along with the `modifiedSince` query parameter."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This operation lists properties available for the current contract and group. Use optional query parameters to only show properties that were modified within a specified time range or on a selected network. If you specify the `modifiedSince` parameter, `contractId` and `groupId` become optional. If you don't identify a contract and group, the operation lists all properties you have access to, modified within a specified time range."
+        },
+        {
+          "info": {
+            "name": "Akamai Create or Clone a Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/properties",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "This operation either creates a new property from scratch or bases one on another property's rule tree and optionally its set of assigned hostnames. Version 1 of a new property is created automatically. PAPI's ability to create and clone new properties means that you can design a system of rule templates targeted to specific domains, rather than maintain a single set of rules with conditional logic for your full range of domains. Maintaining properties manually within the Control Center interfac"
+        },
+        {
+          "info": {
+            "name": "Akamai Get a Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/properties/:propertyId",
+            "headers": [
+              {
+                "name": "PAPI-Use-Prefixes",
+                "value": "{{PAPI-Use-Prefixes}}"
+              }
+            ],
+            "params": [
+              {
+                "name": "propertyId",
+                "value": "{{propertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This operation gets a specific property. You can call this operation by specifying any of the `propertyId` members from a [list of properties](https://techdocs.akamai.com/property-mgr/reference/get-properties), or by running a GET on the `propertyLink` response when [creating a new property](https://techdocs.akamai.com/property-mgr/reference/post-properties)."
+        },
+        {
+          "info": {
+            "name": "Akamai Remove a Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/properties/:propertyId",
+            "params": [
+              {
+                "name": "propertyId",
+                "value": "{{propertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `prp_` prefix."
+              },
+              {
+                "name": "contractId",
+                "value": "{{contractId}}",
+                "type": "query",
+                "description": "Unique identifier for the contract. The parameter is optional if a property belongs to only one contract. Otherwise you need to specify it along with the `groupId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `ctr_` prefix."
+              },
+              {
+                "name": "groupId",
+                "value": "{{groupId}}",
+                "type": "query",
+                "description": "Unique identifier for the group. The parameter is optional if a property belongs to only one group. Otherwise you need to specify it along with the `contractId`. In other operations that don't specify a `propertyId` URL parameter, this parameter is always required. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/id-prefixes) for details on omitting the value's `grp_` prefix."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Removes a specific property, which you can only do if none of its versions are currently active. Activating another property with the same set of hostnames automatically triggers a deactivation on the targeted property. See [Create a new activation](https://techdocs.akamai.com/property-mgr/reference/post-property-activations) for details. A successful DELETE results in a 200 response with the confirmation message. Attempting to delete an active property results in a 500 error. Attempting to dele"
+        },
+        {
+          "info": {
+            "name": "List properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "This operation returns a list of sandbox properties available to the current user."
+        },
+        {
+          "info": {
+            "name": "Add a property to a sandbox",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties",
+            "params": [
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "You can add a property to a sandbox. Use this if you need to support more than one `hostname` in your sandbox environment."
+        },
+        {
+          "info": {
+            "name": "Read a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties/:sandboxPropertyId",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a specific property of a sandbox so you can review the information in the response body."
+        },
+        {
+          "info": {
+            "name": "Update a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties/:sandboxPropertyId",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update the `requestHostnames` of the sandbox property. Your sandbox can support multiple hostnames for testing purposes."
+        },
+        {
+          "info": {
+            "name": "Delete a property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties/:sandboxPropertyId",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Remove a property from a sandbox. This operation applies when the sandbox contains more than one property. You cannot delete the only property of a sandbox."
+        },
+        {
+          "info": {
+            "name": "Get a rule tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties/:sandboxPropertyId/rules",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ]
+          },
+          "docs": "Get a specific rule tree of a sandbox property. Each sandbox property references one rule tree. For more information on how content-handling rules are defined, review the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api)."
+        },
+        {
+          "info": {
+            "name": "Update a rule tree",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://{hostname}/api-definitions/v2/sandboxes/:sandboxId/properties/:sandboxPropertyId/rules",
+            "params": [
+              {
+                "name": "sandboxPropertyId",
+                "value": "{{sandboxPropertyId}}",
+                "type": "path",
+                "description": "Unique identifier for the property within a sandbox."
+              },
+              {
+                "name": "sandboxId",
+                "value": "{{sandboxId}}",
+                "type": "path",
+                "description": "Unique identifier for the sandbox."
+              },
+              {
+                "name": "access",
+                "value": "{{access}}",
+                "type": "query",
+                "description": "__Enum__ Indicates the access level of the request. Specify either `USER` to perform the request for the sandboxes that you can access, or `ACCOUNT` to perform the request for all sandboxes within the account."
+              },
+              {
+                "name": "accountSwitchKey",
+                "value": "{{accountSwitchKey}}",
+                "type": "query",
+                "description": "For customers who manage more than one account, this [runs the operation from another account](https://techdocs.akamai.com/developer/docs/manage-many-accounts-with-one-api-client). The Identity and Access Management API provides a [list of available account switch keys](https://techdocs.akamai.com/iam-api/reference/get-client-account-switch-keys)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Modify the rules of a sandbox property to make changes to content-handling behaviors for testing purposes within your development environment. Once you are satisfied with the results in your sandbox, you can use the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api) to apply the rule changes to your property configuration."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
