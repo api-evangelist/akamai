@@ -1,6 +1,6 @@
-openapi: 3.0.0
+openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens GraphQL API'
+  title: 'Akamai: API Endpoint Definition Access tokens Graph QL API'
   version: '2'
   license:
     name: Apache 2.0
@@ -84,12 +84,14 @@ paths:
                     type: string
                   cacheOrigin:
                     description: Whether to set the maximum age for caching GraphQL responses (TTL) to the value specified in your origin's `Cache-Control` HTTP response header.
-                    nullable: true
-                    type: boolean
+                    type:
+                    - boolean
+                    - 'null'
                   cacheResponseOnError:
                     description: Whether edge servers should cache the response to a GraphQL-type request in case errors are present in the response body.
-                    nullable: true
-                    type: boolean
+                    type:
+                    - boolean
+                    - 'null'
                   detectError:
                     description: By default, GraphQL queries return partial data if only a portion of a request fails. In such cases, status codes don't indicate errors. Instead, an `errors` array in a response body contains error details. This indicates whether edge servers should inspect the response body for the `errors` array.
                     type: boolean
@@ -127,13 +129,15 @@ paths:
                         - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
                       markAsPrivate:
                         description: Specifies whether to disallow storing responses in a shared cache. This is useful when you want to set a maximum age for the end client, but have shared caches not store the response.
-                        nullable: true
-                        type: boolean
+                        type:
+                        - boolean
+                        - 'null'
                       maxAge:
                         additionalProperties: false
                         description: Contains information about the maximum duration to keep content in a cache.
-                        nullable: true
-                        type: object
+                        type:
+                        - object
+                        - 'null'
                         required:
                         - duration
                         - unit
@@ -169,8 +173,9 @@ paths:
                   maxAge:
                     additionalProperties: false
                     description: Contains information about the maximum duration to keep content in a cache.
-                    nullable: true
-                    type: object
+                    type:
+                    - object
+                    - 'null'
                     required:
                     - duration
                     - unit
@@ -190,17 +195,20 @@ paths:
                       file-path: schemas/durationDto.yaml
                   maxQuerySize:
                     description: The maximum size of the query. A post body or a get response can't exceed 4 KBs.
-                    nullable: true
-                    type: integer
+                    type:
+                    - integer
+                    - 'null'
                   nestingLevel:
                     description: The number of supported nesting levels within a query. The maximum number is 100.
-                    nullable: true
-                    type: string
+                    type:
+                    - string
+                    - 'null'
                   preRefreshing:
                     additionalProperties: false
                     description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
-                    nullable: true
-                    type: object
+                    type:
+                    - object
+                    - 'null'
                     required:
                     - enabled
                     properties:
@@ -219,8 +227,9 @@ paths:
                     type: string
                   serveStale:
                     description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
-                    nullable: true
-                    type: boolean
+                    type:
+                    - boolean
+                    - 'null'
                 x-akamai:
                   file-path: schemas/graphQLSettingsDto.yaml
         '400':
@@ -402,13 +411,15 @@ paths:
                 cacheOrigin:
                   description: Whether to set the maximum age for caching GraphQL responses (TTL) to the value specified in your origin's `Cache-Control` HTTP response header.
                   example: '{{cacheOrigin}}'
-                  nullable: true
-                  type: boolean
+                  type:
+                  - boolean
+                  - 'null'
                 cacheResponseOnError:
                   description: Whether edge servers should cache the response to a GraphQL-type request in case errors are present in the response body.
                   example: '{{cacheResponseOnError}}'
-                  nullable: true
-                  type: boolean
+                  type:
+                  - boolean
+                  - 'null'
                 detectError:
                   description: By default, GraphQL queries return partial data if only a portion of a request fails. In such cases, status codes don't indicate errors. Instead, an `errors` array in a response body contains error details. This indicates whether edge servers should inspect the response body for the `errors` array.
                   example: '{{detectError}}'
@@ -447,13 +458,15 @@ paths:
                       - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
                     markAsPrivate:
                       description: Specifies whether to disallow storing responses in a shared cache. This is useful when you want to set a maximum age for the end client, but have shared caches not store the response.
-                      nullable: true
-                      type: boolean
+                      type:
+                      - boolean
+                      - 'null'
                     maxAge:
                       additionalProperties: false
                       description: Contains information about the maximum duration to keep content in a cache.
-                      nullable: true
-                      type: object
+                      type:
+                      - object
+                      - 'null'
                       required:
                       - duration
                       - unit
@@ -490,8 +503,9 @@ paths:
                 maxAge:
                   additionalProperties: false
                   description: Contains information about the maximum duration to keep content in a cache.
-                  nullable: true
-                  type: object
+                  type:
+                  - object
+                  - 'null'
                   required:
                   - duration
                   - unit
@@ -512,18 +526,21 @@ paths:
                 maxQuerySize:
                   description: The maximum size of the query. A post body or a get response can't exceed 4 KBs.
                   example: '{{maxQuerySize}}'
-                  nullable: true
-                  type: integer
+                  type:
+                  - integer
+                  - 'null'
                 nestingLevel:
                   description: The number of supported nesting levels within a query. The maximum number is 100.
                   example: '{{nestingLevel}}'
-                  nullable: true
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                 preRefreshing:
                   additionalProperties: false
                   description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
-                  nullable: true
-                  type: object
+                  type:
+                  - object
+                  - 'null'
                   required:
                   - enabled
                   properties:
@@ -544,8 +561,9 @@ paths:
                 serveStale:
                   description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
                   example: '{{serveStale}}'
-                  nullable: true
-                  type: boolean
+                  type:
+                  - boolean
+                  - 'null'
               x-akamai:
                 file-path: schemas/graphQLSettingsDto.yaml
       responses:
@@ -591,12 +609,14 @@ paths:
                     type: string
                   cacheOrigin:
                     description: Whether to set the maximum age for caching GraphQL responses (TTL) to the value specified in your origin's `Cache-Control` HTTP response header.
-                    nullable: true
-                    type: boolean
+                    type:
+                    - boolean
+                    - 'null'
                   cacheResponseOnError:
                     description: Whether edge servers should cache the response to a GraphQL-type request in case errors are present in the response body.
-                    nullable: true
-                    type: boolean
+                    type:
+                    - boolean
+                    - 'null'
                   detectError:
                     description: By default, GraphQL queries return partial data if only a portion of a request fails. In such cases, status codes don't indicate errors. Instead, an `errors` array in a response body contains error details. This indicates whether edge servers should inspect the response body for the `errors` array.
                     type: boolean
@@ -634,13 +654,15 @@ paths:
                         - CALCULATES_EXPIRES_FROM_ORIGIN_CACHE_CONTROL
                       markAsPrivate:
                         description: Specifies whether to disallow storing responses in a shared cache. This is useful when you want to set a maximum age for the end client, but have shared caches not store the response.
-                        nullable: true
-                        type: boolean
+                        type:
+                        - boolean
+                        - 'null'
                       maxAge:
                         additionalProperties: false
                         description: Contains information about the maximum duration to keep content in a cache.
-                        nullable: true
-                        type: object
+                        type:
+                        - object
+                        - 'null'
                         required:
                         - duration
                         - unit
@@ -676,8 +698,9 @@ paths:
                   maxAge:
                     additionalProperties: false
                     description: Contains information about the maximum duration to keep content in a cache.
-                    nullable: true
-                    type: object
+                    type:
+                    - object
+                    - 'null'
                     required:
                     - duration
                     - unit
@@ -697,17 +720,20 @@ paths:
                       file-path: schemas/durationDto.yaml
                   maxQuerySize:
                     description: The maximum size of the query. A post body or a get response can't exceed 4 KBs.
-                    nullable: true
-                    type: integer
+                    type:
+                    - integer
+                    - 'null'
                   nestingLevel:
                     description: The number of supported nesting levels within a query. The maximum number is 100.
-                    nullable: true
-                    type: string
+                    type:
+                    - string
+                    - 'null'
                   preRefreshing:
                     additionalProperties: false
                     description: Contains information about cache prefreshing settings. When enabled, edge servers asynchronously refresh cached objects after a specified percentage of the object's TTL elapses.
-                    nullable: true
-                    type: object
+                    type:
+                    - object
+                    - 'null'
                     required:
                     - enabled
                     properties:
@@ -726,8 +752,9 @@ paths:
                     type: string
                   serveStale:
                     description: Whether to serve stale responses when the origin is unreachable and content revalidation isn't possible.
-                    nullable: true
-                    type: boolean
+                    type:
+                    - boolean
+                    - 'null'
                 x-akamai:
                   file-path: schemas/graphQLSettingsDto.yaml
         '400':
