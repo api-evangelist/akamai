@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 26
+edge_count: 33
 edges:
 - tag: Events
   spec_file: akamai-events-api-openapi.yml
@@ -34,6 +34,18 @@ edges:
     on your policy.'''
   reason: Operations get/modify protections on a WAF security policy — clearly cybersecurity control management.
     Which L2 (governance vs architecture vs detection) is ambiguous, so only L1 is asserted.
+- tag: 'Shared resources: Custom deny actions'
+  spec_file: akamai-shared-resources-custom-deny-actions-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.8
+  evidence: '"Manage your custom deny actions for security configurations and policies"; "Create a custom
+    deny action"'
+  reason: Operations configure deny/block responses within Akamai security (WAF) configurations — a security
+    control configuration surface, so Cybersecurity Management at L1; evidence does not clearly name one
+    sub-capability (it is preventive control config, not SOC/IAM/vuln).
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: 'WAF rules: Attack groups'
   spec_file: akamai-waf-rules-attack-groups-api-openapi.yml
   capability_id: BC-620
@@ -105,6 +117,36 @@ edges:
   evidence: '''If using Kona Site Defender, manage the reputation analysis settings.'''
   reason: Client-reputation analysis settings in a WAF product are a cybersecurity threat-identification
     control. L2 left null since it straddles threat detection and security policy configuration.
+- tag: 'Shared resources: Rate policies'
+  spec_file: akamai-shared-resources-rate-policies-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.75
+  evidence: '"Manage rate policies for security configurations."; "Modify a rate policy evaluation"'
+  reason: Rate policies here are DDoS/abuse-protection controls inside Akamai security configurations,
+    not commercial API quota tiers, so Cybersecurity Management rather than API consumption governance.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: URL protection policies
+  spec_file: akamai-url-protection-policies-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.75
+  evidence: '"Manage your URL protection policies."; "Create a URL protection policy"'
+  reason: CRUD over URL protection policies within security configuration versions — security control
+    configuration under Cybersecurity Management.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: URL protection policy actions
+  spec_file: akamai-url-protection-policy-actions-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.75
+  evidence: '"Manage your URL protection settings for your security policies."'
+  reason: Sets the enforcement action for URL protection policies on security policies — again security
+    control configuration; L1 only.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: 'WAF rules: Evaluation Penalty box conditions'
   spec_file: akamai-waf-rules-evaluation-penalty-box-conditions-api-openapi.yml
   capability_id: BC-620
@@ -194,6 +236,42 @@ edges:
   evidence: '"Get a Behavioral DDoS profile" / "Modify a Behavioral DDoS profile"'
   reason: Same surface as the other DDoS profile tags — read/update of behavioural DDoS protection profiles,
     which govern detection and mitigation of attack traffic.
+- tag: Custom rule actions
+  spec_file: akamai-custom-rule-actions-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: Use custom rules to handle scenarios not covered by the included standard rules or to quickly
+    patch new website vulnerabilities.
+  reason: Managing actions on custom WAF rules within security policies is security control configuration
+    for a web property, i.e. Cybersecurity Management. Kept at L1 because the surface straddles threat
+    prevention/response and secure-configuration sub-capabilities.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: General configuration settings
+  spec_file: akamai-general-configuration-settings-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: '''Manage security configurations and their versions''; ''Get a security configuration'';
+    ''Clone a configuration version'''
+  reason: CRUD and versioning over Akamai security (WAF) configurations — administration of cybersecurity
+    controls. Left at L1 because the operations are container/versioning management spanning several security
+    sub-capabilities.
+  recovered_from: sweep-20260828T235257Z-edges.json
+- tag: General policy settings
+  spec_file: akamai-general-policy-settings-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.7
+  evidence: '''Manage security policies and their versions''; ''Clone or create a security policy''; ''Remove
+    a security policy'''
+  reason: These are technical WAF security policies attached to a security configuration, so cybersecurity
+    control management — deliberately not corporate Policy Management (BC-130.20), which is a homograph
+    trap. L1 only given the generic CRUD surface.
+  recovered_from: sweep-20260828T235257Z-edges.json
 - tag: Malware policy actions
   spec_file: akamai-malware-policy-actions-api-openapi.yml
   capability_id: BC-620.30
