@@ -1,14 +1,16 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Permission groups API'
-  version: '2'
+  title: Akamai Permission groups API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged Permission groups across 2 of this provider''s published API definitions: akamai-edgekv-openapi.json, akamai-edgeworkers-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/edgekv/v1
+- url: https://{hostname}/edgeworkers/v1
 tags:
-- name: Permission groups
+- name: Permission Groups
 paths:
   /auth/groups:
     get:
@@ -16,7 +18,7 @@ paths:
       operationId: get-groups
       summary: Akamai List Permission Groups
       tags:
-      - Permission groups
+      - Permission Groups
       externalDocs:
         description: See documentation for this operation in Akamai's EdgeKV API
         url: https://techdocs.akamai.com/edgekv/reference/get-groups
@@ -180,6 +182,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgekv/v1
   /auth/groups/{groupId}:
     parameters:
     - description: Unique identifier for an EdgeKV access group.
@@ -198,7 +202,7 @@ paths:
       operationId: get-group
       summary: Akamai Get a Permission Group
       tags:
-      - Permission groups
+      - Permission Groups
       externalDocs:
         description: See documentation for this operation in Akamai's EdgeKV API
         url: https://techdocs.akamai.com/edgekv/reference/get-group
@@ -379,13 +383,15 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgekv/v1
   /groups:
     get:
       description: 'View a list of groups and the associated permission capabilities, for example: activate a version or fetch an EdgeWorker ID.'
       operationId: get-groups
       summary: Akamai List Permission Groups
       tags:
-      - Permission groups
+      - Permission Groups
       externalDocs:
         description: See documentation for this operation in Akamai's EdgeWorkers API
         url: https://techdocs.akamai.com/edgeworkers/reference/get-groups
@@ -465,6 +471,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /groups/{groupId}:
     parameters:
     - description: Unique identifier for an EdgeWorker group. You can pass in plain integer IDs, or add a `grp_` prefix. The Property Manager API supports both formats. See [ID prefixes](https://techdocs.akamai.com/property-mgr/reference/api/id-prefixes) for details.
@@ -482,7 +490,7 @@ paths:
       operationId: get-group
       summary: Akamai Get a Permission Group
       tags:
-      - Permission groups
+      - Permission Groups
       externalDocs:
         description: See documentation for this operation in Akamai's EdgeWorkers API
         url: https://techdocs.akamai.com/edgeworkers/reference/get-group
@@ -539,9 +547,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
+x-refined-from:
+- akamai-edgekv-openapi.json
+- akamai-edgeworkers-openapi.json
 x-readme:
   samples-languages:
   - curl

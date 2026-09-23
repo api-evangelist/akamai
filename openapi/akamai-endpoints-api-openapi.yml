@@ -1,18 +1,20 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Endpoints API'
-  version: '2'
+  title: Akamai Endpoints API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged Endpoints across 2 of this provider''s published API definitions: akamai-api-definitions-openapi.json, akamai-application-security-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/appsec/v1
 tags:
 - name: Endpoints
 paths:
   /endpoints:
     post:
-      description: Creates the first version of an API endpoint configuration. You can specify the new endpoint's full set of resources. Alternatively, you can create them later either by modifying the endpoint object, or separately with the [Create a resource](https://techdocs.akamai.com/api-definitions/reference/post-resource) operation. The endpoint's name needs to be unique within an account.
+      description: Creates the first version of an API endpoint configuration. You can specify the new endpoint's full set of resources. Alternatively, you can create them later either by modifying the endpoint object, or separately with the Create a resource operation. The endpoint's name needs to be unique within an account.
       operationId: post-endpoints
       summary: Register an endpoint
       tags:
@@ -2631,6 +2633,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/cloneEndpoint:
     post:
       description: Creates an endpoint as a clone from the specified source endpoint ID and version.
@@ -3864,9 +3868,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/files:
     post:
-      description: Imports an API definition file and creates a new endpoint based on the file contents. You can run this operation in two ways. To POST JSON data, see [Make a JSON request to register an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/endpoint-request-json). To make a form request using these parameters, see [Make a form request to register an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/endpoint-request-form).
+      description: Imports an API definition file and creates a new endpoint based on the file contents. You can run this operation in two ways. To POST JSON data, see Make a JSON request to register an endpoint from an API definition file. To make a form request using these parameters, see Make a form request to register an endpoint from an API definition file.
       operationId: post-endpoints-file
       summary: Register an endpoint from an API definition file
       tags:
@@ -5985,9 +5991,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/user-entitlements:
     get:
-      description: Lists user entitlements based on your assigned permissions. It helps you determine if your user identity assigned to the API client can run various other operations to modify data. See [Get started](https://techdocs.akamai.com/api-definitions/reference/api-get-started) for details on setting up the API client with the appropriate level of access. This operation's array values include `API_READ` for read-only access, `API_WRITE` for modifying the existing endpoint versions, `API_VERSIONING` for version management, `API_FEATURES` for access to Kona Site Defender security features, `AAG_FEATURES` for access to delivery features, and `API_PURPOSE` for access to resource purpose settings. Note that the `API_FEATURES` permission is only available for Kona Site Defender customers, and the `API_PURPOSE` permission is for Bot Manager customers.
+      description: Lists user entitlements based on your assigned permissions. It helps you determine if your user identity assigned to the API client can run various other operations to modify data. See Get started for details on setting up the API client with the appropriate level of access. This operation's array values include `API_READ` for read-only access, `API_WRITE` for modifying the existing endpoint versions, `API_VERSIONING` for version management, `API_FEATURES` for access to Kona Site Defender security features, `AAG_FEATURES` for access to delivery features, and `API_PURPOSE` for access to resource purpose settings. Note that the `API_FEATURES` permission is only available for Kona Site Defender customers, and the `API_PURPOSE` permission is for Bot Manager customers.
       operationId: get-user-entitlements
       summary: List user entitlements
       tags:
@@ -6073,9 +6081,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/verify-secure-connection:
     post:
-      description: Verifies that provided hostnames are signed with a provided certificate chain. This ensures that edge servers can connect to the hostnames securely. The response is a map of hostnames to connection status values. For the list of available connection status values and their descriptions, see Connection status values. You can use the response information when setting up JWKS in the [Edit JWT settings](https://techdocs.akamai.com/api-definitions/reference/put-jwt-settings) operation.
+      description: Verifies that provided hostnames are signed with a provided certificate chain. This ensures that edge servers can connect to the hostnames securely. The response is a map of hostnames to connection status values. For the list of available connection status values and their descriptions, see Connection status values. You can use the response information when setting up JWKS in the Edit JWT settings operation.
       operationId: post-endpoints-verify-secure-connection
       summary: Verify secure connection
       tags:
@@ -6211,6 +6221,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}:
     parameters:
     - description: The unique identifier for the endpoint.
@@ -6324,6 +6336,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/hide:
     parameters:
     - description: The unique identifier for the endpoint.
@@ -6337,7 +6351,7 @@ paths:
       x-akamai:
         file-path: parameters/apiEndPointId-path.yaml
     post:
-      description: Hides an endpoint and all its versions. You can only hide an endpoint with no active versions on the staging or production network. You can't activate or delete versions of a hidden endpoint. A hidden endpoint appears in the [List endpoints](https://techdocs.akamai.com/api-definitions/reference/get-endpoints) operation's response object by default, or when you set the operation's `show` query parameter to `ONLY_HIDDEN`. Running this operation affects the endpoint listing in the API Definitions user interface.
+      description: Hides an endpoint and all its versions. You can only hide an endpoint with no active versions on the staging or production network. You can't activate or delete versions of a hidden endpoint. A hidden endpoint appears in the List endpoints operation's response object by default, or when you set the operation's `show` query parameter to `ONLY_HIDDEN`. Running this operation affects the endpoint listing in the API Definitions user interface.
       operationId: post-endpoint-hide
       summary: Hide an endpoint
       tags:
@@ -7469,6 +7483,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/show:
     parameters:
     - description: The unique identifier for the endpoint.
@@ -7482,7 +7498,7 @@ paths:
       x-akamai:
         file-path: parameters/apiEndPointId-path.yaml
     post:
-      description: Reveals a hidden endpoint and all its versions. A revealed endpoint appears in the [List endpoints](https://techdocs.akamai.com/api-definitions/reference/get-endpoints) operation's response object by default, or when you set the operation's `show` query parameter to `ONLY_VISIBLE`. Running this operation affects the endpoint listing in the API Definitions user interface.
+      description: Reveals a hidden endpoint and all its versions. A revealed endpoint appears in the List endpoints operation's response object by default, or when you set the operation's `show` query parameter to `ONLY_VISIBLE`. Running this operation affects the endpoint listing in the API Definitions user interface.
       operationId: post-endpoint-show
       summary: Show an endpoint
       tags:
@@ -8614,6 +8630,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /api-discovery/host/{hostname}/basepath/{basePath}:
     parameters:
     - description: The base64-encoded value of the hostname.
@@ -8638,7 +8656,7 @@ paths:
       file-path: paths/api-discovery-base-path.yaml
       path-info: /api-discovery/host/{hostname}/basepath/{basePath}
     put:
-      description: __All products__ Hide or show an API. You can choose to include or exclude APIs from the [Get discovered APIs](https://techdocs.akamai.com/application-security/reference/get-api-list) response. This operation is per-user. If you hide an API from the response, another of your colleagues will still see that API in the response when they run this operation with their own credentials.
+      description: __All products__ Hide or show an API. You can choose to include or exclude APIs from the Get discovered APIs response. This operation is per-user. If you hide an API from the response, another of your colleagues will still see that API in the response when they run this operation with their own credentials.
       externalDocs:
         description: See documentation for this operation in Akamai's Application Security API
         url: https://techdocs.akamai.com/application-security/reference/put-api-visibility
@@ -8896,6 +8914,8 @@ paths:
       x-akamai:
         labels:
         - All products
+    servers:
+    - url: https://{hostname}/appsec/v1
   /api-discovery/host/{hostname}/basepath/{basePath}/endpoints:
     parameters:
     - description: The base64-encoded value of the hostname.
@@ -9857,7 +9877,7 @@ paths:
         labels:
         - All products
     get:
-      description: __All products__ Returns API endpoints for the specified hostname and base path. Unlike [Get discovered APIs](https://techdocs.akamai.com/application-security/reference/get-api-list), this operation returns APIs already in your API definitions. When you see a discovered API or a new resource, add it to your definition with [Create an endpoint or resource](https://techdocs.akamai.com/application-security/reference/post-api-endpoint-resource).
+      description: __All products__ Returns API endpoints for the specified hostname and base path. Unlike Get discovered APIs, this operation returns APIs already in your API definitions. When you see a discovered API or a new resource, add it to your definition with Create an endpoint or resource.
       externalDocs:
         description: See documentation for this operation in Akamai's Application Security API
         url: https://techdocs.akamai.com/application-security/reference/get-discovered-api-endpoints
@@ -10153,9 +10173,11 @@ paths:
       x-akamai:
         labels:
         - All products
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/appsec/v1
+x-refined-from:
+- akamai-api-definitions-openapi.json
+- akamai-application-security-openapi.json
 x-readme:
   samples-languages:
   - curl

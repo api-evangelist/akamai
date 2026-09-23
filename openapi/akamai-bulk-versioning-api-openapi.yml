@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Bulk versioning API'
-  version: '2'
+  title: 'Akamai: Property Manager Bulk versioning API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Bulk versioning
 paths:
@@ -18,7 +18,7 @@ paths:
       displayName: bulkPropertyVersions
       group: Bulk property versions
     post:
-      description: Create new versions of a set of properties based on any previous version. This operation launches an asynchronous process to increment versions. To check its progress, run the [List bulk-versioned properties](https://techdocs.akamai.com/property-mgr/reference/get-bulk-version) operation, whose link is available in the `Location` header or `bulkCreateVersionLink` member of this operation's response. Run this operation only after [bulk searching](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) a set of properties you want to change, to prepare new versions to bulk patch. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance on this feature.
+      description: Create new versions of a set of properties based on any previous version. This operation launches an asynchronous process to increment versions. To check its progress, run the List bulk-versioned properties operation, whose link is available in the `Location` header or `bulkCreateVersionLink` member of this operation's response. Run this operation only after bulk searching a set of properties you want to change, to prepare new versions to bulk patch. See Bulk Search and Update for guidance on this feature.
       operationId: post-bulk-version
       summary: Akamai Bulk Version a Set of Properties
       tags:
@@ -930,7 +930,7 @@ paths:
       x-akamai:
         file-path: parameters/bulkCreateId-path.yaml
     get:
-      description: List all new property versions that result from a [bulk versioning request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version). This operation polls the asynchronous process's status. After the `bulkCreateVersionsStatus` is `COMPLETE`, use the new version numbers along with search paths from a [bulk search](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) operation to [bulk patch](https://techdocs.akamai.com/property-mgr/reference/post-bulk-patch) them. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance.
+      description: List all new property versions that result from a bulk versioning request. This operation polls the asynchronous process's status. After the `bulkCreateVersionsStatus` is `COMPLETE`, use the new version numbers along with search paths from a bulk search operation to bulk patch them. See Bulk Search and Update for guidance.
       operationId: get-bulk-version
       summary: Akamai List Bulk-versioned Properties
       tags:
@@ -1054,9 +1054,8 @@ paths:
                           type: integer
                         propertyVersionLink:
                           description: Provides an API hypermedia link to each newly created property version. Prior to creation, the value is `null`.
-                          type:
-                          - string
-                          - 'null'
+                          nullable: true
+                          type: string
                   message:
                     description: A notification in case the bulk request repeatedly fails to process.
                     type: string
@@ -1791,8 +1790,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

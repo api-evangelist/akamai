@@ -1,12 +1,14 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Versions API'
-  version: '2'
+  title: Akamai Versions API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged Versions across 2 of this provider''s published API definitions: akamai-api-definitions-openapi.json, akamai-edgeworkers-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/edgeworkers/v1
 tags:
 - name: Versions
 paths:
@@ -335,6 +337,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -358,7 +362,7 @@ paths:
       x-akamai:
         file-path: parameters/apiEndPointId-path.yaml
     get:
-      description: Returns a summary for a specific endpoint version. The summary is for purely informational purposes, and you shouldn't use this operation's response in the corresponding [Edit a version](https://techdocs.akamai.com/api-definitions/reference/put-endpoint-version) PUT request. For the PUT request, use the response object of [Get a version](https://techdocs.akamai.com/api-definitions/reference/get-endpoint-version-resource).
+      description: Returns a summary for a specific endpoint version. The summary is for purely informational purposes, and you shouldn't use this operation's response in the corresponding Edit a version PUT request. For the PUT request, use the response object of Get a version.
       operationId: get-endpoint-version
       summary: Get a version summary
       tags:
@@ -556,7 +560,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     put:
-      description: Updates details about an endpoint version that has never been activated on the staging or production network. You can configure the endpoint's security settings and other top-level metadata, or modify the endpoint's entire set of resources as an alternative to separate calls to [Edit a resource](https://techdocs.akamai.com/api-definitions/reference/put-version-resource). Note that the corresponding [Get a version](https://techdocs.akamai.com/api-definitions/reference/get-endpoint-version-resource) operation you need to run to GET the data uses a different URL.
+      description: Updates details about an endpoint version that has never been activated on the staging or production network. You can configure the endpoint's security settings and other top-level metadata, or modify the endpoint's entire set of resources as an alternative to separate calls to Edit a resource. Note that the corresponding Get a version operation you need to run to GET the data uses a different URL.
       operationId: put-endpoint-version
       summary: Edit a version
       tags:
@@ -2846,7 +2850,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     delete:
-      description: Removes an endpoint version from API Gateway if the version has never been activated on the staging or production network. This is a soft delete operation that preserves the version's information, such as its number, in the database. You can't remove the permanent number assigned to each endpoint version, even if you remove that version. A removed endpoint version no longer appears in the [List versions](https://techdocs.akamai.com/api-definitions/reference/get-endpoint-versions) operation's response object.
+      description: Removes an endpoint version from API Gateway if the version has never been activated on the staging or production network. This is a soft delete operation that preserves the version's information, such as its number, in the database. You can't remove the permanent number assigned to each endpoint version, even if you remove that version. A removed endpoint version no longer appears in the List versions operation's response object.
       operationId: delete-endpoint-version
       summary: Delete a version
       tags:
@@ -2946,6 +2950,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}/activate:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -3099,6 +3105,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}/cloneVersion:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -4291,6 +4299,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}/deactivate:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -4444,6 +4454,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}/file:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -4467,7 +4479,7 @@ paths:
       x-akamai:
         file-path: parameters/apiEndPointId-path.yaml
     post:
-      description: Imports an API definition file with details about an endpoint. Unlike [Register an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/post-endpoints-file), this operation doesn't create a new endpoint, but updates details of an existing endpoint. You can run this operation in two ways. To POST JSON data, see [Make a JSON request to edit an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/endpoint-edit-json). To make a form request using these parameters, see [Make a form request to edit an endpoint from an API definition file](https://techdocs.akamai.com/api-definitions/reference/endpoint-edit-form). Once you submit the POST request, to finish modifying the endpoint version, you need to take the response data and submit it as a request to the [Edit a version](https://techdocs.akamai.com/api-definitions/reference/put-endpoint-version) operation.
+      description: Imports an API definition file with details about an endpoint. Unlike Register an endpoint from an API definition file, this operation doesn't create a new endpoint, but updates details of an existing endpoint. You can run this operation in two ways. To POST JSON data, see Make a JSON request to edit an endpoint from an API definition file. To make a form request using these parameters, see Make a form request to edit an endpoint from an API definition file. Once you submit the POST request, to finish modifying the endpoint version, you need to take the response data and submit it as a request to the Edit a version operation.
       operationId: post-endpoint-version-file
       summary: Edit an endpoint from an API definition file
       tags:
@@ -6581,6 +6593,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}/hide:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -6604,7 +6618,7 @@ paths:
       x-akamai:
         file-path: parameters/apiEndPointId-path.yaml
     post:
-      description: Hides an endpoint version. You can only hide inactive or deactivated versions. You can't activate or delete hidden versions. A hidden endpoint version appears in the [List versions](https://techdocs.akamai.com/api-definitions/reference/get-endpoint-versions) operation's response object with the `hidden` parameter set to `true`. Running this operation affects the version listing in the API Definitions user interface.
+      description: Hides an endpoint version. You can only hide inactive or deactivated versions. You can't activate or delete hidden versions. A hidden endpoint version appears in the List versions operation's response object with the `hidden` parameter set to `true`. Running this operation affects the version listing in the API Definitions user interface.
       operationId: post-endpoint-version-hide
       summary: Hide a version
       tags:
@@ -7736,6 +7750,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /endpoints/{apiEndPointId}/versions/{versionNumber}/show:
     parameters:
     - description: The unique identifier for the endpoint version.
@@ -7759,7 +7775,7 @@ paths:
       x-akamai:
         file-path: parameters/apiEndPointId-path.yaml
     post:
-      description: Reveals a hidden endpoint version. A revealed endpoint version appears in the [List versions](https://techdocs.akamai.com/api-definitions/reference/get-endpoint-versions) operation's response object with the `hidden` parameter set to `false`. Running this operation affects the version listing in the API Definitions user interface.
+      description: Reveals a hidden endpoint version. A revealed endpoint version appears in the List versions operation's response object with the `hidden` parameter set to `false`. Running this operation affects the version listing in the API Definitions user interface.
       operationId: post-version-show
       summary: Show a version
       tags:
@@ -8891,6 +8907,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/api-definitions/v2
   /ids/{edgeWorkerId}/versions:
     parameters:
     - description: Unique identifier for an EdgeWorker.
@@ -8905,7 +8923,7 @@ paths:
       x-akamai:
         file-path: parameters/edgeWorkerId-path.yaml
     post:
-      description: Create a new version of an EdgeWorker. In order to run this operation you need to build an [EdgeWorkers code bundle](https://techdocs.akamai.com/edgeworkers/docs/create-a-code-bundle) and save it in GZIP format. You need to provide the GZIP binary file in the request body, with a `Content-Type` of `application/gzip`.
+      description: Create a new version of an EdgeWorker. In order to run this operation you need to build an EdgeWorkers code bundle and save it in GZIP format. You need to provide the GZIP binary file in the request body, with a `Content-Type` of `application/gzip`.
       operationId: post-versions
       summary: Akamai Create a New Version
       tags:
@@ -9079,6 +9097,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /ids/{edgeWorkerId}/versions/{version}:
     parameters:
     - description: Unique identifier for an EdgeWorker version.
@@ -9196,6 +9216,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /ids/{edgeWorkerId}/versions/{version}/content:
     parameters:
     - description: Unique identifier for an EdgeWorker version.
@@ -9245,9 +9267,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
+x-refined-from:
+- akamai-api-definitions-openapi.json
+- akamai-edgeworkers-openapi.json
 x-readme:
   samples-languages:
   - curl

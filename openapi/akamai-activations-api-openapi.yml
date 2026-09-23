@@ -1,13 +1,15 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Activations API'
-  version: '2'
+  title: Akamai Activations API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  description: Manage your security configuration activations.
+  version: '1.0'
+  description: 'Operations tagged Activations across 3 of this provider''s published API definitions: akamai-application-security-openapi.json, akamai-edgeworkers-openapi.json, akamai-network-lists-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/appsec/v1
+- url: https://{hostname}/edgeworkers/v1
+- url: https://{hostname}/network-list/v2
 tags:
 - description: Manage your security configuration activations.
   name: Activations
@@ -17,7 +19,7 @@ paths:
       file-path: paths/activations.yaml
       path-info: /activations
     post:
-      description: __All products__ Activates one or more configurations globally. Note that you need to explicitly list any invalid hosts in the `acknowledgedInvalidHostsByConfig` parameter in order to successfully activate a configuration that includes invalid hostnames. If you have an invalid hostname that isn't explicitly called out you'll receive an error telling you to add them to `acknowledgedInvalidHostsByConfig`. See [Activate with invalid hostnames](https://techdocs.akamai.com/application-security/reference/activate-with-invalid-hostnames) for instructions.
+      description: __All products__ Activates one or more configurations globally. Note that you need to explicitly list any invalid hosts in the `acknowledgedInvalidHostsByConfig` parameter in order to successfully activate a configuration that includes invalid hostnames. If you have an invalid hostname that isn't explicitly called out you'll receive an error telling you to add them to `acknowledgedInvalidHostsByConfig`. See Activate with invalid hostnames for instructions.
       externalDocs:
         description: See documentation for this operation in Akamai's Application Security API
         url: https://techdocs.akamai.com/application-security/reference/post-activations
@@ -382,6 +384,8 @@ paths:
       x-akamai:
         labels:
         - All products
+    servers:
+    - url: https://{hostname}/appsec/v1
   /ids/{edgeWorkerId}/activations:
     parameters:
     - description: Unique identifier for an EdgeWorker.
@@ -702,6 +706,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /ids/{edgeWorkerId}/activations/rollback:
     parameters:
     - description: Unique identifier for an EdgeWorker.
@@ -852,6 +858,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /ids/{edgeWorkerId}/activations/{activationId}:
     parameters:
     - description: Unique identifier for an EdgeWorkers activation.
@@ -1102,6 +1110,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /activations/{activationId}:
     parameters:
     - description: The unique identifier for this activation request.
@@ -1115,7 +1125,7 @@ paths:
       x-akamai:
         file-path: parameters/activationId-path.yaml
     get:
-      description: Provides detailed status for a given activation, including progress on _fast_ activation and other audit information, in addition to information ordinarily available from the [Get activation status](https://techdocs.akamai.com/network-lists/reference/get-network-list-status) operation.
+      description: Provides detailed status for a given activation, including progress on _fast_ activation and other audit information, in addition to information ordinarily available from the Get activation status operation.
       operationId: get-activation
       summary: Akamai Get Activation Details
       tags:
@@ -1631,6 +1641,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/network-list/v2
   /network-lists/{networkListId}/environments/{environment}/activate:
     parameters:
     - description: '__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.'
@@ -2155,6 +2167,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/network-list/v2
   /network-lists/{networkListId}/environments/{environment}/status:
     parameters:
     - description: '__Enum__ The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.'
@@ -2181,7 +2195,7 @@ paths:
       x-akamai:
         file-path: parameters/networkListId-path.yaml
     get:
-      description: Shows a network list's activation status on either the `STAGING` or `PRODUCTION` environment. The response reflects standard activation status. For fast activation status, see [Get activation details](https://techdocs.akamai.com/network-lists/reference/get-activation).
+      description: Shows a network list's activation status on either the `STAGING` or `PRODUCTION` environment. The response reflects standard activation status. For fast activation status, see Get activation details.
       operationId: get-network-list-status
       summary: Akamai Get Activation Status
       tags:
@@ -2648,6 +2662,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/network-list/v2
   /network-lists/{networkListId}/sync-points/{syncPoint}/history:
     parameters:
     - description: The network list version for which to retrieve the snapshot. This corresponds to the `syncPoint` the API exchanges for each successive modification to the network list. See [Concurrency control](https://techdocs.akamai.com/network-lists/reference/concurrency-control) for details.
@@ -2671,7 +2687,7 @@ paths:
       x-akamai:
         file-path: parameters/networkListId-path.yaml
     get:
-      description: Gets a version of a network list in its state when activated, with each version identified by its `syncPoint` value.  You can only get `syncPoint` versions that have been activated.
+      description: Gets a version of a network list in its state when activated, with each version identified by its `syncPoint` value. You can only get `syncPoint` versions that have been activated.
       operationId: get-network-list-history
       summary: Akamai Get an Activation's Snapshot
       tags:
@@ -3260,9 +3276,12 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/network-list/v2
+x-refined-from:
+- akamai-application-security-openapi.json
+- akamai-edgeworkers-openapi.json
+- akamai-network-lists-openapi.json
 x-readme:
   samples-languages:
   - curl

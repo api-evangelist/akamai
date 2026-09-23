@@ -1,19 +1,18 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Contracts API'
-  version: '2'
+  title: Akamai Contracts API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged Contracts across 2 of this provider''s published API definitions: akamai-edgeworkers-openapi.json, akamai-papi-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/edgeworkers/v1
+- url: https://{hostname}/papi/v1
 tags:
 - name: Contracts
 paths:
   /contracts:
-    x-akamai:
-      file-path: paths/contracts.yaml
-      path-for-file: /contracts
     get:
       description: View the list of contract IDs that you can use to list resource tiers.
       operationId: get-contracts
@@ -57,9 +56,14 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    x-akamai:
+      file-path: paths/contracts.yaml
+      path-for-file: /contracts
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
+x-refined-from:
+- akamai-edgeworkers-openapi.json
+- akamai-papi-openapi.json
 x-readme:
   samples-languages:
   - curl

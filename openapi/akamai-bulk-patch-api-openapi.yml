@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Bulk patch API'
-  version: '2'
+  title: 'Akamai: Property Manager Bulk patch API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Bulk patch
 paths:
@@ -18,7 +18,7 @@ paths:
       displayName: bulkPatch
       group: Bulk patch
     post:
-      description: Apply a series of JSON Patch operations to modify a set of property versions. Form this set of `patches` based on the [JSONPath](http://goessner.net/articles/JsonPath/) locations from a [bulk search](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) response. Specify a set of new property versions based on the results of a [bulk versioning](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version) operation. The request is a bulk patch object. This operation launches an asynchronous process to update rule trees. To check its progress, run the [List bulk-updated properties](https://techdocs.akamai.com/property-mgr/reference/get-bulk-patch) operation, whose link is available in the `Location` header or `bulkPatchLink` member of this operation's response. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature.
+      description: Apply a series of JSON Patch operations to modify a set of property versions. Form this set of `patches` based on the JSONPath locations from a bulk search response. Specify a set of new property versions based on the results of a bulk versioning operation. The request is a bulk patch object. This operation launches an asynchronous process to update rule trees. To check its progress, run the List bulk-updated properties operation, whose link is available in the `Location` header or `bulkPatchLink` member of this operation's response. See Bulk Search and Update for overall guidance on this feature.
       operationId: post-bulk-patch
       summary: Akamai Bulk Patch a Set of Properties
       tags:
@@ -983,7 +983,7 @@ paths:
       x-akamai:
         file-path: parameters/bulkPatchId-path.yaml
     get:
-      description: List all modified property versions that result from a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/post-bulk-patch) request. This operation polls the asynchronous process's status. Once the overall `bulkPatchStatus` is `COMPLETE`, you can feed all successfully updated property versions whose `status` is `UPDATED` into a subsequent request to [bulk activate](https://techdocs.akamai.com/property-mgr/reference/post-bulk-activations) them. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature.
+      description: List all modified property versions that result from a bulk patch request. This operation polls the asynchronous process's status. Once the overall `bulkPatchStatus` is `COMPLETE`, you can feed all successfully updated property versions whose `status` is `UPDATED` into a subsequent request to bulk activate them. See Bulk Search and Update for overall guidance on this feature.
       operationId: get-bulk-patch
       summary: Akamai List Bulk-patched Properties
       tags:
@@ -1932,8 +1932,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

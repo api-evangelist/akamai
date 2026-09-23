@@ -1,13 +1,15 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens URL/ARL API'
-  version: '2'
+  description: 'Refresh or remove specific cached objects, by URLs, content
+
+    provider (CP) codes, or cache tags.'
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  description: Purge by URL or by Akamai resource locator (ARL).
+  title: 'Akamai: Fast Purge URL/ARL API'
+  version: v3
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/ccu/v3
 tags:
 - description: Purge by URL or by Akamai resource locator (ARL).
   name: URL/ARL
@@ -31,7 +33,7 @@ paths:
       file-path: paths/delete-url.yaml
       path-info: /delete/url/{network}
     post:
-      description: Deletes content on the selected URL or ARL  for the selected `network`.  URLs and ARLs can be submitted in the same request. In most cases, you should [invalidate](https://techdocs.akamai.com/purge-cache/reference/post-invalidate-url) rather than delete content. Invalidation keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable.
+      description: Deletes content on the selected URL or ARL for the selected `network`. URLs and ARLs can be submitted in the same request. In most cases, you should invalidate rather than delete content. Invalidation keeps each object in cache until the version on your origin server is newer. Deletion retrieves the object regardless, which can dramatically increase the load on your origin server and would prevent Akamai from serving the old content if your origin is unreachable.
       externalDocs:
         description: See documentation for this operation in Akamai's Fast Purge API
         url: https://techdocs.akamai.com/purge-cache/reference/post-delete-url
@@ -675,9 +677,10 @@ paths:
       x-akamai:
         supports-account-switch-key: false
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Fast Purge API
+  url: https://techdocs.akamai.com/purge-cache/reference
 x-readme:
+  explorer-enabled: false
   samples-languages:
   - curl
   - python

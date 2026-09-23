@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Bulk activations API'
-  version: '2'
+  title: 'Akamai: Property Manager Bulk activations API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Bulk activations
 paths:
@@ -18,7 +18,7 @@ paths:
       displayName: bulkPropertyActivations
       group: Bulk property activations
     post:
-      description: Bulk activate a set of property versions. Alternately, perform a bulk [fallback](https://techdocs.akamai.com/property-mgr/reference/property-activation-error-handling) to the previous activation within an hour of the previous bulk activation. Base the set of versions to activate on the results of a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/get-bulk-patch) operation, which you use in this operation's request. This operation launches an asynchronous process to update properties. To check its progress, run the [List bulk-activated properties](https://techdocs.akamai.com/property-mgr/reference/get-bulk-activation) operation, whose link is available in the `Location` header or `bulkActivationLink` member of this operation's response. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature.
+      description: Bulk activate a set of property versions. Alternately, perform a bulk fallback to the previous activation within an hour of the previous bulk activation. Base the set of versions to activate on the results of a bulk patch operation, which you use in this operation's request. This operation launches an asynchronous process to update properties. To check its progress, run the List bulk-activated properties operation, whose link is available in the `Location` header or `bulkActivationLink` member of this operation's response. See Bulk Search and Update for overall guidance on this feature.
       operationId: post-bulk-activations
       summary: Akamai Bulk Activate a Set of Properties
       tags:
@@ -978,7 +978,7 @@ paths:
       x-akamai:
         file-path: parameters/bulkActivationId-path.yaml
     get:
-      description: List all activations that result from a [bulk activation request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-activations). Once the overall `bulkActivationStatus` is `COMPLETE`, check each activation's `activationStatus` to confirm it's `ACTIVATED`. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for overall guidance on this feature.
+      description: List all activations that result from a bulk activation request. Once the overall `bulkActivationStatus` is `COMPLETE`, check each activation's `activationStatus` to confirm it's `ACTIVATED`. See Bulk Search and Update for overall guidance on this feature.
       operationId: get-bulk-activation
       summary: Akamai List Bulk-activated Properties
       tags:
@@ -1986,8 +1986,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

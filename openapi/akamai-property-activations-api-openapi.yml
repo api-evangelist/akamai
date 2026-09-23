@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Property activations API'
-  version: '2'
+  title: 'Akamai: Property Manager Property activations API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Property activations
 paths:
@@ -86,9 +86,8 @@ paths:
                 delayValidations:
                   description: This makes the operation respond with an `activationLink` more quickly. Some time-consuming validations ordinarily result in a direct error response. Enabling this delays them so that any errors appear later once you [Get a property activation](https://techdocs.akamai.com/property-mgr/reference/get-property-activation). In that case, the activation's `status` is `FAILED`.
                   example: '{{delayValidations}}'
-                  type:
-                  - boolean
-                  - 'null'
+                  nullable: true
+                  type: boolean
                 fastPush:
                   default: true
                   description: Enable a fast metadata push when activating a new property, `true` by default.
@@ -1276,6 +1275,7 @@ paths:
                                   type: integer
                                 fastFallbackRecoveryState:
                                   description: Represents additional information available for any attempted fallback.
+                                  nullable: true
                                   type:
                                   - string
                                   - 'null'
@@ -2111,7 +2111,7 @@ paths:
       x-akamai:
         file-path: parameters/activationId-path.yaml
     get:
-      description: Gets details about an activation. You typically get a single activation from an `activationLink` when [launching a new activation](https://techdocs.akamai.com/property-mgr/reference/post-property-activations) and following up to poll its `status`. For activations whose `status` is `PENDING`, a `Retry-After` header provides an estimate for when it's likely to change.
+      description: Gets details about an activation. You typically get a single activation from an `activationLink` when launching a new activation and following up to poll its `status`. For activations whose `status` is `PENDING`, a `Retry-After` header provides an estimate for when it's likely to change.
       operationId: get-property-activation
       summary: Akamai Get a Property Activation
       tags:
@@ -2227,6 +2227,7 @@ paths:
                                   type: integer
                                 fastFallbackRecoveryState:
                                   description: Represents additional information available for any attempted fallback.
+                                  nullable: true
                                   type:
                                   - string
                                   - 'null'
@@ -3041,7 +3042,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     delete:
-      description: If you detect a problem with a property version while its activation is still `PENDING`, use this operation to cancel it. Make a DELETE request on the `activationLink` you get from the [Activate a property](https://techdocs.akamai.com/property-mgr/reference/post-property-activations) operation's response. Once you DELETE the activation, it no longer appears in the [list of activations](https://techdocs.akamai.com/property-mgr/reference/get-property-activations), but you can still [access it individually](https://techdocs.akamai.com/property-mgr/reference/get-property-activation). If there are unexpected problems with an activation that goes live before you're able to cancel it, you often have a one-hour window to quickly fall back to a previous activation. See [Activate or deactivate a property](https://techdocs.akamai.com/property-mgr/reference/post-property-activations) for details.
+      description: If you detect a problem with a property version while its activation is still `PENDING`, use this operation to cancel it. Make a DELETE request on the `activationLink` you get from the Activate a property operation's response. Once you DELETE the activation, it no longer appears in the list of activations, but you can still access it individually. If there are unexpected problems with an activation that goes live before you're able to cancel it, you often have a one-hour window to quickly fall back to a previous activation. See Activate or deactivate a property for details.
       operationId: delete-property-activation
       summary: Akamai Cancel a Property's Pending Activation
       tags:
@@ -3148,6 +3149,7 @@ paths:
                                   type: integer
                                 fastFallbackRecoveryState:
                                   description: Represents additional information available for any attempted fallback.
+                                  nullable: true
                                   type:
                                   - string
                                   - 'null'
@@ -4147,8 +4149,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

@@ -1,12 +1,15 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Properties API'
-  version: '2'
+  title: Akamai Properties API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged Properties across 3 of this provider''s published API definitions: akamai-edgeworkers-openapi.json, akamai-papi-openapi.json, akamai-sandbox-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/edgeworkers/v1
+- url: https://{hostname}/papi/v1
+- url: https://{hostname}/sandbox-api/v1
 tags:
 - name: Properties
 paths:
@@ -121,6 +124,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/edgeworkers/v1
   /properties:
     x-akamai:
       file-path: paths/properties.yaml
@@ -1137,6 +1142,7 @@ paths:
                               type: string
                             productionVersion:
                               description: The most recent version to be activated to the production network, otherwise `null`.
+                              nullable: true
                               type:
                               - integer
                               - 'null'
@@ -1157,6 +1163,7 @@ paths:
                               type: string
                             stagingVersion:
                               description: The most recent version to be activated to the test network, otherwise `null`.
+                              nullable: true
                               type:
                               - integer
                               - 'null'
@@ -1927,6 +1934,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/papi/v1
   /properties/{propertyId}:
     x-akamai:
       file-path: paths/property.yaml
@@ -1946,7 +1955,7 @@ paths:
       x-akamai:
         file-path: parameters/propertyId-path.yaml
     get:
-      description: This operation gets a specific property. You can call this operation by specifying any of the `propertyId` members from a [list of properties](https://techdocs.akamai.com/property-mgr/reference/get-properties), or by running a GET on the `propertyLink` response when [creating a new property](https://techdocs.akamai.com/property-mgr/reference/post-properties).
+      description: This operation gets a specific property. You can call this operation by specifying any of the `propertyId` members from a list of properties, or by running a GET on the `propertyLink` response when creating a new property.
       operationId: get-property
       summary: Akamai Get a Property
       tags:
@@ -2026,6 +2035,7 @@ paths:
                               type: string
                             productionVersion:
                               description: The most recent version to be activated to the production network, otherwise `null`.
+                              nullable: true
                               type:
                               - integer
                               - 'null'
@@ -2046,6 +2056,7 @@ paths:
                               type: string
                             stagingVersion:
                               description: The most recent version to be activated to the test network, otherwise `null`.
+                              nullable: true
                               type:
                               - integer
                               - 'null'
@@ -2780,7 +2791,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     delete:
-      description: Removes a specific property, which you can only do if none of its versions are currently active. Activating another property with the same set of hostnames automatically triggers a deactivation on the targeted property. See [Create a new activation](https://techdocs.akamai.com/property-mgr/reference/post-property-activations) for details. A successful DELETE results in a 200 response with the confirmation message. Attempting to delete an active property results in a 500 error. Attempting to delete an unknown property results in a 404 error.
+      description: Removes a specific property, which you can only do if none of its versions are currently active. Activating another property with the same set of hostnames automatically triggers a deactivation on the targeted property. See Create a new activation for details. A successful DELETE results in a 200 response with the confirmation message. Attempting to delete an active property results in a 500 error. Attempting to delete an unknown property results in a 404 error.
       operationId: delete-property
       summary: Akamai Remove a Property
       tags:
@@ -3524,6 +3535,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/papi/v1
   /sandboxes/{sandboxId}/properties:
     parameters:
     - description: Unique identifier for the sandbox.
@@ -3903,6 +3916,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/sandbox-api/v1
   /sandboxes/{sandboxId}/properties/{sandboxPropertyId}:
     parameters:
     - description: Unique identifier for the property within a sandbox.
@@ -4248,6 +4263,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/sandbox-api/v1
   /sandboxes/{sandboxId}/properties/{sandboxPropertyId}/rules:
     parameters:
     - description: Unique identifier for the property within a sandbox.
@@ -4271,7 +4288,7 @@ paths:
       x-akamai:
         file-path: parameters/sandboxId-path.yaml
     get:
-      description: Get a specific rule tree of a sandbox property. Each sandbox property references one rule tree. For more information on how content-handling rules are defined, review the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api).
+      description: Get a specific rule tree of a sandbox property. Each sandbox property references one rule tree. For more information on how content-handling rules are defined, review the Property Manager API.
       operationId: get-sandbox-properties-rules
       summary: Get a rule tree
       tags:
@@ -4358,7 +4375,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     put:
-      description: Modify the rules of a sandbox property to make changes to content-handling behaviors for testing purposes within your development environment. Once you are satisfied with the results in your sandbox, you can use the [Property Manager API](https://techdocs.akamai.com/property-mgr/reference/api) to apply the rule changes to your property configuration.
+      description: Modify the rules of a sandbox property to make changes to content-handling behaviors for testing purposes within your development environment. Once you are satisfied with the results in your sandbox, you can use the Property Manager API to apply the rule changes to your property configuration.
       operationId: put-sandbox-properties-rules
       summary: Update a rule tree
       tags:
@@ -4518,9 +4535,12 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/sandbox-api/v1
+x-refined-from:
+- akamai-edgeworkers-openapi.json
+- akamai-papi-openapi.json
+- akamai-sandbox-openapi.json
 x-readme:
   samples-languages:
   - curl

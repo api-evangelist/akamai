@@ -1,12 +1,14 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens CP codes API'
-  version: '2'
+  title: Akamai CP codes API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged CP codes across 2 of this provider''s published API definitions: akamai-cp-codes-openapi.json, akamai-papi-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/cprg/v1
+- url: https://{hostname}/papi/v1
 tags:
 - name: CP codes
 paths:
@@ -14,9 +16,6 @@ paths:
     x-akamai:
       file-path: paths/cpcodes.yaml
       path-for-file: /cpcodes
-    x-akamai-descriptor-tools:
-      displayName: cpCodes
-      group: CpCodes
     get:
       description: Lists detailed information about CP codes available within your account and contract.
       operationId: get-cpcodes
@@ -544,11 +543,14 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    x-akamai-descriptor-tools:
+      displayName: cpCodes
+      group: CpCodes
     post:
-      description: 'To create a new CP code, you need to associate it with a product. You can assign any CP code within a property''s rule tree as detailed in the [Rule Trees](https://techdocs.akamai.com/property-mgr/reference/rule-trees) section. You should match the same `productId` that''s assigned to properties that invoke the CP code to the one assigned to the CP code, otherwise you may get a warning.
+      description: 'To create a new CP code, you need to associate it with a product. You can assign any CP code within a property''s rule tree as detailed in the Rule Trees section. You should match the same `productId` that''s assigned to properties that invoke the CP code to the one assigned to the CP code, otherwise you may get a warning.
 
 
-        To view or update certain CP code data, such as name, time zone, and purgeability, use the [CP Codes and Reporting Groups API](https://techdocs.akamai.com/cp-codes/reference/api).'
+        To view or update certain CP code data, such as name, time zone, and purgeability, use the CP Codes and Reporting Groups API.'
       operationId: post-cpcodes
       summary: Akamai Create a New CP Code
       tags:
@@ -1531,6 +1533,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/cprg/v1
   /cpcodes/{cpcodeId}:
     x-akamai:
       file-path: paths/cpcode.yaml
@@ -1546,9 +1550,6 @@ paths:
         type: integer
       x-akamai:
         file-path: parameters/cpcodeId-path.yaml
-    x-akamai-descriptor-tools:
-      displayName: cpCode
-      group: CpCodes
     get:
       description: Get detailed information about a specific CP code. The details include the CP code type, name, time zone, as well as the account, contracts, and products it's assigned to. This operation also lists the access control group the CP code belongs to.
       operationId: get-cpcode
@@ -2009,7 +2010,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     put:
-      description: Modifies a specific CP code. After running the [GET a CP code](https://techdocs.akamai.com/cp-codes/reference/get-cpcode) operation, use the response to build a request body. You can only modify a CP code's name, time zone, and purgeable member.
+      description: Modifies a specific CP code. After running the GET a CP code operation, use the response to build a request body. You can only modify a CP code's name, time zone, and purgeable member.
       operationId: put-cpcode
       summary: Update a CP code
       tags:
@@ -2693,9 +2694,14 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    x-akamai-descriptor-tools:
+      displayName: cpCode
+      group: CpCodes
+    servers:
+    - url: https://{hostname}/cprg/v1
+x-refined-from:
+- akamai-cp-codes-openapi.json
+- akamai-papi-openapi.json
 x-readme:
   samples-languages:
   - curl

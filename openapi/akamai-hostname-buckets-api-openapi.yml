@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Hostname buckets API'
-  version: '2'
+  title: 'Akamai: Property Manager Hostname buckets API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Hostname buckets
 paths:
@@ -29,7 +29,7 @@ paths:
       x-akamai:
         file-path: parameters/propertyId-path.yaml
     get:
-      description: For a property with `useHostnameBucket` set to `true` at [creation](https://techdocs.akamai.com/property-mgr/reference/post-properties), this lists the activations for all hostnames in the property's hostname bucket, on both production and staging networks. To view paginated results, use the response's `nextLink` and `previousLink`.
+      description: For a property with `useHostnameBucket` set to `true` at creation, this lists the activations for all hostnames in the property's hostname bucket, on both production and staging networks. To view paginated results, use the response's `nextLink` and `previousLink`.
       operationId: get-property-hostname-activations
       summary: Akamai List Property Hostname Activations
       tags:
@@ -987,7 +987,7 @@ paths:
       x-akamai:
         file-path: parameters/hostnameActivationId-path.yaml
     get:
-      description: For a property with `useHostnameBucket` set to `true` at [creation](https://techdocs.akamai.com/property-mgr/reference/post-properties), this operation gets details about a specific property hostname activation. You typically get a single activation from an `activationLink` when [launching a new property hostname activation](https://techdocs.akamai.com/property-mgr/reference/patch-property-hostnames) and following up to poll its `status`. For property hostname activations whose `status` is `PENDING`, a `Retry-After` header provides an estimate for when it's likely to change.
+      description: For a property with `useHostnameBucket` set to `true` at creation, this operation gets details about a specific property hostname activation. You typically get a single activation from an `activationLink` when launching a new property hostname activation and following up to poll its `status`. For property hostname activations whose `status` is `PENDING`, a `Retry-After` header provides an estimate for when it's likely to change.
       operationId: get-property-hostname-activation
       summary: Akamai Get a Property Hostname Activation
       tags:
@@ -1115,6 +1115,7 @@ paths:
                                   type: integer
                                 fastFallbackRecoveryState:
                                   description: Represents additional information available for any attempted fallback.
+                                  nullable: true
                                   type:
                                   - string
                                   - 'null'
@@ -1943,7 +1944,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     delete:
-      description: For a property with `useHostnameBucket` set to `true` [when created](https://techdocs.akamai.com/property-mgr/reference/post-properties), if you detect a problem with a property hostname while its activation is still `PENDING`, use this operation to cancel it. Make a DELETE request on the `activationLink` you get from the [Add or remove hostnames for a property](https://techdocs.akamai.com/property-mgr/reference/patch-property-hostnames) operation's response. Once you DELETE the activation, it no longer appears in the [list of activations](https://techdocs.akamai.com/property-mgr/reference/get-property-hostname-activations), but you can still [access it individually](https://techdocs.akamai.com/property-mgr/reference/get-property-hostname-activation).
+      description: For a property with `useHostnameBucket` set to `true` when created, if you detect a problem with a property hostname while its activation is still `PENDING`, use this operation to cancel it. Make a DELETE request on the `activationLink` you get from the Add or remove hostnames for a property operation's response. Once you DELETE the activation, it no longer appears in the list of activations, but you can still access it individually.
       operationId: delete-property-hostname-activations
       summary: Akamai Cancel a Pending Property Hostname Activation
       tags:
@@ -2062,6 +2063,7 @@ paths:
                                   type: integer
                                 fastFallbackRecoveryState:
                                   description: Represents additional information available for any attempted fallback.
+                                  nullable: true
                                   type:
                                   - string
                                   - 'null'
@@ -3082,10 +3084,10 @@ paths:
       x-akamai:
         file-path: parameters/propertyId-path.yaml
     patch:
-      description: 'For a property with `useHostnameBucket` set to `true` [when created](https://techdocs.akamai.com/property-mgr/reference/post-properties), this operation adds or removes up to 1000 property hostnames without incrementing the property version. Changes automatically activate on the selected network. If a property doesn''t have hostname buckets enabled, this operation returns a [403](https://techdocs.akamai.com/property-mgr/reference/403) error. If another activation is in progress, whether it''s a hostname activation or a property version activation, the operation fails with a [409](https://techdocs.akamai.com/property-mgr/reference/409) error. Once you perform this operation, it blocks subsequent requests until all the property hostnames are active. Note that to build the request body, you need to first obtain the `edgeHostnameId` either from an existing edge hostname or a new one you create by running the [Create a new edge hostname](https://techdocs.akamai.com/property-mgr/reference/post-edgehostnames) operation.
+      description: 'For a property with `useHostnameBucket` set to `true` when created, this operation adds or removes up to 1000 property hostnames without incrementing the property version. Changes automatically activate on the selected network. If a property doesn''t have hostname buckets enabled, this operation returns a 403 error. If another activation is in progress, whether it''s a hostname activation or a property version activation, the operation fails with a 409 error. Once you perform this operation, it blocks subsequent requests until all the property hostnames are active. Note that to build the request body, you need to first obtain the `edgeHostnameId` either from an existing edge hostname or a new one you create by running the Create a new edge hostname operation.
 
 
-        **Note**: If you''re using a new account, first register it on the Akamai network by activating any property version on either staging or production. Otherwise, your attempts to create or specify certificates will fail with a [403](https://techdocs.akamai.com/property-mgr/reference/403) error.'
+        **Note**: If you''re using a new account, first register it on the Akamai network by activating any property version on either staging or production. Otherwise, your attempts to create or specify certificates will fail with a 403 error.'
       operationId: patch-property-hostnames
       summary: Akamai Add or Remove Hostnames for a Property's Hostname Bucket
       tags:
@@ -4519,8 +4521,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

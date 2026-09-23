@@ -1,16 +1,18 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Rate limits API'
-  version: '2'
+  description: 'Refresh or remove specific cached objects, by URLs, content
+
+    provider (CP) codes, or cache tags.'
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  description: Groups operations that let you control rate limits.
+  title: 'Akamai: Fast Purge Rate limits API'
+  version: v3
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/ccu/v3
 tags:
 - description: Groups operations that let you control rate limits.
-  name: Rate limits
+  name: Rate Limits
 paths:
   /rate-limit-status/{purge-type}:
     parameters:
@@ -31,9 +33,9 @@ paths:
       file-path: paths/rate-limit-status.yaml
       path-info: /rate-limit-status/{purge-type}
     post:
-      description: 'The Fast Purge API uses a token bucket model for [rate limiting](https://techdocs.akamai.com/purge-cache/reference/rate-limiting) to protect itself from inadvertent or malicious overuse. For each Akamai account, there''s a rate limit shared by all object types (CP codes, cache tags, and URL/ARLs), and three separate resource limits for each object type. Each purge request uses one rate limit token from the requests bucket. Each purge object in a request takes up a token from the resource bucket.
+      description: 'The Fast Purge API uses a token bucket model for rate limiting to protect itself from inadvertent or malicious overuse. For each Akamai account, there''s a rate limit shared by all object types (CP codes, cache tags, and URL/ARLs), and three separate resource limits for each object type. Each purge request uses one rate limit token from the requests bucket. Each purge object in a request takes up a token from the resource bucket.
 
-        This operation fetches information on the remaining number of requests and objects for a specific account. You can use these details to monitor the request consumption or throttle requests to prevent exceeding the limits, which results in the [429](https://techdocs.akamai.com/purge-cache/reference/429) error.'
+        This operation fetches information on the remaining number of requests and objects for a specific account. You can use these details to monitor the request consumption or throttle requests to prevent exceeding the limits, which results in the 429 error.'
       externalDocs:
         description: See documentation for this operation in Akamai's Fast Purge API
         url: https://techdocs.akamai.com/purge-cache/reference/post-rate-limit-status
@@ -323,13 +325,14 @@ paths:
             file-path: errors/500.yaml
       summary: Check rate and object limit statuses
       tags:
-      - Rate limits
+      - Rate Limits
       x-akamai:
         supports-account-switch-key: false
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Fast Purge API
+  url: https://techdocs.akamai.com/purge-cache/reference
 x-readme:
+  explorer-enabled: false
   samples-languages:
   - curl
   - python

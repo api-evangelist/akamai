@@ -1,15 +1,14 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Subscriptions API'
-  version: '2'
+  title: Akamai Subscriptions API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  description: 'Manage the email subscriptions for features within a specific
-
-    security configuration.'
+  version: '1.0'
+  description: 'Operations tagged Subscriptions across 2 of this provider''s published API definitions: akamai-application-security-openapi.json, akamai-network-lists-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/appsec/v1
+- url: https://{hostname}/network-list/v2
 tags:
 - description: 'Manage the email subscriptions for features within a specific
 
@@ -385,6 +384,8 @@ paths:
       x-akamai:
         labels:
         - Kona Site Defender
+    servers:
+    - url: https://{hostname}/appsec/v1
   /notifications/subscribe:
     post:
       description: Specifies a set of email addresses to inform Control Center account recipients about changes to a set of network lists.
@@ -666,6 +667,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/network-list/v2
   /notifications/unsubscribe:
     post:
       description: Unsubscribes the listed users from a set of network lists.
@@ -947,9 +950,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/network-list/v2
+x-refined-from:
+- akamai-application-security-openapi.json
+- akamai-network-lists-openapi.json
 x-readme:
   samples-languages:
   - curl

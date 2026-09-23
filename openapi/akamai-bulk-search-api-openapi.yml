@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Bulk search API'
-  version: '2'
+  title: 'Akamai: Property Manager Bulk search API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Bulk search
 paths:
@@ -18,7 +18,7 @@ paths:
       displayName: bulkSearches
       group: Bulk searches
     post:
-      description: POST a bulk search object to search across all active property or include versions. Specify a [JSONPath](http://goessner.net/articles/JsonPath/) expression to match their rule trees. This operation launches an asynchronous process to gather search results. To check its progress, run the [List bulk search results](https://techdocs.akamai.com/property-mgr/reference/get-bulk-search) operation, whose link is available in the `Location` header or the `bulkSearchLink` member of this operation's response. After gathering completed results, you can create new property versions, bulk patch the rule trees, then activate them. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance on this feature. Run [Synchronously bulk search a set of properties](https://techdocs.akamai.com/property-mgr/reference/post-bulk-searchsynchronus) as an alternative to get completed search results directly. To perform simpler searches for an include's name or property's name or hostnames to which it applies, run the [Search properties and includes](https://techdocs.akamai.com/property-mgr/reference/post-search-find-by-value) operation instead.
+      description: POST a bulk search object to search across all active property or include versions. Specify a JSONPath expression to match their rule trees. This operation launches an asynchronous process to gather search results. To check its progress, run the List bulk search results operation, whose link is available in the `Location` header or the `bulkSearchLink` member of this operation's response. After gathering completed results, you can create new property versions, bulk patch the rule trees, then activate them. See Bulk Search and Update for guidance on this feature. Run Synchronously bulk search a set of properties as an alternative to get completed search results directly. To perform simpler searches for an include's name or property's name or hostnames to which it applies, run the Search properties and includes operation instead.
       operationId: post-bulk-search
       summary: Akamai Bulk Search a Set of Properties or Includes
       tags:
@@ -923,7 +923,7 @@ paths:
       displayName: bulkSearchesSynchronus
       group: Bulk searches synchronus
     post:
-      description: Provides an alternative to the asynchronous [Bulk search a set of properties or includes](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search) operation. It yields completed bulk search results directly, but with possibly high latency, making it more appropriate to target for small-batch searches. POST a bulk search object to search across all active property or include versions, specifying a [JSONPath](http://goessner.net/articles/JsonPath/) expression to match their rule trees. After gathering results, you can create new property versions, bulk patch the rule trees, then activate them. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance on this feature. To perform simpler searches for an include's name or property's name or hostnames to which it applies, run the [Search properties and includes](https://techdocs.akamai.com/property-mgr/reference/post-search-find-by-value) operation instead.
+      description: Provides an alternative to the asynchronous Bulk search a set of properties or includes operation. It yields completed bulk search results directly, but with possibly high latency, making it more appropriate to target for small-batch searches. POST a bulk search object to search across all active property or include versions, specifying a JSONPath expression to match their rule trees. After gathering results, you can create new property versions, bulk patch the rule trees, then activate them. See Bulk Search and Update for guidance on this feature. To perform simpler searches for an include's name or property's name or hostnames to which it applies, run the Search properties and includes operation instead.
       operationId: post-bulk-search-synch
       summary: Akamai Synchronously Bulk Search a Set of Properties or Includes
       tags:
@@ -2012,7 +2012,7 @@ paths:
       x-akamai:
         file-path: parameters/bulkSearchId-path.yaml
     get:
-      description: List all property or include versions that result from a [bulk search request](https://techdocs.akamai.com/property-mgr/reference/post-bulk-search). Run this operation to poll the asynchronous process's status. Once the `searchTargetStatus` is `COMPLETE`, you can feed the `results` into a [bulk versioning](https://techdocs.akamai.com/property-mgr/reference/post-bulk-version) operation. Also use the JSON path `matchLocations` to run a [bulk patch](https://techdocs.akamai.com/property-mgr/reference/post-bulk-patch) operation over the rule trees. See [Bulk Search and Update](https://techdocs.akamai.com/property-mgr/reference/bulk-search-and-update) for guidance.
+      description: List all property or include versions that result from a bulk search request. Run this operation to poll the asynchronous process's status. Once the `searchTargetStatus` is `COMPLETE`, you can feed the `results` into a bulk versioning operation. Also use the JSON path `matchLocations` to run a bulk patch operation over the rule trees. See Bulk Search and Update for guidance.
       operationId: get-bulk-search
       summary: Akamai List Bulk Search Results
       tags:
@@ -2950,8 +2950,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

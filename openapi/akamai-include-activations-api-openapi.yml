@@ -1,12 +1,12 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Include activations API'
-  version: '2'
+  title: 'Akamai: Property Manager Include activations API'
+  version: v0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/papi/v1
 tags:
 - name: Include activations
 paths:
@@ -2059,7 +2059,7 @@ paths:
       x-akamai:
         file-path: parameters/includeId-path.yaml
     get:
-      description: __Limited availability__ Gets details about an activation. The response also shows the results of a validation against the rule trees of active parent properties that reference the include. While you can ignore any warnings that indicate non-blocking, logical inconsistencies, you need to resolve all errors to activate an include. You typically get a single activation from an `activationLink` when [launching a new activation](https://techdocs.akamai.com/property-mgr/reference/post-include-activation), and you follow up to poll its `status`. For activations whose `status` is `PENDING`, a `Retry-After` header provides an estimate for when it's likely to go live.
+      description: __Limited availability__ Gets details about an activation. The response also shows the results of a validation against the rule trees of active parent properties that reference the include. While you can ignore any warnings that indicate non-blocking, logical inconsistencies, you need to resolve all errors to activate an include. You typically get a single activation from an `activationLink` when launching a new activation, and you follow up to poll its `status`. For activations whose `status` is `PENDING`, a `Retry-After` header provides an estimate for when it's likely to go live.
       operationId: get-include-activation
       summary: Akamai Get an Include Activation
       tags:
@@ -3103,7 +3103,7 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
     delete:
-      description: __Limited availability__ If you detect a problem with an include version while its activation is still `PENDING`, use this operation to cancel it. Make a DELETE request on the `activationLink` you get from the [Activate an include](https://techdocs.akamai.com/property-mgr/reference/post-include-activation) operation's response. Once you DELETE the activation, it no longer appears in the [list of activations](https://techdocs.akamai.com/property-mgr/reference/get-include-activations), but you can still [access it individually](https://techdocs.akamai.com/property-mgr/reference/get-include-activation).
+      description: __Limited availability__ If you detect a problem with an include version while its activation is still `PENDING`, use this operation to cancel it. Make a DELETE request on the `activationLink` you get from the Activate an include operation's response. Once you DELETE the activation, it no longer appears in the list of activations, but you can still access it individually.
       operationId: delete-include-activation
       summary: Akamai Cancel an Include's Pending Activation
       tags:
@@ -4178,8 +4178,8 @@ paths:
           example: 1-5C0YLB:1-8BYUX
           type: string
 externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+  description: See documentation for Akamai's Property Manager API
+  url: https://techdocs.akamai.com/property-mgr/reference
 x-readme:
   samples-languages:
   - curl

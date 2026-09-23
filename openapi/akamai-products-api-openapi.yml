@@ -1,12 +1,14 @@
 openapi: 3.2.0
 info:
-  title: 'Akamai: API Endpoint Definition Access tokens Products API'
-  version: '2'
+  title: Akamai Products API
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+  description: 'Operations tagged Products across 2 of this provider''s published API definitions: akamai-cp-codes-openapi.json, akamai-papi-openapi.json. Each path carries the servers of the definition it was published in.'
 servers:
-- url: https://{hostname}/api-definitions/v2
+- url: https://{hostname}/cprg/v1
+- url: https://{hostname}/papi/v1
 tags:
 - name: Products
 paths:
@@ -367,6 +369,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/cprg/v1
   /products:
     x-akamai:
       file-path: paths/products.yaml
@@ -1149,6 +1153,8 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
+    servers:
+    - url: https://{hostname}/papi/v1
   /products/{productId}/mapping-use-cases:
     x-akamai:
       file-path: paths/product-mapping-use-cases.yaml
@@ -1168,7 +1174,7 @@ paths:
       x-akamai:
         file-path: parameters/productId-path.yaml
     get:
-      description: For a given product, this lists Akamai-provided use case scenarios. Use cases help optimally map different types of traffic across the Akamai edge network. Optionally run this operation to gather values before [creating a new edge hostname](https://techdocs.akamai.com/property-mgr/reference/post-edgehostnames).
+      description: For a given product, this lists Akamai-provided use case scenarios. Use cases help optimally map different types of traffic across the Akamai edge network. Optionally run this operation to gather values before creating a new edge hostname.
       operationId: get-product-mapping-use-cases
       summary: Akamai List Use Cases
       tags:
@@ -1940,9 +1946,11 @@ paths:
         schema:
           example: 1-5C0YLB:1-8BYUX
           type: string
-externalDocs:
-  description: See documentation for Akamai's API Endpoint Definition API
-  url: https://techdocs.akamai.com/api-definitions/reference
+    servers:
+    - url: https://{hostname}/papi/v1
+x-refined-from:
+- akamai-cp-codes-openapi.json
+- akamai-papi-openapi.json
 x-readme:
   samples-languages:
   - curl
