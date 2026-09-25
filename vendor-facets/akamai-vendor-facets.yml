@@ -1,0 +1,139 @@
+# Vendor facets — Akamai. CDN, bot manager and API security, plus partner-delivered AI-bot
+# monetization (TollBit, Skyfire) and an agentic security framework (Visa Trusted Agent Protocol,
+# KYA). All of it is enforcement at the edge or inside Akamai. Nothing publishes an artifact the
+# Kin Score reads at 0.22.0: no maps.
+vendor: akamai
+name: Akamai
+website: https://www.akamai.com
+areas:
+- cdn
+registry_keys:
+- akamai
+rubric_schema_version: 0.22.0
+generated: '2026-09-25'
+features_refreshed: '2026-09-25'
+basis: measured
+summary: >-
+  Akamai moves no Kin Score check. Its agent-era features all decide who gets through the edge and on
+  what terms. They detect and classify AI bots, charge verified agents through TollBit and Skyfire, and
+  check agent identity under the June 2026 agentic security framework. None of them publishes a Content
+  Signal, a UCP/ACP commerce document, a well-known file or a contract on the provider's behalf. API Security
+  discovers and tests APIs, and the fetched page describes no OpenAPI export, so it cannot supply a contract
+  either.
+features:
+- id: ai-scraper-bot-protection
+  name: AI scraper bot protection with TollBit and Skyfire monetization
+  description: >-
+    Tells AI bots apart from search crawlers and blocks, challenges, throttles or redirects them. Charges
+    verified agents through TollBit pricing or Skyfire tokenized payments.
+  source: https://www.akamai.com/solutions/ai-scraper-bot-protection
+  tier: enterprise
+- id: agentic-security-framework
+  name: Agentic security framework
+  description: >-
+    Edge-enforced agent identity and trust checks built on Visa Trusted Agent Protocol, Know Your Agent
+    and Experian Agent Trust, announced June 2026.
+  source: >-
+    https://www.akamai.com/newsroom/press-release/akamai-unveils-agentic-security-framework-to-power-trusted-ai-driven-interactions-and-commerce
+  tier: enterprise
+- id: api-security
+  name: Akamai API Security
+  description: >-
+    Continuous API discovery (including shadow and MCP APIs), posture management, runtime protection and
+    200+ pre-release security tests.
+  source: https://www.akamai.com/products/api-security
+  tier: enterprise
+maps: []
+earns_nothing:
+- feature: ai-scraper-bot-protection
+  check: agentic_commerce
+  layer: agent_readiness
+  why: >-
+    Partner-run pricing and payment at the edge; no /.well-known/ucp.json or acp.json is published for
+    the provider.
+- feature: agentic-security-framework
+  check: consent_identity
+  layer: agent_readiness
+  why: >-
+    It verifies incoming agents' identity. consent_identity reads the provider's own AIPREF/ContentSignal/WebBotAuth/HTTPMessageSignatures
+    pointers, and none is produced.
+- feature: api-security
+  check: contract_present
+  layer: composite
+  why: >-
+    Discovery builds an inventory inside Akamai. The fetched product page states no OpenAPI export the
+    provider could publish.
+out_of_reach:
+  checks:
+  - consent_identity
+  - agentic_commerce
+  - well_known_published
+  - llms_txt_published
+  - mcp_server
+  - rate_limit_signal
+  - contract_present
+  note: >-
+    Every agent-facing check reads something the provider publishes, and Akamai's features publish nothing.
+surface:
+  agent_readiness:
+    reachable: 0
+    total: 139
+hard_rule: >-
+  A model, not a score. Adopting this vendor changes a provider's Kin Score only when the provider publishes
+  the resulting artifacts on its own surface; nothing here writes a score, and no sponsorship or partnership
+  can.
+method: searched
+source:
+- >-
+  https://www.akamai.com/newsroom/press-release/akamai-unveils-agentic-security-framework-to-power-trusted-ai-driven-interactions-and-commerce
+- https://www.akamai.com/products/api-security
+- https://www.akamai.com/solutions/ai-scraper-bot-protection
+measured:
+  cohort:
+    method: vendors-catalog.json detections (CNAME / header / URL shape / markup), never a name match
+    detected: 100
+    in_baseline: 24
+  control:
+    basis: providers earning contract_present + documentation_present + api_reference_present, minus the
+      cohort
+    n: 5192
+  metric: >-
+    cohort_pct / control_pct = mean share of the check's points earned (derived and platform credit weighted),
+    x100
+  measured_on: '2026-09-25'
+  composite_mean:
+    cohort: 53.0
+    control: 48.0
+  agent_readiness_mean:
+    cohort: 32.5
+    control: 32.5
+  status: measured
+  caveat: >-
+    A cohort delta is association, not cause: customers choose a vendor for reasons that also move their
+    score. Read it beside the capability map, never instead of it.
+simulation:
+  simulated_on: '2026-09-25'
+  rubric: 0.23.0
+  population: providers publishing a contract (contract_present earned), replayable exactly
+  providers: 8977
+  providers_unreplayable: 987
+  providers_moved: 0
+  conditional_rows: excluded (they depend on what the API already does)
+  composite_lift:
+    median: 0.0
+    p75: 0.0
+    p90: 0.0
+    max: 0.0
+    mean_among_movers: 0.0
+  agent_readiness_lift:
+    median: 0.0
+    p75: 0.0
+    p90: 0.0
+    max: 0.0
+    mean_among_movers: 0.0
+  facet_lift_median_among_movers: {}
+  composite_band_moves: {}
+  agent_readiness_band_moves: {}
+  method: >-
+    each provider's own kin/checks file, the vendor's maps at their stated credit, the scorer's composite
+    formula; from -> to, nothing written
