@@ -3,6 +3,7 @@ provider: Akamai
 generated_by: planning/capability-mapping/scripts/classify_capabilities.py
 model: claude-opus-5
 frame:
+- Software & Technology
 - Telecommunications
 min_confidence: 0.7
 capability_model:
@@ -11,7 +12,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 33
+edge_count: 35
 edges:
 - tag: Events
   spec_file: akamai-events-api-openapi.yml
@@ -188,6 +189,17 @@ edges:
     recommendations'''
   reason: Tuning recommendations for WAF attack groups and rules — false-positive tuning of security controls.
     Cybersecurity Management at L1; no listed L2 covers WAF tuning specifically.
+- tag: Bypass network lists
+  spec_file: akamai-bypass-network-lists-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.72
+  evidence: PUT /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/bypass-network-lists  put-bypass-network-lists-per-policy  Modify
+    the bypass network lists settings for a security policy
+  reason: Operations configure allow/bypass network lists within WAF security policies for Kona Site Defender
+    and Web Application Protector, a protective security control. Held at L1 Cybersecurity Management
+    because the evidence does not clearly distinguish governance, architecture or detection sub-capabilities.
 - tag: 'Security policy: Evaluation mode'
   spec_file: akamai-security-policy-evaluation-mode-api-openapi.yml
   capability_id: BC-620.30
@@ -198,6 +210,17 @@ edges:
     records how the rules would respond if applied to live traffic.
   reason: Setting WAF evaluation mode to observe how detection rules would act on live traffic is security
     monitoring/detection tuning.
+- tag: 'Security policy: Evaluation rules'
+  spec_file: akamai-security-policy-evaluation-rules-api-openapi.yml
+  capability_id: BC-620
+  capability_id_l1: BC-620
+  capability_name: Cybersecurity Management
+  confidence: 0.72
+  evidence: GET /configs/{configId}/versions/{versionNumber}/security-policies/{policyId}/eval-rules  get-policy-eval-rules  List
+    evaluation rules
+  reason: Lists and modifies the actions of web-application-firewall evaluation rules within a security
+    policy — management of attack-detection controls. Mapped at L1 Cybersecurity Management only, as the
+    rule-action surface spans policy governance and threat detection.
 - tag: 'Shared resources: Malware policies'
   spec_file: akamai-shared-resources-malware-policies-api-openapi.yml
   capability_id: BC-620
